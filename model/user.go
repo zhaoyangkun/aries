@@ -2,6 +2,7 @@ package model
 
 import (
 	"aries/config/db"
+	"aries/util"
 	"github.com/jinzhu/gorm"
 )
 
@@ -30,8 +31,25 @@ func init() {
 }
 
 // 获取所有用户
-func (user User) GetAll() []User {
+func (user User) GetAll() ([]User, error) {
 	var users []User
-	db.Db.Find(&users)
-	return users
+	err := db.Db.Find(&users).Error
+	return users, err
+}
+
+// 根据用户名和密码获取用户
+func (user User) GetByUsername() (User, error) {
+	var u User
+	err := db.Db.Where("username = ?", user.Username).First(&u).Error
+	return u, err
+}
+
+// 创建用户
+func (user User) Create() error {
+	hashedPwd, err := util.EncryptPwd(user.Pwd) // 加密密码
+	if err != nil {
+		return err
+	}
+	user.Pwd = hashedPwd
+	return db.Db.Create(&user).Error
 }

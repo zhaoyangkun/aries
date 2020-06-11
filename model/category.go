@@ -21,8 +21,8 @@ func init() {
 }
 
 // 获取所有分类
-func (category Category) GetAll() []Category {
+func (category Category) GetAll() ([]Category, error) {
 	var categories []Category
-	db.Db.Find(&categories)
-	return categories
+	err := db.Db.Find(&categories).Error
+	return categories, err
 }

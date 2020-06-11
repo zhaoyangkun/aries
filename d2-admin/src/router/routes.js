@@ -1,11 +1,3 @@
-import playground from './modules/playground'
-import frame from './modules/frame'
-import d2Crud from './modules/d2-crud'
-import plugins from './modules/plugins'
-import charts from './modules/charts'
-import components from './modules/components'
-import business from './modules/business'
-
 import layoutHeaderAside from '@/layout/header-aside'
 
 // 由于懒加载页面太多的话会造成webpack热更新太慢，所以开发环境不使用懒加载，只有生产环境使用懒加载
@@ -25,10 +17,37 @@ const frameIn = [
         path: 'index',
         name: 'index',
         meta: {
-          title: '首页',
           auth: true
         },
         component: _import('system/index')
+      },
+      // 演示页面
+      {
+        path: 'page1',
+        name: 'page1',
+        meta: {
+          title: '页面 1',
+          auth: true
+        },
+        component: _import('demo/page1')
+      },
+      {
+        path: 'page2',
+        name: 'page2',
+        meta: {
+          title: '页面 2',
+          auth: true
+        },
+        component: _import('demo/page2')
+      },
+      {
+        path: 'page3',
+        name: 'page3',
+        meta: {
+          title: '页面 3',
+          auth: true
+        },
+        component: _import('demo/page3')
       },
       // 系统 前端日志
       {
@@ -55,14 +74,7 @@ const frameIn = [
         component: _import('system/function/redirect')
       }
     ]
-  },
-  playground,
-  frame,
-  d2Crud,
-  plugins,
-  charts,
-  components,
-  business
+  }
 ]
 
 /**
@@ -74,6 +86,16 @@ const frameOut = [
     path: '/login',
     name: 'login',
     component: _import('system/login')
+  },
+  // 注册
+  {
+    path: '/register',
+    name: 'register',
+    meta: {
+      auth: false // 表明无需登录验证
+    },
+    // component: import('@/views/aries/auth/register')
+    component: _import('aries/auth/register')
   }
 ]
 

@@ -3,6 +3,7 @@ import Adapter from 'axios-mock-adapter'
 import { get } from 'lodash'
 import util from '@/libs/util'
 import { errorLog, errorCreate } from './tools'
+import router from '@/router'
 
 /**
  * @description 创建请求实例
@@ -25,7 +26,7 @@ function createService () {
       // dataAxios 是 axios 返回数据中的 data
       const dataAxios = response.data
       // 这个状态码是和后端约定的
-      const { code } = dataAxios
+      const code = dataAxios.code
       // 根据 code 进行判断
       if (code === undefined) {
         // 如果没有 code 代表这不是项目后端开发的接口 比如可能是 D2Admin 请求最新版本
@@ -33,36 +34,70 @@ function createService () {
       } else {
         // 有 code 代表这是一个后端接口 可以进行进一步的判断
         switch (code) {
-          case 0:
-            // [ 示例 ] code === 0 代表没有错误
+          // code === 100 代表请求成功
+          case 100:
             return dataAxios.data
-          case 'xxx':
-            // [ 示例 ] 其它和后台约定的 code
-            errorCreate(`[ code: xxx ] ${dataAxios.msg}: ${response.config.url}`)
+          // code === 101 代表重定向
+          case 101:
+            router.replace({
+              path: `${dataAxios.data.url}`
+            }).then(r => {
+            })
             break
+          // code === 102 表示禁止访问
+          case 102:
+            // 跳转到登录页面
+            router.replace({
+              path: '/login'
+            }).then(r => {
+            })
+            break
+          // code === 103 或 104 代表有错误发生
           default:
-            // 不是正确的 code
-            errorCreate(`${dataAxios.msg}: ${response.config.url}`)
+            // errorCreate(`${dataAxios.msg}: ${response.config.url}`)
+            errorCreate(`${dataAxios.msg}`)
             break
         }
       }
     },
     error => {
-      if (error && error.response) {
-        switch (error.response.status) {
-          case 400: error.message = '请求错误'; break
-          case 401: error.message = '未授权，请登录'; break
-          case 403: error.message = '拒绝访问'; break
-          case 404: error.message = `请求地址出错: ${error.response.config.url}`; break
-          case 408: error.message = '请求超时'; break
-          case 500: error.message = '服务器内部错误'; break
-          case 501: error.message = '服务未实现'; break
-          case 502: error.message = '网关错误'; break
-          case 503: error.message = '服务不可用'; break
-          case 504: error.message = '网关超时'; break
-          case 505: error.message = 'HTTP版本不受支持'; break
-          default: break
-        }
+      const status = get(error, 'response.status')
+      switch (status) {
+        case 400:
+          error.message = '请求错误'
+          break
+        case 401:
+          error.message = '未授权，请登录'
+          break
+        case 403:
+          error.message = '拒绝访问'
+          break
+        case 404:
+          error.message = `请求地址出错: ${error.response.config.url}`
+          break
+        case 408:
+          error.message = '请求超时'
+          break
+        case 500:
+          error.message = '服务器内部错误'
+          break
+        case 501:
+          error.message = '服务未实现'
+          break
+        case 502:
+          error.message = '网关错误'
+          break
+        case 503:
+          error.message = '服务不可用'
+          break
+        case 504:
+          error.message = '网关超时'
+          break
+        case 505:
+          error.message = 'HTTP版本不受支持'
+          break
+        default:
+          break
       }
       errorLog(error)
       return Promise.reject(error)
@@ -80,10 +115,14 @@ function createRequestFunction (service) {
     const token = util.cookies.get('token')
     const configDefault = {
       headers: {
-        Authorization: token,
-        'Content-Type': get(config, 'headers.Content-Type', 'application/json')
+        // token
+        token: token,
+        // 请求数据类型
+        'Content-Type': get(config, 'headers.Content-Type', 'application/json'),
+        // 返回数据类型
+        Accept: 'application/json'
       },
-      timeout: 5000,
+      timeout: 3000,
       baseURL: process.env.VUE_APP_API,
       data: {}
     }

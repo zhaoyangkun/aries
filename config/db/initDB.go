@@ -9,10 +9,10 @@ import (
 	"log"
 )
 
-//数据库对象
+// 数据库对象
 var Db *gorm.DB
 
-//数据库配置信息
+// 数据库配置信息
 var username = config.DBConfig.UserName
 var password = config.DBConfig.Password
 var host = config.DBConfig.Host
@@ -22,7 +22,7 @@ var timeZone = config.DBConfig.TimeZone
 var maxIdleConn = config.DBConfig.MaxIdleConn
 var maxOpenConn = config.DBConfig.MaxOpenConn
 
-//获取数据库连接
+// 获取数据库连接
 func getDataSource(username string, password string, host string,
 	port string, database string, timeZone string) string {
 	dataSource := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?parseTime=true&loc=%s",
@@ -30,7 +30,7 @@ func getDataSource(username string, password string, host string,
 	return dataSource
 }
 
-//初始化数据库连接
+// 初始化数据库连接
 func init() {
 	var err error
 	dataSource := getDataSource(username, password, host, port, database, timeZone)

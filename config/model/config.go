@@ -2,8 +2,10 @@ package model
 
 // 项目配置结构体
 type GinConfig struct {
-	Mode string // 运行模式
-	Port string // 运行端口
+	Mode            string   // 运行模式
+	Port            string   // 运行端口
+	TokenExpireTime int      // JWT token 过期时间
+	AllowedRefers   []string // 允许的 referer
 }
 
 // 数据库配置结构体

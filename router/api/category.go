@@ -2,12 +2,14 @@ package api
 
 import (
 	"aries/handler/api"
+	"aries/middleware"
 	"github.com/gin-gonic/gin"
 )
 
 func InitCategoryApiRouter(rootPath string, router *gin.Engine) {
 	categoryApiRouter := router.Group(rootPath)
+	categoryApiRouter.Use(middleware.JWTAuthMiddleWare()) // 加载 JWT 权限校验中间件
 	{
-		categoryApiRouter.GET("/categories", api.GetAllCategoriesHandler)
+		categoryApiRouter.GET("/categories", api.GetAllCategories)
 	}
 }
