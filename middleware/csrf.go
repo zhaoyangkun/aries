@@ -1,7 +1,7 @@
 package middleware
 
 import (
-	"aries/config"
+	"aries/config/setting"
 	"aries/util"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
@@ -50,7 +50,7 @@ func verifyCsrfToken(ctx *gin.Context) bool {
 	}
 	referer := ctx.Request.Referer()
 	// 校验 Referer
-	if !util.IsContain(config.AppConfig.AllowedRefers, referer) {
+	if !util.IsContain(setting.Config.Server.AllowedRefers, referer) {
 		return false
 	}
 	// 从请求头部获取 csrfToken

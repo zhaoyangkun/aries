@@ -1,7 +1,7 @@
 package db
 
 import (
-	"aries/config"
+	"aries/config/setting"
 	"fmt"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
@@ -13,14 +13,14 @@ import (
 var Db *gorm.DB
 
 // 数据库配置信息
-var username = config.DBConfig.UserName
-var password = config.DBConfig.Password
-var host = config.DBConfig.Host
-var database = config.DBConfig.Database
-var port = config.DBConfig.Port
-var timeZone = config.DBConfig.TimeZone
-var maxIdleConn = config.DBConfig.MaxIdleConn
-var maxOpenConn = config.DBConfig.MaxOpenConn
+var username = setting.Config.Database.UserName
+var password = setting.Config.Database.Password
+var host = setting.Config.Database.Host
+var database = setting.Config.Database.Database
+var port = setting.Config.Database.Port
+var timeZone = setting.Config.Database.TimeZone
+var maxIdleConn = setting.Config.Database.MaxIdleConn
+var maxOpenConn = setting.Config.Database.MaxOpenConn
 
 // 获取数据库连接
 func getDataSource(username string, password string, host string,

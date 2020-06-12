@@ -1,7 +1,7 @@
 package app
 
 import (
-	"aries/config"
+	"aries/config/setting"
 	"aries/router/api"
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
@@ -15,18 +15,18 @@ import (
 // 加载配置
 func InitApp() *gin.Engine {
 	// 设置运行模式
-	gin.SetMode(config.AppConfig.Mode)
+	gin.SetMode(setting.Config.Server.Mode)
 
 	// 获取 engine
 	router := gin.Default()
 
 	// 表单翻译参数
 	uni := ut.New(zh.New())
-	config.Trans, _ = uni.GetTranslator("zh")
+	setting.Trans, _ = uni.GetTranslator("zh")
 	// 表单校验配置
 	if v, ok := binding.Validator.Engine().(*validator.Validate); ok {
 		// 注册翻译器
-		_ = translations.RegisterDefaultTranslations(v, config.Trans)
+		_ = translations.RegisterDefaultTranslations(v, setting.Trans)
 		// 注册一个函数，获取 struct tag 里自定义的 label 作为字段名
 		v.RegisterTagNameFunc(func(field reflect.StructField) string {
 			name := field.Tag.Get("label")

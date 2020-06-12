@@ -1,7 +1,7 @@
 package util
 
 import (
-	"aries/config"
+	"aries/config/setting"
 	"errors"
 	"github.com/dgrijalva/jwt-go"
 	"time"
@@ -90,7 +90,7 @@ func (j *JWT) RefreshToken(tokenString string) (string, error) {
 	if claims, ok := token.Claims.(*CustomClaims); ok && token.Valid {
 		jwt.TimeFunc = time.Now
 		claims.StandardClaims.ExpiresAt = time.Now().Add(time.Second * time.
-			Duration(config.AppConfig.TokenExpireTime)).Unix()
+			Duration(setting.Config.Server.TokenExpireTime)).Unix()
 		return j.CreateToken(*claims)
 	}
 	return "", TokenInvalid

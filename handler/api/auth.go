@@ -1,7 +1,7 @@
 package api
 
 import (
-	"aries/config"
+	"aries/config/setting"
 	"aries/form"
 	"aries/util"
 	"github.com/dgrijalva/jwt-go"
@@ -61,7 +61,7 @@ func Login(ctx *gin.Context) {
 				UserImg:  u.UserImg,
 				StandardClaims: jwt.StandardClaims{
 					ExpiresAt: time.Now().Add(time.Second * time.
-						Duration(config.AppConfig.TokenExpireTime)).Unix(), // 设置过期时间
+						Duration(setting.Config.Server.TokenExpireTime)).Unix(), // 设置过期时间
 					IssuedAt: time.Now().Unix(),
 				},
 			})

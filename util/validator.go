@@ -1,16 +1,16 @@
 package util
 
 import (
-	"aries/config"
+	"aries/config/setting"
 	"github.com/go-playground/validator/v10"
 	"log"
 )
 
 // 获取表单错误
 func GetFormError(err error) string {
-	errMap := err.(validator.ValidationErrors).Translate(config.Trans) // 将英文表单错误信息翻译，并获取错误信息字典
-	var keyList []string                                               // 保存键值
-	for key := range errMap {                                          // 遍历 errMap
+	errMap := err.(validator.ValidationErrors).Translate(setting.Trans) // 将英文表单错误信息翻译，并获取错误信息字典
+	var keyList []string                                                // 保存键值
+	for key := range errMap {                                           // 遍历 errMap
 		keyList = append(keyList, key) // 将 errMap 中的键值保存到 keyList 中
 	}
 	log.Println(errMap)
