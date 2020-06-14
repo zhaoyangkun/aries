@@ -1,0 +1,125 @@
+definitions:
+  form.LoginForm:
+    properties:
+      captcha_id:
+        description: 验证码 ID
+        type: string
+      captcha_val:
+        description: 验证码
+        type: string
+      pwd:
+        description: 密码
+        type: string
+      username:
+        description: 用户名
+        type: string
+    required:
+    - captcha_id
+    - captcha_val
+    - pwd
+    - username
+    type: object
+  form.RegisterForm:
+    properties:
+      email:
+        description: 邮箱
+        type: string
+      pwd:
+        description: 密码
+        type: string
+      second_pwd:
+        description: 确认密码
+        type: string
+      username:
+        description: 用户名
+        type: string
+    required:
+    - email
+    - pwd
+    - second_pwd
+    - username
+    type: object
+  util.Result:
+    properties:
+      code:
+        description: 状态码
+        example: 0
+        type: integer
+      data:
+        description: 数据
+        type: object
+      msg:
+        description: 信息
+        example: 信息
+        type: string
+    type: object
+host: localhost:8088
+info:
+  contact: {}
+  description: Aries 开源博客项目 API 接口文档
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  title: Gin Swagger
+  version: "1.0"
+paths:
+  /api/v1/auth/captcha:
+    get:
+      consumes:
+      - application/json
+      responses:
+        "100":
+          description: Continue
+          schema:
+            $ref: '#/definitions/util.Result'
+        "104":
+          schema:
+            $ref: '#/definitions/util.Result'
+      summary: 创建验证码
+      tags:
+      - 授权
+  /api/v1/auth/login:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 登录表单
+        in: body
+        name: loginForm
+        required: true
+        schema:
+          $ref: '#/definitions/form.LoginForm'
+      responses:
+        "100":
+          description: Continue
+          schema:
+            $ref: '#/definitions/util.Result'
+        "104":
+          schema:
+            $ref: '#/definitions/util.Result'
+      summary: 登录
+      tags:
+      - 授权
+  /api/v1/auth/register:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 注册表单
+        in: body
+        name: regForm
+        required: true
+        schema:
+          $ref: '#/definitions/form.RegisterForm'
+      responses:
+        "100":
+          description: Continue
+          schema:
+            $ref: '#/definitions/util.Result'
+        "104":
+          schema:
+            $ref: '#/definitions/util.Result'
+      summary: 注册
+      tags:
+      - 授权
+swagger: "2.0"

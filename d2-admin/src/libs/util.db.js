@@ -1,6 +1,5 @@
 import low from 'lowdb'
 import LocalStorage from 'lowdb/adapters/LocalStorage'
-import util from '@/libs/util'
 import { cloneDeep } from 'lodash'
 
 const adapter = new LocalStorage(`d2admin-${process.env.VUE_APP_VERSION}`)
@@ -31,7 +30,7 @@ export function pathInit ({
   validator = () => true,
   defaultValue = ''
 }) {
-  const uuid = util.cookies.get('uuid') || 'ghost-uuid'
+  const uuid = localStorage.getItem('uuid') || 'ghost-uuid'
   const currentPath = `${dbName}.${user ? `user.${uuid}` : 'public'}${path ? `.${path}` : ''}`
   const value = db.get(currentPath).value()
   if (!(value !== undefined && validator(value))) {

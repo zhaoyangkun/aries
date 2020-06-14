@@ -2,7 +2,8 @@ package app
 
 import (
 	"aries/config/setting"
-	"aries/router/api"
+	normalRouter "aries/router"
+	apiRouter "aries/router/api"
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
 	"github.com/go-playground/locales/zh"
@@ -52,8 +53,9 @@ func InitApp() *gin.Engine {
 	//}
 
 	// 路由分组
-	api.InitCategoryApiRouter("/api/v1", router)
-	api.InitAuthApiRouter("/api/v1", router)
+	normalRouter.InitSwaggerRouter("/swagger", router)
+	apiRouter.InitCategoryApiRouter("/api/v1", router)
+	apiRouter.InitAuthApiRouter("/api/v1", router)
 
 	return router
 }

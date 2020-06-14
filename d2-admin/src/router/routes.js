@@ -23,31 +23,31 @@ const frameIn = [
       },
       // 演示页面
       {
-        path: 'page1',
-        name: 'page1',
+        path: 'category',
+        name: 'category',
         meta: {
-          title: '页面 1',
+          title: '分类',
           auth: true
         },
-        component: _import('demo/page1')
+        component: _import('aries/category/category')
       },
       {
-        path: 'page2',
-        name: 'page2',
+        path: 'tag',
+        name: 'tag',
         meta: {
-          title: '页面 2',
+          title: '标签',
           auth: true
         },
-        component: _import('demo/page2')
+        component: _import('aries/tag/tag')
       },
       {
-        path: 'page3',
-        name: 'page3',
+        path: 'article',
+        name: 'article',
         meta: {
-          title: '页面 3',
+          title: '文章',
           auth: true
         },
-        component: _import('demo/page3')
+        component: _import('aries/article/article')
       },
       // 系统 前端日志
       {
@@ -85,6 +85,9 @@ const frameOut = [
   {
     path: '/login',
     name: 'login',
+    meta: {
+      auth: false // 表明无需登录验证
+    },
     component: _import('system/login')
   },
   // 注册

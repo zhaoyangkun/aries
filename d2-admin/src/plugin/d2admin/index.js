@@ -15,6 +15,7 @@ import pluginApi from '@/plugin/api'
 import pluginError from '@/plugin/error'
 import pluginLog from '@/plugin/log'
 import pluginOpen from '@/plugin/open'
+import D2Crud from '@d2-projects/d2-crud'
 
 export default {
   async install (Vue, options) {
@@ -38,5 +39,7 @@ export default {
     Vue.use(pluginError)
     Vue.use(pluginLog)
     Vue.use(pluginOpen)
+    // 表格组件
+    Vue.use(D2Crud)
   }
 }

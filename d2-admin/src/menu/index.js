@@ -15,28 +15,30 @@ function supplementPath (menu) {
   }))
 }
 
+// 顶部菜单栏
 export const menuHeader = supplementPath([
   { path: '/index', title: '首页', icon: 'home' },
   {
-    title: '页面',
-    icon: 'folder-o',
+    title: '文章管理',
+    icon: 'edit',
     children: [
-      { path: '/page1', title: '页面 1' },
-      { path: '/page2', title: '页面 2' },
-      { path: '/page3', title: '页面 3' }
+      { path: '/category', title: '分类', icon: 'list' },
+      { path: '/tag', title: '标签', icon: 'tags' },
+      { path: '/article', title: '文章', icon: 'file-text' }
     ]
   }
 ])
 
+// 侧边菜单栏
 export const menuAside = supplementPath([
   { path: '/index', title: '首页', icon: 'home' },
   {
-    title: '页面',
-    icon: 'folder-o',
+    title: '文章管理',
+    icon: 'edit',
     children: [
-      { path: '/page1', title: '页面 1' },
-      { path: '/page2', title: '页面 2' },
-      { path: '/page3', title: '页面 3' }
+      { path: '/category', title: '分类', icon: 'list' },
+      { path: '/tag', title: '标签', icon: 'tags' },
+      { path: '/article', title: '文章', icon: 'file-text' }
     ]
   }
 ])

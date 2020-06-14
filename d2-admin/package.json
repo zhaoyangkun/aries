@@ -11,12 +11,13 @@
     "test:unit": "vue-cli-service test:unit"
   },
   "dependencies": {
+    "@d2-projects/d2-crud": "^2.1.2",
     "axios": "^0.19.0",
     "axios-mock-adapter": "^1.18.1",
     "better-scroll": "^1.15.2",
     "core-js": "^3.4.3",
     "dayjs": "^1.8.17",
-    "element-ui": "^2.13.1",
+    "element-ui": "^2.13.2",
     "faker": "^4.1.0",
     "flex.css": "^1.1.7",
     "fuse.js": "^5.2.3",

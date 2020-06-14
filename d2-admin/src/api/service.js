@@ -1,9 +1,9 @@
 import axios from 'axios'
 import Adapter from 'axios-mock-adapter'
 import { get } from 'lodash'
-import util from '@/libs/util'
 import { errorLog, errorCreate } from './tools'
 import router from '@/router'
+import { Message } from 'element-ui'
 
 /**
  * @description 创建请求实例
@@ -36,7 +36,7 @@ function createService () {
         switch (code) {
           // code === 100 代表请求成功
           case 100:
-            return dataAxios.data
+            return dataAxios
           // code === 101 代表重定向
           case 101:
             router.replace({
@@ -46,15 +46,19 @@ function createService () {
             break
           // code === 102 表示禁止访问
           case 102:
+            // 显示错误信息
+            Message({
+              message: dataAxios.msg,
+              type: 'error',
+              duration: 1500
+            })
             // 跳转到登录页面
             router.replace({
               path: '/login'
-            }).then(r => {
-            })
+            }).then(r => {})
             break
           // code === 103 或 104 代表有错误发生
           default:
-            // errorCreate(`${dataAxios.msg}: ${response.config.url}`)
             errorCreate(`${dataAxios.msg}`)
             break
         }
@@ -112,7 +116,7 @@ function createService () {
  */
 function createRequestFunction (service) {
   return function (config) {
-    const token = util.cookies.get('token')
+    const token = localStorage.getItem('token')
     const configDefault = {
       headers: {
         // token

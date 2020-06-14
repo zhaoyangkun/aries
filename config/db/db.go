@@ -40,7 +40,7 @@ func init() {
 	}
 	Db.DB().SetMaxIdleConns(maxIdleConn)
 	Db.DB().SetMaxOpenConns(maxOpenConn)
-	Db.LogMode(false) //是否开启日志
+	Db.LogMode(true) //是否开启日志
 	/*	defer func() {
 		err = Db.Close() //关闭数据库
 		if err != nil {

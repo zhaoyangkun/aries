@@ -20,6 +20,7 @@ type Result struct {
 type Token struct {
 	Token string `json:"token"` // 令牌
 	//RefreshToken string `json:"refresh_token"`
+	UserId   uint   `json:"user_id"`  // 用户 ID
 	Username string `json:"username"` // 用户名
 	UserImg  string `json:"user_img"` // 头像
 }

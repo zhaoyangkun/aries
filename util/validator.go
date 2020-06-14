@@ -3,7 +3,6 @@ package util
 import (
 	"aries/config/setting"
 	"github.com/go-playground/validator/v10"
-	"log"
 )
 
 // 获取表单错误
@@ -13,7 +12,6 @@ func GetFormError(err error) string {
 	for key := range errMap {                                           // 遍历 errMap
 		keyList = append(keyList, key) // 将 errMap 中的键值保存到 keyList 中
 	}
-	log.Println(errMap)
 	if len(keyList) > 0 {
 		return errMap[keyList[0]] // 返回字典中第一个错误信息
 	}

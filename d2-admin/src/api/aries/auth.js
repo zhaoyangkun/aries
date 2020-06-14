@@ -1,7 +1,7 @@
 import { request } from '@/api/service' // 引入封装好的 axios
 
 // 注册
-export function register (data) {
+export function authRegister (data) {
   return request({
     url: '/auth/register', // 请求地址
     method: 'post', // 请求类型
@@ -10,7 +10,7 @@ export function register (data) {
 }
 
 // 登录
-export function login (data) {
+export function authLogin (data) {
   return request({
     url: '/auth/login', // 请求地址
     method: 'post', // 请求类型

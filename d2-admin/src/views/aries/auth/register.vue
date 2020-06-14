@@ -111,7 +111,7 @@
 import dayjs from 'dayjs'
 import { mapActions } from 'vuex'
 import localeMixin from '@/locales/mixin.js'
-import { register } from '@/api/aries/auth'
+import { authRegister } from '@/api/aries/auth'
 export default {
   name: 'register',
   mixins: [
@@ -184,7 +184,7 @@ export default {
       this.$refs.regForm.validate((valid) => {
         if (valid) {
           // 注册
-          register(this.$data.regForm)
+          authRegister(this.$data.regForm)
             .then(res => {
               console.log(res)
             })
