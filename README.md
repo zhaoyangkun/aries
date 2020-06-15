@@ -4,7 +4,7 @@
 
 - 克隆项目代码到本地
 
-  ```shell script
+  ```shell
   git clone https://e.coding.net/cangmang/aries/aries.git
   ```
 
@@ -32,18 +32,18 @@
 
 - 命令行模式进入项目根目录，启动 gin 项目：
 
-  ```shell script
+  ```shell
   go run main.go
   ```
  
 - 命令行模式进入项目中的 d2-admin 目录，安装 npm 依赖
-  ```shell script
+  ```shell
   npm install
   ```
  
 - 待 npm 依赖安装完毕后，启动 vue 项目：
 
-  ```shell script
+  ```shell
   npm run serve
   ```
 
