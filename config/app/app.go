@@ -17,6 +17,8 @@ import (
 func InitApp() *gin.Engine {
 	// 设置运行模式
 	gin.SetMode(setting.Config.Server.Mode)
+	// 开启日志颜色
+	gin.ForceConsoleColor()
 
 	// 获取 engine
 	router := gin.Default()

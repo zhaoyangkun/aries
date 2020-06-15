@@ -1,4 +1,42 @@
 definitions:
+  form.CategoryAddForm:
+    properties:
+      name:
+        description: 分类名称
+        type: string
+      parent_category_id:
+        description: 父级分类 ID
+        type: integer
+      type:
+        description: 分类类型，默认值为 0 表文章；1 表友链
+        type: integer
+      url:
+        description: 访问 URL
+        type: string
+    required:
+    - name
+    - url
+    type: object
+  form.CategoryEditForm:
+    properties:
+      id:
+        type: integer
+      name:
+        description: 分类名称
+        type: string
+      parent_category_id:
+        description: 父级分类 ID
+        type: integer
+      type:
+        description: 分类类型，默认值为 0 表文章；1 表友链
+        type: integer
+      url:
+        description: 访问 URL
+        type: string
+    required:
+    - name
+    - url
+    type: object
   form.LoginForm:
     properties:
       captcha_id:
@@ -43,14 +81,14 @@ definitions:
     properties:
       code:
         description: 状态码
-        example: 0
+        example: 100
         type: integer
       data:
         description: 数据
         type: object
       msg:
-        description: 信息
-        example: 信息
+        description: 提示
+        example: 密码错误
         type: string
     type: object
 host: localhost:8088
@@ -122,4 +160,135 @@ paths:
       summary: 注册
       tags:
       - 授权
+  /api/v1/categories:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: ids
+        in: query
+        name: ids
+        required: true
+        type: string
+      responses:
+        "100":
+          description: Continue
+          schema:
+            $ref: '#/definitions/util.Result'
+        "104":
+          schema:
+            $ref: '#/definitions/util.Result'
+      summary: 批量删除分类
+      tags:
+      - 分类
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: 页码
+        in: query
+        name: page
+        type: integer
+      - description: 每页条数
+        in: query
+        name: size
+        type: integer
+      - description: 关键词
+        in: query
+        name: key
+        type: string
+      responses:
+        "100":
+          description: Continue
+          schema:
+            $ref: '#/definitions/util.Result'
+        "104":
+          schema:
+            $ref: '#/definitions/util.Result'
+      summary: 分页获取分类数据
+      tags:
+      - 分类
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 添加分类表单
+        in: body
+        name: addForm
+        required: true
+        schema:
+          $ref: '#/definitions/form.CategoryAddForm'
+      responses:
+        "100":
+          description: Continue
+          schema:
+            $ref: '#/definitions/util.Result'
+        "104":
+          schema:
+            $ref: '#/definitions/util.Result'
+      summary: 添加分类
+      tags:
+      - 分类
+  /api/v1/categories/{id}:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "100":
+          description: Continue
+          schema:
+            $ref: '#/definitions/util.Result'
+        "104":
+          schema:
+            $ref: '#/definitions/util.Result'
+      summary: 删除分类
+      tags:
+      - 分类
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: 修改分类表单
+        in: body
+        name: editForm
+        required: true
+        schema:
+          $ref: '#/definitions/form.CategoryEditForm'
+      responses:
+        "100":
+          description: Continue
+          schema:
+            $ref: '#/definitions/util.Result'
+        "104":
+          schema:
+            $ref: '#/definitions/util.Result'
+      summary: 修改分类
+      tags:
+      - 分类
+  /api/v1/categories/all:
+    get:
+      consumes:
+      - application/json
+      responses:
+        "100":
+          description: Continue
+          schema:
+            $ref: '#/definitions/util.Result'
+        "104":
+          schema:
+            $ref: '#/definitions/util.Result'
+      summary: 获取所有分类
+      tags:
+      - 分类
 swagger: "2.0"
