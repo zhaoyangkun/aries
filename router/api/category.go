@@ -10,10 +10,11 @@ func InitCategoryApiRouter(rootPath string, router *gin.Engine) {
 	//categoryApiRouter.Use(middleware.JWTAuthMiddleWare()) // 加载 JWT 权限校验中间件
 	{
 		categoryApiRouter.GET("/categories/all", api.GetAllCategories)
+		categoryApiRouter.GET("/categories/parent", api.GetAllParentCategories)
 		categoryApiRouter.GET("/categories", api.GetCategoriesByPage)
 		categoryApiRouter.POST("/categories", api.AddCategory)
 		categoryApiRouter.PUT("/categories/:id", api.UpdateCategory)
 		categoryApiRouter.DELETE("/categories/:id", api.DeleteCategory)
-		categoryApiRouter.DELETE("/categories", api.MultiDeleteCategory)
+		categoryApiRouter.DELETE("/categories", api.MultiDelCategory)
 	}
 }

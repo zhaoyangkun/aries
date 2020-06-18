@@ -1,6 +1,8 @@
 package app
 
 import (
+	"aries/config/db"
+	"aries/config/migrate"
 	"aries/config/setting"
 	normalRouter "aries/router"
 	apiRouter "aries/router/api"
@@ -13,13 +15,19 @@ import (
 	"reflect"
 )
 
-// 加载配置
+// 初始化 gin
 func InitApp() *gin.Engine {
+	// 加载配置文件
+	setting.InitSetting()
+	// 连接数据库
+	db.InitDb()
+	// 反向生成数据表
+	migrate.Migrate()
+
 	// 设置运行模式
 	gin.SetMode(setting.Config.Server.Mode)
 	// 开启日志颜色
 	gin.ForceConsoleColor()
-
 	// 获取 engine
 	router := gin.Default()
 
@@ -35,7 +43,6 @@ func InitApp() *gin.Engine {
 			name := field.Tag.Get("label")
 			return name
 		})
-		//根据提供的标记注册翻译
 		//_ = v.RegisterTranslation("bookabledate", trans, func(ut ut.Translator) error {
 		//	return ut.Add("bookabledate", "{0}不能早于当前时间或{1}格式错误!", true)
 		//}, func(ut ut.Translator, fe validator.FieldError) string {

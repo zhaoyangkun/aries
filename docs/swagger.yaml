@@ -4,7 +4,7 @@ definitions:
       name:
         description: 分类名称
         type: string
-      parent_category_id:
+      parent_id:
         description: 父级分类 ID
         type: integer
       type:
@@ -24,7 +24,7 @@ definitions:
       name:
         description: 分类名称
         type: string
-      parent_category_id:
+      parent_id:
         description: 父级分类 ID
         type: integer
       type:
@@ -197,6 +197,11 @@ paths:
         in: query
         name: key
         type: string
+      - description: 分类类型
+        in: query
+        name: category_type
+        required: true
+        type: integer
       responses:
         "100":
           description: Continue
@@ -280,6 +285,12 @@ paths:
     get:
       consumes:
       - application/json
+      parameters:
+      - description: 分类类型
+        in: query
+        name: category_type
+        required: true
+        type: integer
       responses:
         "100":
           description: Continue
@@ -289,6 +300,27 @@ paths:
           schema:
             $ref: '#/definitions/util.Result'
       summary: 获取所有分类
+      tags:
+      - 分类
+  /api/v1/categories/parent:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: 分类类型
+        in: query
+        name: category_type
+        required: true
+        type: integer
+      responses:
+        "100":
+          description: Continue
+          schema:
+            $ref: '#/definitions/util.Result'
+        "104":
+          schema:
+            $ref: '#/definitions/util.Result'
+      summary: 获取所有父级分类
       tags:
       - 分类
 swagger: "2.0"

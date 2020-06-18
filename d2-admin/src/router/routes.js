@@ -88,7 +88,7 @@ const frameOut = [
     meta: {
       auth: false // 表明无需登录验证
     },
-    component: _import('system/login')
+    component: _import('aries/auth/login')
   },
   // 注册
   {

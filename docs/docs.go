@@ -149,6 +149,13 @@ var doc = `{
                         "description": "关键词",
                         "name": "key",
                         "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "分类类型",
+                        "name": "category_type",
+                        "in": "query",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -239,6 +246,48 @@ var doc = `{
                     "分类"
                 ],
                 "summary": "获取所有分类",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "分类类型",
+                        "name": "category_type",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "100": {
+                        "description": "Continue",
+                        "schema": {
+                            "$ref": "#/definitions/util.Result"
+                        }
+                    },
+                    "104": {
+                        "schema": {
+                            "$ref": "#/definitions/util.Result"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/categories/parent": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "分类"
+                ],
+                "summary": "获取所有父级分类",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "分类类型",
+                        "name": "category_type",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "100": {
                         "description": "Continue",
@@ -340,7 +389,7 @@ var doc = `{
                     "description": "分类名称",
                     "type": "string"
                 },
-                "parent_category_id": {
+                "parent_id": {
                     "description": "父级分类 ID",
                     "type": "integer"
                 },
@@ -368,7 +417,7 @@ var doc = `{
                     "description": "分类名称",
                     "type": "string"
                 },
-                "parent_category_id": {
+                "parent_id": {
                     "description": "父级分类 ID",
                     "type": "integer"
                 },

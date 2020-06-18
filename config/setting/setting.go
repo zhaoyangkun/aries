@@ -5,6 +5,9 @@ import (
 	"gopkg.in/yaml.v2"
 	"io/ioutil"
 	"log"
+	"os"
+	"path/filepath"
+	"strings"
 )
 
 // 总配置
@@ -40,11 +43,20 @@ var Trans ut.Translator
 var Config = &Setting{}
 
 // 读取 yaml 配置文件
-func init() {
-	yamlFile, err := ioutil.ReadFile("config/" + "develop.yaml")
+func InitSetting() {
+	// 获取当前项目根目录
+	rootPath, _ := os.Getwd()
+	// 解决在单元测试环境下，读取配置文件失败的问题
+	rootPath = strings.Replace(rootPath, "test", "", -1)
+	// 拼接配置文件访问路径
+	yamlPath := filepath.Join(rootPath, "config", "develop.yaml")
+	log.Println("yamlPath: ", yamlPath)
+	// 读取配置文件
+	yamlFile, err := ioutil.ReadFile(yamlPath)
 	if err != nil {
 		log.Panicln("读取配置文件失败：", err.Error())
 	}
+	// 转换配置文件参数
 	err = yaml.Unmarshal(yamlFile, Config)
 	if err != nil {
 		log.Panicln("配置参数转换失败：", err.Error())

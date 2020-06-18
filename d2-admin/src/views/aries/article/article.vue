@@ -15,40 +15,55 @@ export default {
     return {
       columns: [
         {
-          title: '日期',
-          key: 'date',
-          width: '180'
-        },
-        {
-          title: '姓名',
+          title: '分类名称',
           key: 'name',
           width: '180'
         },
         {
-          title: '地址',
-          key: 'address'
+          title: '所属类型',
+          key: 'type',
+          width: '180'
+        },
+        {
+          title: '访问 URL',
+          key: 'url',
+          width: '180'
+        },
+        {
+          title: '子级分类',
+          key: 'children'
         }
       ],
       data: [
         {
-          date: '2016-05-02',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄'
+          name: '后端',
+          type: '文章',
+          url: '/backend',
+          children: 'Java,Go,Python'
         },
         {
-          date: '2016-05-04',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1517 弄'
+          name: '后端',
+          type: '文章',
+          url: '/backend',
+          children: 'Java,Go,Python'
         },
         {
-          date: '2016-05-01',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1519 弄'
+          name: '后端',
+          type: '文章',
+          url: '/backend',
+          children: 'Java,Go,Python'
         },
         {
-          date: '2016-05-03',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1516 弄'
+          name: '后端',
+          type: '文章',
+          url: '/backend',
+          children: 'Java,Go,Python'
+        },
+        {
+          name: '后端',
+          type: '文章',
+          url: '/backend',
+          children: 'Java,Go,Python'
         }
       ]
     }

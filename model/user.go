@@ -25,11 +25,6 @@ type User struct {
 	AliPayImg        string `gorm:"type:varchar(255);" json:"ali_pay_img"`             // 支付宝收款二维码
 }
 
-// 初始化数据表
-func init() {
-	db.Db.AutoMigrate(User{})
-}
-
 // 获取所有用户
 func (user User) GetAll() ([]User, error) {
 	var users []User
