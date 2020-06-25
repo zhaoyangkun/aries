@@ -50,7 +50,7 @@ function createService () {
             Message({
               message: dataAxios.msg,
               type: 'error',
-              duration: 1500
+              duration: 1200
             })
             // 跳转到登录页面
             router.replace({

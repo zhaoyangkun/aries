@@ -17,7 +17,7 @@ import (
 // @Param category_type query uint true "分类类型"
 // @Success 100 object util.Result 成功
 // @Failure 103/104 object util.Result 失败
-// @Router /api/v1/categories/all [get]
+// @Router /api/v1/all_categories [get]
 func GetAllCategories(ctx *gin.Context) {
 	categoryType := ctx.Query("category_type")
 	cType, err := strconv.Atoi(categoryType)
@@ -54,7 +54,7 @@ func GetAllCategories(ctx *gin.Context) {
 // @Param category_type query uint true "分类类型"
 // @Success 100 object util.Result 成功
 // @Failure 103/104 object util.Result 失败
-// @Router /api/v1/categories/parent [get]
+// @Router /api/v1/parent_categories [get]
 func GetAllParentCategories(ctx *gin.Context) {
 	categoryType := ctx.Query("category_type")
 	cType, err := strconv.Atoi(categoryType)
@@ -163,21 +163,11 @@ func AddCategory(ctx *gin.Context) {
 // @Tags 分类
 // @version 1.0
 // @Accept application/json
-// @Param id path int true "id"
 // @Param editForm body form.CategoryEditForm true "修改分类表单"
 // @Success 100 object util.Result 成功
 // @Failure 103/104 object util.Result 失败
-// @Router /api/v1/categories/{id} [put]
+// @Router /api/v1/categories [put]
 func UpdateCategory(ctx *gin.Context) {
-	id, err := strconv.Atoi(ctx.Param("id")) // 将 string 转换为 int
-	if err != nil {                          // 类型转换失败
-		ctx.JSON(http.StatusOK, util.Result{
-			Code: util.RequestError,
-			Msg:  "请求参数有误",
-			Data: nil,
-		})
-		return
-	}
 	editForm := form.CategoryEditForm{}
 	if err := ctx.ShouldBindJSON(&editForm); err != nil {
 		ctx.JSON(http.StatusOK, util.Result{
@@ -187,7 +177,6 @@ func UpdateCategory(ctx *gin.Context) {
 		})
 		return
 	}
-	editForm.Id = uint(id)
 	category := editForm.BindToModel()
 	log.Println(category)
 	if err := category.Update(); err != nil {

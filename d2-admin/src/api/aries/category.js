@@ -3,7 +3,7 @@ import { request } from '@/api/service'
 // 获取所有分类
 export function getAllCategories (type) {
   return request({
-    url: `/categories/all?category_type=${type}`, // 请求地址
+    url: `/all_categories?category_type=${type}`, // 请求地址
     method: 'get' // 请求类型
   })
 }
@@ -19,7 +19,7 @@ export function getCategoriesByPage (params) {
 // 获取所有父级分类
 export function getAllParentCategories (type) {
   return request({
-    url: `/categories/parent?category_type=${type}`,
+    url: `/parent_categories?category_type=${type}`,
     method: 'get'
   })
 }
@@ -52,7 +52,7 @@ export function deleteCategory (id) {
 }
 
 // 批量删除分类
-export function multiDelCategory (ids) {
+export function multiDelCategories (ids) {
   return request({
     url: `/categories?ids=${ids}`,
     method: 'delete'

@@ -81,8 +81,7 @@ func (category Category) GetAllParents(categoryType uint) (list []Category, err 
 
 // 添加分类
 func (category Category) Create() error {
-	err := db.Db.Create(&category).Error
-	return err
+	return db.Db.Create(&category).Error
 }
 
 // 修改分类
@@ -98,6 +97,12 @@ func (category Category) Update() error {
 
 // 删除分类
 func (category Category) DeleteById(id uint) error {
+	// 更新属于该分类的文章的分类 ID 为 null
+	err := db.Db.Model(&Article{}).Where("category_id = ?", id).
+		Update("category_id", nil).Error
+	if err != nil {
+		return err
+	}
 	return db.Db.Where("id = ?", id).
 		Unscoped().Delete(&category).Error
 }
@@ -105,6 +110,12 @@ func (category Category) DeleteById(id uint) error {
 // 批量删除分类
 func (category Category) MultiDelByIds(ids string) error {
 	idList := strings.Split(ids, ",") // 根据 , 分割成字符串数组
+	// 更新属于该分类的文章的分类 ID 为 null
+	err := db.Db.Model(&Article{}).Where("category_id in (?)", idList).
+		Update("category_id", nil).Error
+	if err != nil {
+		return err
+	}
 	return db.Db.Where("id in (?)", idList).
 		Unscoped().Delete(&category).Error
 }

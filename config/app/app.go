@@ -4,7 +4,7 @@ import (
 	"aries/config/db"
 	"aries/config/migrate"
 	"aries/config/setting"
-	normalRouter "aries/router"
+	templRouter "aries/router"
 	apiRouter "aries/router/api"
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
@@ -43,12 +43,6 @@ func InitApp() *gin.Engine {
 			name := field.Tag.Get("label")
 			return name
 		})
-		//_ = v.RegisterTranslation("bookabledate", trans, func(ut ut.Translator) error {
-		//	return ut.Add("bookabledate", "{0}不能早于当前时间或{1}格式错误!", true)
-		//}, func(ut ut.Translator, fe validator.FieldError) string {
-		//	t, _ := ut.T("bookabledate", fe.Field(), fe.Field())
-		//	return t
-		//})
 	}
 
 	// 加载静态资源
@@ -61,10 +55,12 @@ func InitApp() *gin.Engine {
 	//	router.LoadHTMLGlob("template/**/*")
 	//}
 
-	// 路由分组
-	normalRouter.InitSwaggerRouter("/swagger", router)
+	// 模板路由
+	templRouter.InitSwaggerRouter("/swagger", router)
+	// api路由
 	apiRouter.InitCategoryApiRouter("/api/v1", router)
 	apiRouter.InitAuthApiRouter("/api/v1", router)
+	apiRouter.InitTagApiRouter("/api/v1", router)
 
 	return router
 }

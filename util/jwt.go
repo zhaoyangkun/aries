@@ -21,11 +21,11 @@ type CustomClaims struct {
 
 // 常量
 var (
-	TokenExpired     error  = errors.New("令牌已过期")
-	TokenNotValidYet error  = errors.New("令牌未激活")
-	TokenMalformed   error  = errors.New("令牌格式有误")
-	TokenInvalid     error  = errors.New("无效的令牌")
-	SignKey          string = "aries-open-source-blog" // 签名l
+	TokenExpired     = errors.New("令牌已过期")
+	TokenNotValidYet = errors.New("令牌未激活")
+	TokenMalformed   = errors.New("令牌格式有误")
+	TokenInvalid     = errors.New("无效的令牌")
+	SignKey          = "aries-open-source-blog" // 签名
 )
 
 //创建一个 JWT 实例
@@ -81,9 +81,10 @@ func (j *JWT) RefreshToken(tokenString string) (string, error) {
 	jwt.TimeFunc = func() time.Time {
 		return time.Unix(0, 0)
 	}
-	token, err := jwt.ParseWithClaims(tokenString, &CustomClaims{}, func(token *jwt.Token) (interface{}, error) {
-		return j.SigningKey, nil
-	})
+	token, err := jwt.ParseWithClaims(tokenString, &CustomClaims{},
+		func(token *jwt.Token) (interface{}, error) {
+			return j.SigningKey, nil
+		})
 	if err != nil {
 		return "", err
 	}

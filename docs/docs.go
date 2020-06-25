@@ -28,6 +28,63 @@ var doc = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/api/v1/all_categories": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "分类"
+                ],
+                "summary": "获取所有分类",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "分类类型",
+                        "name": "category_type",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "100": {
+                        "description": "Continue",
+                        "schema": {
+                            "$ref": "#/definitions/util.Result"
+                        }
+                    },
+                    "104": {
+                        "schema": {
+                            "$ref": "#/definitions/util.Result"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/all_tags": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "标签"
+                ],
+                "summary": "获取所有标签",
+                "responses": {
+                    "100": {
+                        "description": "Continue",
+                        "schema": {
+                            "$ref": "#/definitions/util.Result"
+                        }
+                    },
+                    "104": {
+                        "schema": {
+                            "$ref": "#/definitions/util.Result"
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/auth/captcha": {
             "get": {
                 "consumes": [
@@ -172,6 +229,39 @@ var doc = `{
                     }
                 }
             },
+            "put": {
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "分类"
+                ],
+                "summary": "修改分类",
+                "parameters": [
+                    {
+                        "description": "修改分类表单",
+                        "name": "editForm",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/form.CategoryEditForm"
+                        }
+                    }
+                ],
+                "responses": {
+                    "100": {
+                        "description": "Continue",
+                        "schema": {
+                            "$ref": "#/definitions/util.Result"
+                        }
+                    },
+                    "104": {
+                        "schema": {
+                            "$ref": "#/definitions/util.Result"
+                        }
+                    }
+                }
+            },
             "post": {
                 "consumes": [
                     "application/json"
@@ -237,21 +327,21 @@ var doc = `{
                 }
             }
         },
-        "/api/v1/categories/all": {
-            "get": {
+        "/api/v1/categories/{id}": {
+            "delete": {
                 "consumes": [
                     "application/json"
                 ],
                 "tags": [
                     "分类"
                 ],
-                "summary": "获取所有分类",
+                "summary": "删除分类",
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "分类类型",
-                        "name": "category_type",
-                        "in": "query",
+                        "description": "id",
+                        "name": "id",
+                        "in": "path",
                         "required": true
                     }
                 ],
@@ -270,7 +360,7 @@ var doc = `{
                 }
             }
         },
-        "/api/v1/categories/parent": {
+        "/api/v1/parent_categories": {
             "get": {
                 "consumes": [
                     "application/json"
@@ -303,30 +393,98 @@ var doc = `{
                 }
             }
         },
-        "/api/v1/categories/{id}": {
+        "/api/v1/tags": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "标签"
+                ],
+                "summary": "分页获取标签",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "页码",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "每页条数",
+                        "name": "size",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "关键词",
+                        "name": "key",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "100": {
+                        "description": "Continue",
+                        "schema": {
+                            "$ref": "#/definitions/util.Result"
+                        }
+                    },
+                    "104": {
+                        "schema": {
+                            "$ref": "#/definitions/util.Result"
+                        }
+                    }
+                }
+            },
             "put": {
                 "consumes": [
                     "application/json"
                 ],
                 "tags": [
-                    "分类"
+                    "标签"
                 ],
-                "summary": "修改分类",
+                "summary": "修改标签",
                 "parameters": [
                     {
-                        "type": "integer",
-                        "description": "id",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "description": "修改分类表单",
+                        "description": "修改标签表单",
                         "name": "editForm",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/form.CategoryEditForm"
+                            "$ref": "#/definitions/form.TagEditForm"
+                        }
+                    }
+                ],
+                "responses": {
+                    "100": {
+                        "description": "Continue",
+                        "schema": {
+                            "$ref": "#/definitions/util.Result"
+                        }
+                    },
+                    "104": {
+                        "schema": {
+                            "$ref": "#/definitions/util.Result"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "标签"
+                ],
+                "summary": "添加标签",
+                "parameters": [
+                    {
+                        "description": "添加标签表单",
+                        "name": "addForm",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/form.TagAddForm"
                         }
                     }
                 ],
@@ -349,13 +507,77 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "分类"
+                    "标签"
                 ],
-                "summary": "删除分类",
+                "summary": "批量删除标签",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ids",
+                        "name": "ids",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "100": {
+                        "description": "Continue",
+                        "schema": {
+                            "$ref": "#/definitions/util.Result"
+                        }
+                    },
+                    "104": {
+                        "schema": {
+                            "$ref": "#/definitions/util.Result"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/tags/{id}": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "标签"
+                ],
+                "summary": "根据 ID 获取标签",
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "id",
+                        "description": "ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "100": {
+                        "description": "Continue",
+                        "schema": {
+                            "$ref": "#/definitions/util.Result"
+                        }
+                    },
+                    "104": {
+                        "schema": {
+                            "$ref": "#/definitions/util.Result"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "标签"
+                ],
+                "summary": "删除标签",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID",
                         "name": "id",
                         "in": "path",
                         "required": true
@@ -481,6 +703,32 @@ var doc = `{
                 },
                 "username": {
                     "description": "用户名",
+                    "type": "string"
+                }
+            }
+        },
+        "form.TagAddForm": {
+            "type": "object",
+            "required": [
+                "name"
+            ],
+            "properties": {
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "form.TagEditForm": {
+            "type": "object",
+            "required": [
+                "id",
+                "name"
+            ],
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
                     "type": "string"
                 }
             }

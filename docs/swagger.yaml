@@ -77,6 +77,23 @@ definitions:
     - second_pwd
     - username
     type: object
+  form.TagAddForm:
+    properties:
+      name:
+        type: string
+    required:
+    - name
+    type: object
+  form.TagEditForm:
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+    required:
+    - id
+    - name
+    type: object
   util.Result:
     properties:
       code:
@@ -101,6 +118,42 @@ info:
   title: Gin Swagger
   version: "1.0"
 paths:
+  /api/v1/all_categories:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: 分类类型
+        in: query
+        name: category_type
+        required: true
+        type: integer
+      responses:
+        "100":
+          description: Continue
+          schema:
+            $ref: '#/definitions/util.Result'
+        "104":
+          schema:
+            $ref: '#/definitions/util.Result'
+      summary: 获取所有分类
+      tags:
+      - 分类
+  /api/v1/all_tags:
+    get:
+      consumes:
+      - application/json
+      responses:
+        "100":
+          description: Continue
+          schema:
+            $ref: '#/definitions/util.Result'
+        "104":
+          schema:
+            $ref: '#/definitions/util.Result'
+      summary: 获取所有标签
+      tags:
+      - 标签
   /api/v1/auth/captcha:
     get:
       consumes:
@@ -234,6 +287,27 @@ paths:
       summary: 添加分类
       tags:
       - 分类
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: 修改分类表单
+        in: body
+        name: editForm
+        required: true
+        schema:
+          $ref: '#/definitions/form.CategoryEditForm'
+      responses:
+        "100":
+          description: Continue
+          schema:
+            $ref: '#/definitions/util.Result'
+        "104":
+          schema:
+            $ref: '#/definitions/util.Result'
+      summary: 修改分类
+      tags:
+      - 分类
   /api/v1/categories/{id}:
     delete:
       consumes:
@@ -255,54 +329,7 @@ paths:
       summary: 删除分类
       tags:
       - 分类
-    put:
-      consumes:
-      - application/json
-      parameters:
-      - description: id
-        in: path
-        name: id
-        required: true
-        type: integer
-      - description: 修改分类表单
-        in: body
-        name: editForm
-        required: true
-        schema:
-          $ref: '#/definitions/form.CategoryEditForm'
-      responses:
-        "100":
-          description: Continue
-          schema:
-            $ref: '#/definitions/util.Result'
-        "104":
-          schema:
-            $ref: '#/definitions/util.Result'
-      summary: 修改分类
-      tags:
-      - 分类
-  /api/v1/categories/all:
-    get:
-      consumes:
-      - application/json
-      parameters:
-      - description: 分类类型
-        in: query
-        name: category_type
-        required: true
-        type: integer
-      responses:
-        "100":
-          description: Continue
-          schema:
-            $ref: '#/definitions/util.Result'
-        "104":
-          schema:
-            $ref: '#/definitions/util.Result'
-      summary: 获取所有分类
-      tags:
-      - 分类
-  /api/v1/categories/parent:
+  /api/v1/parent_categories:
     get:
       consumes:
       - application/json
@@ -323,4 +350,135 @@ paths:
       summary: 获取所有父级分类
       tags:
       - 分类
+  /api/v1/tags:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: ids
+        in: query
+        name: ids
+        required: true
+        type: string
+      responses:
+        "100":
+          description: Continue
+          schema:
+            $ref: '#/definitions/util.Result'
+        "104":
+          schema:
+            $ref: '#/definitions/util.Result'
+      summary: 批量删除标签
+      tags:
+      - 标签
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: 页码
+        in: query
+        name: page
+        type: integer
+      - description: 每页条数
+        in: query
+        name: size
+        type: integer
+      - description: 关键词
+        in: query
+        name: key
+        type: string
+      responses:
+        "100":
+          description: Continue
+          schema:
+            $ref: '#/definitions/util.Result'
+        "104":
+          schema:
+            $ref: '#/definitions/util.Result'
+      summary: 分页获取标签
+      tags:
+      - 标签
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 添加标签表单
+        in: body
+        name: addForm
+        required: true
+        schema:
+          $ref: '#/definitions/form.TagAddForm'
+      responses:
+        "100":
+          description: Continue
+          schema:
+            $ref: '#/definitions/util.Result'
+        "104":
+          schema:
+            $ref: '#/definitions/util.Result'
+      summary: 添加标签
+      tags:
+      - 标签
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: 修改标签表单
+        in: body
+        name: editForm
+        required: true
+        schema:
+          $ref: '#/definitions/form.TagEditForm'
+      responses:
+        "100":
+          description: Continue
+          schema:
+            $ref: '#/definitions/util.Result'
+        "104":
+          schema:
+            $ref: '#/definitions/util.Result'
+      summary: 修改标签
+      tags:
+      - 标签
+  /api/v1/tags/{id}:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "100":
+          description: Continue
+          schema:
+            $ref: '#/definitions/util.Result'
+        "104":
+          schema:
+            $ref: '#/definitions/util.Result'
+      summary: 删除标签
+      tags:
+      - 标签
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "100":
+          description: Continue
+          schema:
+            $ref: '#/definitions/util.Result'
+        "104":
+          schema:
+            $ref: '#/definitions/util.Result'
+      summary: 根据 ID 获取标签
+      tags:
+      - 标签
 swagger: "2.0"

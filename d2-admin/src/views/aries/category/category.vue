@@ -49,7 +49,7 @@
 <script>
 import {
   getCategoriesByPage, getAllParentCategories, addCategory,
-  updateCategory, deleteCategory, multiDelCategory
+  updateCategory, deleteCategory, multiDelCategories
 } from '@/api/aries/category'
 
 export default {
@@ -149,7 +149,7 @@ export default {
       loading: false
     }
   },
-  mounted () {
+  created () {
     this.fetchData()
     this.fetchParentCategories()
   },
@@ -295,7 +295,7 @@ export default {
           })
           ids = ids.join() // 将数组转换成字符串：[1, 2, 3] --> '1, 2, 3'
           setTimeout(() => {
-            multiDelCategory(ids)
+            multiDelCategories(ids)
               .then(res => {
                 this.$message({
                   message: res.msg,
