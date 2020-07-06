@@ -3,7 +3,7 @@ import Adapter from 'axios-mock-adapter'
 import { get } from 'lodash'
 import { errorLog, errorCreate } from './tools'
 import router from '@/router'
-import { Message } from 'element-ui'
+import Vue from 'vue'
 
 /**
  * @description 创建请求实例
@@ -47,11 +47,8 @@ function createService () {
           // code === 102 表示禁止访问
           case 102:
             // 显示错误信息
-            Message({
-              message: dataAxios.msg,
-              type: 'error',
-              duration: 1200
-            })
+            Vue.prototype.$message.error(dataAxios.msg, { duration: 1200 })
+            // this.$message.error(dataAxios.msg)
             // 跳转到登录页面
             router.replace({
               path: '/login'

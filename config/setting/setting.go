@@ -46,7 +46,7 @@ var Config = &Setting{}
 func InitSetting() {
 	// 获取当前项目根目录
 	rootPath, _ := os.Getwd()
-	// 解决在单元测试环境下，读取配置文件失败的问题
+	// 解决 GoLand 默认单元测试环境下，读取配置文件失败的问题
 	rootPath = strings.Replace(rootPath, "test", "", -1)
 	// 拼接配置文件访问路径
 	yamlPath := filepath.Join(rootPath, "config", "develop.yaml")

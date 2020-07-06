@@ -7,7 +7,7 @@ import (
 	"strings"
 )
 
-// 标签结构体
+// 标签结构
 type Tag struct {
 	gorm.Model
 	Name        string    `gorm:"type:varchar(100);not null;" json:"name"` // 标签名

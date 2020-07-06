@@ -24,7 +24,8 @@ export const menuHeader = supplementPath([
     children: [
       { path: '/category', title: '分类', icon: 'list' },
       { path: '/tag', title: '标签', icon: 'tags' },
-      { path: '/article', title: '文章', icon: 'file-text' }
+      { path: '/post', title: '文章', icon: 'file-text' }
+      // { path: '/editor', title: 'editor', icon: 'edit' }
     ]
   }
 ])
@@ -38,7 +39,8 @@ export const menuAside = supplementPath([
     children: [
       { path: '/category', title: '分类', icon: 'list' },
       { path: '/tag', title: '标签', icon: 'tags' },
-      { path: '/article', title: '文章', icon: 'file-text' }
+      { path: '/post', title: '文章', icon: 'file-text' }
+      // { path: '/editor', title: 'editor', icon: 'edit' }
     ]
   }
 ])

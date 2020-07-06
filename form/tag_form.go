@@ -19,7 +19,7 @@ type TagAddForm struct {
 
 // 修改标签表单
 type TagEditForm struct {
-	ID   uint   `json:"id" binding:"required" label:"ID"`
+	ID   uint   `json:"ID" binding:"required" label:"ID"`
 	Name string `json:"name" binding:"required,max=100" label:"标签名称"`
 }
 

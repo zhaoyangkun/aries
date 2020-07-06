@@ -39,7 +39,7 @@
           <el-input size="small" placeholder="请输入标签名称" v-model="pagination.key"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button size="small" type="primary" @click="fetchData"><i class="el-icon-search"></i> 搜索</el-button>
+          <el-button size="small" type="primary" @click="search"><i class="el-icon-search"></i> 搜索</el-button>
         </el-form-item>
       </el-form>
     </d2-crud>
@@ -122,20 +122,26 @@ export default {
     // 获取分页数据
     fetchData () {
       this.loading = true
-      getTagsByPage({
-        page: this.pagination.currentPage,
-        size: this.pagination.pageSize,
-        key: this.pagination.key
-      })
-        .then(res => {
-          const data = res.data
-          this.data = data.data
-          this.pagination.total = data.total_num
-          this.loading = false
+      setTimeout(() => {
+        getTagsByPage({
+          page: this.pagination.currentPage,
+          size: this.pagination.pageSize,
+          key: this.pagination.key
         })
-        .catch(() => {
-          this.loading = false
-        })
+          .then(res => {
+            const data = res.data
+            this.data = data.data
+            this.pagination.total = data.total_num
+          })
+          .catch(() => {
+          })
+        this.loading = false
+      }, 500)
+    },
+    // 搜索
+    search () {
+      this.pagination.currentPage = 1
+      this.fetchData()
     },
     // 添加数据弹窗
     addRow () {
@@ -149,10 +155,7 @@ export default {
       setTimeout(() => {
         addTag(row)
           .then(res => {
-            this.$message({
-              message: res.msg,
-              type: 'success'
-            })
+            this.$message.success(res.msg)
             done()
             this.fetchData()
             this.fetchParentCategories()
@@ -160,7 +163,7 @@ export default {
           .catch(() => {
           })
         this.formOptions.saveLoading = false
-      }, 300)
+      }, 500)
     },
     // 修改事件
     handleRowEdit (row, done) {
@@ -169,10 +172,7 @@ export default {
       setTimeout(() => {
         updateTag(data)
           .then(res => {
-            this.$message({
-              message: res.msg,
-              type: 'success'
-            })
+            this.$message.success(res.msg)
             done()
             this.fetchData()
             this.fetchParentCategories()
@@ -180,7 +180,7 @@ export default {
           .catch(() => {
           })
         this.formOptions.saveLoading = false
-      }, 300)
+      }, 500)
     },
     // 全选
     handleSelectionChange (selection) {
@@ -191,24 +191,19 @@ export default {
       setTimeout(() => {
         deleteTag(row.ID)
           .then(res => {
-            this.$message({
-              message: res.msg,
-              type: 'success'
-            })
+            this.$message.success(res.msg)
             done()
             this.fetchData()
             this.fetchParentCategories()
           })
-          .catch(() => {})
-      }, 300)
+          .catch(() => {
+          })
+      }, 500)
     },
     // 批量删除
     handleRowListRemove () {
       if (this.selection.length === 0) {
-        this.$message({
-          message: '请勾选要删除的条目',
-          type: 'error'
-        })
+        this.$message.error('请勾选要删除的条目')
       } else {
         this.$confirm('确定要删除吗?', '删除', {
           confirmButtonText: '确定',
@@ -223,26 +218,20 @@ export default {
           setTimeout(() => {
             multiDelTags(ids)
               .then(res => {
-                this.$message({
-                  message: res.msg,
-                  type: 'success'
-                })
+                this.$message.success(res.msg)
                 this.fetchData()
                 this.fetchParentCategories()
               })
               .catch(() => {
               })
-          }, 300)
+          }, 500)
         }).catch(() => {
         })
       }
     },
     // 取消弹窗
     handleDialogCancel (done) {
-      this.$message({
-        message: '取消保存',
-        type: 'warning'
-      })
+      this.$message.warning('取消保存')
       done()
     }
   }

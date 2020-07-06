@@ -12,6 +12,30 @@
     },
     "host": "localhost:8088",
     "paths": {
+        "/api/v1/all_articles": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "文章"
+                ],
+                "summary": "获取所有文章",
+                "responses": {
+                    "100": {
+                        "description": "Continue",
+                        "schema": {
+                            "$ref": "#/definitions/util.Result"
+                        }
+                    },
+                    "104": {
+                        "schema": {
+                            "$ref": "#/definitions/util.Result"
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/all_categories": {
             "get": {
                 "consumes": [
@@ -54,6 +78,223 @@
                     "标签"
                 ],
                 "summary": "获取所有标签",
+                "responses": {
+                    "100": {
+                        "description": "Continue",
+                        "schema": {
+                            "$ref": "#/definitions/util.Result"
+                        }
+                    },
+                    "104": {
+                        "schema": {
+                            "$ref": "#/definitions/util.Result"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/articles": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "文章"
+                ],
+                "summary": "分页获取文章",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "页码",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "每页条数",
+                        "name": "size",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "关键词",
+                        "name": "key",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "状态",
+                        "name": "state",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "分类 ID",
+                        "name": "category_id",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "100": {
+                        "description": "Continue",
+                        "schema": {
+                            "$ref": "#/definitions/util.Result"
+                        }
+                    },
+                    "104": {
+                        "schema": {
+                            "$ref": "#/definitions/util.Result"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "文章"
+                ],
+                "summary": "修改文章",
+                "parameters": [
+                    {
+                        "description": "修改文章表单",
+                        "name": "editForm",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/form.ArticleEditForm"
+                        }
+                    }
+                ],
+                "responses": {
+                    "100": {
+                        "description": "Continue",
+                        "schema": {
+                            "$ref": "#/definitions/util.Result"
+                        }
+                    },
+                    "104": {
+                        "schema": {
+                            "$ref": "#/definitions/util.Result"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "文章"
+                ],
+                "summary": "添加文章",
+                "parameters": [
+                    {
+                        "description": "添加文章表单",
+                        "name": "addForm",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/form.ArticleAddForm"
+                        }
+                    }
+                ],
+                "responses": {
+                    "100": {
+                        "description": "Continue",
+                        "schema": {
+                            "$ref": "#/definitions/util.Result"
+                        }
+                    },
+                    "104": {
+                        "schema": {
+                            "$ref": "#/definitions/util.Result"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "文章"
+                ],
+                "summary": "批量删除文章",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ids",
+                        "name": "ids",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "100": {
+                        "description": "Continue",
+                        "schema": {
+                            "$ref": "#/definitions/util.Result"
+                        }
+                    },
+                    "104": {
+                        "schema": {
+                            "$ref": "#/definitions/util.Result"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/articles/{id}": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "文章"
+                ],
+                "summary": "根据 ID 获取文章",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "100": {
+                        "description": "Continue",
+                        "schema": {
+                            "$ref": "#/definitions/util.Result"
+                        }
+                    },
+                    "104": {
+                        "schema": {
+                            "$ref": "#/definitions/util.Result"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "文章"
+                ],
+                "summary": "删除文章",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "100": {
                         "description": "Continue",
@@ -584,6 +825,165 @@
         }
     },
     "definitions": {
+        "form.ArticleAddForm": {
+            "type": "object",
+            "required": [
+                "category_id",
+                "content",
+                "keywords",
+                "md_content",
+                "title",
+                "user_id"
+            ],
+            "properties": {
+                "category_id": {
+                    "description": "分类 ID",
+                    "type": "integer"
+                },
+                "content": {
+                    "description": "内容",
+                    "type": "string"
+                },
+                "img": {
+                    "description": "图片",
+                    "type": "string"
+                },
+                "is_allow_commented": {
+                    "description": "是否允许评论",
+                    "type": "boolean"
+                },
+                "is_published": {
+                    "description": "是否发布",
+                    "type": "boolean"
+                },
+                "is_recycled": {
+                    "description": "是否回收",
+                    "type": "boolean"
+                },
+                "is_top": {
+                    "description": "是否置顶",
+                    "type": "boolean"
+                },
+                "keywords": {
+                    "description": "SEO 关键词",
+                    "type": "string"
+                },
+                "md_content": {
+                    "description": "Markdown 渲染后内容",
+                    "type": "string"
+                },
+                "order_id": {
+                    "description": "排序 ID",
+                    "type": "integer"
+                },
+                "pwd": {
+                    "description": "访问密码",
+                    "type": "string"
+                },
+                "summary": {
+                    "description": "摘要",
+                    "type": "string"
+                },
+                "tag_ids": {
+                    "description": "标签",
+                    "type": "string"
+                },
+                "title": {
+                    "description": "标题",
+                    "type": "string"
+                },
+                "url": {
+                    "description": "访问 URL",
+                    "type": "string"
+                },
+                "user_id": {
+                    "description": "用户 ID",
+                    "type": "integer"
+                }
+            }
+        },
+        "form.ArticleEditForm": {
+            "type": "object",
+            "required": [
+                " ",
+                "category_id",
+                "content",
+                "id",
+                "md_content",
+                "title",
+                "user_id"
+            ],
+            "properties": {
+                " ": {
+                    "description": "SEO 关键词",
+                    "type": "string"
+                },
+                "category_id": {
+                    "description": "分类 ID",
+                    "type": "integer"
+                },
+                "content": {
+                    "description": "内容",
+                    "type": "string"
+                },
+                "id": {
+                    "description": "ID",
+                    "type": "integer"
+                },
+                "img": {
+                    "description": "图片",
+                    "type": "string"
+                },
+                "is_allow_commented": {
+                    "description": "是否允许评论",
+                    "type": "boolean"
+                },
+                "is_published": {
+                    "description": "是否发布",
+                    "type": "boolean"
+                },
+                "is_recycled": {
+                    "description": "是否回收",
+                    "type": "boolean"
+                },
+                "is_top": {
+                    "description": "是否置顶",
+                    "type": "boolean"
+                },
+                "md_content": {
+                    "description": "Markdown 渲染后内容",
+                    "type": "string"
+                },
+                "order_id": {
+                    "description": "排序 ID",
+                    "type": "integer"
+                },
+                "pwd": {
+                    "description": "访问密码",
+                    "type": "string"
+                },
+                "summary": {
+                    "description": "摘要",
+                    "type": "string"
+                },
+                "tag_ids": {
+                    "description": "标签",
+                    "type": "string"
+                },
+                "title": {
+                    "description": "标题",
+                    "type": "string"
+                },
+                "url": {
+                    "description": "访问 URL",
+                    "type": "string"
+                },
+                "user_id": {
+                    "description": "用户 ID",
+                    "type": "integer"
+                }
+            }
+        },
         "form.CategoryAddForm": {
             "type": "object",
             "required": [
@@ -612,6 +1012,7 @@
         "form.CategoryEditForm": {
             "type": "object",
             "required": [
+                "id",
                 "name",
                 "url"
             ],

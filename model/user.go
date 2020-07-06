@@ -6,7 +6,7 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
-// 用户结构体
+// 用户结构
 type User struct {
 	gorm.Model
 	Username         string `gorm:"type:varchar(30);not null;" json:"username"`        // 用户名

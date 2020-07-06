@@ -1,6 +1,6 @@
-import { Message } from 'element-ui'
 import store from '@/store'
 import util from '@/libs/util'
+import Vue from 'vue'
 
 /**
  * @description 安全地解析 json 字符串
@@ -68,11 +68,12 @@ export function errorLog (error) {
     console.log(error)
   }
   // 显示提示
-  Message({
-    message: error.message,
-    type: 'error',
-    duration: 1500
-  })
+  // Message({
+  //   message: error.message,
+  //   type: 'error',
+  //   duration: 1500
+  // })
+  Vue.prototype.$message.error(error.message, { duration: 1200 })
 }
 
 /**

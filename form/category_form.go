@@ -23,7 +23,7 @@ type CategoryAddForm struct {
 
 // 修改分类表单
 type CategoryEditForm struct {
-	Id       uint
+	ID       uint   `json:"ID" binding:"required" label:"ID"`
 	Type     uint   `json:"type"`                                  // 分类类型，默认值为 0 表文章；1 表友链
 	Name     string `json:"name" binding:"required" label:"分类名称"`  // 分类名称
 	Url      string `json:"url" binding:"required" label:"访问 URL"` // 访问 URL
@@ -43,7 +43,7 @@ func (form CategoryAddForm) BindToModel() model.Category {
 // 绑定添加分类表单到分类结构
 func (form CategoryEditForm) BindToModel() model.Category {
 	return model.Category{
-		Model:    gorm.Model{ID: form.Id},
+		Model:    gorm.Model{ID: form.ID},
 		Type:     form.Type,
 		Name:     form.Name,
 		Url:      form.Url,

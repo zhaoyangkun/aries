@@ -34,10 +34,9 @@ export function addCategory (data) {
 }
 
 // 修改分类
-export function updateCategory (id, data) {
-  // console.log('id: ', id, 'data: ', data)
+export function updateCategory (data) {
   return request({
-    url: `/categories/${id}`,
+    url: '/categories',
     method: 'put',
     data: data
   })

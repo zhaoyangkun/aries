@@ -4,7 +4,7 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
-// 评论结构体
+// 评论结构
 type Comment struct {
 	gorm.Model
 	User            User     `gorm:"foreignkey:UserId" json:"user"`                    // 发表人

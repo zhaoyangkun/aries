@@ -7,7 +7,7 @@ export default {
     // 主题
     list: get(setting, 'theme.list', []),
     // 现在激活的主题 这应该是一个名字 不是对象
-    activeName: get(setting, 'theme.list[0].name', 'd2')
+    activeName: get(setting, 'theme.list[5].name', 'star')
   },
   getters: {
     /**

@@ -47,7 +47,6 @@ router.beforeEach(async (to, from, next) => {
     // 将 localStorage 里是否存有 token 作为验证是否登录的条件
     // 请根据自身业务需要修改
     const token = localStorage.getItem('token')
-    console.log('token: ', token)
     if (token && token !== 'undefined') {
       next()
     } else {

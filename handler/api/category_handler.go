@@ -29,9 +29,9 @@ func GetAllCategories(ctx *gin.Context) {
 		})
 		return
 	}
-	category := model.Category{}                      // 建立 model 对象
-	categoryList, err := category.GetAll(uint(cType)) // 调用 model 对应方法，从数据库中获取所有分类
-	if err != nil {                                   // 异常处理
+	category := model.Category{}                            // 建立 model 对象
+	categoryList, err := category.GetAllByType(uint(cType)) // 调用 model 对应方法，从数据库中获取所有分类
+	if err != nil {                                         // 异常处理
 		log.Println(err.Error())
 		ctx.JSON(http.StatusOK, util.Result{
 			Code: util.ServerError,
@@ -178,7 +178,6 @@ func UpdateCategory(ctx *gin.Context) {
 		return
 	}
 	category := editForm.BindToModel()
-	log.Println(category)
 	if err := category.Update(); err != nil {
 		ctx.JSON(http.StatusOK, util.Result{
 			Code: util.ServerError,

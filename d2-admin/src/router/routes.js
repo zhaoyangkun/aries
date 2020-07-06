@@ -41,13 +41,13 @@ const frameIn = [
         component: _import('aries/tag/tag')
       },
       {
-        path: 'article',
-        name: 'article',
+        path: 'post',
+        name: 'post',
         meta: {
           title: '文章',
           auth: true
         },
-        component: _import('aries/article/article')
+        component: _import('aries/post/post')
       },
       // 系统 前端日志
       {

@@ -1,4 +1,124 @@
 definitions:
+  form.ArticleAddForm:
+    properties:
+      category_id:
+        description: 分类 ID
+        type: integer
+      content:
+        description: 内容
+        type: string
+      img:
+        description: 图片
+        type: string
+      is_allow_commented:
+        description: 是否允许评论
+        type: boolean
+      is_published:
+        description: 是否发布
+        type: boolean
+      is_recycled:
+        description: 是否回收
+        type: boolean
+      is_top:
+        description: 是否置顶
+        type: boolean
+      keywords:
+        description: SEO 关键词
+        type: string
+      md_content:
+        description: Markdown 渲染后内容
+        type: string
+      order_id:
+        description: 排序 ID
+        type: integer
+      pwd:
+        description: 访问密码
+        type: string
+      summary:
+        description: 摘要
+        type: string
+      tag_ids:
+        description: 标签
+        type: string
+      title:
+        description: 标题
+        type: string
+      url:
+        description: 访问 URL
+        type: string
+      user_id:
+        description: 用户 ID
+        type: integer
+    required:
+    - category_id
+    - content
+    - keywords
+    - md_content
+    - title
+    - user_id
+    type: object
+  form.ArticleEditForm:
+    properties:
+      ' ':
+        description: SEO 关键词
+        type: string
+      category_id:
+        description: 分类 ID
+        type: integer
+      content:
+        description: 内容
+        type: string
+      id:
+        description: ID
+        type: integer
+      img:
+        description: 图片
+        type: string
+      is_allow_commented:
+        description: 是否允许评论
+        type: boolean
+      is_published:
+        description: 是否发布
+        type: boolean
+      is_recycled:
+        description: 是否回收
+        type: boolean
+      is_top:
+        description: 是否置顶
+        type: boolean
+      md_content:
+        description: Markdown 渲染后内容
+        type: string
+      order_id:
+        description: 排序 ID
+        type: integer
+      pwd:
+        description: 访问密码
+        type: string
+      summary:
+        description: 摘要
+        type: string
+      tag_ids:
+        description: 标签
+        type: string
+      title:
+        description: 标题
+        type: string
+      url:
+        description: 访问 URL
+        type: string
+      user_id:
+        description: 用户 ID
+        type: integer
+    required:
+    - ' '
+    - category_id
+    - content
+    - id
+    - md_content
+    - title
+    - user_id
+    type: object
   form.CategoryAddForm:
     properties:
       name:
@@ -34,6 +154,7 @@ definitions:
         description: 访问 URL
         type: string
     required:
+    - id
     - name
     - url
     type: object
@@ -118,6 +239,21 @@ info:
   title: Gin Swagger
   version: "1.0"
 paths:
+  /api/v1/all_articles:
+    get:
+      consumes:
+      - application/json
+      responses:
+        "100":
+          description: Continue
+          schema:
+            $ref: '#/definitions/util.Result'
+        "104":
+          schema:
+            $ref: '#/definitions/util.Result'
+      summary: 获取所有文章
+      tags:
+      - 文章
   /api/v1/all_categories:
     get:
       consumes:
@@ -154,6 +290,145 @@ paths:
       summary: 获取所有标签
       tags:
       - 标签
+  /api/v1/articles:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: ids
+        in: query
+        name: ids
+        required: true
+        type: string
+      responses:
+        "100":
+          description: Continue
+          schema:
+            $ref: '#/definitions/util.Result'
+        "104":
+          schema:
+            $ref: '#/definitions/util.Result'
+      summary: 批量删除文章
+      tags:
+      - 文章
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: 页码
+        in: query
+        name: page
+        type: integer
+      - description: 每页条数
+        in: query
+        name: size
+        type: integer
+      - description: 关键词
+        in: query
+        name: key
+        type: string
+      - description: 状态
+        in: query
+        name: state
+        type: integer
+      - description: 分类 ID
+        in: query
+        name: category_id
+        type: integer
+      responses:
+        "100":
+          description: Continue
+          schema:
+            $ref: '#/definitions/util.Result'
+        "104":
+          schema:
+            $ref: '#/definitions/util.Result'
+      summary: 分页获取文章
+      tags:
+      - 文章
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 添加文章表单
+        in: body
+        name: addForm
+        required: true
+        schema:
+          $ref: '#/definitions/form.ArticleAddForm'
+      responses:
+        "100":
+          description: Continue
+          schema:
+            $ref: '#/definitions/util.Result'
+        "104":
+          schema:
+            $ref: '#/definitions/util.Result'
+      summary: 添加文章
+      tags:
+      - 文章
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: 修改文章表单
+        in: body
+        name: editForm
+        required: true
+        schema:
+          $ref: '#/definitions/form.ArticleEditForm'
+      responses:
+        "100":
+          description: Continue
+          schema:
+            $ref: '#/definitions/util.Result'
+        "104":
+          schema:
+            $ref: '#/definitions/util.Result'
+      summary: 修改文章
+      tags:
+      - 文章
+  /api/v1/articles/{id}:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "100":
+          description: Continue
+          schema:
+            $ref: '#/definitions/util.Result'
+        "104":
+          schema:
+            $ref: '#/definitions/util.Result'
+      summary: 删除文章
+      tags:
+      - 文章
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "100":
+          description: Continue
+          schema:
+            $ref: '#/definitions/util.Result'
+        "104":
+          schema:
+            $ref: '#/definitions/util.Result'
+      summary: 根据 ID 获取文章
+      tags:
+      - 文章
   /api/v1/auth/captcha:
     get:
       consumes:

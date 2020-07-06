@@ -68,6 +68,7 @@
                 <el-button
                   size="default"
                   @click="submit"
+                  @keyup.native.13="submit"
                   type="primary"
                   class="button-login">
                   注册

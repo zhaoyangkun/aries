@@ -9,17 +9,17 @@ import (
 	"net/http"
 )
 
-// @Summary 获取所有标签
-// @Tags 标签
+// @Summary 获取所有文章
+// @Tags 文章
 // @version 1.0
 // @Accept application/json
 // @Success 100 object util.Result 成功
 // @Failure 103/104 object util.Result 失败
-// @Router /api/v1/all_tags [get]
-func GetAllTags(ctx *gin.Context) {
-	list, err := model.Tag{}.GetAll()
+// @Router /api/v1/all_articles [get]
+func GetAllArticles(ctx *gin.Context) {
+	list, err := model.Article{}.GetAll()
 	if err != nil {
-		log.Println("Error: ", err.Error())
+		log.Println("error: ", err.Error())
 		ctx.JSON(http.StatusOK, util.Result{
 			Code: util.ServerError,
 			Msg:  "服务器端错误",
@@ -34,22 +34,26 @@ func GetAllTags(ctx *gin.Context) {
 	})
 }
 
-// @Summary 分页获取标签
-// @Tags 标签
+// @Summary 分页获取文章
+// @Tags 文章
 // @version 1.0
 // @Accept application/json
 // @Param page query int false "页码"
 // @Param size query int false "每页条数"
 // @Param key query string false "关键词"
+// @Param state query int false "状态"
+// @Param category_id query int false "分类 ID"
 // @Success 100 object util.Result 成功
 // @Failure 103/104 object util.Result 失败
-// @Router /api/v1/tags [get]
-func GetTagsByPage(ctx *gin.Context) {
-	pageForm := form.TagPageForm{}
+// @Router /api/v1/articles [get]
+func GetArticlesByPage(ctx *gin.Context) {
+	pageForm := form.ArticlePageForm{}
 	_ = ctx.ShouldBindQuery(&pageForm)
-	list, totalNum, err := model.Tag{}.GetByPage(&pageForm.Pagination, pageForm.Key)
+	log.Println("pageForm: ", pageForm)
+	list, totalNum, err := model.Article{}.GetByPage(&pageForm.Pagination, pageForm.Key,
+		pageForm.State, pageForm.CategoryId)
 	if err != nil {
-		log.Println("Error: ", err.Error())
+		log.Println("error: ", err.Error())
 		ctx.JSON(http.StatusOK, util.Result{
 			Code: util.ServerError,
 			Msg:  "服务器端错误",
@@ -64,19 +68,19 @@ func GetTagsByPage(ctx *gin.Context) {
 	})
 }
 
-// @Summary 根据 ID 获取标签
-// @Tags 标签
+// @Summary 根据 ID 获取文章
+// @Tags 文章
 // @version 1.0
 // @Accept application/json
-// @Param id path int true "ID"
+// @Param id path int true "id"
 // @Success 100 object util.Result 成功
 // @Failure 103/104 object util.Result 失败
-// @Router /api/v1/tags/{id} [get]
-func GetTagById(ctx *gin.Context) {
+// @Router /api/v1/articles/{id} [get]
+func GetArticleById(ctx *gin.Context) {
 	id := ctx.Param("id")
-	tag, err := model.Tag{}.GetById(id)
+	article, err := model.Article{}.GetById(id)
 	if err != nil {
-		log.Println("Error: ", err.Error())
+		log.Println("error: ", err.Error())
 		ctx.JSON(http.StatusOK, util.Result{
 			Code: util.ServerError,
 			Msg:  "服务器端错误",
@@ -87,20 +91,20 @@ func GetTagById(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, util.Result{
 		Code: util.Success,
 		Msg:  "查询成功",
-		Data: tag,
+		Data: article,
 	})
 }
 
-// @Summary 添加标签
-// @Tags 标签
+// @Summary 添加文章
+// @Tags 文章
 // @version 1.0
 // @Accept application/json
-// @Param addForm body form.TagAddForm true "添加标签表单"
+// @Param addForm body form.ArticleAddForm true "添加文章表单"
 // @Success 100 object util.Result 成功
 // @Failure 103/104 object util.Result 失败
-// @Router /api/v1/tags [post]
-func AddTag(ctx *gin.Context) {
-	addForm := form.TagAddForm{}
+// @Router /api/v1/articles [post]
+func AddArticle(ctx *gin.Context) {
+	addForm := form.ArticleAddForm{}
 	err := ctx.ShouldBindJSON(&addForm)
 	if err != nil {
 		ctx.JSON(http.StatusOK, util.Result{
@@ -110,9 +114,10 @@ func AddTag(ctx *gin.Context) {
 		})
 		return
 	}
-	tag := addForm.BindToModel()
-	if err := tag.Create(); err != nil {
-		log.Println("Error: ", err.Error())
+	article := addForm.BindToModel()
+	err = article.Create(addForm.TagIds)
+	if err != nil {
+		log.Println("error: ", err.Error())
 		ctx.JSON(http.StatusOK, util.Result{
 			Code: util.ServerError,
 			Msg:  "服务器端错误",
@@ -122,21 +127,21 @@ func AddTag(ctx *gin.Context) {
 	}
 	ctx.JSON(http.StatusOK, util.Result{
 		Code: util.Success,
-		Msg:  "添加成功",
+		Msg:  "发布文章成功",
 		Data: nil,
 	})
 }
 
-// @Summary 修改标签
-// @Tags 标签
+// @Summary 修改文章
+// @Tags 文章
 // @version 1.0
 // @Accept application/json
-// @Param editForm body form.TagEditForm true "修改标签表单"
+// @Param editForm body form.ArticleEditForm true "修改文章表单"
 // @Success 100 object util.Result 成功
 // @Failure 103/104 object util.Result 失败
-// @Router /api/v1/tags [put]
-func UpdateTag(ctx *gin.Context) {
-	editForm := form.TagEditForm{}
+// @Router /api/v1/articles [put]
+func UpdateArticle(ctx *gin.Context) {
+	editForm := form.ArticleEditForm{}
 	err := ctx.ShouldBindJSON(&editForm)
 	if err != nil {
 		ctx.JSON(http.StatusOK, util.Result{
@@ -146,9 +151,10 @@ func UpdateTag(ctx *gin.Context) {
 		})
 		return
 	}
-	tag := editForm.BindToModel()
-	if err := tag.Update(); err != nil {
-		log.Println("Error: ", err.Error())
+	article := editForm.BindToModel()
+	err = article.Update(editForm.TagIds)
+	if err != nil {
+		log.Println("error: ", err.Error())
 		ctx.JSON(http.StatusOK, util.Result{
 			Code: util.ServerError,
 			Msg:  "服务器端错误",
@@ -158,27 +164,26 @@ func UpdateTag(ctx *gin.Context) {
 	}
 	ctx.JSON(http.StatusOK, util.Result{
 		Code: util.Success,
-		Msg:  "修改成功",
+		Msg:  "修改文章成功",
 		Data: nil,
 	})
 }
 
-// @Summary 删除标签
-// @Tags 标签
+// @Summary 删除文章
+// @Tags 文章
 // @version 1.0
 // @Accept application/json
-// @Param id path int true "ID"
+// @Param id path int true "id"
 // @Success 100 object util.Result 成功
 // @Failure 103/104 object util.Result 失败
-// @Router /api/v1/tags/{id} [delete]
-func DeleteTag(ctx *gin.Context) {
+// @Router /api/v1/articles/{id} [delete]
+func DeleteArticle(ctx *gin.Context) {
 	id := ctx.Param("id")
-	err := model.Tag{}.DeleteById(id)
+	err := model.Article{}.DeleteById(id)
 	if err != nil {
-		log.Println("Error: ", err.Error())
 		ctx.JSON(http.StatusOK, util.Result{
 			Code: util.ServerError,
-			Msg:  "服务器端错误",
+			Msg:  "服务器内部错误",
 			Data: nil,
 		})
 		return
@@ -190,27 +195,26 @@ func DeleteTag(ctx *gin.Context) {
 	})
 }
 
-// @Summary 批量删除标签
-// @Tags 标签
+// @Summary 批量删除文章
+// @Tags 文章
 // @version 1.0
 // @Accept application/json
 // @Param ids query string true "ids"
 // @Success 100 object util.Result 成功
 // @Failure 103/104 object util.Result 失败
-// @Router /api/v1/tags [delete]
-func MultiDelTag(ctx *gin.Context) {
-	ids := ctx.DefaultQuery("ids", "")
+// @Router /api/v1/articles [delete]
+func MultiDelArticles(ctx *gin.Context) {
+	ids := ctx.DefaultQuery("ids", "") // 获取 ids
 	if ids == "" {
 		ctx.JSON(http.StatusOK, util.Result{
 			Code: util.RequestError,
-			Msg:  "请求参数错误",
+			Msg:  "请勾选要删除的条目",
 			Data: nil,
 		})
 		return
 	}
-	err := model.Tag{}.MultiDelByIds(ids)
-	if err != nil {
-		log.Println("Error: ", err.Error())
+	article := model.Article{}
+	if err := article.MultiDelByIds(ids); err != nil {
 		ctx.JSON(http.StatusOK, util.Result{
 			Code: util.ServerError,
 			Msg:  "服务器端错误",

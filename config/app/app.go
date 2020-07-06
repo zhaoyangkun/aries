@@ -57,10 +57,11 @@ func InitApp() *gin.Engine {
 
 	// 模板路由
 	templRouter.InitSwaggerRouter("/swagger", router)
-	// api路由
+	// api 路由
 	apiRouter.InitCategoryApiRouter("/api/v1", router)
 	apiRouter.InitAuthApiRouter("/api/v1", router)
 	apiRouter.InitTagApiRouter("/api/v1", router)
+	apiRouter.InitArticleApiRouter("/api/v1", router)
 
 	return router
 }

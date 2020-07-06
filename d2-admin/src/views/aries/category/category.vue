@@ -39,7 +39,7 @@
           <el-input size="small" placeholder="请输入名称" v-model="pagination.key"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button size="small" type="primary" @click="fetchData"><i class="el-icon-search"></i> 搜索</el-button>
+          <el-button size="small" type="primary" @click="search"><i class="el-icon-search"></i> 搜索</el-button>
         </el-form-item>
       </el-form>
     </d2-crud>
@@ -48,12 +48,21 @@
 
 <script>
 import {
-  getCategoriesByPage, getAllParentCategories, addCategory,
-  updateCategory, deleteCategory, multiDelCategories
+  addCategory,
+  deleteCategory,
+  getAllParentCategories,
+  getCategoriesByPage,
+  multiDelCategories,
+  updateCategory
 } from '@/api/aries/category'
+import childCategory from '@/components/aries/category/childCategory'
 
 export default {
   name: 'category',
+  components: {
+    // eslint-disable-next-line vue/no-unused-components
+    childCategory
+  },
   data () {
     return {
       columns: [
@@ -69,7 +78,9 @@ export default {
         },
         {
           title: '子级分类',
-          key: 'childrenStr'
+          component: {
+            name: childCategory
+          }
         }
       ],
       data: [],
@@ -162,29 +173,36 @@ export default {
     // 获取分页数据
     fetchData () {
       this.loading = true
-      getCategoriesByPage({
-        page: this.pagination.currentPage,
-        size: this.pagination.pageSize,
-        category_type: 0,
-        key: this.pagination.key
-      })
-        .then(res => {
-          const pageData = res.data.data
-          pageData.forEach(function (val) {
-            val.childrenStr = ''
-            if (val.children !== null) {
-              val.children.forEach(function (child) {
-                val.childrenStr += child.name + ' '
-              })
-            }
+      setTimeout(() => {
+        getCategoriesByPage({
+          page: this.pagination.currentPage,
+          size: this.pagination.pageSize,
+          category_type: 0,
+          key: this.pagination.key
+        })
+          .then(res => {
+            const pageData = res.data.data
+            // pageData.forEach(function (val) {
+            //   val.childrenStr = ''
+            //   if (val.children !== null) {
+            //     val.children.forEach(function (child) {
+            //       val.childrenStr += child.name + ' '
+            //     })
+            //   }
+            // })
+            this.data = pageData
+            this.pagination.total = res.data.total_num
+            this.loading = false
           })
-          this.data = pageData
-          this.pagination.total = res.data.total_num
-          this.loading = false
-        })
-        .catch(() => {
-          this.loading = false
-        })
+          .catch(() => {
+            this.loading = false
+          })
+      }, 500)
+    },
+    // 搜索
+    search () {
+      this.pagination.currentPage = 1
+      this.fetchData()
     },
     // 获取父级分类
     fetchParentCategories () {
@@ -216,10 +234,7 @@ export default {
       setTimeout(() => {
         addCategory(row)
           .then(res => {
-            this.$message({
-              message: res.msg,
-              type: 'success'
-            })
+            this.$message.success(res.msg)
             done()
             this.fetchData()
             this.fetchParentCategories()
@@ -227,18 +242,16 @@ export default {
           .catch(() => {
           })
         this.formOptions.saveLoading = false
-      }, 300)
+      }, 500)
     },
     handleRowEdit (row, done) {
       this.formOptions.saveLoading = true
       const data = row.row
+      console.log('data: ', data)
       setTimeout(() => {
-        updateCategory(data.ID, data)
+        updateCategory(data)
           .then(res => {
-            this.$message({
-              message: res.msg,
-              type: 'success'
-            })
+            this.$message.success(res.msg)
             done()
             this.fetchData()
             this.fetchParentCategories()
@@ -246,14 +259,11 @@ export default {
           .catch(() => {
           })
         this.formOptions.saveLoading = false
-      }, 300)
+      }, 500)
     },
     // 取消弹窗
     handleDialogCancel (done) {
-      this.$message({
-        message: '取消保存',
-        type: 'warning'
-      })
+      this.$message.warning('取消保存')
       done()
     },
     // 全选
@@ -265,24 +275,19 @@ export default {
       setTimeout(() => {
         deleteCategory(row.ID)
           .then(res => {
-            this.$message({
-              message: res.msg,
-              type: 'success'
-            })
+            this.$message.success(res.msg)
             done()
             this.fetchData()
             this.fetchParentCategories()
           })
-          .catch(() => {})
-      }, 300)
+          .catch(() => {
+          })
+      }, 500)
     },
     // 批量删除
     handleRowListRemove () {
       if (this.selection.length === 0) {
-        this.$message({
-          message: '请勾选要删除的条目',
-          type: 'error'
-        })
+        this.$message.error('请勾选要删除的条目')
       } else {
         this.$confirm('确定要删除吗?', '删除', {
           confirmButtonText: '确定',
@@ -297,16 +302,13 @@ export default {
           setTimeout(() => {
             multiDelCategories(ids)
               .then(res => {
-                this.$message({
-                  message: res.msg,
-                  type: 'success'
-                })
+                this.$message.success(res.msg)
                 this.fetchData()
                 this.fetchParentCategories()
               })
               .catch(() => {
               })
-          }, 300)
+          }, 500)
         }).catch(() => {
         })
       }

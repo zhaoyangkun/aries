@@ -17,8 +17,8 @@ type Category struct {
 	Url      string      `gorm:"type:varchar(100)" json:"url"`                   // 访问 URL
 }
 
-// 获取所有分类
-func (category Category) GetAll(categoryType uint) ([]Category, error) {
+// 根据类别获取所有分类
+func (category Category) GetAllByType(categoryType uint) ([]Category, error) {
 	var categories []Category
 	var children []Category
 	// 查询子分类
@@ -26,8 +26,12 @@ func (category Category) GetAll(categoryType uint) ([]Category, error) {
 	if err != nil {
 		return categories, err
 	}
-	// 查询所有分类
-	err = db.Db.Where("type = ?", categoryType).Find(&categories).Error
+	// 根据类别查询分类，若 categoryType >= 2，表示查询所有分类
+	if categoryType < 2 {
+		err = db.Db.Where("type = ?", categoryType).Find(&categories).Error
+	} else {
+		err = db.Db.Find(&categories).Error
+	}
 	// 将子分类并入父分类
 	for i := range categories {
 		if categories[i].ParentId == 0 {
@@ -86,8 +90,9 @@ func (category Category) Create() error {
 
 // 修改分类
 func (category Category) Update() error {
-	return db.Db.Model(&category).Where("id = ?", category.ID).
-		Updates(map[string]interface{}{ // 使用 map 来更新。避免 gorm 默认不更新值 nil, false, 0 的字段
+	// 使用 map 来更新，避免 gorm 默认不更新值为 nil, false, 0 的字段
+	return db.Db.Model(&category).
+		Updates(map[string]interface{}{
 			"name":      category.Name,
 			"parent_id": category.ParentId,
 			"type":      category.Type,
