@@ -368,16 +368,27 @@ export default {
       },
       addRules: {
         user_id: [
-          { required: true, trigger: 'blur', message: '用户ID不能为空' }
+          { required: true, trigger: 'blur', message: '用户 ID 不能为空' }
         ],
         category_id: [
           { required: true, trigger: 'blur', message: '请选择分类' }
         ],
         title: [
-          { required: true, trigger: 'blur', message: '请输入文章标题' }
+          { required: true, trigger: 'blur', message: '请输入文章标题' },
+          { max: 255, trigger: 'blur', message: 'URL 长度不能超过 255 位' }
+        ],
+        pwd: [
+          { max: 30, trigger: 'blur', message: '密码长度不能超过 30 位' }
+        ],
+        url: [
+          { max: 255, trigger: 'blur', message: 'URL 长度不能超过 255 位' }
         ],
         content: [
-          { required: true, pattern: /^(?!\n$)/, trigger: 'blur', message: '请输入文章内容' }
+          { required: true, pattern: /^(?!\n$)/, trigger: 'blur', message: '请输入文章内容' },
+          { max: 100000, trigger: 'blur', message: '内容字数不能超过 100000' }
+        ],
+        summary: [
+          { max: 255, trigger: 'blur', message: '摘要字数不能超过 255' }
         ],
         md_content: [
           { required: true, trigger: 'blur', message: '请输入文章内容' }
@@ -391,13 +402,24 @@ export default {
           { required: true, trigger: 'blur', message: '请选择分类' }
         ],
         title: [
-          { required: true, trigger: 'blur', message: '请输入文章标题' }
+          { required: true, trigger: 'blur', message: '请输入文章标题' },
+          { max: 255, trigger: 'blur', message: 'URL 长度不能超过 255 位' }
+        ],
+        pwd: [
+          { max: 30, trigger: 'blur', message: '密码长度不能超过 30 位' }
+        ],
+        url: [
+          { max: 255, trigger: 'blur', message: 'URL 长度不能超过 255 位' }
         ],
         content: [
-          { required: true, pattern: /^(?!\n$)/, trigger: 'blur', message: '请输入文章内容' }
+          { required: true, pattern: /^(?!\n$)/, trigger: 'blur', message: '请输入文章内容' },
+          { max: 100000, trigger: 'blur', message: '内容字数不能超过 100000' }
+        ],
+        summary: [
+          { max: 255, trigger: 'blur', message: '摘要字数不能超过 255' }
         ],
         md_content: [
-          { required: true, trigger: 'blur', message: 'markdown渲染文章内容不能为空' }
+          { required: true, trigger: 'blur', message: '请输入文章内容' }
         ]
       },
       options: {

@@ -24,7 +24,7 @@ type ArticleAddForm struct {
 	IsRecycled       bool   `json:"is_recycled" label:"是否回收"`                             // 是否回收
 	IsPublished      bool   `json:"is_published" label:"是否发布"`                            // 是否发布
 	IsAllowCommented bool   `json:"is_allow_commented" label:"是否允许评论"`                    // 是否允许评论
-	Pwd              string `json:"pwd" label:"访问密码"`                                     // 访问密码
+	Pwd              string `json:"pwd" binding:"max=30" label:"访问密码"`                    // 访问密码
 	URL              string `json:"url" binding:"max=255" label:"访问 URL"`                 // 访问 URL
 	Title            string `json:"title" binding:"required,max=255" label:"标题"`          // 标题
 	Summary          string `json:"summary" binding:"max=255" label:"摘要"`                 // 摘要
@@ -45,7 +45,7 @@ type ArticleEditForm struct {
 	IsRecycled       bool   `json:"is_recycled" label:"是否回收"`                             // 是否回收
 	IsPublished      bool   `json:"is_published" label:"是否发布"`                            // 是否发布
 	IsAllowCommented bool   `json:"is_allow_commented" label:"是否允许评论"`                    // 是否允许评论
-	Pwd              string `json:"pwd" label:"访问密码"`                                     // 访问密码
+	Pwd              string `json:"pwd" binding:"max=30" label:"访问密码"`                    // 访问密码
 	URL              string `json:"url" binding:"max=255" label:"访问 URL"`                 // 访问 URL
 	Title            string `json:"title" binding:"required,max=255" label:"标题"`          // 标题
 	Summary          string `json:"summary" binding:"max=255" label:"摘要"`                 // 摘要
