@@ -11,7 +11,7 @@ var transMap = map[string]string{
 }
 
 // 自定义翻译函数
-func transTagName(libTans, err interface{}) map[string]string {
+func transTagName(libTans, err interface{}) string {
 	errs := make(map[string]string, 0)
 	for k, v := range err.(validator.ValidationErrorsTranslations) {
 		for key, value := range libTans.(map[string]string) {
@@ -19,22 +19,24 @@ func transTagName(libTans, err interface{}) map[string]string {
 		}
 		errs[k] = v
 	}
-	return errs
+	var keyList []string    // 保存键值
+	for key := range errs { // 遍历 errMap
+		keyList = append(keyList, key) // 将 errMap 中的键值保存到 keyList 中
+	}
+	if len(keyList) > 0 {
+		return errs[keyList[0]] // 返回字典中第一个错误信息
+	}
+	return ""
 }
 
 // 获取表单错误
 func GetFormError(err error) string {
-	// 将英文表单错误信息翻译，并获取错误信息字典
-	errs := err.(validator.ValidationErrors)
-	errMap := transTagName(transMap, errs.Translate(setting.Trans))
-	var keyList []string      // 保存键值
-	for key := range errMap { // 遍历 errMap
-		keyList = append(keyList, key) // 将 errMap 中的键值保存到 keyList 中
+	// 翻译表单错误
+	if errs, ok := err.(validator.ValidationErrors); ok {
+		return transTagName(transMap, errs.Translate(setting.Trans))
+	} else {
+		return "不支持的请求数据类型，请发送 JSON 类型数据"
 	}
-	if len(keyList) > 0 {
-		return errMap[keyList[0]] // 返回字典中第一个错误信息
-	}
-	return ""
 }
 
 // 判断字符串数组是否包含某个元素

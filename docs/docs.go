@@ -921,19 +921,15 @@ var doc = `{
         "form.ArticleEditForm": {
             "type": "object",
             "required": [
-                " ",
                 "category_id",
                 "content",
                 "id",
+                "keywords",
                 "md_content",
                 "title",
                 "user_id"
             ],
             "properties": {
-                " ": {
-                    "description": "SEO 关键词",
-                    "type": "string"
-                },
                 "category_id": {
                     "description": "分类 ID",
                     "type": "integer"
@@ -965,6 +961,10 @@ var doc = `{
                 "is_top": {
                     "description": "是否置顶",
                     "type": "boolean"
+                },
+                "keywords": {
+                    "description": "SEO 关键词",
+                    "type": "string"
                 },
                 "md_content": {
                     "description": "Markdown 渲染后内容",
@@ -1028,12 +1028,12 @@ var doc = `{
         "form.CategoryEditForm": {
             "type": "object",
             "required": [
-                "id",
+                "ID",
                 "name",
                 "url"
             ],
             "properties": {
-                "id": {
+                "ID": {
                     "type": "integer"
                 },
                 "name": {
@@ -1122,11 +1122,11 @@ var doc = `{
         "form.TagEditForm": {
             "type": "object",
             "required": [
-                "id",
+                "ID",
                 "name"
             ],
             "properties": {
-                "id": {
+                "ID": {
                     "type": "integer"
                 },
                 "name": {

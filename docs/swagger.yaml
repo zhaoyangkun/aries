@@ -59,9 +59,6 @@ definitions:
     type: object
   form.ArticleEditForm:
     properties:
-      ' ':
-        description: SEO 关键词
-        type: string
       category_id:
         description: 分类 ID
         type: integer
@@ -86,6 +83,9 @@ definitions:
       is_top:
         description: 是否置顶
         type: boolean
+      keywords:
+        description: SEO 关键词
+        type: string
       md_content:
         description: Markdown 渲染后内容
         type: string
@@ -111,10 +111,10 @@ definitions:
         description: 用户 ID
         type: integer
     required:
-    - ' '
     - category_id
     - content
     - id
+    - keywords
     - md_content
     - title
     - user_id
@@ -139,7 +139,7 @@ definitions:
     type: object
   form.CategoryEditForm:
     properties:
-      id:
+      ID:
         type: integer
       name:
         description: 分类名称
@@ -154,7 +154,7 @@ definitions:
         description: 访问 URL
         type: string
     required:
-    - id
+    - ID
     - name
     - url
     type: object
@@ -207,12 +207,12 @@ definitions:
     type: object
   form.TagEditForm:
     properties:
-      id:
+      ID:
         type: integer
       name:
         type: string
     required:
-    - id
+    - ID
     - name
     type: object
   util.Result:
