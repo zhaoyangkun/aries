@@ -137,7 +137,7 @@ func (article Article) Create(tagIds string) error {
 
 // 更新文章
 func (article Article) Update(tagIds string) error {
-	// 若摘要为空，截取文章前 50 个字作为摘要
+	// 若摘要为空，截取文章前 100 个字作为摘要
 	if article.Summary == "" {
 		content := []rune(util.GetHtmlContent(article.MDContent))
 		if len(content) < 100 {
