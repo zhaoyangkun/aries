@@ -1,7 +1,7 @@
 <template>
   <div>
-    <el-tag style="margin-right: 5px;margin-top: 3px"
-            :key="text" :type="type" v-for="text in textList">{{ text }}
+    <el-tag style="margin-right: 5px;margin-top: 3px" :key="text" :type="type" v-for="text in textList">
+      {{ text }}
     </el-tag>
   </div>
 </template>

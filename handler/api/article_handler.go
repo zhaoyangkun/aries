@@ -5,8 +5,10 @@ import (
 	"aries/model"
 	"aries/util"
 	"github.com/gin-gonic/gin"
+	"io/ioutil"
 	"log"
 	"net/http"
+	"path"
 )
 
 // @Summary 获取所有文章
@@ -225,6 +227,92 @@ func MultiDelArticles(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, util.Result{
 		Code: util.Success,
 		Msg:  "删除成功",
+		Data: nil,
+	})
+}
+
+// @Summary 从文件导入文章
+// @Tags 文章
+// @version 1.0
+// @Accept application/json
+// @Param file[] body form true "文件"
+// @Success 100 object util.Result 成功
+// @Failure 103/104 object util.Result 失败
+// @Router /api/v1/article_files [post]
+func ImportArticlesFromFiles(ctx *gin.Context) {
+	multiForm, err := ctx.MultipartForm()
+	if err != nil {
+		ctx.JSON(http.StatusOK, util.Result{
+			Code: util.RequestError,
+			Msg:  err.Error(),
+			Data: nil,
+		})
+		return
+	}
+	files := multiForm.File["file[]"]
+	if len(files) > 10 {
+		ctx.JSON(http.StatusOK, util.Result{
+			Code: util.RequestError,
+			Msg:  "一次最多只能导入 10 个文件",
+			Data: nil,
+		})
+		return
+	}
+	for _, file := range files {
+		// 校验文件类型
+		if path.Ext(file.Filename) != ".md" {
+			ctx.JSON(http.StatusOK, util.Result{
+				Code: util.RequestError,
+				Msg:  "只支持导入 md 格式的文件",
+				Data: nil,
+			})
+			return
+		}
+		// 校验文件大小
+		if file.Size > 2*1024*1024 {
+			ctx.JSON(http.StatusOK, util.Result{
+				Code: util.RequestError,
+				Msg:  "单个文件大小不能超过 2 MB",
+				Data: nil,
+			})
+			return
+		}
+	}
+	for _, file := range files {
+		// 打开文件
+		src, err := file.Open()
+		if err != nil {
+			log.Println("error: ", err.Error())
+			ctx.JSON(http.StatusOK, util.Result{
+				Code: util.ServerError,
+				Msg:  "读取文件内容失败",
+				Data: nil,
+			})
+			return
+		}
+		// 关闭文件
+		src.Close()
+		// 读取文件
+		bytes, err := ioutil.ReadAll(src)
+		article := model.Article{
+			Content: string(bytes),
+			Title:   util.GetFileNameOnly(file.Filename),
+		}
+		// 保存文章
+		err = article.SaveFromFile()
+		if err != nil {
+			log.Println("error: ", err.Error())
+			ctx.JSON(http.StatusOK, util.Result{
+				Code: util.ServerError,
+				Msg:  "数据库错误",
+				Data: nil,
+			})
+			return
+		}
+	}
+	ctx.JSON(http.StatusOK, util.Result{
+		Code: util.Success,
+		Msg:  "导入成功",
 		Data: nil,
 	})
 }

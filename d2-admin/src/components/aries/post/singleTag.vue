@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-tag :type="type">{{ text }}</el-tag>
+    <el-tag :type="type" v-if="text !== ''">{{ text }}</el-tag>
   </div>
 </template>
 

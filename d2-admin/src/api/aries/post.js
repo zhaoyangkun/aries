@@ -27,7 +27,17 @@ export function addPost (data) {
 }
 
 // 从文件导入文章
-export function importPostByFiles () {
+export function importPostFromFiles (data) {
+  return request({
+    url: '/article_files',
+    method: 'post',
+    data: data,
+    headers: {
+      token: localStorage.getItem('token'),
+      'Content-Type': 'multipart/form-data',
+      Accept: 'application/json'
+    }
+  })
 }
 
 // 修改文章

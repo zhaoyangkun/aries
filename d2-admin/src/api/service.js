@@ -127,6 +127,7 @@ function createRequestFunction (service) {
       baseURL: process.env.VUE_APP_API,
       data: {}
     }
+    // console.log('configDefault: ', configDefault)
     return service(Object.assign(configDefault, config))
   }
 }

@@ -3,8 +3,8 @@ package model
 import (
 	"aries/config/db"
 	"aries/util"
+	"github.com/88250/lute"
 	"github.com/jinzhu/gorm"
-	"log"
 	"strconv"
 	"strings"
 	"time"
@@ -15,8 +15,8 @@ type Article struct {
 	gorm.Model
 	User             User     `gorm:"foreignkey:UserId;not null;" json:"user"`             // 用户
 	UserId           uint     `json:"user_id"`                                             // 用户 ID
-	Category         Category `gorm:"foreignKey:CategoryId;not null;" json:"category"`     // 分类
-	CategoryId       uint     `json:"category_id"`                                         // 分类 ID
+	Category         Category `gorm:"foreignKey:CategoryId" json:"category"`               // 分类
+	CategoryId       *uint    `json:"category_id"`                                         // 分类 ID
 	OrderId          uint     `gorm:"type:int;default:1;" json:"order_id"`                 // 排序 ID
 	TagList          []Tag    `gorm:"many2many:tag_article" json:"tag_list"`               // 标签列表
 	IsTop            *bool    `gorm:"type:bool;default:false;" json:"is_top"`              // 是否置顶
@@ -30,7 +30,7 @@ type Article struct {
 	Img              string   `gorm:"type:varchar(255);not null;" json:"img"`              // 图片
 	Content          string   `gorm:"type:MediumText;not null;" json:"content"`            // 内容
 	MDContent        string   `gorm:"type:MediumText;not null;" json:"md_content"`         // Markdown 渲染后内容
-	Keywords         string   `gorm:"type:varchar(255);not null;" json:"keywords"`         // SEO 关键词
+	Keywords         string   `gorm:"type:varchar(255)" json:"keywords"`                   // SEO 关键词
 	CommentCount     uint     `gorm:"type:int;default:0;" json:"comment_count"`            // 评论数
 	VisitCount       uint     `gorm:"type:int;default:0;" json:"visit_count"`              // 浏览数
 }
@@ -100,7 +100,7 @@ func (article Article) Create(tagIds string) error {
 	}
 	// 若 URL 为空，设置默认 URL
 	if article.URL == "" {
-		article.URL = string(time.Now().Unix())
+		article.URL = strconv.FormatInt(time.Now().UnixNano()/1e6, 10)
 	}
 	// 若为密码不为空，加密密码
 	if article.Pwd != "" {
@@ -110,7 +110,6 @@ func (article Article) Create(tagIds string) error {
 			return err
 		}
 	}
-	log.Println("article: ", article)
 	// 添加文章
 	err := db.Db.Save(&article).Error
 	if err != nil {
@@ -152,7 +151,7 @@ func (article Article) Update(tagIds string) error {
 	}
 	// 若 URL 为空，设置默认 URL
 	if article.URL == "" {
-		article.URL = strconv.FormatInt(time.Now().Unix(), 10)
+		article.URL = strconv.FormatInt(time.Now().UnixNano()/1e6, 10)
 	}
 	// 使用 map 来更新，避免 gorm 默认不更新值为 nil, false, 0 的字段
 	err := db.Db.Model(&Article{}).Where("id = ?", article.ID).
@@ -211,7 +210,7 @@ func (article Article) Update(tagIds string) error {
 	return nil
 }
 
-// 加入回收站或恢复文章
+// 将文章加入回收站或恢复
 func (article Article) RecycleOrRecover() (err error) {
 	err = db.Db.Model(&Article{}).Where("id = ?", article.ID).
 		Updates(map[string]interface{}{
@@ -241,4 +240,18 @@ func (Article) MultiDelByIds(ids string) error {
 	}
 	// 删除文章表中的记录
 	return db.Db.Where("id in (?)", idList).Unscoped().Delete(&Article{}).Error
+}
+
+// 从文件导入文章
+func (article Article) SaveFromFile() (err error) {
+	user := User{}
+	err = db.Db.First(&user).Error
+	if err != nil {
+		return
+	}
+	article.UserId = user.ID
+	luteEngine := lute.New()
+	article.MDContent = luteEngine.MarkdownStr("", article.Content)
+	err = article.Create("")
+	return
 }

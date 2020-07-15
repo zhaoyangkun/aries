@@ -1,6 +1,6 @@
 <template>
   <d2-container>
-    <template slot="header">文章/文章列表</template>
+    <template slot="header">文章列表</template>
     <d2-crud
       ref="d2Crud"
       :loading="loading"
@@ -12,15 +12,14 @@
       :form-options="formOptions"
     >
       <el-form :inline="true" class="demo-form-inline" slot="header">
-        <!--        <el-form-item>-->
-        <!--          <el-button size="small" type="danger" style="margin-bottom: 5px" @click="handleRowListRemove">-->
-        <!--            <i class="el-icon-delete"></i> 批量删除-->
-        <!--          </el-button>-->
-        <!--        </el-form-item>-->
         <el-form-item>
-          <el-button size="small" type="primary" style="margin-bottom: 5px"
-                     @click="openAddDialog">
+          <el-button size="small" type="primary" @click="openAddDialog">
             <i class="el-icon-plus"></i> 写文章
+          </el-button>
+        </el-form-item>
+        <el-form-item>
+          <el-button size="small" type="success" @click="openUploadDialog">
+            <i class="el-icon-bottom"></i> 文件导入文章
           </el-button>
         </el-form-item>
         <el-form-item>
@@ -227,6 +226,33 @@
       </el-form>
     </el-dialog>
 
+    <!-- 导入文章弹窗 -->
+    <el-dialog
+      title="导入文章"
+      :visible.sync="dialogOptions.uploadVisible"
+      width="50%">
+      <el-upload
+        ref="upload"
+        class="upload-demo"
+        :multiple="true"
+        :on-change="handleFileChange"
+        :on-exceed="handleExceed"
+        :on-remove="handleFileRemove"
+        :auto-upload="false"
+        :file-list="fileList"
+        :limit="10"
+        accept=".md"
+        action=""
+      >
+        <el-button size="small" type="primary">选择文件</el-button>
+        <div slot="tip" class="el-upload__tip">只能上传 md 格式文件，且不超过 2 MB</div>
+      </el-upload>
+      <el-button style="margin-top: 12px" size="small" type="success"
+                 :loading="dialogOptions.uploadLoading" @click="submitUpload">导 入</el-button>
+      <el-button style="margin-top: 12px" size="small"
+                 @click="dialogOptions.uploadVisible=false">取 消</el-button>
+    </el-dialog>
+
   </d2-container>
 </template>
 
@@ -241,7 +267,7 @@ import state from '@/components/aries/post/state'
 import tableHandle from '@/components/aries/post/tableHandle'
 import { getAllCategories } from '@/api/aries/category'
 import { getAllTags } from '@/api/aries/tag'
-import { addPost, deletePost, getPostsByPage, updatePost } from '@/api/aries/post'
+import { addPost, deletePost, getPostsByPage, importPostFromFiles, updatePost } from '@/api/aries/post'
 
 export default {
   name: 'post',
@@ -370,15 +396,15 @@ export default {
         user_id: [
           { required: true, trigger: 'blur', message: '用户 ID 不能为空' }
         ],
-        category_id: [
-          { required: true, trigger: 'blur', message: '请选择分类' }
-        ],
+        // category_id: [
+        //   { required: true, trigger: 'blur', message: '请选择分类' }
+        // ],
         title: [
           { required: true, trigger: 'blur', message: '请输入文章标题' },
           { max: 255, trigger: 'blur', message: 'URL 长度不能超过 255 位' }
         ],
         pwd: [
-          { max: 30, trigger: 'blur', message: '密码长度不能超过 30 位' }
+          { max: 64, trigger: 'blur', message: '密码长度不能超过 64 位' }
         ],
         url: [
           { max: 255, trigger: 'blur', message: 'URL 长度不能超过 255 位' }
@@ -398,15 +424,15 @@ export default {
         user_id: [
           { required: true, trigger: 'blur', message: '用户ID不能为空' }
         ],
-        category_id: [
-          { required: true, trigger: 'blur', message: '请选择分类' }
-        ],
+        // category_id: [
+        //   { required: true, trigger: 'blur', message: '请选择分类' }
+        // ],
         title: [
           { required: true, trigger: 'blur', message: '请输入文章标题' },
           { max: 255, trigger: 'blur', message: 'URL 长度不能超过 255 位' }
         ],
         pwd: [
-          { max: 30, trigger: 'blur', message: '密码长度不能超过 30 位' }
+          { max: 64, trigger: 'blur', message: '密码长度不能超过 64 位' }
         ],
         url: [
           { max: 255, trigger: 'blur', message: 'URL 长度不能超过 255 位' }
@@ -433,14 +459,17 @@ export default {
         editBtnLoading: false,
         editDraftBtnLoading: false,
         editVisible: false,
-        editFullScreen: true
+        editFullScreen: true,
+        uploadVisible: false,
+        uploadLoading: false
       },
       formOptions: {
         labelWidth: '80px',
         labelPosition: 'left',
         saveLoading: false
       },
-      loading: false
+      loading: false,
+      fileList: []
     }
   },
   created () {
@@ -452,7 +481,7 @@ export default {
     // 分页
     paginationCurrentChange (currentPage) {
       this.pagination.currentPage = currentPage
-      this.fetchData()
+      this.fetchPageData()
     },
     // 获取分页数据
     fetchPageData () {
@@ -549,6 +578,13 @@ export default {
       })
       this.editForm = row
       this.$set(this.editForm, 'selectTagIds', tagIds)
+    },
+    // 打开导入文章弹窗
+    openUploadDialog () {
+      // 显示弹窗
+      this.dialogOptions.uploadVisible = true
+      // 清空上传文件列表
+      this.fileList = []
     },
     // 添加文章事件
     handleRowAdd (isPublished) {
@@ -674,7 +710,7 @@ export default {
           })
       }
     },
-    // 删除
+    // 删除文章
     handleRowRemove (id) {
       this.$confirm('确定要彻底删除吗?一旦彻底删除，将无法恢复', '彻底删除', {
         confirmButtonText: '确定',
@@ -694,35 +730,54 @@ export default {
         })
         .catch(() => {
         })
+    },
+    // 获取文件类型
+    getFileType (fileName) {
+      return fileName.substring(fileName.lastIndexOf('.') + 1)
+    },
+    handleExceed (files, fileList) {
+      this.$message.warning(
+        `当前限制选择 10 个文件，共选择了 ${files.length + fileList.length} 个文件`
+      )
+    },
+    // 文件变动事件
+    handleFileChange (file, fileList) {
+      this.fileList = fileList
+    },
+    // 文件删除事件
+    handleFileRemove (file, fileList) {
+      this.fileList = fileList
+    },
+    // 上传文件事件
+    submitUpload () {
+      const formData = new FormData()
+      for (let i = 0; i < this.fileList.length; i++) {
+        const file = this.fileList[i]
+        // 校验文件格式
+        if (this.getFileType(file.name) !== 'md') {
+          this.$message.error('只支持导入 md 格式的文件')
+          return
+        }
+        // 校验文件大小
+        if (file.size > 2 * 1024 * 1024) {
+          this.$message.error('文件大小不能超过 2 MB')
+          return
+        }
+        formData.append('file[]', file.raw)
+      }
+      this.dialogOptions.uploadLoading = true
+      setTimeout(() => {
+        importPostFromFiles(formData)
+          .then(res => {
+            this.$message.success(res.msg)
+            this.dialogOptions.uploadVisible = false
+            this.fetchPageData()
+          })
+          .catch(() => {
+          })
+        this.dialogOptions.uploadLoading = false
+      }, 500)
     }
-    // 批量删除
-    // handleRowListRemove () {
-    //   if (this.selection.length === 0) {
-    //     this.$message.error('请勾选要删除的条目')
-    //   } else {
-    //     this.$confirm('确定要删除吗?', '删除', {
-    //       confirmButtonText: '确定',
-    //       cancelButtonText: '取消',
-    //       type: 'error'
-    //     }).then(() => {
-    //       let ids = []
-    //       this.selection.forEach(function (val) {
-    //         ids.push(val.ID)
-    //       })
-    //       ids = ids.join() // 将数组转换成字符串：[1, 2, 3] --> '1, 2, 3'
-    //       setTimeout(() => {
-    //         multiDelPosts(ids)
-    //           .then(res => {
-    //             this.$message.success(res.msg)
-    //             this.fetchPageData()
-    //           })
-    //           .catch(() => {
-    //           })
-    //       }, 500)
-    //     }).catch(() => {
-    //     })
-    //   }
-    // }
   }
 }
 </script>
