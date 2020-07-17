@@ -257,14 +257,13 @@
 </template>
 
 <script>
-// eslint-disable-next-line import/no-duplicates
-import addEditor from '@/components/aries/post/vditor'
-// eslint-disable-next-line import/no-duplicates
-import editEditor from '@/components/aries/post/vditor'
+import addEditor from '@/components/aries/post/addVditor'
+import editEditor from '@/components/aries/post/editVditor'
 import singleTag from '@/components/aries/post/singleTag'
 import multiTag from '@/components/aries/post/multiTag'
 import state from '@/components/aries/post/state'
 import tableHandle from '@/components/aries/post/tableHandle'
+import postTitle from '@/components/aries/post/postTitle'
 import { getAllCategories } from '@/api/aries/category'
 import { getAllTags } from '@/api/aries/tag'
 import { addPost, deletePost, getPostsByPage, importPostFromFiles, updatePost } from '@/api/aries/post'
@@ -281,7 +280,9 @@ export default {
     // eslint-disable-next-line vue/no-unused-components
     multiTag,
     // eslint-disable-next-line vue/no-unused-components
-    tableHandle
+    tableHandle,
+    // eslint-disable-next-line vue/no-unused-components
+    postTitle
   },
   data () {
     return {
@@ -289,11 +290,13 @@ export default {
         {
           title: '文章标题',
           width: '260',
-          key: 'title'
+          component: {
+            name: postTitle
+          }
         },
         {
           title: '状态',
-          width: '100',
+          width: '86',
           component: {
             name: state
           }
@@ -317,12 +320,12 @@ export default {
         },
         {
           title: '评论数',
-          width: '70',
+          width: '60',
           key: 'comment_count'
         },
         {
           title: '浏览数',
-          width: '70',
+          width: '60',
           key: 'visit_count'
         },
         {
@@ -495,22 +498,14 @@ export default {
           key: this.pagination.key
         })
           .then(res => {
-            const pageData = res.data.data
-            pageData.forEach((val) => {
-              let tagStr = ''
-              val.tag_list.forEach((tag, index) => {
-                tagStr += `${tag.name},`
-              })
-              val.tagStr = tagStr
-            })
-            this.data = pageData
+            this.data = res.data.data
             this.pagination.total = res.data.total_num
             this.loading = false
           })
           .catch(() => {
             this.loading = false
           })
-      }, 500)
+      }, 300)
     },
     // 搜索
     search () {
@@ -619,10 +614,10 @@ export default {
               } else {
                 this.dialogOptions.addDraftBtnLoading = false
               }
-            }, 500)
+            }, 300)
           }
         })
-      }, 500)
+      }, 300)
     },
     // 修改文章事件
     handleRowEdit (isPublished) {
@@ -655,10 +650,10 @@ export default {
               } else {
                 this.dialogOptions.editDraftBtnLoading = false
               }
-            }, 500)
+            }, 300)
           }
         })
-      }, 500)
+      }, 300)
     },
     // 将文章加入回收站或者恢复
     handleRowRecycleOrRecover (row) {
@@ -684,7 +679,7 @@ export default {
                 })
                 .catch(() => {
                 })
-            }, 500)
+            }, 300)
           })
           .catch(() => {
           })
@@ -704,7 +699,7 @@ export default {
                 })
                 .catch(() => {
                 })
-            }, 500)
+            }, 300)
           })
           .catch(() => {
           })
@@ -726,7 +721,7 @@ export default {
               })
               .catch(() => {
               })
-          }, 500)
+          }, 300)
         })
         .catch(() => {
         })
@@ -751,6 +746,10 @@ export default {
     // 上传文件事件
     submitUpload () {
       const formData = new FormData()
+      if (this.fileList.length === 0) {
+        this.$message.error('请选择要上传的文件')
+        return
+      }
       for (let i = 0; i < this.fileList.length; i++) {
         const file = this.fileList[i]
         // 校验文件格式
@@ -776,7 +775,7 @@ export default {
           .catch(() => {
           })
         this.dialogOptions.uploadLoading = false
-      }, 500)
+      }, 300)
     }
   }
 }

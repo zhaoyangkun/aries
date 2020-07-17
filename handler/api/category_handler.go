@@ -235,7 +235,7 @@ func DeleteCategory(ctx *gin.Context) {
 // @Success 100 object util.Result 成功
 // @Failure 103/104 object util.Result 失败
 // @Router /api/v1/categories [delete]
-func MultiDelCategory(ctx *gin.Context) {
+func MultiDelCategories(ctx *gin.Context) {
 	ids := ctx.DefaultQuery("ids", "") // 获取 ids
 	if ids == "" {
 		ctx.JSON(http.StatusOK, util.Result{

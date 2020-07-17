@@ -12,6 +12,7 @@ export function getAllCategories (type) {
 export function getCategoriesByPage (params) {
   return request({
     url: '/categories',
+    method: 'get',
     params: params
   })
 }

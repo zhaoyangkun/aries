@@ -6,6 +6,7 @@ import (
 	"aries/config/setting"
 	templRouter "aries/router"
 	apiRouter "aries/router/api"
+	"github.com/88250/lute"
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
 	"github.com/go-playground/locales/zh"
@@ -23,6 +24,8 @@ func InitApp() *gin.Engine {
 	db.InitDb()
 	// 反向生成数据表
 	migrate.Migrate()
+	// 初始化 lute
+	setting.LuteEngine = lute.New()
 
 	// 设置运行模式
 	gin.SetMode(setting.Config.Server.Mode)
@@ -62,6 +65,8 @@ func InitApp() *gin.Engine {
 	apiRouter.InitAuthApiRouter("/api/v1", router)
 	apiRouter.InitTagApiRouter("/api/v1", router)
 	apiRouter.InitArticleApiRouter("/api/v1", router)
+	apiRouter.InitCommentApiRouter("/api/v1", router)
+	apiRouter.InitUserApiRouter("/api/v1", router)
 
 	return router
 }

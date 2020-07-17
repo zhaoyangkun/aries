@@ -16,10 +16,8 @@ export default {
     type () {
       if (this.scope.row.is_recycled) {
         return 'danger'
-      } else if (!this.scope.row.is_published) {
+      } else if (!this.scope.row.is_checked) {
         return 'warning'
-      } else if (this.scope.row.pwd !== '') {
-        return 'info'
       } else {
         return 'success'
       }
@@ -27,10 +25,8 @@ export default {
     text () {
       if (this.scope.row.is_recycled) {
         return '回收站'
-      } else if (!this.scope.row.is_published) {
-        return '草稿'
-      } else if (this.scope.row.pwd !== '') {
-        return '加密'
+      } else if (!this.scope.row.is_checked) {
+        return '待审核'
       } else {
         return '已发布'
       }

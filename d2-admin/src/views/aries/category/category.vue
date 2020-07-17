@@ -181,23 +181,13 @@ export default {
           key: this.pagination.key
         })
           .then(res => {
-            const pageData = res.data.data
-            // pageData.forEach(function (val) {
-            //   val.childrenStr = ''
-            //   if (val.children !== null) {
-            //     val.children.forEach(function (child) {
-            //       val.childrenStr += child.name + ' '
-            //     })
-            //   }
-            // })
-            this.data = pageData
+            this.data = res.data.data
             this.pagination.total = res.data.total_num
-            this.loading = false
           })
           .catch(() => {
-            this.loading = false
           })
-      }, 500)
+        this.loading = false
+      }, 300)
     },
     // 搜索
     search () {
@@ -242,7 +232,7 @@ export default {
           .catch(() => {
           })
         this.formOptions.saveLoading = false
-      }, 500)
+      }, 300)
     },
     handleRowEdit (row, done) {
       this.formOptions.saveLoading = true
@@ -259,7 +249,7 @@ export default {
           .catch(() => {
           })
         this.formOptions.saveLoading = false
-      }, 500)
+      }, 300)
     },
     // 取消弹窗
     handleDialogCancel (done) {
@@ -282,7 +272,7 @@ export default {
           })
           .catch(() => {
           })
-      }, 500)
+      }, 300)
     },
     // 批量删除
     handleRowListRemove () {
@@ -308,7 +298,7 @@ export default {
               })
               .catch(() => {
               })
-          }, 500)
+          }, 300)
         }).catch(() => {
         })
       }

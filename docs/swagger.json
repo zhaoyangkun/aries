@@ -69,6 +69,30 @@
                 }
             }
         },
+        "/api/v1/all_comments": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "评论"
+                ],
+                "summary": "获取所有评论",
+                "responses": {
+                    "100": {
+                        "description": "Continue",
+                        "schema": {
+                            "$ref": "#/definitions/util.Result"
+                        }
+                    },
+                    "104": {
+                        "schema": {
+                            "$ref": "#/definitions/util.Result"
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/all_tags": {
             "get": {
                 "consumes": [
@@ -78,6 +102,54 @@
                     "标签"
                 ],
                 "summary": "获取所有标签",
+                "responses": {
+                    "100": {
+                        "description": "Continue",
+                        "schema": {
+                            "$ref": "#/definitions/util.Result"
+                        }
+                    },
+                    "104": {
+                        "schema": {
+                            "$ref": "#/definitions/util.Result"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/all_users": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户"
+                ],
+                "summary": "获取所有用户",
+                "responses": {
+                    "100": {
+                        "description": "Continue",
+                        "schema": {
+                            "$ref": "#/definitions/util.Result"
+                        }
+                    },
+                    "104": {
+                        "schema": {
+                            "$ref": "#/definitions/util.Result"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/article_files": {
+            "post": {
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "tags": [
+                    "文章"
+                ],
+                "summary": "从文件导入文章",
                 "responses": {
                     "100": {
                         "description": "Continue",
@@ -585,6 +657,184 @@
                 }
             }
         },
+        "/api/v1/comments": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "评论"
+                ],
+                "summary": "分页获取评论",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "页码",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "每页条数",
+                        "name": "size",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "关键词",
+                        "name": "key",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "状态",
+                        "name": "state",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "100": {
+                        "description": "Continue",
+                        "schema": {
+                            "$ref": "#/definitions/util.Result"
+                        }
+                    },
+                    "104": {
+                        "schema": {
+                            "$ref": "#/definitions/util.Result"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "评论"
+                ],
+                "summary": "修改评论",
+                "parameters": [
+                    {
+                        "description": "修改评论表单",
+                        "name": "form",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/form.CommentEditForm"
+                        }
+                    }
+                ],
+                "responses": {
+                    "100": {
+                        "description": "Continue",
+                        "schema": {
+                            "$ref": "#/definitions/util.Result"
+                        }
+                    },
+                    "104": {
+                        "schema": {
+                            "$ref": "#/definitions/util.Result"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "评论"
+                ],
+                "summary": "发表评论",
+                "parameters": [
+                    {
+                        "description": "添加评论表单",
+                        "name": "form",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/form.CommentAddForm"
+                        }
+                    }
+                ],
+                "responses": {
+                    "100": {
+                        "description": "Continue",
+                        "schema": {
+                            "$ref": "#/definitions/util.Result"
+                        }
+                    },
+                    "104": {
+                        "schema": {
+                            "$ref": "#/definitions/util.Result"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "评论"
+                ],
+                "summary": "批量删除评论",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ids",
+                        "name": "ids",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "100": {
+                        "description": "Continue",
+                        "schema": {
+                            "$ref": "#/definitions/util.Result"
+                        }
+                    },
+                    "104": {
+                        "schema": {
+                            "$ref": "#/definitions/util.Result"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/comments/{id}": {
+            "delete": {
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "评论"
+                ],
+                "summary": "删除评论",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "100": {
+                        "description": "Continue",
+                        "schema": {
+                            "$ref": "#/definitions/util.Result"
+                        }
+                    },
+                    "104": {
+                        "schema": {
+                            "$ref": "#/definitions/util.Result"
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/parent_categories": {
             "get": {
                 "consumes": [
@@ -828,9 +1078,7 @@
         "form.ArticleAddForm": {
             "type": "object",
             "required": [
-                "category_id",
                 "content",
-                "keywords",
                 "md_content",
                 "title",
                 "user_id"
@@ -905,10 +1153,8 @@
         "form.ArticleEditForm": {
             "type": "object",
             "required": [
-                "category_id",
                 "content",
                 "id",
-                "keywords",
                 "md_content",
                 "title",
                 "user_id"
@@ -1034,6 +1280,122 @@
                 },
                 "url": {
                     "description": "访问 URL",
+                    "type": "string"
+                }
+            }
+        },
+        "form.CommentAddForm": {
+            "type": "object",
+            "required": [
+                "article_id",
+                "content",
+                "email",
+                "nick_name",
+                "url"
+            ],
+            "properties": {
+                "admin_user_id": {
+                    "description": "博主 ID",
+                    "type": "integer"
+                },
+                "article_id": {
+                    "description": "文章 ID",
+                    "type": "integer"
+                },
+                "content": {
+                    "description": "评论内容",
+                    "type": "string"
+                },
+                "email": {
+                    "description": "邮箱",
+                    "type": "string"
+                },
+                "is_checked": {
+                    "description": "是否通过审核",
+                    "type": "boolean"
+                },
+                "is_recycled": {
+                    "description": "是否加入回收站",
+                    "type": "boolean"
+                },
+                "md_content": {
+                    "description": "markdown 渲染后评论内容",
+                    "type": "string"
+                },
+                "nick_name": {
+                    "description": "昵称",
+                    "type": "string"
+                },
+                "parent_comment_id": {
+                    "description": "父评论 ID",
+                    "type": "integer"
+                },
+                "root_comment_id": {
+                    "description": "根评论 ID",
+                    "type": "integer"
+                },
+                "url": {
+                    "description": "访问地址",
+                    "type": "string"
+                }
+            }
+        },
+        "form.CommentEditForm": {
+            "type": "object",
+            "required": [
+                "article_id",
+                "content",
+                "email",
+                "id",
+                "nick_name",
+                "url"
+            ],
+            "properties": {
+                "admin_user_id": {
+                    "description": "博主 ID",
+                    "type": "integer"
+                },
+                "article_id": {
+                    "description": "文章 ID",
+                    "type": "integer"
+                },
+                "content": {
+                    "description": "评论内容",
+                    "type": "string"
+                },
+                "email": {
+                    "description": "邮箱",
+                    "type": "string"
+                },
+                "id": {
+                    "description": "ID",
+                    "type": "integer"
+                },
+                "is_checked": {
+                    "type": "boolean"
+                },
+                "is_recycled": {
+                    "description": "是否加入回收站",
+                    "type": "boolean"
+                },
+                "md_content": {
+                    "description": "markdown 渲染后评论内容",
+                    "type": "string"
+                },
+                "nick_name": {
+                    "description": "昵称",
+                    "type": "string"
+                },
+                "parent_comment_id": {
+                    "description": "父评论 ID",
+                    "type": "integer"
+                },
+                "root_comment_id": {
+                    "description": "根评论 ID",
+                    "type": "integer"
+                },
+                "url": {
+                    "description": "访问地址",
                     "type": "string"
                 }
             }

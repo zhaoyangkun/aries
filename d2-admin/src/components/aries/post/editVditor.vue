@@ -1,6 +1,6 @@
 <template>
-  <div class="contentEditor-box">
-    <div id="contentEditor"></div>
+  <div class="editEditor-box">
+    <div id="editEditor"></div>
   </div>
 </template>
 
@@ -33,7 +33,7 @@ export default {
   methods: {
     // 初始化vditor
     initEditor () {
-      this.contentEditor = new Vditor('contentEditor', {
+      this.contentEditor = new Vditor('editEditor', {
         height: 380,
         toolbarConfig: {
           pin: true
@@ -68,32 +68,6 @@ export default {
         }
       })
     },
-    /*    initEditor () {
-              this.contentEditor = new Vditor('contentEditor', {
-                typewriterMode: true,
-                tab: '\t',
-                cache: true,
-                preview: {
-                  delay: 500,
-                  // mode: 'both',
-                  parse: element => {
-                    if (element.style.display === 'none') {
-                      return
-                    }
-                    // LazyLoadImage()
-                    Vditor.highlightRender(
-                      {
-                        style: 'github',
-                        enable: true
-                      },
-                      document
-                    )
-                  }
-                },
-
-                placeholder: ''
-              })
-            }, */
     // 获取编辑器文本
     getContent () {
       return this.contentEditor.getValue()

@@ -17,7 +17,7 @@ type Tag struct {
 // 获取所有标签
 func (Tag) GetAll() ([]Tag, error) {
 	var list []Tag
-	err := db.Db.Preloads("ArticleList").Find(&list).Error
+	err := db.Db.Preload("ArticleList").Find(&list).Error
 	return list, err
 }
 
@@ -31,7 +31,7 @@ func (Tag) GetById(id string) (Tag, error) {
 // 分页获取标签
 func (tag Tag) GetByPage(page *util.Pagination, key string) ([]Tag, uint, error) {
 	var list []Tag
-	query := db.Db.Preloads("ArticleList").Model(&Tag{}).
+	query := db.Db.Preload("ArticleList").Model(&Tag{}).
 		Order("created_at desc", true)
 	if key != "" {
 		query = query.Where("name like concat('%',?,'%')", key)

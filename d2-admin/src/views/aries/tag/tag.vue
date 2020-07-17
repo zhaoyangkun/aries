@@ -136,7 +136,7 @@ export default {
           .catch(() => {
           })
         this.loading = false
-      }, 500)
+      }, 300)
     },
     // 搜索
     search () {
@@ -163,7 +163,7 @@ export default {
           .catch(() => {
           })
         this.formOptions.saveLoading = false
-      }, 500)
+      }, 300)
     },
     // 修改事件
     handleRowEdit (row, done) {
@@ -180,7 +180,7 @@ export default {
           .catch(() => {
           })
         this.formOptions.saveLoading = false
-      }, 500)
+      }, 300)
     },
     // 全选
     handleSelectionChange (selection) {
@@ -198,7 +198,7 @@ export default {
           })
           .catch(() => {
           })
-      }, 500)
+      }, 300)
     },
     // 批量删除
     handleRowListRemove () {
@@ -224,7 +224,7 @@ export default {
               })
               .catch(() => {
               })
-          }, 500)
+          }, 300)
         }).catch(() => {
         })
       }

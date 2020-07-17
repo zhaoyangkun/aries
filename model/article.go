@@ -2,8 +2,8 @@ package model
 
 import (
 	"aries/config/db"
+	"aries/config/setting"
 	"aries/util"
-	"github.com/88250/lute"
 	"github.com/jinzhu/gorm"
 	"strconv"
 	"strings"
@@ -38,7 +38,7 @@ type Article struct {
 // 获取所有文章
 func (Article) GetAll() (list []Article, err error) {
 	err = db.Db.Preload("Category").Preload("TagList").
-		Model(&Article{}).Order("created_at desc", true).Find(&list).Error
+		Order("created_at desc", true).Find(&list).Error
 	return
 }
 
@@ -54,7 +54,7 @@ func (Article) GetByPage(page *util.Pagination, key string, state uint,
 	categoryId uint) ([]Article, uint, error) {
 	var list []Article
 	query := db.Db.Preload("Category").Preload("TagList").
-		Model(&Article{}).Order("created_at desc", true)
+		Model(&Article{}).Order("is_top desc,created_at desc", true)
 	if key != "" {
 		query = query.Where("title like concat('%',?,'%')", key)
 	}
@@ -250,8 +250,7 @@ func (article Article) SaveFromFile() (err error) {
 		return
 	}
 	article.UserId = user.ID
-	luteEngine := lute.New()
-	article.MDContent = luteEngine.MarkdownStr("", article.Content)
+	article.MDContent = setting.LuteEngine.MarkdownStr("", article.Content)
 	err = article.Create("")
 	return
 }

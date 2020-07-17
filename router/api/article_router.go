@@ -7,8 +7,7 @@ import (
 )
 
 func InitArticleApiRouter(rootPath string, router *gin.Engine) {
-	ArticleApiRouter := router.Group(rootPath)
-	ArticleApiRouter.Use(middleware.JWTAuthMiddleWare()) // 加载 JWT 权限校验中间件
+	ArticleApiRouter := router.Group(rootPath, middleware.JWTAuthMiddleWare())
 	{
 		ArticleApiRouter.GET("/all_articles", api.GetAllArticles)
 		ArticleApiRouter.GET("/articles/:id", api.GetArticleById)

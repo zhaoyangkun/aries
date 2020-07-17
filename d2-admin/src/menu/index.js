@@ -19,13 +19,20 @@ function supplementPath (menu) {
 export const menuHeader = supplementPath([
   { path: '/index', title: '首页', icon: 'home' },
   {
-    title: '文章管理',
-    icon: 'edit',
+    title: '内容管理',
+    icon: 'file-text-o',
     children: [
       { path: '/category', title: '分类', icon: 'list' },
       { path: '/tag', title: '标签', icon: 'tags' },
-      { path: '/post', title: '文章', icon: 'file-text' }
-      // { path: '/editor', title: 'editor', icon: 'edit' }
+      { path: '/post', title: '文章', icon: 'edit' },
+      { path: '/comment', title: '评论', icon: 'commenting-o' }
+    ]
+  },
+  {
+    title: '系统管理',
+    icon: 'cog',
+    children: [
+      { path: '/doc', title: 'API 文档', icon: 'chain' }
     ]
   }
 ])
@@ -34,13 +41,20 @@ export const menuHeader = supplementPath([
 export const menuAside = supplementPath([
   { path: '/index', title: '首页', icon: 'home' },
   {
-    title: '文章管理',
-    icon: 'edit',
+    title: '内容管理',
+    icon: 'file-text-o',
     children: [
       { path: '/category', title: '分类', icon: 'list' },
       { path: '/tag', title: '标签', icon: 'tags' },
-      { path: '/post', title: '文章', icon: 'file-text' }
-      // { path: '/editor', title: 'editor', icon: 'edit' }
+      { path: '/post', title: '文章', icon: 'edit' },
+      { path: '/comment', title: '评论', icon: 'commenting-o' }
+    ]
+  },
+  {
+    title: '系统管理',
+    icon: 'cog',
+    children: [
+      { path: '/doc', title: 'API 文档', icon: 'chain' }
     ]
   }
 ])

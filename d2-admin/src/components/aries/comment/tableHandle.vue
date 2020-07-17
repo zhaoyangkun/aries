@@ -1,19 +1,19 @@
 <template>
   <div>
-    <el-tooltip content="编辑" placement="top-start">
-      <el-button size="small" icon="el-icon-edit"
-                 @click="openEditDialog(scope.row)"></el-button>
+    <el-tooltip content="回复" placement="top-start">
+      <el-button size="small" class="el-icon-chat-line-round"
+                 @click="openReplyDialog(scope.row)"></el-button>
     </el-tooltip>
     <el-tooltip content="加入回收站" placement="top-start" v-if="!scope.row.is_recycled">
-      <el-button size="small" type="danger" icon="el-icon-close"
+      <el-button size="small" class="el-icon-close" type="danger"
                  @click="handleRowRecycleOrRecover(scope.row)"></el-button>
     </el-tooltip>
     <el-tooltip content="恢复" placement="top-start" v-if="scope.row.is_recycled">
-      <el-button size="small" type="success" icon="el-icon-check"
+      <el-button size="small" class="el-icon-check" type="success"
                  @click="handleRowRecycleOrRecover(scope.row)"></el-button>
     </el-tooltip>
     <el-tooltip content="彻底删除" placement="top-start" v-if="scope.row.is_recycled">
-      <el-button size="small" type="danger" icon="el-icon-delete"
+      <el-button size="small" class="el-icon-delete" type="danger"
                  @click="handleRowRemove(scope.row.ID)"></el-button>
     </el-tooltip>
   </div>
@@ -26,7 +26,7 @@ export default {
     scope: {
       default: null
     },
-    openEditDialog: {
+    openReplyDialog: {
       type: Function
     },
     handleRowRemove: {
@@ -40,5 +40,4 @@ export default {
 </script>
 
 <style scoped>
-
 </style>

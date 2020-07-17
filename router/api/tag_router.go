@@ -7,8 +7,7 @@ import (
 )
 
 func InitTagApiRouter(rootPath string, router *gin.Engine) {
-	tagApiRouter := router.Group(rootPath)
-	tagApiRouter.Use(middleware.JWTAuthMiddleWare()) // 加载 JWT 权限校验中间件
+	tagApiRouter := router.Group(rootPath, middleware.JWTAuthMiddleWare())
 	{
 		tagApiRouter.GET("/all_tags", api.GetAllTags)
 		tagApiRouter.GET("/tags", api.GetTagsByPage)
@@ -16,6 +15,6 @@ func InitTagApiRouter(rootPath string, router *gin.Engine) {
 		tagApiRouter.POST("/tags", api.AddTag)
 		tagApiRouter.PUT("/tags", api.UpdateTag)
 		tagApiRouter.DELETE("/tags/:id", api.DeleteTag)
-		tagApiRouter.DELETE("/tags", api.MultiDelTag)
+		tagApiRouter.DELETE("/tags", api.MultiDelTags)
 	}
 }

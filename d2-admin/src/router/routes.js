@@ -49,6 +49,24 @@ const frameIn = [
         },
         component: _import('aries/post/post')
       },
+      {
+        path: 'comment',
+        name: 'comment',
+        meta: {
+          title: '评论',
+          auth: true
+        },
+        component: _import('aries/comment/comment')
+      },
+      {
+        path: 'doc',
+        name: 'doc',
+        meta: {
+          title: 'API 文档',
+          auth: true
+        },
+        component: _import('aries/system/doc')
+      },
       // 系统 前端日志
       {
         path: 'log',

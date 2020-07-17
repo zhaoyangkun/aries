@@ -234,8 +234,7 @@ func MultiDelArticles(ctx *gin.Context) {
 // @Summary 从文件导入文章
 // @Tags 文章
 // @version 1.0
-// @Accept application/json
-// @Param file[] body form true "文件"
+// @Accept multipart/form-data
 // @Success 100 object util.Result 成功
 // @Failure 103/104 object util.Result 失败
 // @Router /api/v1/article_files [post]
@@ -250,10 +249,10 @@ func ImportArticlesFromFiles(ctx *gin.Context) {
 		return
 	}
 	files := multiForm.File["file[]"]
-	if len(files) > 10 {
+	if len(files) > 10 || len(files) == 0 {
 		ctx.JSON(http.StatusOK, util.Result{
 			Code: util.RequestError,
-			Msg:  "一次最多只能导入 10 个文件",
+			Msg:  "上传文件个数不能少于 1 个，也不能多于 10 个",
 			Data: nil,
 		})
 		return
@@ -298,7 +297,6 @@ func ImportArticlesFromFiles(ctx *gin.Context) {
 			Content: string(bytes),
 			Title:   util.GetFileNameOnly(file.Filename),
 		}
-		// 保存文章
 		err = article.SaveFromFile()
 		if err != nil {
 			log.Println("error: ", err.Error())

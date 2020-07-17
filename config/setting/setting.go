@@ -1,6 +1,7 @@
 package setting
 
 import (
+	"github.com/88250/lute"
 	ut "github.com/go-playground/universal-translator"
 	"gopkg.in/yaml.v2"
 	"io/ioutil"
@@ -41,6 +42,9 @@ var Trans ut.Translator
 
 // 全局配置
 var Config = &Setting{}
+
+// lute
+var LuteEngine = &lute.Lute{}
 
 // 读取 yaml 配置文件
 func InitSetting() {
