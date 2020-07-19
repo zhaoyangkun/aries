@@ -41,7 +41,7 @@ type CommentEditForm struct {
 	Content         string `json:"content" binding:"required,min=6,max=1200" label:"评论内容"` // 评论内容
 	MDContent       string `json:"md_content"`                                             // markdown 渲染后评论内容
 	IsRecycled      bool   `json:"is_recycled"`                                            // 是否加入回收站
-	IsChecked       bool   `json:"is_checked"`
+	IsChecked       bool   `json:"is_checked"`                                             // 是否通过审核
 }
 
 // 绑定添加评论表单数据到实体结构

@@ -51,7 +51,6 @@ func GetAllArticles(ctx *gin.Context) {
 func GetArticlesByPage(ctx *gin.Context) {
 	pageForm := form.ArticlePageForm{}
 	_ = ctx.ShouldBindQuery(&pageForm)
-	log.Println("pageForm: ", pageForm)
 	list, totalNum, err := model.Article{}.GetByPage(&pageForm.Pagination, pageForm.Key,
 		pageForm.State, pageForm.CategoryId)
 	if err != nil {

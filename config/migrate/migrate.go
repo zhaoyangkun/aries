@@ -10,5 +10,7 @@ func Migrate() {
 	db.Db.AutoMigrate(
 		&model.Article{}, &model.Category{}, &model.Comment{},
 		&model.Tag{}, &model.Theme{}, &model.User{},
+		&model.Link{}, &model.Nav{}, &model.Page{},
+		&model.SysSetting{}, &model.SysSettingItem{}, &model.ThemeSetting{},
 	)
 }
