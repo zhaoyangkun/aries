@@ -19,8 +19,8 @@ function supplementPath (menu) {
 export const menuHeader = supplementPath([
   { path: '/index', title: '首页', icon: 'home' },
   {
-    title: '内容管理',
-    icon: 'file-text-o',
+    title: '内容',
+    icon: 'file-text',
     children: [
       { path: '/category', title: '分类', icon: 'list' },
       { path: '/tag', title: '标签', icon: 'tags' },
@@ -29,7 +29,7 @@ export const menuHeader = supplementPath([
     ]
   },
   {
-    title: '系统管理',
+    title: '系统',
     icon: 'cog',
     children: [
       { path: '/doc', title: 'API 文档', icon: 'chain' }
@@ -41,8 +41,8 @@ export const menuHeader = supplementPath([
 export const menuAside = supplementPath([
   { path: '/index', title: '首页', icon: 'home' },
   {
-    title: '内容管理',
-    icon: 'file-text-o',
+    title: '内容',
+    icon: 'file-text',
     children: [
       { path: '/category', title: '分类', icon: 'list' },
       { path: '/tag', title: '标签', icon: 'tags' },
@@ -51,7 +51,7 @@ export const menuAside = supplementPath([
     ]
   },
   {
-    title: '系统管理',
+    title: '系统',
     icon: 'cog',
     children: [
       { path: '/doc', title: 'API 文档', icon: 'chain' }

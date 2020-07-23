@@ -21,7 +21,7 @@ type Comment struct {
 	RootCommentId   uint     `json:"root_comment_id"`                                  // 根评论 ID
 	ParentComment   *Comment `gorm:"foreignkey:ParentCommentId" json:"parent_comment"` // 父评论
 	ParentCommentId uint     `json:"parent_comment_id"`                                // 父评论 ID
-	Type            uint     `gorm:"type:tinyint(1);unsigned;default:0" json:"type"`   // 类型，0 表文章评论，1 表友链页评论，2 表关于页评论，3 表示自定义页面评论
+	Type            uint     `gorm:"type:tinyint(1);unsigned;default:1" json:"type"`   // 类型，1 表文章评论，2 表友链页评论，3 表关于页评论，4 表示自定义页面评论
 	Email           string   `gorm:"type:varchar(50);not null;" json:"email"`          // 邮箱
 	Url             string   `gorm:"varchar(150);not null;" json:"url"`                // 访问地址
 	NickName        string   `gorm:"varchar(50);not null;" json:"nick_name"`           // 昵称
@@ -39,12 +39,22 @@ func (Comment) GetAll() (list []Comment, err error) {
 }
 
 // 分页获取评论
-func (Comment) GetByPage(page *util.Pagination, key string, state uint) (list []Comment,
+func (Comment) GetByPage(page *util.Pagination, key string, commentType uint, state uint) (list []Comment,
 	total uint, err error) {
 	query := db.Db.Preload("Article").
 		Order("created_at desc", true).Find(&list)
 	if key != "" {
 		query = query.Where("content like concat('%',?,'%')", key)
+	}
+	if commentType > 0 {
+		switch commentType {
+		case 1:
+			query = query.Where("type = 1")
+		case 2:
+			query = query.Where("type > 1")
+		default:
+			break
+		}
 	}
 	if state > 0 {
 		switch state {

@@ -142,7 +142,26 @@ func AddCategory(ctx *gin.Context) {
 		})
 		return
 	}
-	//log.Println("addForm: ", addForm)
+	// 校验分类名称唯一性
+	existCategory, _ := model.Category{}.GetByName(addForm.Name)
+	if existCategory.Name != "" {
+		ctx.JSON(http.StatusOK, util.Result{
+			Code: util.RequestError,
+			Msg:  "分类名不能重复",
+			Data: nil,
+		})
+		return
+	}
+	// 校验分类 Url 唯一性
+	existCategory, _ = model.Category{}.GetByUrl(addForm.Url)
+	if existCategory.Url != "" {
+		ctx.JSON(http.StatusOK, util.Result{
+			Code: util.RequestError,
+			Msg:  "Url 不能重复",
+			Data: nil,
+		})
+		return
+	}
 	category := addForm.BindToModel()
 	if err := category.Create(); err != nil {
 		ctx.JSON(http.StatusOK, util.Result{
@@ -155,7 +174,7 @@ func AddCategory(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, util.Result{
 		Code: util.Success,
 		Msg:  "创建成功",
-		Data: nil,
+		Data: category,
 	})
 }
 
@@ -177,6 +196,26 @@ func UpdateCategory(ctx *gin.Context) {
 		})
 		return
 	}
+	// 校验分类名称唯一性
+	existCategory, _ := model.Category{}.GetByName(editForm.Name)
+	if existCategory.ID > 0 && existCategory.ID != editForm.ID {
+		ctx.JSON(http.StatusOK, util.Result{
+			Code: util.RequestError,
+			Msg:  "分类名不能重复",
+			Data: nil,
+		})
+		return
+	}
+	// 校验分类 Url 唯一性
+	existCategory, _ = model.Category{}.GetByUrl(editForm.Url)
+	if existCategory.ID > 0 && existCategory.ID != editForm.ID {
+		ctx.JSON(http.StatusOK, util.Result{
+			Code: util.RequestError,
+			Msg:  "Url 不能重复",
+			Data: nil,
+		})
+		return
+	}
 	category := editForm.BindToModel()
 	if err := category.Update(); err != nil {
 		ctx.JSON(http.StatusOK, util.Result{
@@ -189,7 +228,7 @@ func UpdateCategory(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, util.Result{
 		Code: util.Success,
 		Msg:  "修改成功",
-		Data: nil,
+		Data: category,
 	})
 }
 

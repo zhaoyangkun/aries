@@ -41,6 +41,9 @@
         <el-form-item>
           <el-button size="small" type="primary" @click="search"><i class="el-icon-search"></i> 搜索</el-button>
         </el-form-item>
+        <el-form-item>
+          <el-button size="small" @click="reset"><i class="el-icon-refresh"></i> 重置</el-button>
+        </el-form-item>
       </el-form>
     </d2-crud>
   </d2-container>
@@ -141,6 +144,16 @@ export default {
     // 搜索
     search () {
       this.pagination.currentPage = 1
+      this.fetchData()
+    },
+    // 重置
+    reset () {
+      this.pagination = {
+        currentPage: 1, // 页码
+        pageSize: 10, // 每页条数
+        total: 0, // 总条数
+        key: '' // 搜索关键词
+      }
       this.fetchData()
     },
     // 添加数据弹窗

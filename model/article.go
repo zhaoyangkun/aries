@@ -83,15 +83,21 @@ func (Article) GetByPage(page *util.Pagination, key string, state uint,
 	return list, total, err
 }
 
+// 根据 Url 获取文章
+func (Article) GetByUrl(url string) (article Article, err error) {
+	err = db.Db.Where("url = ?", url).First(&article).Error
+	return
+}
+
 // 添加文章
 func (article Article) Create(tagIds string) error {
-	// 若摘要为空，截取文章前 50 个字作为摘要
+	// 若摘要为空，截取文章前 100 个字作为摘要
 	if article.Summary == "" {
 		content := []rune(util.GetHtmlContent(article.MDContent))
-		if len(content) < 50 {
+		if len(content) < 100 {
 			article.Summary = string(content)
 		} else {
-			article.Summary = string(content[:50])
+			article.Summary = string(content[:100])
 		}
 	}
 	// 若图片为空，设置默认图片

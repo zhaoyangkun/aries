@@ -115,6 +115,15 @@ func AddArticle(ctx *gin.Context) {
 		})
 		return
 	}
+	existArticle, _ := model.Article{}.GetByUrl(addForm.URL)
+	if existArticle.ID > 0 {
+		ctx.JSON(http.StatusOK, util.Result{
+			Code: util.RequestError,
+			Msg:  "Url 不能重复",
+			Data: nil,
+		})
+		return
+	}
 	article := addForm.BindToModel()
 	err = article.Create(addForm.TagIds)
 	if err != nil {
@@ -148,6 +157,15 @@ func UpdateArticle(ctx *gin.Context) {
 		ctx.JSON(http.StatusOK, util.Result{
 			Code: util.RequestError,
 			Msg:  util.GetFormError(err),
+			Data: nil,
+		})
+		return
+	}
+	existArticle, _ := model.Article{}.GetByUrl(editForm.URL)
+	if existArticle.ID > 0 && existArticle.ID != editForm.ID {
+		ctx.JSON(http.StatusOK, util.Result{
+			Code: util.RequestError,
+			Msg:  "Url 不能重复",
 			Data: nil,
 		})
 		return

@@ -33,7 +33,8 @@
           </el-select>
         </el-form-item>
         <el-form-item>
-          <el-select style="width: 150px" size="small" v-model="pagination.state" clearable placeholder="请选择文章状态">
+          <el-select style="width: 150px" size="small" v-model="pagination.state" clearable
+                     placeholder="请选择文章状态">
             <el-option
               v-for="item in states"
               :key="item.value"
@@ -59,6 +60,7 @@
       title="写文章"
       :visible.sync="dialogOptions.addVisible"
       :fullscreen="dialogOptions.addFullScreen"
+      :with-header="false"
       width="80%"
     >
       <el-form ref="addForm" :model="addForm" :rules="addRules" label-width="80px">
@@ -76,13 +78,13 @@
                   :value="item.ID">
                 </el-option>
               </el-select>
+              &nbsp;<el-button size="mini" type="primary" @click="handleOpenAddDraw">新增</el-button>
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item label="标签" prop="selectTagIds">
-              <el-select size="small" multiple :multiple-limit=3
-                         v-model="addForm.selectTagIds" clearable
-                         placeholder="请选择标签">
+              <el-select size="small" filterable allow-create multiple :multiple-limit=3 v-model="addForm.selectTagIds"
+                         clearable placeholder="请选择标签" @change="selectTrigger('addForm')">
                 <el-option
                   v-for="item in tags"
                   :key="item.ID"
@@ -162,13 +164,13 @@
                   :value="item.ID">
                 </el-option>
               </el-select>
+              &nbsp;<el-button size="mini" type="primary" @click="handleOpenAddDraw">新增</el-button>
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item label="标签" prop="tag_ids">
-              <el-select size="small" multiple :multiple-limit=3
-                         v-model="editForm.selectTagIds" clearable
-                         placeholder="请选择标签">
+              <el-select size="small" filterable allow-create multiple :multiple-limit=3 v-model="editForm.selectTagIds"
+                         clearable placeholder="请选择标签" @change="selectTrigger('editForm')">
                 <el-option
                   v-for="item in tags"
                   :key="item.name"
@@ -248,10 +250,44 @@
         <div slot="tip" class="el-upload__tip">只能上传 md 格式文件，且不超过 2 MB</div>
       </el-upload>
       <el-button style="margin-top: 12px" size="small" type="success"
-                 :loading="dialogOptions.uploadLoading" @click="submitUpload">导 入</el-button>
+                 :loading="dialogOptions.uploadLoading" @click="submitUpload">导 入
+      </el-button>
       <el-button style="margin-top: 12px" size="small"
-                 @click="dialogOptions.uploadVisible=false">取 消</el-button>
+                 @click="dialogOptions.uploadVisible=false">取 消
+      </el-button>
     </el-dialog>
+
+    <!-- 添加文章抽题 -->
+    <el-drawer
+      title="添加分类"
+      :visible.sync="drawOptions.addVisible"
+      direction="rtl"
+    >
+      <el-form ref="addCategoryForm" :model="addCategoryForm" :rules="addCategoryRules" label-width="80px">
+        <el-form-item label="名称" prop="name">
+          <el-input style="width: 280px" size="small" type="text" v-model="addCategoryForm.name"></el-input>
+        </el-form-item>
+        <el-form-item label="url" prop="url">
+          <el-input style="width: 280px" size="small" type="text" v-model="addCategoryForm.url"></el-input>
+        </el-form-item>
+        <el-form-item label="父级分类" prop="parent_id">
+          <el-select size="small" v-model="addCategoryForm.parent_id" clearable placeholder="请选择父级分类">
+            <el-option
+              v-for="item in parentCategories"
+              :key="item.ID"
+              :label="item.name"
+              :value="item.ID">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" :loading="drawOptions.addBtnLoading"
+                     @click="handleCategoryAdd">保存
+          </el-button>
+          <el-button @click="drawOptions.addVisible=false">取消</el-button>
+        </el-form-item>
+      </el-form>
+    </el-drawer>
 
   </d2-container>
 </template>
@@ -264,8 +300,8 @@ import multiTag from '@/components/aries/post/multiTag'
 import state from '@/components/aries/post/state'
 import tableHandle from '@/components/aries/post/tableHandle'
 import postTitle from '@/components/aries/post/postTitle'
-import { getAllCategories } from '@/api/aries/category'
-import { getAllTags } from '@/api/aries/tag'
+import { addCategory, getAllCategories, getAllParentCategories } from '@/api/aries/category'
+import { addTag, getAllTags } from '@/api/aries/tag'
 import { addPost, deletePost, getPostsByPage, importPostFromFiles, updatePost } from '@/api/aries/post'
 
 export default {
@@ -342,6 +378,7 @@ export default {
       ],
       data: [],
       categories: [],
+      parentCategories: [],
       tags: [],
       states: [
         { name: '已发布', value: 1 },
@@ -395,13 +432,15 @@ export default {
         md_content: '',
         keywords: ''
       },
+      addCategoryForm: {
+        name: '',
+        url: '',
+        parent_id: null
+      },
       addRules: {
         user_id: [
           { required: true, trigger: 'blur', message: '用户 ID 不能为空' }
         ],
-        // category_id: [
-        //   { required: true, trigger: 'blur', message: '请选择分类' }
-        // ],
         title: [
           { required: true, trigger: 'blur', message: '请输入文章标题' },
           { max: 255, trigger: 'blur', message: 'URL 长度不能超过 255 位' }
@@ -427,9 +466,6 @@ export default {
         user_id: [
           { required: true, trigger: 'blur', message: '用户ID不能为空' }
         ],
-        // category_id: [
-        //   { required: true, trigger: 'blur', message: '请选择分类' }
-        // ],
         title: [
           { required: true, trigger: 'blur', message: '请输入文章标题' },
           { max: 255, trigger: 'blur', message: 'URL 长度不能超过 255 位' }
@@ -451,6 +487,10 @@ export default {
           { required: true, trigger: 'blur', message: '请输入文章内容' }
         ]
       },
+      addCategoryRules: {
+        name: [{ required: true, message: '请输入分类名称', trigger: 'blur' }],
+        url: [{ required: true, message: '请输入 URL', trigger: 'blur' }]
+      },
       options: {
         border: true
       },
@@ -466,6 +506,10 @@ export default {
         uploadVisible: false,
         uploadLoading: false
       },
+      drawOptions: {
+        addVisible: false,
+        addBtnLoading: false
+      },
       formOptions: {
         labelWidth: '80px',
         labelPosition: 'left',
@@ -478,6 +522,7 @@ export default {
   created () {
     this.fetchPageData()
     this.fetchCategoryData()
+    this.fetchParentCategories()
     this.fetchTagData()
   },
   methods: {
@@ -517,6 +562,16 @@ export default {
       getAllCategories(3)
         .then(res => {
           this.categories = res.data
+        })
+        .catch(() => {
+        })
+    },
+    // 获取父级分类
+    fetchParentCategories () {
+      this.parentCategories = [{ value: 0, label: '请选择父级分类' }]
+      getAllParentCategories(0)
+        .then(res => {
+          this.parentCategories = res.data
         })
         .catch(() => {
         })
@@ -673,7 +728,7 @@ export default {
             row.is_recycled = !row.is_recycled
             setTimeout(() => {
               updatePost(row)
-                .then(res => {
+                .then(() => {
                   this.$message.success('恢复成功')
                   this.fetchPageData()
                 })
@@ -693,7 +748,7 @@ export default {
             row.is_recycled = !row.is_recycled
             setTimeout(() => {
               updatePost(row)
-                .then(res => {
+                .then(() => {
                   this.$message.success('成功加入回收站')
                   this.fetchPageData()
                 })
@@ -732,7 +787,7 @@ export default {
     },
     handleExceed (files, fileList) {
       this.$message.warning(
-        `当前限制选择 10 个文件，共选择了 ${files.length + fileList.length} 个文件`
+          `当前限制选择 10 个文件，共选择了 ${files.length + fileList.length} 个文件`
       )
     },
     // 文件变动事件
@@ -776,10 +831,59 @@ export default {
           })
         this.dialogOptions.uploadLoading = false
       }, 300)
+    },
+    // 显示添加分类抽屉
+    handleOpenAddDraw () {
+      this.drawOptions.addVisible = true
+      this.resetForm('addCategoryForm')
+    },
+    // 添加分类事件
+    handleCategoryAdd () {
+      this.$refs.addCategoryForm.validate((valid) => {
+        if (valid) {
+          this.drawOptions.addBtnLoading = true
+          setTimeout(() => {
+            addCategory(this.addCategoryForm)
+              .then(res => {
+                this.$message.success(res.msg)
+                this.fetchCategoryData()
+                this.fetchParentCategories()
+                this.drawOptions.addVisible = false
+              })
+              .catch(() => {
+              })
+            this.drawOptions.addBtnLoading = false
+          }, 300)
+        }
+      })
+    },
+    // 标签改变事件
+    selectTrigger (formName) {
+      const nameList = []
+      this.parentCategories.forEach((category) => {
+        nameList.push(category.name)
+      })
+      this[`${formName}`].selectTagIds.forEach((id, i) => {
+        if (typeof (id) === 'string' && nameList.indexOf(id) === -1) {
+          addTag({
+            name: id
+          })
+            .then(res => {
+              // 用 $set 动态修改标签列表，避免视图不更新
+              this.$set(this.tags, this.tags.length, res.data)
+              this[`${formName}`].selectTagIds[i] = res.data.ID
+            })
+            .catch(() => {
+            })
+        }
+      })
     }
   }
 }
 </script>
 
-<style scoped>
+<style lang="scss">
+  :focus {
+    outline: 0;
+  }
 </style>

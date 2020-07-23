@@ -28,6 +28,12 @@ func (Tag) GetById(id string) (Tag, error) {
 	return t, err
 }
 
+// 根据名称获取标签
+func (Tag) GetByName(name string) (tag Tag, err error) {
+	err = db.Db.Where("name = ?", name).First(&tag).Error
+	return
+}
+
 // 分页获取标签
 func (tag Tag) GetByPage(page *util.Pagination, key string) ([]Tag, uint, error) {
 	var list []Tag
@@ -41,13 +47,13 @@ func (tag Tag) GetByPage(page *util.Pagination, key string) ([]Tag, uint, error)
 }
 
 // 添加标签
-func (tag Tag) Create() error {
-	return db.Db.Create(&tag).Error
+func (tag *Tag) Create() error {
+	return db.Db.Create(tag).Error
 }
 
 // 更新标签
-func (tag Tag) Update() error {
-	return db.Db.Model(&Tag{}).Updates(&tag).Error
+func (tag *Tag) Update() error {
+	return db.Db.Model(&Tag{}).Updates(tag).Error
 }
 
 // 删除标签

@@ -13,9 +13,19 @@
     >
       <el-form :inline="true" class="demo-form-inline" slot="header">
         <el-form-item>
-          <el-select style="width: 150px" size="small" v-model="pagination.state" clearable placeholder="请选择文章状态">
+          <el-select style="width: 150px" size="small" v-model="pagination.state" clearable placeholder="请选择评论状态">
             <el-option
               v-for="item in stateList"
+              :key="item.value"
+              :label="item.name"
+              :value="item.value">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item>
+          <el-select style="width: 150px" size="small" v-model="pagination.type" clearable placeholder="请选择评论类型">
+            <el-option
+              v-for="item in typeList"
               :key="item.value"
               :label="item.name"
               :value="item.value">
@@ -137,6 +147,7 @@ export default {
         pageSize: 10, // 每页条数
         total: 0, // 总条数
         state: null, // 状态
+        type: null, // 类型
         key: '' // 关键词
       },
       formOptions: {
@@ -148,6 +159,10 @@ export default {
         replyVisible: false,
         replyBtnLoading: false
       },
+      typeList: [
+        { value: 1, name: '文章评论' },
+        { value: 2, name: '页面评论' }
+      ],
       stateList: [
         { value: 1, name: '回收站' },
         { value: 2, name: '待审核' },
@@ -185,6 +200,7 @@ export default {
           page: this.pagination.currentPage,
           size: this.pagination.pageSize,
           state: this.pagination.state,
+          type: this.pagination.type,
           key: this.pagination.key
         })
           .then(res => {
@@ -219,8 +235,15 @@ export default {
       }
       this.fetchPageData()
     },
+    // 重置表单信息
+    resetForm (formName) {
+      if (this.$refs[formName] !== undefined) {
+        this.$refs[formName].resetFields()
+      }
+    },
     // 打开回复弹窗
     openReplyDialog (row) {
+      this.resetForm('replyForm')
       this.dialogOptions.replyVisible = true
       this.currRow = row
     },
@@ -236,6 +259,7 @@ export default {
       this.replyForm.content = this.$refs.editEditor.getContent()
       this.replyForm.md_content = this.$refs.editEditor.getHTML()
       this.dialogOptions.replyBtnLoading = true
+      console.log('replyForm: ', this.replyForm)
       setTimeout(() => {
         addComment(this.replyForm)
           .then(() => {

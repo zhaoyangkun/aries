@@ -41,6 +41,7 @@ func GetAllComments(ctx *gin.Context) {
 // @Param page query int false "页码"
 // @Param size query int false "每页条数"
 // @Param key query string false "关键词"
+// @Param type query string false "类型"
 // @Param state query uint false "状态"
 // @Success 100 object util.Result 成功
 // @Failure 103/104 object util.Result 失败
@@ -48,7 +49,7 @@ func GetAllComments(ctx *gin.Context) {
 func GetCommentsByPage(ctx *gin.Context) {
 	pageForm := form.CommentPageForm{}
 	_ = ctx.ShouldBindQuery(&pageForm)
-	list, total, err := model.Comment{}.GetByPage(&pageForm.Pagination, pageForm.Key, pageForm.State)
+	list, total, err := model.Comment{}.GetByPage(&pageForm.Pagination, pageForm.Key, pageForm.Type, pageForm.State)
 	if err != nil {
 		log.Println("数据库错误：", err.Error())
 		ctx.JSON(http.StatusOK, util.Result{

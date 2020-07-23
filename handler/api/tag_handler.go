@@ -110,6 +110,16 @@ func AddTag(ctx *gin.Context) {
 		})
 		return
 	}
+	// 校验标签名称唯一性
+	existTag, _ := model.Tag{}.GetByName(addForm.Name)
+	if existTag.Name != "" {
+		ctx.JSON(http.StatusOK, util.Result{
+			Code: util.RequestError,
+			Msg:  "已存在该标签，请勿重复添加",
+			Data: nil,
+		})
+		return
+	}
 	tag := addForm.BindToModel()
 	if err := tag.Create(); err != nil {
 		log.Println("Error: ", err.Error())
@@ -123,7 +133,7 @@ func AddTag(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, util.Result{
 		Code: util.Success,
 		Msg:  "添加成功",
-		Data: nil,
+		Data: tag,
 	})
 }
 
@@ -146,6 +156,16 @@ func UpdateTag(ctx *gin.Context) {
 		})
 		return
 	}
+	// 校验标签名称唯一性
+	existTag, _ := model.Tag{}.GetByName(editForm.Name)
+	if existTag.ID > 0 && existTag.ID != editForm.ID {
+		ctx.JSON(http.StatusOK, util.Result{
+			Code: util.RequestError,
+			Msg:  "标签名称不能重复",
+			Data: nil,
+		})
+		return
+	}
 	tag := editForm.BindToModel()
 	if err := tag.Update(); err != nil {
 		log.Println("Error: ", err.Error())
@@ -159,7 +179,7 @@ func UpdateTag(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, util.Result{
 		Code: util.Success,
 		Msg:  "修改成功",
-		Data: nil,
+		Data: tag,
 	})
 }
 

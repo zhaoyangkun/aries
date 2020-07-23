@@ -9,6 +9,7 @@ import (
 // 评论分页表单
 type CommentPageForm struct {
 	Key             string `form:"key"`   // 关键词
+	Type            uint   `form:"type"`  // 类型
 	State           uint   `form:"state"` // 状态
 	util.Pagination        // 分页结构
 }

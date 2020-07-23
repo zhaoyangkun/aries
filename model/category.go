@@ -83,13 +83,25 @@ func (category Category) GetAllParents(categoryType uint) (list []Category, err 
 	return
 }
 
+// 根据分类名称获取分类
+func (Category) GetByName(name string) (category Category, err error) {
+	err = db.Db.Where("name = ?", name).First(&category).Error
+	return
+}
+
+// 根据 URL 获取分类
+func (Category) GetByUrl(url string) (category Category, err error) {
+	err = db.Db.Where("url = ?", url).First(&category).Error
+	return
+}
+
 // 添加分类
-func (category Category) Create() error {
+func (category *Category) Create() error {
 	return db.Db.Create(&category).Error
 }
 
 // 修改分类
-func (category Category) Update() error {
+func (category *Category) Update() error {
 	// 使用 map 来更新，避免 gorm 默认不更新值为 nil, false, 0 的字段
 	return db.Db.Model(&category).
 		Updates(map[string]interface{}{

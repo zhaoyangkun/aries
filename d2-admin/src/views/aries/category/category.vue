@@ -41,6 +41,9 @@
         <el-form-item>
           <el-button size="small" type="primary" @click="search"><i class="el-icon-search"></i> 搜索</el-button>
         </el-form-item>
+        <el-form-item>
+          <el-button size="small" @click="reset"><i class="el-icon-refresh"></i> 重置</el-button>
+        </el-form-item>
       </el-form>
     </d2-crud>
   </d2-container>
@@ -194,6 +197,16 @@ export default {
       this.pagination.currentPage = 1
       this.fetchData()
     },
+    // 重置
+    reset () {
+      this.pagination = {
+        currentPage: 1, // 页码
+        pageSize: 10, // 每页条数
+        total: 0, // 总条数
+        key: '' // 搜索关键词
+      }
+      this.fetchData()
+    },
     // 获取父级分类
     fetchParentCategories () {
       this.parentCategories = [{ value: 0, label: '请选择父级分类' }]
@@ -237,7 +250,6 @@ export default {
     handleRowEdit (row, done) {
       this.formOptions.saveLoading = true
       const data = row.row
-      console.log('data: ', data)
       setTimeout(() => {
         updateCategory(data)
           .then(res => {
