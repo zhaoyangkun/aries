@@ -28,81 +28,39 @@
             <el-card style="border-radius: 8px">
               <h2 class="tip">Aries</h2>
               <el-form
-                ref="regForm"
+                ref="forgetForm"
                 label-position="top"
                 :rules="rules"
-                :model="regForm"
+                :model="forgetForm"
                 size="default">
-                <el-form-item prop="username">
-                  <el-input
-                    type="text"
-                    v-model="regForm.username"
-                    placeholder="用户名">
-                    <i slot="prepend" class="fa fa-user-circle-o"></i>
-                  </el-input>
-                </el-form-item>
-                <el-form-item prop="nickname">
-                  <el-input
-                    type="text"
-                    v-model="regForm.nickname"
-                    placeholder="昵称">
-                    <i slot="prepend" class="fa fa-user-o"></i>
-                  </el-input>
-                </el-form-item>
-                <el-form-item prop="pwd">
-                  <el-input
-                    type="password"
-                    v-model="regForm.pwd"
-                    placeholder="密码">
-                    <i slot="prepend" class="fa fa-key"></i>
-                  </el-input>
-                </el-form-item>
-                <el-form-item prop="second_pwd">
-                  <el-input
-                    type="password"
-                    v-model="regForm.second_pwd"
-                    placeholder="确认密码">
-                    <i slot="prepend" class="fa fa-key"></i>
-                  </el-input>
-                </el-form-item>
                 <el-form-item prop="email">
                   <el-input
                     type="email"
-                    v-model="regForm.email"
+                    v-model="forgetForm.email"
                     placeholder="邮箱">
                     <i slot="prepend" class="fa fa-envelope-o"></i>
                   </el-input>
                 </el-form-item>
-                <el-form-item prop="site_url">
-                  <el-input
-                    type="text"
-                    v-model="regForm.site_url"
-                    placeholder="网站地址">
-                    <i slot="prepend" class="fa fa-location-arrow"></i>
-                  </el-input>
-                </el-form-item>
                 <el-button
-                  size="default" :loading="btnLoading" @click="submit" @keyup.native.13="submit" type="primary"
+                  size="default"
+                  :loading="btnLoading"
+                  @click="submit"
+                  @keyup.native.13="submit"
+                  type="primary"
                   class="button-login">
-                  保存配置
+                  发送验证码
                 </el-button>
               </el-form>
             </el-card>
             <p
               class="page-login--options"
               flex="main:justify cross:center">
-              <span @click="toLogin">登录</span>
+              <span @click="$router.push('/login')"><d2-icon name="user-o"/> 登录</span>
             </p>
           </div>
         </div>
         <div class="page-login--content-footer">
           <p class="page-login--content-footer-locales">
-            <!--            <a-->
-            <!--              v-for="language in $languages"-->
-            <!--              :key="language.value"-->
-            <!--              @click="onChangeLocale(language.value)">-->
-            <!--              {{ language.label }}-->
-            <!--            </a>-->
           </p>
         </div>
       </div>
@@ -112,74 +70,31 @@
 
 <script>
 import dayjs from 'dayjs'
+import { mapActions } from 'vuex'
 import localeMixin from '@/locales/mixin.js'
-import { authRegister } from '@/api/aries/auth'
-import { getAllUsers } from '@/api/aries/user'
 
 export default {
-  name: 'register',
+  name: 'forgetPwd',
   mixins: [
     localeMixin
   ],
   data () {
-    // 自定义校验函数
-    const validatePwd = (rule, value, callback) => {
-      if (this.regForm.pwd !== value) {
-        callback(new Error('两次密码不一致！'))
-      } else {
-        callback()
-      }
-    }
     return {
-      // logo路径
-      logoPath: require('@/assets/img/logo@2x.png'),
       timeInterval: null,
       time: dayjs().format('HH:mm:ss'),
-      labelPosition: 'left',
       btnLoading: false,
-      userList: [],
       // 表单
-      regForm: {
-        username: '',
-        email: '',
-        pwd: '',
-        second_pwd: '',
-        nickname: '',
-        site_url: ''
+      forgetForm: {
+        email: ''
       },
       // 表单校验
       rules: {
-        username: [
-          { required: true, message: '请输入用户名', trigger: 'blur' },
-          { min: 3, max: 30, message: '用户名长度需在 3~30 之间', trigger: 'blur' }
-        ],
-        nickname: [
-          { required: true, message: '请输入昵称', trigger: 'blur' },
-          { min: 3, max: 30, message: '昵称长度需在 3~30 之间', trigger: 'blur' }
-        ],
         email: [
           { required: true, message: '请输入邮箱', trigger: 'blur' },
           { type: 'email', message: '邮箱格式错误', trigger: 'blur' }
-        ],
-        pwd: [
-          { required: true, message: '请输入密码', trigger: 'blur' },
-          { min: 6, max: 20, message: '密码长度需在 6~20 之间', trigger: 'blur' }
-        ],
-        second_pwd: [
-          { required: true, message: '请输入确认密码', trigger: 'blur' },
-          { min: 6, max: 20, message: '确认密码长度需在 6~20 之间', trigger: 'blur' },
-          { validator: validatePwd, trigger: 'blur' }
-        ],
-        site_url: [
-          { required: true, message: '请输入网站地址', trigger: 'blur' },
-          { max: 255, message: '网站地址长度不能超过 255', trigger: 'blur' },
-          { type: 'url', message: '请输入正确的网站地址', trigger: 'blur' }
         ]
       }
     }
-  },
-  created () {
-    this.checkFirst()
   },
   mounted () {
     this.timeInterval = setInterval(() => {
@@ -190,49 +105,34 @@ export default {
     clearInterval(this.timeInterval)
   },
   methods: {
+    ...mapActions('d2admin/account', [
+      'login'
+    ]),
     refreshTime () {
       this.time = dayjs().format('HH:mm:ss')
     },
+    // 跳转到配置页面
+    toInitSetting () {
+      if (this.userList === 0) {
+        this.$router.push('/register')
+      } else {
+        const h = this.$createElement
+        this.$notify({
+          title: '提示',
+          message: h('i', { style: 'color: #1790fe' }, '已完成初始化配置，为了帐号安全，请先登录进入后台管理进行配置'),
+          type: 'warning'
+        })
+      }
+    },
     // 提交表单
-    submit () {
-      this.$refs.regForm.validate((valid) => {
+    submit: function () {
+      this.$refs.loginForm.validate((valid) => {
         if (valid) {
           this.btnLoading = true
           setTimeout(() => {
-            // 注册
-            authRegister(this.$data.regForm)
-              .then(res => {
-                this.$message.success(res.msg)
-                this.toLogin()
-              })
-              .catch(() => {
-              })
             this.btnLoading = false
-          }, 300)
+          })
         }
-      })
-    },
-    checkFirst () {
-      getAllUsers()
-        .then(res => {
-          this.userList = res.data
-          if (this.userList.length > 0) {
-            this.$router.push('/login')
-          } else {
-            this.openInfo()
-          }
-        })
-    },
-    // 跳转到登录页面
-    toLogin () {
-      this.$router.push('/login')
-    },
-    openInfo () {
-      const h = this.$createElement
-      this.$notify({
-        title: '提示',
-        message: h('i', { style: 'color: #1790fe' }, 'Aries 博客初始化成功，请先配置博客参数，再登录'),
-        type: 'success'
       })
     }
   }
@@ -309,7 +209,7 @@ export default {
         padding: 0px 14px;
       }
 
-      .login-code {
+      .login-captcha_val {
         height: 40px - 2px;
         display: block;
         margin: 0px -20px;

@@ -5,7 +5,7 @@ import (
 	"aries/model"
 	"aries/util"
 	"github.com/gin-gonic/gin"
-	"log"
+	log "github.com/sirupsen/logrus"
 	"net/http"
 	"strconv"
 )
@@ -32,7 +32,7 @@ func GetAllCategories(ctx *gin.Context) {
 	category := model.Category{}                            // 建立 model 对象
 	categoryList, err := category.GetAllByType(uint(cType)) // 调用 model 对应方法，从数据库中获取所有分类
 	if err != nil {                                         // 异常处理
-		log.Println(err.Error())
+		log.Errorln(err.Error())
 		ctx.JSON(http.StatusOK, util.Result{
 			Code: util.ServerError,
 			Msg:  "服务器内部错误",
@@ -69,7 +69,7 @@ func GetAllParentCategories(ctx *gin.Context) {
 	category := model.Category{}
 	categoryList, err := category.GetAllParents(uint(cType))
 	if err != nil {
-		log.Println(err.Error())
+		log.Errorln(err.Error())
 		ctx.JSON(http.StatusOK, util.Result{
 			Code: util.ServerError,
 			Msg:  "服务器内部错误",

@@ -5,7 +5,7 @@ import (
 	"aries/model"
 	"aries/util"
 	"github.com/gin-gonic/gin"
-	"log"
+	log "github.com/sirupsen/logrus"
 	"net/http"
 )
 
@@ -19,7 +19,7 @@ import (
 func GetAllTags(ctx *gin.Context) {
 	list, err := model.Tag{}.GetAll()
 	if err != nil {
-		log.Println("Error: ", err.Error())
+		log.Errorln("Error: ", err.Error())
 		ctx.JSON(http.StatusOK, util.Result{
 			Code: util.ServerError,
 			Msg:  "服务器端错误",
@@ -49,7 +49,7 @@ func GetTagsByPage(ctx *gin.Context) {
 	_ = ctx.ShouldBindQuery(&pageForm)
 	list, totalNum, err := model.Tag{}.GetByPage(&pageForm.Pagination, pageForm.Key)
 	if err != nil {
-		log.Println("Error: ", err.Error())
+		log.Errorln("Error: ", err.Error())
 		ctx.JSON(http.StatusOK, util.Result{
 			Code: util.ServerError,
 			Msg:  "服务器端错误",
@@ -76,7 +76,7 @@ func GetTagById(ctx *gin.Context) {
 	id := ctx.Param("id")
 	tag, err := model.Tag{}.GetById(id)
 	if err != nil {
-		log.Println("Error: ", err.Error())
+		log.Errorln("Error: ", err.Error())
 		ctx.JSON(http.StatusOK, util.Result{
 			Code: util.ServerError,
 			Msg:  "服务器端错误",
@@ -122,7 +122,7 @@ func AddTag(ctx *gin.Context) {
 	}
 	tag := addForm.BindToModel()
 	if err := tag.Create(); err != nil {
-		log.Println("Error: ", err.Error())
+		log.Errorln("Error: ", err.Error())
 		ctx.JSON(http.StatusOK, util.Result{
 			Code: util.ServerError,
 			Msg:  "服务器端错误",
@@ -168,7 +168,7 @@ func UpdateTag(ctx *gin.Context) {
 	}
 	tag := editForm.BindToModel()
 	if err := tag.Update(); err != nil {
-		log.Println("Error: ", err.Error())
+		log.Errorln("Error: ", err.Error())
 		ctx.JSON(http.StatusOK, util.Result{
 			Code: util.ServerError,
 			Msg:  "服务器端错误",
@@ -195,7 +195,7 @@ func DeleteTag(ctx *gin.Context) {
 	id := ctx.Param("id")
 	err := model.Tag{}.DeleteById(id)
 	if err != nil {
-		log.Println("Error: ", err.Error())
+		log.Errorln("Error: ", err.Error())
 		ctx.JSON(http.StatusOK, util.Result{
 			Code: util.ServerError,
 			Msg:  "服务器端错误",
@@ -230,7 +230,7 @@ func MultiDelTags(ctx *gin.Context) {
 	}
 	err := model.Tag{}.MultiDelByIds(ids)
 	if err != nil {
-		log.Println("Error: ", err.Error())
+		log.Errorln("Error: ", err.Error())
 		ctx.JSON(http.StatusOK, util.Result{
 			Code: util.ServerError,
 			Msg:  "服务器端错误",

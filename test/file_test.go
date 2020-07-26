@@ -2,7 +2,7 @@ package test
 
 import (
 	"aries/util"
-	"log"
+	log "github.com/sirupsen/logrus"
 	"testing"
 )
 

@@ -1,7 +1,7 @@
 package test
 
 import (
-	"log"
+	log "github.com/sirupsen/logrus"
 	"strconv"
 	"testing"
 	"time"

@@ -5,8 +5,8 @@ import (
 	"aries/model"
 	"aries/util"
 	"github.com/gin-gonic/gin"
+	log "github.com/sirupsen/logrus"
 	"io/ioutil"
-	"log"
 	"net/http"
 	"path"
 )
@@ -21,7 +21,7 @@ import (
 func GetAllArticles(ctx *gin.Context) {
 	list, err := model.Article{}.GetAll()
 	if err != nil {
-		log.Println("error: ", err.Error())
+		log.Errorln("error: ", err.Error())
 		ctx.JSON(http.StatusOK, util.Result{
 			Code: util.ServerError,
 			Msg:  "服务器端错误",
@@ -54,7 +54,7 @@ func GetArticlesByPage(ctx *gin.Context) {
 	list, totalNum, err := model.Article{}.GetByPage(&pageForm.Pagination, pageForm.Key,
 		pageForm.State, pageForm.CategoryId)
 	if err != nil {
-		log.Println("error: ", err.Error())
+		log.Errorln("error: ", err.Error())
 		ctx.JSON(http.StatusOK, util.Result{
 			Code: util.ServerError,
 			Msg:  "服务器端错误",
@@ -81,7 +81,7 @@ func GetArticleById(ctx *gin.Context) {
 	id := ctx.Param("id")
 	article, err := model.Article{}.GetById(id)
 	if err != nil {
-		log.Println("error: ", err.Error())
+		log.Errorln("error: ", err.Error())
 		ctx.JSON(http.StatusOK, util.Result{
 			Code: util.ServerError,
 			Msg:  "服务器端错误",
@@ -127,7 +127,7 @@ func AddArticle(ctx *gin.Context) {
 	article := addForm.BindToModel()
 	err = article.Create(addForm.TagIds)
 	if err != nil {
-		log.Println("error: ", err.Error())
+		log.Errorln("error: ", err.Error())
 		ctx.JSON(http.StatusOK, util.Result{
 			Code: util.ServerError,
 			Msg:  "服务器端错误",
@@ -173,7 +173,7 @@ func UpdateArticle(ctx *gin.Context) {
 	article := editForm.BindToModel()
 	err = article.Update(editForm.TagIds)
 	if err != nil {
-		log.Println("error: ", err.Error())
+		log.Errorln("error: ", err.Error())
 		ctx.JSON(http.StatusOK, util.Result{
 			Code: util.ServerError,
 			Msg:  "服务器端错误",
@@ -200,6 +200,7 @@ func DeleteArticle(ctx *gin.Context) {
 	id := ctx.Param("id")
 	err := model.Article{}.DeleteById(id)
 	if err != nil {
+		log.Errorln("error: ", err.Error())
 		ctx.JSON(http.StatusOK, util.Result{
 			Code: util.ServerError,
 			Msg:  "服务器内部错误",
@@ -234,6 +235,7 @@ func MultiDelArticles(ctx *gin.Context) {
 	}
 	article := model.Article{}
 	if err := article.MultiDelByIds(ids); err != nil {
+		log.Errorln("error: ", err.Error())
 		ctx.JSON(http.StatusOK, util.Result{
 			Code: util.ServerError,
 			Msg:  "服务器端错误",
@@ -298,7 +300,7 @@ func ImportArticlesFromFiles(ctx *gin.Context) {
 		// 打开文件
 		src, err := file.Open()
 		if err != nil {
-			log.Println("error: ", err.Error())
+			log.Errorln("error: ", err.Error())
 			ctx.JSON(http.StatusOK, util.Result{
 				Code: util.ServerError,
 				Msg:  "读取文件内容失败",
@@ -307,7 +309,7 @@ func ImportArticlesFromFiles(ctx *gin.Context) {
 			return
 		}
 		// 关闭文件
-		src.Close()
+		_ = src.Close()
 		// 读取文件
 		bytes, err := ioutil.ReadAll(src)
 		article := model.Article{
@@ -316,7 +318,7 @@ func ImportArticlesFromFiles(ctx *gin.Context) {
 		}
 		err = article.SaveFromFile()
 		if err != nil {
-			log.Println("error: ", err.Error())
+			log.Errorln("error: ", err.Error())
 			ctx.JSON(http.StatusOK, util.Result{
 				Code: util.ServerError,
 				Msg:  "数据库错误",

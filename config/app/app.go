@@ -4,6 +4,7 @@ import (
 	"aries/config/db"
 	"aries/config/migrate"
 	"aries/config/setting"
+	"aries/middleware"
 	templRouter "aries/router"
 	apiRouter "aries/router/api"
 	"github.com/88250/lute"
@@ -29,10 +30,12 @@ func InitApp() *gin.Engine {
 
 	// 设置运行模式
 	gin.SetMode(setting.Config.Server.Mode)
-	// 开启日志颜色
-	gin.ForceConsoleColor()
+	//// 开启日志颜色
+	//gin.ForceConsoleColor()
 	// 获取 engine
-	router := gin.Default()
+	router := gin.New()
+	// 加载中间件
+	router.Use(middleware.LoggerMiddleWare(), gin.Recovery())
 
 	// 表单翻译参数
 	uni := ut.New(zh.New())

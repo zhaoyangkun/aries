@@ -30,8 +30,9 @@ export const menuHeader = supplementPath([
   },
   {
     title: '系统',
-    icon: 'cog',
+    icon: 'gears',
     children: [
+      { path: '/setting', title: '设置', icon: 'cog' },
       { path: '/doc', title: 'API 文档', icon: 'chain' }
     ]
   }
@@ -52,8 +53,9 @@ export const menuAside = supplementPath([
   },
   {
     title: '系统',
-    icon: 'cog',
+    icon: 'gears',
     children: [
+      { path: '/setting', title: '设置', icon: 'cog' },
       { path: '/doc', title: 'API 文档', icon: 'chain' }
     ]
   }

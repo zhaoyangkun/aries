@@ -6,7 +6,7 @@ import (
 	"aries/util"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
-	"log"
+	log "github.com/sirupsen/logrus"
 	"net/http"
 	"time"
 )
@@ -41,7 +41,7 @@ func Register(ctx *gin.Context) {
 		return
 	}
 	if err := user.Create(); err != nil { // 创建用户 + 异常处理
-		log.Println(err)
+		log.Errorln("error: ", err.Error())
 		result.Code = util.ServerError
 		result.Msg = "服务器内部错误"
 		ctx.JSON(http.StatusOK, result) // 返回 json
@@ -81,11 +81,17 @@ func Login(ctx *gin.Context) {
 		ctx.JSON(http.StatusOK, result) // 返回 json
 		return
 	}
-	user := loginForm.BindToModel()                           // 绑定表单数据到实体类
-	u, _ := user.GetByUsername()                              // 根据用户名获取用户
-	if u.Username == "" || !util.VerifyPwd(u.Pwd, user.Pwd) { // 用户名或密码错误
+	user := loginForm.BindToModel() // 绑定表单数据到实体类
+	u, _ := user.GetByUsername()    // 根据用户名获取用户
+	if u.Username == "" {           // 用户不存在
 		result.Code = util.RequestError
-		result.Msg = "用户名或密码错误"
+		result.Msg = "不存在该用户"
+		ctx.JSON(http.StatusOK, result)
+		return
+	}
+	if !util.VerifyPwd(u.Pwd, user.Pwd) { // 密码错误
+		result.Code = util.RequestError
+		result.Msg = "密码错误"
 		ctx.JSON(http.StatusOK, result) // 返回 json
 		return
 	}
@@ -100,7 +106,7 @@ func Login(ctx *gin.Context) {
 		},
 	})
 	if err != nil { // 异常处理
-		log.Println(err.Error())
+		log.Errorln("error: ", err.Error())
 		result.Code = util.ServerError
 		result.Msg = "服务器内部错误"
 		ctx.JSON(http.StatusOK, result) // 返回 json
@@ -141,4 +147,25 @@ func CreateCaptcha(ctx *gin.Context) {
 		"captcha_url": base64,
 	}
 	ctx.JSON(http.StatusOK, result) // 返回 json 数据
+}
+
+// @Summary 忘记密码
+// @Tags 授权
+// @version 1.0
+// @Accept application/json
+// @Param forgetPwdForm body form.forgetPwdForm true "忘记密码表单"
+// @Success 100 object util.Result 成功
+// @Failure 103/104 object util.Result 失败
+// @Router /api/v1/auth/forgetPwd [post]
+func ForgetPwd(ctx *gin.Context) {
+	forgetPwdForm := form.ForgetPwdForm{}
+	if err := ctx.ShouldBindJSON(&forgetPwdForm); err != nil {
+		ctx.JSON(http.StatusOK, util.Result{
+			Code: util.RequestError,
+			Msg:  util.GetFormError(err),
+			Data: nil,
+		})
+		return
+	}
+
 }

@@ -4,7 +4,7 @@ import (
 	"aries/model"
 	"aries/util"
 	"github.com/gin-gonic/gin"
-	"log"
+	log "github.com/sirupsen/logrus"
 	"net/http"
 )
 
@@ -18,7 +18,7 @@ import (
 func GetAllUsers(ctx *gin.Context) {
 	list, err := model.User{}.GetAll()
 	if err != nil {
-		log.Println("数据库错误：", err.Error())
+		log.Errorln("数据库错误：", err.Error())
 		ctx.JSON(http.StatusOK, util.Result{
 			Code: util.ServerError,
 			Msg:  "服务端错误",

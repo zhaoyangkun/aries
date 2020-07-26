@@ -7,7 +7,7 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
-	"log"
+	log "github.com/sirupsen/logrus"
 )
 
 // 数据库对象
@@ -32,7 +32,7 @@ func InitDb() {
 	//连接数据库
 	Db, err = gorm.Open("mysql", getDataSource())
 	if err != nil {
-		log.Panicln("数据库连接错误：", err.Error())
+		log.Panic("数据库连接错误：", err.Error())
 	}
 	// 设置连接池参数
 	Db.DB().SetMaxIdleConns(setting.Config.Database.MaxIdleConn)

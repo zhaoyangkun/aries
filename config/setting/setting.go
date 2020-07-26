@@ -3,9 +3,9 @@ package setting
 import (
 	"github.com/88250/lute"
 	ut "github.com/go-playground/universal-translator"
+	log "github.com/sirupsen/logrus"
 	"gopkg.in/yaml.v2"
 	"io/ioutil"
-	"log"
 	"os"
 	"path/filepath"
 	"strings"

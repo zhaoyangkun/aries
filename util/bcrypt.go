@@ -1,8 +1,8 @@
 package util
 
 import (
+	log "github.com/sirupsen/logrus"
 	"golang.org/x/crypto/bcrypt"
-	"log"
 )
 
 // 加密密码

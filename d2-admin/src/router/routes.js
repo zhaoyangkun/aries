@@ -17,6 +17,7 @@ const frameIn = [
         path: 'index',
         name: 'index',
         meta: {
+          title: '首页',
           auth: true
         },
         component: _import('system/index')
@@ -57,6 +58,15 @@ const frameIn = [
           auth: true
         },
         component: _import('aries/comment/comment')
+      },
+      {
+        path: 'setting',
+        name: 'setting',
+        meta: {
+          title: '设置',
+          auth: true
+        },
+        component: _import('aries/system/setting')
       },
       {
         path: 'doc',
@@ -104,6 +114,7 @@ const frameOut = [
     path: '/login',
     name: 'login',
     meta: {
+      title: '登录',
       auth: false // 表明无需登录验证
     },
     component: _import('aries/auth/login')
@@ -113,10 +124,21 @@ const frameOut = [
     path: '/register',
     name: 'register',
     meta: {
+      title: '初始化配置',
       auth: false // 表明无需登录验证
     },
     // component: import('@/views/aries/auth/register')
     component: _import('aries/auth/register')
+  },
+  // 忘记密码
+  {
+    path: '/forgetPwd',
+    name: 'forgetPwd',
+    meta: {
+      title: '忘记密码',
+      auth: false // 表明无需登录验证
+    },
+    component: _import('aries/auth/forgetPwd')
   }
 ]
 

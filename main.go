@@ -4,7 +4,7 @@ import (
 	"aries/config/app"
 	"aries/config/setting"
 	_ "aries/docs"
-	"log"
+	log "github.com/sirupsen/logrus"
 )
 
 // @title Gin Swagger

@@ -4,7 +4,7 @@ import (
 	"aries/config/app"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/assert/v2"
-	"log"
+	log "github.com/sirupsen/logrus"
 	"net/http"
 	"net/http/httptest"
 	"testing"

@@ -35,7 +35,8 @@ func (user User) GetAll() ([]User, error) {
 // 根据用户名和密码获取用户
 func (user User) GetByUsername() (User, error) {
 	var u User
-	err := db.Db.Where("username = ?", user.Username).First(&u).Error
+	err := db.Db.Where("username = ? or email = ?", user.Username, user.Username).
+		First(&u).Error
 	return u, err
 }
 
