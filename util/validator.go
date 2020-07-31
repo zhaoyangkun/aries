@@ -35,7 +35,7 @@ func GetFormError(err error) string {
 	if errs, ok := err.(validator.ValidationErrors); ok {
 		return transTagName(transMap, errs.Translate(setting.Trans))
 	} else {
-		return "不支持的请求数据类型，请发送 JSON 类型数据"
+		return "数据类型转换错误"
 	}
 }
 

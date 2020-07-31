@@ -13,7 +13,7 @@ type SysSetting struct {
 }
 
 // 创建系统设置
-func (s *SysSetting) Create() (err error) {
-	err = db.Db.Create(s).Error
+func (s *SysSetting) CreateOrUpdate() (err error) {
+	err = db.Db.Save(s).Error
 	return
 }

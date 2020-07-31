@@ -116,28 +116,41 @@ func (article Article) Create(tagIds string) error {
 			return err
 		}
 	}
+	// 开始事务
+	tx := db.Db.Begin()
+	defer func() {
+		if err := recover(); err != nil {
+			tx.Rollback()
+		}
+	}()
+	if err := tx.Error; err != nil {
+		return err
+	}
 	// 添加文章
-	err := db.Db.Save(&article).Error
+	err := tx.Save(&article).Error
 	if err != nil {
+		tx.Rollback()
 		return err
 	}
 	// 根据标题获取文章
-	err = db.Db.Where("title = ?", article.Title).First(&article).Error
+	err = tx.Where("title = ?", article.Title).First(&article).Error
 	if err != nil {
+		tx.Rollback()
 		return err
 	}
 	// 创建文章和标签关联
 	if tagIds != "" {
 		tagIdList := strings.Split(tagIds, ",") // 根据 , 分割成字符串数组
 		for _, tagId := range tagIdList {
-			err = db.Db.Exec("insert into tag_article (article_id,tag_id) values (?,?)",
+			err = tx.Exec("insert into `tag_article` (`article_id`,`tag_id`) values (?,?)",
 				article.ID, tagId).Error
 			if err != nil {
+				tx.Rollback()
 				return err
 			}
 		}
 	}
-	return nil
+	return tx.Commit().Error
 }
 
 // 更新文章
@@ -159,8 +172,18 @@ func (article Article) Update(tagIds string) error {
 	if article.URL == "" {
 		article.URL = strconv.FormatInt(time.Now().UnixNano()/1e6, 10)
 	}
+	// 开始事务
+	tx := db.Db.Begin()
+	defer func() {
+		if err := recover(); err != nil {
+			tx.Rollback()
+		}
+	}()
+	if err := tx.Error; err != nil {
+		return err
+	}
 	// 使用 map 来更新，避免 gorm 默认不更新值为 nil, false, 0 的字段
-	err := db.Db.Model(&Article{}).Where("id = ?", article.ID).
+	err := tx.Model(&Article{}).Where("id = ?", article.ID).
 		Updates(map[string]interface{}{
 			"category_id":        article.CategoryId,
 			"order_id":           article.OrderId,
@@ -176,12 +199,17 @@ func (article Article) Update(tagIds string) error {
 			"md_content":         article.MDContent,
 			"keywords":           article.Keywords,
 		}).Error
-	// 获取原文章记录
-	a := Article{}
 	if err != nil {
+		tx.Rollback()
 		return err
 	}
-	err = db.Db.Where("id = ?", article.ID).First(&a).Error
+	// 获取原文章记录
+	a := Article{}
+	err = tx.Where("id = ?", article.ID).First(&a).Error
+	if err != nil {
+		tx.Rollback()
+		return err
+	}
 	// 密码发生变化，更新密码
 	if a.Pwd != article.Pwd {
 		// 密码不为空，加密密码
@@ -192,28 +220,34 @@ func (article Article) Update(tagIds string) error {
 				return err
 			}
 		}
-		err = db.Db.Model(&Article{}).Where("id = ?", article.ID).
+		err = tx.Model(&Article{}).Where("id = ?", article.ID).
 			Updates(map[string]interface{}{
 				"pwd": article.Pwd,
 			}).Error
 		if err != nil {
+			tx.Rollback()
 			return err
 		}
 	}
 	// 删除标签文章表中关联记录
-	err = db.Db.Exec("delete from tag_article where article_id = ?", article.ID).Error
+	err = tx.Exec("delete from tag_article where article_id = ?", article.ID).Error
+	if err != nil {
+		tx.Rollback()
+		return err
+	}
 	// 在标签文章表中添加关联记录
 	if tagIds != "" {
 		tagIdList := strings.Split(tagIds, ",") // 根据 , 分割成字符串数组
 		for _, tagId := range tagIdList {
-			err = db.Db.Exec("insert into tag_article (article_id,tag_id) values (?,?)",
+			err = tx.Exec("insert into tag_article (article_id,tag_id) values (?,?)",
 				article.ID, tagId).Error
 			if err != nil {
+				tx.Rollback()
 				return err
 			}
 		}
 	}
-	return nil
+	return tx.Commit().Error
 }
 
 // 将文章加入回收站或恢复
@@ -238,14 +272,30 @@ func (Article) DeleteById(id string) error {
 
 // 批量删除文章
 func (Article) MultiDelByIds(ids string) error {
+	// 开始事务
+	tx := db.Db.Begin()
+	defer func() {
+		if err := recover(); err != nil {
+			tx.Rollback()
+		}
+	}()
+	if err := tx.Error; err != nil {
+		return err
+	}
 	// 删除标签文章表中的记录
 	idList := strings.Split(ids, ",")
-	err := db.Db.Exec("delete from tag_article where article_id in (?)", idList).Error
+	err := tx.Exec("delete from tag_article where article_id in (?)", idList).Error
 	if err != nil {
+		tx.Rollback()
 		return err
 	}
 	// 删除文章表中的记录
-	return db.Db.Where("id in (?)", idList).Unscoped().Delete(&Article{}).Error
+	err = tx.Where("id in (?)", idList).Unscoped().Delete(&Article{}).Error
+	if err != nil {
+		tx.Rollback()
+		return err
+	}
+	return tx.Commit().Error
 }
 
 // 从文件导入文章

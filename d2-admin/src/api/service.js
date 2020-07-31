@@ -41,14 +41,12 @@ function createService () {
           case 101:
             router.replace({
               path: `${dataAxios.data.url}`
-            }).then(r => {
-            })
+            }).then(r => {})
             break
           // code === 102 表示禁止访问
           case 102:
             // 显示错误信息
             Vue.prototype.$message.error(dataAxios.msg, { duration: 1200 })
-            // this.$message.error(dataAxios.msg)
             // 跳转到登录页面
             router.replace({
               path: '/login'
@@ -123,11 +121,10 @@ function createRequestFunction (service) {
         // 返回数据类型
         Accept: 'application/json'
       },
-      timeout: 3000,
+      timeout: 5000,
       baseURL: process.env.VUE_APP_API,
       data: {}
     }
-    // console.log('configDefault: ', configDefault)
     return service(Object.assign(configDefault, config))
   }
 }

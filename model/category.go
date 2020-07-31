@@ -114,25 +114,52 @@ func (category *Category) Update() error {
 
 // 删除分类
 func (category Category) DeleteById(id uint) error {
-	// 更新属于该分类的文章的分类 ID 为 null
-	err := db.Db.Model(&Article{}).Where("category_id = ?", id).
-		Update("category_id", nil).Error
-	if err != nil {
+	tx := db.Db.Begin()
+	defer func() {
+		if err := recover(); err != nil {
+			tx.Rollback()
+		}
+	}()
+	if err := tx.Error; err != nil {
 		return err
 	}
-	return db.Db.Where("id = ?", id).
-		Unscoped().Delete(&category).Error
+	// 更新属于该分类的文章的分类 ID 为 null
+	err := tx.Model(&Article{}).Where("category_id = ?", id).Update("category_id", nil).Error
+	if err != nil {
+		tx.Rollback()
+		return err
+	}
+	err = db.Db.Where("id = ?", id).Unscoped().Delete(&category).Error
+	if err != nil {
+		tx.Rollback()
+		return err
+	}
+	return tx.Commit().Error
 }
 
 // 批量删除分类
 func (category Category) MultiDelByIds(ids string) error {
-	idList := strings.Split(ids, ",") // 根据 , 分割成字符串数组
-	// 更新属于该分类的文章的分类 ID 为 null
-	err := db.Db.Model(&Article{}).Where("category_id in (?)", idList).
-		Update("category_id", nil).Error
-	if err != nil {
+	tx := db.Db.Begin()
+	defer func() {
+		if err := recover(); err != nil {
+			tx.Rollback()
+		}
+	}()
+	if err := tx.Error; err != nil {
 		return err
 	}
-	return db.Db.Where("id in (?)", idList).
-		Unscoped().Delete(&category).Error
+	idList := strings.Split(ids, ",") // 根据 , 分割成字符串数组
+	// 更新属于该分类的文章的分类 ID 为 null
+	err := tx.Model(&Article{}).Where("category_id in (?)", idList).
+		Update("category_id", nil).Error
+	if err != nil {
+		tx.Rollback()
+		return err
+	}
+	err = db.Db.Where("id in (?)", idList).Unscoped().Delete(&category).Error
+	if err != nil {
+		tx.Rollback()
+		return err
+	}
+	return tx.Commit().Error
 }

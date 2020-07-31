@@ -58,23 +58,55 @@ func (tag *Tag) Update() error {
 
 // 删除标签
 func (Tag) DeleteById(id string) error {
+	// 开启事务
+	tx := db.Db.Begin()
+	defer func() {
+		if r := recover(); r != nil {
+			tx.Rollback()
+		}
+	}()
+	if err := tx.Error; err != nil {
+		return err
+	}
 	// 删除标签文章表中的记录
-	err := db.Db.Exec("delete from tag_article where tag_id = ?", id).Error
+	err := tx.Exec("delete from tag_article where tag_id = ?", id).Error
 	if err != nil {
+		tx.Rollback()
 		return err
 	}
 	// 删除标签表中的记录
-	return db.Db.Where("id = ?", id).Unscoped().Delete(&Tag{}).Error
+	err = tx.Where("id = ?", id).Unscoped().Delete(&Tag{}).Error
+	if err != nil {
+		tx.Rollback()
+		return err
+	}
+	return tx.Commit().Error
 }
 
 // 批量删除标签
 func (Tag) MultiDelByIds(ids string) error {
+	// 开始事务
+	tx := db.Db.Begin()
+	defer func() {
+		if err := recover(); err != nil {
+			tx.Rollback()
+		}
+	}()
+	if err := tx.Error; err != nil {
+		return err
+	}
 	idList := strings.Split(ids, ",") // 根据 , 分割成字符串数组
 	// 删除标签文章表中的记录
-	err := db.Db.Exec("delete from tag_article where tag_id in (?)", idList).Error
+	err := tx.Exec("delete from tag_article where tag_id in (?)", idList).Error
 	if err != nil {
+		tx.Rollback()
 		return err
 	}
 	// 删除标签表中的记录
-	return db.Db.Where("id in (?)", idList).Unscoped().Delete(&Tag{}).Error
+	err = db.Db.Where("id in (?)", idList).Unscoped().Delete(&Tag{}).Error
+	if err != nil {
+		tx.Rollback()
+		return err
+	}
+	return tx.Commit().Error
 }

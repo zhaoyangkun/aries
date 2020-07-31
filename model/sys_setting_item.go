@@ -3,6 +3,7 @@ package model
 import (
 	"aries/config/db"
 	"github.com/jinzhu/gorm"
+	"strconv"
 )
 
 // 系统设置条目结构
@@ -13,8 +14,38 @@ type SysSettingItem struct {
 	Val   string `gorm:"varchar(255);not null;" json:"val"` // 值
 }
 
+// 根据设置名称获取系统设置条目
+func (SysSettingItem) GetBySysSettingName(settingName string) (map[string]string, error) {
+	var sysSetting SysSetting
+	var itemList []SysSettingItem
+	var err error
+	result := map[string]string{}
+	if settingName != "" {
+		err = db.Db.Where("name = ?", settingName).First(&sysSetting).Error
+		if err != nil {
+			return result, err
+		}
+		err = db.Db.Where("sys_id = ?", sysSetting.ID).Find(&itemList).Error
+		if err != nil {
+			return result, err
+		}
+	} else {
+		err = db.Db.Find(&itemList).Error
+		if err != nil {
+			return result, err
+		}
+	}
+	for _, item := range itemList {
+		result[item.Key] = item.Val
+	}
+	if len(itemList) > 0 {
+		result["sys_id"] = strconv.Itoa(int(sysSetting.ID))
+	}
+	return result, err
+}
+
 // 批量创建设置条目
-func (SysSettingItem) MultiCreate(itemList []SysSettingItem) error {
+func (SysSettingItem) MultiCreateOrUpdate(sysId uint, itemList []SysSettingItem) error {
 	// 开启事务
 	tx := db.Db.Begin()
 	defer func() {
@@ -25,11 +56,28 @@ func (SysSettingItem) MultiCreate(itemList []SysSettingItem) error {
 	if err := tx.Error; err != nil {
 		return err
 	}
-	// 批量插入
-	for _, item := range itemList {
-		if err := tx.Create(&item).Error; err != nil {
-			tx.Rollback()
-			return err
+	count := 0
+	err := tx.Model(&SysSettingItem{}).Where("sys_id = ?", sysId).Count(&count).Error
+	if err != nil {
+		tx.Rollback()
+		return err
+	}
+	if count > 0 {
+		for _, item := range itemList {
+			err := tx.Model(&SysSettingItem{}).Where("`sys_id` = ? and `key` = ?", item.SysId, item.Key).
+				Update("val", item.Val).Error
+			if err != nil {
+				tx.Rollback()
+				return err
+			}
+		}
+	} else {
+		for _, item := range itemList {
+			err := tx.Create(&item).Error
+			if err != nil {
+				tx.Rollback()
+				return err
+			}
 		}
 	}
 	return tx.Commit().Error

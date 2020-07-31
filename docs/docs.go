@@ -422,6 +422,41 @@ var doc = `{
                 }
             }
         },
+        "/api/v1/auth/forgetPwd": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "授权"
+                ],
+                "summary": "忘记密码",
+                "parameters": [
+                    {
+                        "description": "忘记密码表单",
+                        "name": "forgetPwdForm",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/form.ForgetPwdForm"
+                        }
+                    }
+                ],
+                "responses": {
+                    "100": {
+                        "description": "Continue",
+                        "schema": {
+                            "$ref": "#/definitions/util.Result"
+                        }
+                    },
+                    "104": {
+                        "schema": {
+                            "$ref": "#/definitions/util.Result"
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/auth/login": {
             "post": {
                 "consumes": [
@@ -702,6 +737,12 @@ var doc = `{
                         "in": "query"
                     },
                     {
+                        "type": "string",
+                        "description": "类型",
+                        "name": "type",
+                        "in": "query"
+                    },
+                    {
                         "type": "integer",
                         "description": "状态",
                         "name": "state",
@@ -851,6 +892,30 @@ var doc = `{
                 }
             }
         },
+        "/api/v1/email": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "系统设置"
+                ],
+                "summary": "发送邮件",
+                "responses": {
+                    "100": {
+                        "description": "Continue",
+                        "schema": {
+                            "$ref": "#/definitions/util.Result"
+                        }
+                    },
+                    "104": {
+                        "schema": {
+                            "$ref": "#/definitions/util.Result"
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/parent_categories": {
             "get": {
                 "consumes": [
@@ -867,6 +932,73 @@ var doc = `{
                         "name": "category_type",
                         "in": "query",
                         "required": true
+                    }
+                ],
+                "responses": {
+                    "100": {
+                        "description": "Continue",
+                        "schema": {
+                            "$ref": "#/definitions/util.Result"
+                        }
+                    },
+                    "104": {
+                        "schema": {
+                            "$ref": "#/definitions/util.Result"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/smtp": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "系统设置"
+                ],
+                "summary": "保存 SMTP 服务配置信息",
+                "parameters": [
+                    {
+                        "description": "SMTP 表单",
+                        "name": "emailForm",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/form.EmailForm"
+                        }
+                    }
+                ],
+                "responses": {
+                    "100": {
+                        "description": "Continue",
+                        "schema": {
+                            "$ref": "#/definitions/util.Result"
+                        }
+                    },
+                    "104": {
+                        "schema": {
+                            "$ref": "#/definitions/util.Result"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/sys_setting_items": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "系统设置"
+                ],
+                "summary": "获取设置条目",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "设置名称",
+                        "name": "name",
+                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -1388,6 +1520,7 @@ var doc = `{
                     "type": "integer"
                 },
                 "is_checked": {
+                    "description": "是否通过审核",
                     "type": "boolean"
                 },
                 "is_recycled": {
@@ -1412,6 +1545,56 @@ var doc = `{
                 },
                 "url": {
                     "description": "访问地址",
+                    "type": "string"
+                }
+            }
+        },
+        "form.EmailForm": {
+            "type": "object",
+            "required": [
+                "account",
+                "address",
+                "port",
+                "protocol",
+                "pwd",
+                "sender",
+                "type_name"
+            ],
+            "properties": {
+                "account": {
+                    "type": "string"
+                },
+                "address": {
+                    "type": "string"
+                },
+                "port": {
+                    "type": "string"
+                },
+                "protocol": {
+                    "type": "string"
+                },
+                "pwd": {
+                    "type": "string"
+                },
+                "sender": {
+                    "type": "string"
+                },
+                "sys_id": {
+                    "type": "string"
+                },
+                "type_name": {
+                    "type": "string"
+                }
+            }
+        },
+        "form.ForgetPwdForm": {
+            "type": "object",
+            "required": [
+                "email"
+            ],
+            "properties": {
+                "email": {
+                    "description": "邮箱",
                     "type": "string"
                 }
             }
@@ -1447,13 +1630,19 @@ var doc = `{
             "type": "object",
             "required": [
                 "email",
+                "nickname",
                 "pwd",
                 "second_pwd",
+                "site_url",
                 "username"
             ],
             "properties": {
                 "email": {
                     "description": "邮箱",
+                    "type": "string"
+                },
+                "nickname": {
+                    "description": "用户名",
                     "type": "string"
                 },
                 "pwd": {
@@ -1462,6 +1651,10 @@ var doc = `{
                 },
                 "second_pwd": {
                     "description": "确认密码",
+                    "type": "string"
+                },
+                "site_url": {
+                    "description": "网址",
                     "type": "string"
                 },
                 "username": {

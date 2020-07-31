@@ -153,7 +153,7 @@ func CreateCaptcha(ctx *gin.Context) {
 // @Tags 授权
 // @version 1.0
 // @Accept application/json
-// @Param forgetPwdForm body form.forgetPwdForm true "忘记密码表单"
+// @Param forgetPwdForm body form.ForgetPwdForm true "忘记密码表单"
 // @Success 100 object util.Result 成功
 // @Failure 103/104 object util.Result 失败
 // @Router /api/v1/auth/forgetPwd [post]
