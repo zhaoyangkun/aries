@@ -21,11 +21,11 @@ func (SysSettingItem) GetBySysSettingName(settingName string) (map[string]string
 	var err error
 	result := map[string]string{}
 	if settingName != "" {
-		err = db.Db.Where("name = ?", settingName).First(&sysSetting).Error
+		err = db.Db.Where("`name` = ?", settingName).First(&sysSetting).Error
 		if err != nil {
 			return result, err
 		}
-		err = db.Db.Where("sys_id = ?", sysSetting.ID).Find(&itemList).Error
+		err = db.Db.Where("`sys_id` = ?", sysSetting.ID).Find(&itemList).Error
 		if err != nil {
 			return result, err
 		}
@@ -65,7 +65,7 @@ func (SysSettingItem) MultiCreateOrUpdate(sysId uint, itemList []SysSettingItem)
 	if count > 0 {
 		for _, item := range itemList {
 			err := tx.Model(&SysSettingItem{}).Where("`sys_id` = ? and `key` = ?", item.SysId, item.Key).
-				Update("val", item.Val).Error
+				Update("`val`", item.Val).Error
 			if err != nil {
 				tx.Rollback()
 				return err

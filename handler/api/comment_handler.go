@@ -19,13 +19,12 @@ import (
 func GetAllComments(ctx *gin.Context) {
 	list, err := model.Comment{}.GetAll()
 	if err != nil {
-		log.Errorln("数据库错误：", err.Error())
+		log.Error("error: ", err.Error())
 		ctx.JSON(http.StatusOK, util.Result{
 			Code: util.ServerError,
-			Msg:  "数据库错误",
+			Msg:  "服务器端错误",
 			Data: nil,
 		})
-		return
 	}
 	ctx.JSON(http.StatusOK, util.Result{
 		Code: util.Success,
@@ -51,13 +50,12 @@ func GetCommentsByPage(ctx *gin.Context) {
 	_ = ctx.ShouldBindQuery(&pageForm)
 	list, total, err := model.Comment{}.GetByPage(&pageForm.Pagination, pageForm.Key, pageForm.Type, pageForm.State)
 	if err != nil {
-		log.Errorln("数据库错误：", err.Error())
+		log.Error("error: ", err.Error())
 		ctx.JSON(http.StatusOK, util.Result{
 			Code: util.ServerError,
-			Msg:  "数据库错误",
+			Msg:  "服务器端错误",
 			Data: nil,
 		})
-		return
 	}
 	ctx.JSON(http.StatusOK, util.Result{
 		Code: util.Success,
@@ -87,13 +85,12 @@ func AddComment(ctx *gin.Context) {
 	}
 	comment := addForm.BindToModel()
 	if err := comment.Create(); err != nil {
-		log.Errorln("数据库错误：", err.Error())
+		log.Error("error: ", err.Error())
 		ctx.JSON(http.StatusOK, util.Result{
 			Code: util.ServerError,
-			Msg:  "数据库错误",
+			Msg:  "服务器端错误",
 			Data: nil,
 		})
-		return
 	}
 	ctx.JSON(http.StatusOK, util.Result{
 		Code: util.Success,
@@ -122,13 +119,12 @@ func UpdateComment(ctx *gin.Context) {
 	}
 	comment := editForm.BindToModel()
 	if err := comment.Update(); err != nil {
-		log.Errorln("数据库错误：", err.Error())
+		log.Error("error: ", err.Error())
 		ctx.JSON(http.StatusOK, util.Result{
 			Code: util.ServerError,
-			Msg:  "数据库错误",
+			Msg:  "服务器端错误",
 			Data: nil,
 		})
-		return
 	}
 	ctx.JSON(http.StatusOK, util.Result{
 		Code: util.Success,
@@ -149,13 +145,12 @@ func DeleteComment(ctx *gin.Context) {
 	id := ctx.Param("id")
 	err := model.Comment{}.DeleteById(id)
 	if err != nil {
-		log.Errorln("数据库错误：", err.Error())
+		log.Error("error: ", err.Error())
 		ctx.JSON(http.StatusOK, util.Result{
 			Code: util.ServerError,
-			Msg:  "数据库错误",
+			Msg:  "服务器端错误",
 			Data: nil,
 		})
-		return
 	}
 	ctx.JSON(http.StatusOK, util.Result{
 		Code: util.Success,
@@ -184,13 +179,12 @@ func MultiDelComments(ctx *gin.Context) {
 	}
 	err := model.Comment{}.MultiDelByIds(ids)
 	if err != nil {
-		log.Errorln("数据库错误：", err.Error())
+		log.Error("error: ", err.Error())
 		ctx.JSON(http.StatusOK, util.Result{
 			Code: util.ServerError,
-			Msg:  "数据库错误",
+			Msg:  "服务器端错误",
 			Data: nil,
 		})
-		return
 	}
 	ctx.JSON(http.StatusOK, util.Result{
 		Code: util.Success,

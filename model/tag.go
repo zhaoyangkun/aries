@@ -24,13 +24,13 @@ func (Tag) GetAll() ([]Tag, error) {
 // 根据主键获取标签
 func (Tag) GetById(id string) (Tag, error) {
 	var t Tag
-	err := db.Db.Where("id = ?", id).First(&t).Error
+	err := db.Db.Where("`id` = ?", id).First(&t).Error
 	return t, err
 }
 
 // 根据名称获取标签
 func (Tag) GetByName(name string) (tag Tag, err error) {
-	err = db.Db.Where("name = ?", name).First(&tag).Error
+	err = db.Db.Where("`name` = ?", name).First(&tag).Error
 	return
 }
 
@@ -40,7 +40,7 @@ func (tag Tag) GetByPage(page *util.Pagination, key string) ([]Tag, uint, error)
 	query := db.Db.Preload("ArticleList").Model(&Tag{}).
 		Order("created_at desc", true)
 	if key != "" {
-		query = query.Where("name like concat('%',?,'%')", key)
+		query = query.Where("`name` like concat('%',?,'%')", key)
 	}
 	total, err := util.ToPage(page, query, &list)
 	return list, total, err
@@ -69,13 +69,13 @@ func (Tag) DeleteById(id string) error {
 		return err
 	}
 	// 删除标签文章表中的记录
-	err := tx.Exec("delete from tag_article where tag_id = ?", id).Error
+	err := tx.Exec("delete from `tag_article` where `tag_id` = ?", id).Error
 	if err != nil {
 		tx.Rollback()
 		return err
 	}
 	// 删除标签表中的记录
-	err = tx.Where("id = ?", id).Unscoped().Delete(&Tag{}).Error
+	err = tx.Where("`id` = ?", id).Unscoped().Delete(&Tag{}).Error
 	if err != nil {
 		tx.Rollback()
 		return err
@@ -97,13 +97,13 @@ func (Tag) MultiDelByIds(ids string) error {
 	}
 	idList := strings.Split(ids, ",") // 根据 , 分割成字符串数组
 	// 删除标签文章表中的记录
-	err := tx.Exec("delete from tag_article where tag_id in (?)", idList).Error
+	err := tx.Exec("delete from `tag_article` where `tag_id` in (?)", idList).Error
 	if err != nil {
 		tx.Rollback()
 		return err
 	}
 	// 删除标签表中的记录
-	err = db.Db.Where("id in (?)", idList).Unscoped().Delete(&Tag{}).Error
+	err = db.Db.Where("`id` in (?)", idList).Unscoped().Delete(&Tag{}).Error
 	if err != nil {
 		tx.Rollback()
 		return err

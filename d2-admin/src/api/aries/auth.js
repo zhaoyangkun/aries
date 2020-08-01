@@ -25,3 +25,21 @@ export function createCaptcha () {
     method: 'get' // 请求类型
   })
 }
+
+// 忘记密码
+export function forgetPwd (data) {
+  return request({
+    url: '/auth/forget_pwd',
+    method: 'post',
+    data: data
+  })
+}
+
+// 重置密码
+export function resetPwd (data) {
+  return request({
+    url: '/auth/reset_pwd',
+    method: 'post',
+    data: data
+  })
+}

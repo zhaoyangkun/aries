@@ -63,7 +63,6 @@
                   size="default"
                   :loading="btnLoading"
                   @click="submit"
-                  @keyup.native.13="submit"
                   type="primary"
                   class="button-login">
                   登录
@@ -96,15 +95,11 @@
 <script>
 import dayjs from 'dayjs'
 import { mapActions } from 'vuex'
-import localeMixin from '@/locales/mixin.js'
 import { createCaptcha } from '@/api/aries/auth'
 import { getAllUsers } from '@/api/aries/user'
 
 export default {
   name: 'login',
-  mixins: [
-    localeMixin
-  ],
   data () {
     return {
       // logo路径

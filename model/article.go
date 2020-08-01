@@ -85,7 +85,7 @@ func (Article) GetByPage(page *util.Pagination, key string, state uint,
 
 // 根据 Url 获取文章
 func (Article) GetByUrl(url string) (article Article, err error) {
-	err = db.Db.Where("url = ?", url).First(&article).Error
+	err = db.Db.Where("`url` = ?", url).First(&article).Error
 	return
 }
 
@@ -267,7 +267,7 @@ func (Article) DeleteById(id string) error {
 		return err
 	}
 	// 删除文章表中的记录
-	return db.Db.Where("id = ?", id).Unscoped().Delete(&Article{}).Error
+	return db.Db.Where("`id` = ?", id).Unscoped().Delete(&Article{}).Error
 }
 
 // 批量删除文章

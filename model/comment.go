@@ -86,11 +86,11 @@ func (comment Comment) Update() error {
 
 // 删除评论
 func (Comment) DeleteById(id string) error {
-	return db.Db.Where("id = ?", id).Unscoped().Delete(&Comment{}).Error
+	return db.Db.Where("`id` = ?", id).Unscoped().Delete(&Comment{}).Error
 }
 
 // 批量删除评论
 func (Comment) MultiDelByIds(ids string) error {
 	idList := strings.Split(ids, ",")
-	return db.Db.Where("id in (?)", idList).Unscoped().Delete(&Comment{}).Error
+	return db.Db.Where("`id` in (?)", idList).Unscoped().Delete(&Comment{}).Error
 }

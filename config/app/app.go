@@ -8,6 +8,7 @@ import (
 	templRouter "aries/router"
 	apiRouter "aries/router/api"
 	"github.com/88250/lute"
+	"github.com/gin-contrib/cache/persistence"
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
 	"github.com/go-playground/locales/zh"
@@ -15,6 +16,7 @@ import (
 	"github.com/go-playground/validator/v10"
 	translations "github.com/go-playground/validator/v10/translations/zh"
 	"reflect"
+	"time"
 )
 
 // 初始化 gin
@@ -36,6 +38,8 @@ func InitApp() *gin.Engine {
 	router := gin.New()
 	// 加载中间件
 	router.Use(middleware.LoggerMiddleWare(), gin.Recovery())
+	// 初始化缓存
+	setting.Cache = persistence.NewInMemoryStore(time.Hour * 1)
 
 	// 表单翻译参数
 	uni := ut.New(zh.New())

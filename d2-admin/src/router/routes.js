@@ -127,7 +127,6 @@ const frameOut = [
       title: '初始化配置',
       auth: false // 表明无需登录验证
     },
-    // component: import('@/views/aries/auth/register')
     component: _import('aries/auth/register')
   },
   // 忘记密码
@@ -139,6 +138,16 @@ const frameOut = [
       auth: false // 表明无需登录验证
     },
     component: _import('aries/auth/forgetPwd')
+  },
+  // 重置密码
+  {
+    path: '/resetPwd',
+    name: 'resetPwd',
+    meta: {
+      title: '忘记密码',
+      auth: false // 表明无需登录验证
+    },
+    component: _import('aries/auth/resetPwd')
   }
 ]
 

@@ -2,6 +2,7 @@ package setting
 
 import (
 	"github.com/88250/lute"
+	"github.com/gin-contrib/cache/persistence"
 	ut "github.com/go-playground/universal-translator"
 	log "github.com/sirupsen/logrus"
 	"gopkg.in/yaml.v2"
@@ -15,6 +16,7 @@ import (
 type Setting struct {
 	Server   server   `yaml:"server"`
 	Database database `yaml:"db"`
+	SMTP     smtp     `yaml:"smtp"`
 }
 
 // 项目配置结构
@@ -37,6 +39,14 @@ type database struct {
 	MaxOpenConn int    `yaml:"max_open_conn"` // 最大打开连接数
 }
 
+// 忘记密码 smtp 信息
+type smtp struct {
+	Address  string `yaml:"address"`
+	Port     int    `yaml:"port"`
+	Account  string `yaml:"account"`
+	Password string `yaml:"password"`
+}
+
 // 翻译器
 var Trans ut.Translator
 
@@ -45,6 +55,9 @@ var Config = &Setting{}
 
 // lute
 var LuteEngine = &lute.Lute{}
+
+// Cache
+var Cache = &persistence.InMemoryStore{}
 
 // 读取 yaml 配置文件
 func InitSetting() {

@@ -1,6 +1,8 @@
 package form
 
-import "aries/model"
+import (
+	"aries/model"
+)
 
 // 登录表单
 type LoginForm struct {
@@ -22,7 +24,15 @@ type RegisterForm struct {
 
 // 忘记密码表单
 type ForgetPwdForm struct {
-	Email string `json:"email" binding:"required,max=30,email" label:"邮箱"` // 邮箱
+	Email string `json:"email" binding:"required,max=30,email" label:"邮箱"`
+}
+
+// 重置密码表单
+type ResetPwdForm struct {
+	Email      string `json:"email" binding:"required,max=30,email" label:"邮箱"`
+	Pwd        string `json:"pwd" binding:"required,min=6,max=20" label:"密码"`
+	ConfirmPwd string `json:"confirm_pwd" binding:"required,min=6,max=20,eqfield=Pwd" label:"确认密码"`
+	VerifyCode string `json:"verify_code" binding:"required,min=6,max=6" label:"验证码"`
 }
 
 // 绑定登录表单到实体结构
@@ -40,7 +50,13 @@ func (form RegisterForm) BindToModel() model.User {
 		Nickname: form.Nickname,
 		Pwd:      form.Pwd,
 		Email:    form.Email,
-		SiteUrl:  form.SiteUrl,
+	}
+}
+
+func (form ResetPwdForm) BindToModel() model.User {
+	return model.User{
+		Pwd:   form.Pwd,
+		Email: form.Email,
 	}
 }
 

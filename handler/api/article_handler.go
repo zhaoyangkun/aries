@@ -203,7 +203,7 @@ func DeleteArticle(ctx *gin.Context) {
 		log.Errorln("error: ", err.Error())
 		ctx.JSON(http.StatusOK, util.Result{
 			Code: util.ServerError,
-			Msg:  "服务器内部错误",
+			Msg:  "服务器端错误",
 			Data: nil,
 		})
 		return
@@ -321,7 +321,7 @@ func ImportArticlesFromFiles(ctx *gin.Context) {
 			log.Errorln("error: ", err.Error())
 			ctx.JSON(http.StatusOK, util.Result{
 				Code: util.ServerError,
-				Msg:  "数据库错误",
+				Msg:  "服务器端错误",
 				Data: nil,
 			})
 			return

@@ -77,13 +77,12 @@ func SaveSMTP(ctx *gin.Context) {
 	}
 	err = model.SysSettingItem{}.MultiCreateOrUpdate(sysSetting.ID, itemList)
 	if err != nil {
-		log.Errorln("数据库错误: ", err.Error())
+		log.Error("error: ", err.Error())
 		ctx.JSON(http.StatusOK, util.Result{
 			Code: util.ServerError,
 			Msg:  "服务器端错误",
 			Data: nil,
 		})
-		return
 	}
 	ctx.JSON(http.StatusOK, util.Result{
 		Code: util.Success,
@@ -112,15 +111,13 @@ func SendTestEmail(ctx *gin.Context) {
 	}
 	emailSetting, err := model.SysSettingItem{}.GetBySysSettingName("邮件设置")
 	if err != nil {
-		log.Error("数据库错误：", err.Error())
+		log.Error("error: ", err.Error())
 		ctx.JSON(http.StatusOK, util.Result{
 			Code: util.ServerError,
 			Msg:  "服务器端错误",
 			Data: nil,
 		})
-		return
 	}
-	log.Println("emailSetting: ", emailSetting)
 	if len(emailSetting) < 8 {
 		ctx.JSON(http.StatusOK, util.Result{
 			Code: util.RequestError,

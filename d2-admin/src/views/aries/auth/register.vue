@@ -82,7 +82,7 @@
                   </el-input>
                 </el-form-item>
                 <el-button
-                  size="default" :loading="btnLoading" @click="submit" @keyup.native.13="submit" type="primary"
+                  size="default" :loading="btnLoading" @click="submit" type="primary"
                   class="button-login">
                   保存配置
                 </el-button>
@@ -91,7 +91,7 @@
             <p
               class="page-login--options"
               flex="main:justify cross:center">
-              <span @click="toLogin">登录</span>
+              <span @click="toLogin"><d2-icon name="user"/> 登录</span>
             </p>
           </div>
         </div>
@@ -112,15 +112,11 @@
 
 <script>
 import dayjs from 'dayjs'
-import localeMixin from '@/locales/mixin.js'
 import { authRegister } from '@/api/aries/auth'
 import { getAllUsers } from '@/api/aries/user'
 
 export default {
   name: 'register',
-  mixins: [
-    localeMixin
-  ],
   data () {
     // 自定义校验函数
     const validatePwd = (rule, value, callback) => {
@@ -131,8 +127,6 @@ export default {
       }
     }
     return {
-      // logo路径
-      logoPath: require('@/assets/img/logo@2x.png'),
       timeInterval: null,
       time: dayjs().format('HH:mm:ss'),
       labelPosition: 'left',
@@ -219,21 +213,18 @@ export default {
           if (this.userList.length > 0) {
             this.$router.push('/login')
           } else {
-            this.openInfo()
+            const h = this.$createElement
+            this.$notify({
+              title: '提示',
+              message: h('i', { style: 'color: #1790fe' }, 'Aries 博客初始化成功，请先配置博客参数，再登录'),
+              type: 'success'
+            })
           }
         })
     },
     // 跳转到登录页面
     toLogin () {
       this.$router.push('/login')
-    },
-    openInfo () {
-      const h = this.$createElement
-      this.$notify({
-        title: '提示',
-        message: h('i', { style: 'color: #1790fe' }, 'Aries 博客初始化成功，请先配置博客参数，再登录'),
-        type: 'success'
-      })
     }
   }
 }

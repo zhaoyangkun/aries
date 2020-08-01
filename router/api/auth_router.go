@@ -11,5 +11,7 @@ func InitAuthApiRouter(rootPath string, router *gin.Engine) {
 		authApiRouter.POST("/auth/login", api.Login)
 		authApiRouter.POST("/auth/register", api.Register)
 		authApiRouter.GET("/auth/captcha", api.CreateCaptcha)
+		authApiRouter.POST("/auth/forget_pwd", api.ForgetPwd)
+		authApiRouter.POST("/auth/reset_pwd", api.ResetPwd)
 	}
 }

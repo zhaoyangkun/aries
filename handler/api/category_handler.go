@@ -32,10 +32,10 @@ func GetAllCategories(ctx *gin.Context) {
 	category := model.Category{}                            // 建立 model 对象
 	categoryList, err := category.GetAllByType(uint(cType)) // 调用 model 对应方法，从数据库中获取所有分类
 	if err != nil {                                         // 异常处理
-		log.Errorln(err.Error())
+		log.Error("error: ", err.Error())
 		ctx.JSON(http.StatusOK, util.Result{
 			Code: util.ServerError,
-			Msg:  "服务器内部错误",
+			Msg:  "服务器端错误",
 			Data: nil,
 		}) // 返回 json
 		return
@@ -69,10 +69,10 @@ func GetAllParentCategories(ctx *gin.Context) {
 	category := model.Category{}
 	categoryList, err := category.GetAllParents(uint(cType))
 	if err != nil {
-		log.Errorln(err.Error())
+		log.Error("error: ", err.Error())
 		ctx.JSON(http.StatusOK, util.Result{
 			Code: util.ServerError,
-			Msg:  "服务器内部错误",
+			Msg:  "服务器端错误",
 			Data: nil,
 		})
 		return
@@ -110,9 +110,10 @@ func GetCategoriesByPage(ctx *gin.Context) {
 	categoryList, totalNum, err := category.GetByPage(&pageForm.Pagination, pageForm.Key,
 		*pageForm.CategoryType)
 	if err != nil {
+		log.Error("error: ", err.Error())
 		ctx.JSON(http.StatusOK, util.Result{
 			Code: util.ServerError,
-			Msg:  "服务器错误",
+			Msg:  "服务器端错误",
 			Data: nil,
 		})
 		return
@@ -164,12 +165,12 @@ func AddCategory(ctx *gin.Context) {
 	}
 	category := addForm.BindToModel()
 	if err := category.Create(); err != nil {
+		log.Error("error: ", err.Error())
 		ctx.JSON(http.StatusOK, util.Result{
 			Code: util.ServerError,
-			Msg:  "服务器内部错误",
+			Msg:  "服务器端错误",
 			Data: nil,
 		})
-		return
 	}
 	ctx.JSON(http.StatusOK, util.Result{
 		Code: util.Success,
@@ -218,12 +219,12 @@ func UpdateCategory(ctx *gin.Context) {
 	}
 	category := editForm.BindToModel()
 	if err := category.Update(); err != nil {
+		log.Error("error: ", err.Error())
 		ctx.JSON(http.StatusOK, util.Result{
 			Code: util.ServerError,
-			Msg:  "服务器内部错误",
+			Msg:  "服务器端错误",
 			Data: nil,
 		})
-		return
 	}
 	ctx.JSON(http.StatusOK, util.Result{
 		Code: util.Success,
@@ -252,12 +253,12 @@ func DeleteCategory(ctx *gin.Context) {
 	}
 	category := model.Category{}
 	if err := category.DeleteById(uint(id)); err != nil { //删除分类，捕捉异常
+		log.Error("error: ", err.Error())
 		ctx.JSON(http.StatusOK, util.Result{
 			Code: util.ServerError,
-			Msg:  "服务器内部错误",
+			Msg:  "服务器端错误",
 			Data: nil,
 		})
-		return
 	}
 	ctx.JSON(http.StatusOK, util.Result{ // 删除成功
 		Code: util.Success,
@@ -286,12 +287,12 @@ func MultiDelCategories(ctx *gin.Context) {
 	}
 	category := model.Category{}
 	if err := category.MultiDelByIds(ids); err != nil {
+		log.Error("error: ", err.Error())
 		ctx.JSON(http.StatusOK, util.Result{
 			Code: util.ServerError,
-			Msg:  "服务器内部错误",
+			Msg:  "服务器端错误",
 			Data: nil,
 		})
-		return
 	}
 	ctx.JSON(http.StatusOK, util.Result{
 		Code: util.Success,

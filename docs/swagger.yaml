@@ -272,7 +272,6 @@ definitions:
   form.ForgetPwdForm:
     properties:
       email:
-        description: 邮箱
         type: string
     required:
     - email
@@ -324,6 +323,22 @@ definitions:
     - second_pwd
     - site_url
     - username
+    type: object
+  form.ResetPwdForm:
+    properties:
+      confirm_pwd:
+        type: string
+      email:
+        type: string
+      pwd:
+        type: string
+      verify_code:
+        type: string
+    required:
+    - confirm_pwd
+    - email
+    - pwd
+    - verify_code
     type: object
   form.TagAddForm:
     properties:
@@ -616,7 +631,7 @@ paths:
       summary: 创建验证码
       tags:
       - 授权
-  /api/v1/auth/forgetPwd:
+  /api/v1/auth/forget_pwd:
     post:
       consumes:
       - application/json
@@ -680,6 +695,28 @@ paths:
           schema:
             $ref: '#/definitions/util.Result'
       summary: 注册
+      tags:
+      - 授权
+  /api/v1/auth/reset_pwd:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 重置密码表单
+        in: body
+        name: resetPwdForm
+        required: true
+        schema:
+          $ref: '#/definitions/form.ResetPwdForm'
+      responses:
+        "100":
+          description: Continue
+          schema:
+            $ref: '#/definitions/util.Result'
+        "104":
+          schema:
+            $ref: '#/definitions/util.Result'
+      summary: 重置密码
       tags:
       - 授权
   /api/v1/categories:
@@ -915,21 +952,6 @@ paths:
       summary: 删除评论
       tags:
       - 评论
-  /api/v1/email:
-    post:
-      consumes:
-      - application/json
-      responses:
-        "100":
-          description: Continue
-          schema:
-            $ref: '#/definitions/util.Result'
-        "104":
-          schema:
-            $ref: '#/definitions/util.Result'
-      summary: 发送邮件
-      tags:
-      - 系统设置
   /api/v1/parent_categories:
     get:
       consumes:
@@ -1124,4 +1146,19 @@ paths:
       summary: 根据 ID 获取标签
       tags:
       - 标签
+  /api/v1/test_email:
+    post:
+      consumes:
+      - application/json
+      responses:
+        "100":
+          description: Continue
+          schema:
+            $ref: '#/definitions/util.Result'
+        "104":
+          schema:
+            $ref: '#/definitions/util.Result'
+      summary: 发送测试邮件
+      tags:
+      - 系统设置
 swagger: "2.0"

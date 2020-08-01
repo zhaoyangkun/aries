@@ -18,13 +18,12 @@ import (
 func GetAllUsers(ctx *gin.Context) {
 	list, err := model.User{}.GetAll()
 	if err != nil {
-		log.Errorln("数据库错误：", err.Error())
+		log.Error("error: ", err.Error())
 		ctx.JSON(http.StatusOK, util.Result{
 			Code: util.ServerError,
-			Msg:  "服务端错误",
+			Msg:  "服务器端错误",
 			Data: nil,
 		})
-		return
 	}
 	ctx.JSON(http.StatusOK, util.Result{
 		Code: util.Success,

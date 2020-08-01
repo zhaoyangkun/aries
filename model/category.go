@@ -22,13 +22,13 @@ func (category Category) GetAllByType(categoryType uint) ([]Category, error) {
 	var categories []Category
 	var children []Category
 	// 查询子分类
-	err := db.Db.Where("parent_id > 0").Find(&children).Error
+	err := db.Db.Where("`parent_id` > 0").Find(&children).Error
 	if err != nil {
 		return categories, err
 	}
 	// 根据类别查询分类，若 categoryType >= 2，表示查询所有分类
 	if categoryType < 2 {
-		err = db.Db.Where("type = ?", categoryType).Find(&categories).Error
+		err = db.Db.Where("`type` = ?", categoryType).Find(&categories).Error
 	} else {
 		err = db.Db.Find(&categories).Error
 	}
@@ -50,16 +50,16 @@ func (category Category) GetByPage(page *util.Pagination, key string, categoryTy
 	var list []Category // 保存结果集
 	var children []Category
 	// 查询子分类
-	err := db.Db.Where("parent_id > 0").Find(&children).Error
+	err := db.Db.Where("`parent_id` > 0").Find(&children).Error
 	if err != nil {
 		return list, 0, err
 	}
 	// 创建语句
-	query := db.Db.Model(&Category{}).Where("type = ?", categoryType).
+	query := db.Db.Model(&Category{}).Where("`type` = ?", categoryType).
 		Order("created_at desc", true)
 	// 拼接搜索语句
 	if key != "" {
-		query = query.Where("name like concat('%',?,'%')", key)
+		query = query.Where("`name` like concat('%',?,'%')", key)
 	}
 	// 分页
 	total, err := util.ToPage(page, query, &list)
@@ -79,19 +79,19 @@ func (category Category) GetByPage(page *util.Pagination, key string, categoryTy
 
 // 获取所有父类
 func (category Category) GetAllParents(categoryType uint) (list []Category, err error) {
-	err = db.Db.Where("parent_id = 0 and type = ?", categoryType).Find(&list).Error
+	err = db.Db.Where("`parent_id` = 0 and `type` = ?", categoryType).Find(&list).Error
 	return
 }
 
 // 根据分类名称获取分类
 func (Category) GetByName(name string) (category Category, err error) {
-	err = db.Db.Where("name = ?", name).First(&category).Error
+	err = db.Db.Where("`name` = ?", name).First(&category).Error
 	return
 }
 
 // 根据 URL 获取分类
 func (Category) GetByUrl(url string) (category Category, err error) {
-	err = db.Db.Where("url = ?", url).First(&category).Error
+	err = db.Db.Where("`url` = ?", url).First(&category).Error
 	return
 }
 
@@ -124,12 +124,12 @@ func (category Category) DeleteById(id uint) error {
 		return err
 	}
 	// 更新属于该分类的文章的分类 ID 为 null
-	err := tx.Model(&Article{}).Where("category_id = ?", id).Update("category_id", nil).Error
+	err := tx.Model(&Article{}).Where("`category_id` = ?", id).Update("`category_id`", nil).Error
 	if err != nil {
 		tx.Rollback()
 		return err
 	}
-	err = db.Db.Where("id = ?", id).Unscoped().Delete(&category).Error
+	err = db.Db.Where("`id` = ?", id).Unscoped().Delete(&category).Error
 	if err != nil {
 		tx.Rollback()
 		return err
@@ -150,13 +150,13 @@ func (category Category) MultiDelByIds(ids string) error {
 	}
 	idList := strings.Split(ids, ",") // 根据 , 分割成字符串数组
 	// 更新属于该分类的文章的分类 ID 为 null
-	err := tx.Model(&Article{}).Where("category_id in (?)", idList).
-		Update("category_id", nil).Error
+	err := tx.Model(&Article{}).Where("`category_id` in (?)", idList).
+		Update("`category_id`", nil).Error
 	if err != nil {
 		tx.Rollback()
 		return err
 	}
-	err = db.Db.Where("id in (?)", idList).Unscoped().Delete(&category).Error
+	err = db.Db.Where("`id` in (?)", idList).Unscoped().Delete(&category).Error
 	if err != nil {
 		tx.Rollback()
 		return err

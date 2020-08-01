@@ -422,7 +422,7 @@ var doc = `{
                 }
             }
         },
-        "/api/v1/auth/forgetPwd": {
+        "/api/v1/auth/forget_pwd": {
             "post": {
                 "consumes": [
                     "application/json"
@@ -509,6 +509,41 @@ var doc = `{
                         "required": true,
                         "schema": {
                             "$ref": "#/definitions/form.RegisterForm"
+                        }
+                    }
+                ],
+                "responses": {
+                    "100": {
+                        "description": "Continue",
+                        "schema": {
+                            "$ref": "#/definitions/util.Result"
+                        }
+                    },
+                    "104": {
+                        "schema": {
+                            "$ref": "#/definitions/util.Result"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/auth/reset_pwd": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "授权"
+                ],
+                "summary": "重置密码",
+                "parameters": [
+                    {
+                        "description": "重置密码表单",
+                        "name": "resetPwdForm",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/form.ResetPwdForm"
                         }
                     }
                 ],
@@ -892,30 +927,6 @@ var doc = `{
                 }
             }
         },
-        "/api/v1/email": {
-            "post": {
-                "consumes": [
-                    "application/json"
-                ],
-                "tags": [
-                    "系统设置"
-                ],
-                "summary": "发送邮件",
-                "responses": {
-                    "100": {
-                        "description": "Continue",
-                        "schema": {
-                            "$ref": "#/definitions/util.Result"
-                        }
-                    },
-                    "104": {
-                        "schema": {
-                            "$ref": "#/definitions/util.Result"
-                        }
-                    }
-                }
-            }
-        },
         "/api/v1/parent_categories": {
             "get": {
                 "consumes": [
@@ -1206,6 +1217,30 @@ var doc = `{
                         "required": true
                     }
                 ],
+                "responses": {
+                    "100": {
+                        "description": "Continue",
+                        "schema": {
+                            "$ref": "#/definitions/util.Result"
+                        }
+                    },
+                    "104": {
+                        "schema": {
+                            "$ref": "#/definitions/util.Result"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/test_email": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "系统设置"
+                ],
+                "summary": "发送测试邮件",
                 "responses": {
                     "100": {
                         "description": "Continue",
@@ -1594,7 +1629,6 @@ var doc = `{
             ],
             "properties": {
                 "email": {
-                    "description": "邮箱",
                     "type": "string"
                 }
             }
@@ -1659,6 +1693,29 @@ var doc = `{
                 },
                 "username": {
                     "description": "用户名",
+                    "type": "string"
+                }
+            }
+        },
+        "form.ResetPwdForm": {
+            "type": "object",
+            "required": [
+                "confirm_pwd",
+                "email",
+                "pwd",
+                "verify_code"
+            ],
+            "properties": {
+                "confirm_pwd": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "pwd": {
+                    "type": "string"
+                },
+                "verify_code": {
                     "type": "string"
                 }
             }
