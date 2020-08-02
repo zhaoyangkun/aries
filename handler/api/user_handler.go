@@ -68,3 +68,57 @@ func UpdateUser(ctx *gin.Context) {
 		Data: nil,
 	})
 }
+
+// @Summary 修改密码
+// @Tags 用户
+// @version 1.0
+// @Accept application/json
+// @Param pwdForm body form.PwdForm true "修改密码表单"
+// @Success 100 object util.Result 成功
+// @Failure 103/104 object util.Result 失败
+// @Router /api/v1/users/pwd [put]
+func UpdateUserPwd(ctx *gin.Context) {
+	pwdForm := form.PwdForm{}
+	if err := ctx.ShouldBindJSON(&pwdForm); err != nil {
+		ctx.JSON(http.StatusOK, util.Result{
+			Code: util.RequestError,
+			Msg:  util.GetFormError(err),
+			Data: nil,
+		})
+		return
+	}
+	oldUser, err := model.User{Username: pwdForm.Username}.GetByUsername()
+	if err != nil {
+		log.Error("error: ", err.Error())
+		ctx.JSON(http.StatusOK, util.Result{
+			Code: util.ServerError,
+			Msg:  "服务器端错误",
+			Data: nil,
+		})
+		return
+	}
+	if !util.VerifyPwd(oldUser.Pwd, pwdForm.OldPwd) {
+		ctx.JSON(http.StatusOK, util.Result{
+			Code: util.RequestError,
+			Msg:  "旧密码错误",
+			Data: nil,
+		})
+		return
+	}
+	oldUser.Pwd = pwdForm.NewPwd
+	err = oldUser.UpdatePwd()
+	if err != nil {
+		log.Error("error: ", err.Error())
+		ctx.JSON(http.StatusOK, util.Result{
+			Code: util.ServerError,
+			Msg:  "服务器端错误",
+			Data: nil,
+		})
+		return
+	}
+	ctx.JSON(http.StatusOK, util.Result{
+		Code: util.Success,
+		Msg:  "修改密码成功，请重新登录",
+		Data: nil,
+	})
+}

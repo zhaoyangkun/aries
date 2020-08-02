@@ -59,7 +59,7 @@ func (user User) Create() error {
 
 // 更新用户
 func (user User) Update() error {
-	return db.Db.Model(&User{}).Where("`username = ?`", user.Username).Updates(&user).Error
+	return db.Db.Model(&User{}).Updates(&user).Error
 }
 
 // 修改密码

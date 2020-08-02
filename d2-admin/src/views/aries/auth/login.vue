@@ -25,7 +25,7 @@
           <!--          <img alt="logo" class="page-login&#45;&#45;logo" :src="logoPath">-->
           <!-- form -->
           <div class="page-login--form">
-            <el-card style="border-radius: 8px">
+            <el-card style="border-radius: 8px;margin-bottom: 5px">
               <h2 class="tip">Aries</h2>
               <el-form
                 ref="loginForm"
@@ -79,12 +79,6 @@
         </div>
         <div class="page-login--content-footer">
           <p class="page-login--content-footer-locales">
-            <!--            <a-->
-            <!--              v-for="language in $languages"-->
-            <!--              :key="language.value"-->
-            <!--              @click="onChangeLocale(language.value)">-->
-            <!--              {{ language.label }}-->
-            <!--            </a>-->
           </p>
         </div>
       </div>
