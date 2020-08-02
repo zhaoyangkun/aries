@@ -60,6 +60,15 @@ const frameIn = [
         component: _import('aries/comment/comment')
       },
       {
+        path: 'user',
+        name: 'user',
+        meta: {
+          title: '用户信息',
+          auth: true
+        },
+        component: _import('aries/user/user')
+      },
+      {
         path: 'setting',
         name: 'setting',
         meta: {

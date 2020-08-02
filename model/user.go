@@ -57,6 +57,11 @@ func (user User) Create() error {
 	return db.Db.Create(&user).Error
 }
 
+// 更新用户
+func (user User) Update() error {
+	return db.Db.Model(&User{}).Where("`username = ?`", user.Username).Updates(&user).Error
+}
+
 // 修改密码
 func (user User) UpdatePwd() error {
 	hashedPwd, err := util.EncryptPwd(user.Pwd) // 加密密码

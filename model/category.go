@@ -124,7 +124,7 @@ func (category Category) DeleteById(id uint) error {
 		return err
 	}
 	// 更新属于该分类的文章的分类 ID 为 null
-	err := tx.Model(&Article{}).Where("`category_id` = ?", id).Update("`category_id`", nil).Error
+	err := tx.Model(&Article{}).Where("`category_id` = ?", id).Update("category_id", nil).Error
 	if err != nil {
 		tx.Rollback()
 		return err
@@ -151,7 +151,7 @@ func (category Category) MultiDelByIds(ids string) error {
 	idList := strings.Split(ids, ",") // 根据 , 分割成字符串数组
 	// 更新属于该分类的文章的分类 ID 为 null
 	err := tx.Model(&Article{}).Where("`category_id` in (?)", idList).
-		Update("`category_id`", nil).Error
+		Update("category_id", nil).Error
 	if err != nil {
 		tx.Rollback()
 		return err

@@ -50,22 +50,30 @@ func Register(ctx *gin.Context) {
 		return
 	}
 	sysSetting := model.SysSetting{Name: "网站设置"}
-	err := sysSetting.CreateOrUpdate()
-	if err != nil {
+	if err := sysSetting.Create(); err != nil {
 		log.Errorln("error: ", err.Error())
 		result.Code = util.ServerError
 		result.Msg = "服务器端错误"
 		ctx.JSON(http.StatusOK, result)
 		return
 	}
-	item := model.SysSettingItem{
+	typeItem := model.SysSettingItem{
+		SysId: sysSetting.ID,
+		Key:   "type_name",
+		Val:   "网站设置",
+	}
+	siteUrlItem := model.SysSettingItem{
 		SysId: sysSetting.ID,
 		Key:   "site_url",
 		Val:   regForm.SiteUrl,
 	}
-	var itemList []model.SysSettingItem
-	itemList = append(itemList, item)
-	err = model.SysSettingItem{}.MultiCreateOrUpdate(sysSetting.ID, itemList)
+	siteNameItem := model.SysSettingItem{
+		SysId: sysSetting.ID,
+		Key:   "site_name",
+		Val:   regForm.SiteName,
+	}
+	itemList := []model.SysSettingItem{typeItem, siteNameItem, siteUrlItem}
+	err := model.SysSettingItem{}.MultiCreateOrUpdate(sysSetting.ID, itemList)
 	if err != nil {
 		log.Errorln("error: ", err.Error())
 		result.Code = util.ServerError

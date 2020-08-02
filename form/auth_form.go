@@ -14,12 +14,12 @@ type LoginForm struct {
 
 // 注册表单
 type RegisterForm struct {
-	Username  string `json:"username" binding:"required,min=3,max=30" label:"用户名"`                // 用户名
-	Nickname  string `json:"nickname" binding:"required,min=3,max=30" label:"昵称"`                 // 用户名
-	Pwd       string `json:"pwd" binding:"required,min=6,max=20" label:"密码"`                      // 密码
-	SecondPwd string `json:"second_pwd" binding:"required,min=6,max=20,eqfield=Pwd" label:"确认密码"` // 确认密码
-	Email     string `json:"email" binding:"required,max=30,email" label:"邮箱"`                    // 邮箱
-	SiteUrl   string `json:"site_url" binding:"required,max=255,url" label:"网站地址"`                // 网址
+	Username  string `json:"username" binding:"required,min=3,max=30" label:"用户名"`
+	Pwd       string `json:"pwd" binding:"required,min=6,max=20" label:"密码"`
+	SecondPwd string `json:"second_pwd" binding:"required,min=6,max=20,eqfield=Pwd" label:"确认密码"`
+	Email     string `json:"email" binding:"required,max=30,email" label:"邮箱"`
+	SiteName  string `json:"site_name" binding:"required,max=50" label:"网站名称"`
+	SiteUrl   string `json:"site_url" binding:"required,max=255,url" label:"网站地址"`
 }
 
 // 忘记密码表单
@@ -47,7 +47,6 @@ func (form LoginForm) BindToModel() model.User {
 func (form RegisterForm) BindToModel() model.User {
 	return model.User{
 		Username: form.Username,
-		Nickname: form.Nickname,
 		Pwd:      form.Pwd,
 		Email:    form.Email,
 	}

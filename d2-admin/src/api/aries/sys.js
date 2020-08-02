@@ -8,19 +8,28 @@ export function getSysSettingItem (name) {
   })
 }
 
-// 保存 SMTP 配置信息
-export function saveSMTP (data) {
+// 保存网站配置
+export function saveSiteSetting (data) {
   return request({
-    url: '/smtp',
+    url: '/site_setting',
     method: 'post',
     data: data
   })
 }
 
-// 发送测试邮件
+// 保存 SMTP 配置
+export function saveSMTPSetting (data) {
+  return request({
+    url: '/smtp_setting',
+    method: 'post',
+    data: data
+  })
+}
+
+// 测试发送邮件
 export function sendTestEmail (data) {
   return request({
-    url: '/test_email',
+    url: '/test_send_email',
     method: 'post',
     data: data
   })

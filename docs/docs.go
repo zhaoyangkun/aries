@@ -960,7 +960,42 @@ var doc = `{
                 }
             }
         },
-        "/api/v1/smtp": {
+        "/api/v1/site_setting": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "系统设置"
+                ],
+                "summary": "保存网站配置信息",
+                "parameters": [
+                    {
+                        "description": "网站配置表单",
+                        "name": "siteForm",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/form.SiteForm"
+                        }
+                    }
+                ],
+                "responses": {
+                    "100": {
+                        "description": "Continue",
+                        "schema": {
+                            "$ref": "#/definitions/util.Result"
+                        }
+                    },
+                    "104": {
+                        "schema": {
+                            "$ref": "#/definitions/util.Result"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/smtp_setting": {
             "post": {
                 "consumes": [
                     "application/json"
@@ -971,7 +1006,7 @@ var doc = `{
                 "summary": "保存 SMTP 服务配置信息",
                 "parameters": [
                     {
-                        "description": "SMTP 表单",
+                        "description": "SMTP 配置表单",
                         "name": "emailForm",
                         "in": "body",
                         "required": true,
@@ -1232,7 +1267,7 @@ var doc = `{
                 }
             }
         },
-        "/api/v1/test_email": {
+        "/api/v1/test_send_email": {
             "post": {
                 "consumes": [
                     "application/json"
@@ -1716,6 +1751,43 @@ var doc = `{
                     "type": "string"
                 },
                 "verify_code": {
+                    "type": "string"
+                }
+            }
+        },
+        "form.SiteForm": {
+            "type": "object",
+            "required": [
+                "site_name",
+                "site_url",
+                "type_name"
+            ],
+            "properties": {
+                "footer_content": {
+                    "type": "string"
+                },
+                "head_content": {
+                    "type": "string"
+                },
+                "seo_key_words": {
+                    "type": "string"
+                },
+                "site_desc": {
+                    "type": "string"
+                },
+                "site_logo": {
+                    "type": "string"
+                },
+                "site_name": {
+                    "type": "string"
+                },
+                "site_url": {
+                    "type": "string"
+                },
+                "sys_id": {
+                    "type": "string"
+                },
+                "type_name": {
                     "type": "string"
                 }
             }

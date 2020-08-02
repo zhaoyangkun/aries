@@ -11,7 +11,7 @@ type SysSettingItem struct {
 	gorm.Model
 	SysId uint   `json:"sys_id"`                            // 系统设置 ID
 	Key   string `gorm:"varchar(100);not null;" json:"key"` // 键
-	Val   string `gorm:"varchar(255);not null;" json:"val"` // 值
+	Val   string `gorm:"type:Text;not null;" json:"val"`    // 值
 }
 
 // 根据设置名称获取系统设置条目
@@ -56,28 +56,32 @@ func (SysSettingItem) MultiCreateOrUpdate(sysId uint, itemList []SysSettingItem)
 	if err := tx.Error; err != nil {
 		return err
 	}
-	count := 0
-	err := tx.Model(&SysSettingItem{}).Where("sys_id = ?", sysId).Count(&count).Error
-	if err != nil {
-		tx.Rollback()
-		return err
-	}
-	if count > 0 {
-		for _, item := range itemList {
-			err := tx.Model(&SysSettingItem{}).Where("`sys_id` = ? and `key` = ?", item.SysId, item.Key).
-				Update("`val`", item.Val).Error
-			if err != nil {
-				tx.Rollback()
-				return err
-			}
+	for _, item := range itemList {
+		err := tx.Model(&SysSettingItem{}).Where("`sys_id` = ? and `key` = ?", item.SysId, item.Key).
+			Update("val", item.Val).Error
+		if err != nil {
+			tx.Rollback()
+			return err
 		}
-	} else {
-		for _, item := range itemList {
-			err := tx.Create(&item).Error
-			if err != nil {
-				tx.Rollback()
-				return err
-			}
+	}
+	var count int
+	for _, item := range itemList {
+		count = 0
+		err := tx.Model(&SysSettingItem{}).Where("`sys_id` = ? and `key` = ?", item.SysId, item.Key).
+			Count(&count).Error
+		if err != nil {
+			tx.Rollback()
+			return err
+		}
+		if count == 0 {
+			err = tx.Create(&item).Error
+		} else {
+			err = tx.Model(&SysSettingItem{}).Where("`sys_id` = ? and `key` = ?", item.SysId, item.Key).
+				Update("val", item.Val).Error
+		}
+		if err != nil {
+			tx.Rollback()
+			return err
 		}
 	}
 	return tx.Commit().Error

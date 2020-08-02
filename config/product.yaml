@@ -19,4 +19,4 @@ smtp:
   address: "smtp.qq.com"       # 协议地址
   port: 465                    # 端口
   account: "1040970792@qq.com" # 帐号
-  password: "tjafozajjdosbajh" # 密码
+  password: "" # 密码

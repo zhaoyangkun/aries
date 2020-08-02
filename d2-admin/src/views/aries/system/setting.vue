@@ -1,8 +1,8 @@
 <template>
   <d2-container>
-    <el-tabs :tab-position="tabPosition" @tab-click="handleTabClick">
+    <el-tabs :tab-position="tabPosition" @tab-click="handleTabClick" type="border-card">
       <el-tab-pane label="网站设置" style="width: 500px">
-        <el-form :model="siteForm" ref="siteForm" label-width="100px">
+        <el-form :model="siteForm" ref="siteForm" :rules="siteRules" label-width="100px">
           <el-form-item label="网站名称" prop="site_name">
             <el-input size="small" v-model="siteForm.site_name" type="text" autocomplete="off"
                       placeholder="网站名称"></el-input>
@@ -11,9 +11,9 @@
             <el-input size="small" v-model="siteForm.site_desc" type="text" autocomplete="off"
                       placeholder="网站描述"></el-input>
           </el-form-item>
-          <el-form-item label="网站链接" prop="site_url">
+          <el-form-item label="网站地址" prop="site_url">
             <el-input size="small" v-model="siteForm.site_url" type="text" autocomplete="off"
-                      placeholder="网站链接"></el-input>
+                      placeholder="网站地址"></el-input>
           </el-form-item>
           <el-form-item label="Logo" prop="site_logo">
             <el-input size="small" v-model="siteForm.site_logo" type="text" autocomplete="off"
@@ -32,7 +32,7 @@
                       placeholder="全局 footer"></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button size="small" type="primary">保存</el-button>
+            <el-button size="small" type="primary" :loading="btn.siteSaveLoading" @click="saveSiteForm">保存</el-button>
           </el-form-item>
         </el-form>
       </el-tab-pane>
@@ -44,10 +44,6 @@
                 <el-input size="small" v-model="emailForm.address" type="text" autocomplete="off"
                           placeholder="SMTP 地址"></el-input>
               </el-form-item>
-              <el-form-item label="协议" prop="protocol">
-                <el-input size="small" v-model="emailForm.protocol" type="text" autocomplete="off"
-                          placeholder="协议"></el-input>
-              </el-form-item>
               <el-form-item label="端口" prop="port">
                 <el-input size="small" v-model="emailForm.port" type="number" autocomplete="off"
                           placeholder="端口"></el-input>
@@ -58,7 +54,7 @@
               </el-form-item>
               <el-form-item label="密码" prop="pwd">
                 <el-input size="small" v-model="emailForm.pwd" type="password" autocomplete="off"
-                          placeholder="密码"></el-input>
+                          placeholder="密码" show-password></el-input>
               </el-form-item>
               <el-form-item label="发件人" prop="sender">
                 <el-input size="small" v-model="emailForm.sender" type="text" autocomplete="off"
@@ -103,7 +99,7 @@
 
 <script>
 
-import { getSysSettingItem, saveSMTP, sendTestEmail } from '@/api/aries/sys'
+import { getSysSettingItem, saveSiteSetting, saveSMTPSetting, sendTestEmail } from '@/api/aries/sys'
 
 export default {
   name: 'setting',
@@ -111,6 +107,7 @@ export default {
     return {
       tabPosition: 'top',
       siteForm: {
+        sys_id: null,
         type_name: '网站设置',
         site_name: '',
         site_desc: '',
@@ -124,7 +121,6 @@ export default {
         sys_id: null,
         type_name: '邮件设置',
         address: '',
-        protocol: '',
         port: null,
         account: '',
         pwd: '',
@@ -136,13 +132,17 @@ export default {
         title: '',
         content: ''
       },
-      siteRules: {},
+      siteRules: {
+        site_name: [
+          { required: true, message: '请输入网站名称', trigger: 'blur' }
+        ],
+        site_url: [
+          { required: true, message: '请输入网站地址', trigger: 'blur' }
+        ]
+      },
       emailRules: {
         address: [
           { required: true, message: '请输入SMTP 地址', trigger: 'blur' }
-        ],
-        protocol: [
-          { required: true, message: '请输入协议', trigger: 'blur' }
         ],
         port: [
           { required: true, message: '请输入端口', trigger: 'blur' }
@@ -172,18 +172,23 @@ export default {
         ]
       },
       btn: {
+        siteSaveLoading: false,
         smtpSaveLoading: false,
         emailSendLoading: false
       }
     }
   },
   created () {
+    this.getSysSetItem('网站设置', 'siteForm')
   },
   methods: {
     // tab 切换事件
     handleTabClick (tab) {
       if (tab.label === '邮件设置') {
         this.getSysSetItem(tab.label, 'emailForm')
+      }
+      if (tab.label === '网站设置') {
+        this.getSysSetItem(tab.label, 'siteForm')
       }
     },
     // 获取设置条目
@@ -197,13 +202,31 @@ export default {
         .catch(() => {
         })
     },
+    // 保存网站设置
+    saveSiteForm () {
+      this.$refs.siteForm.validate(valid => {
+        if (valid) {
+          this.btn.siteSaveLoading = true
+          setTimeout(() => {
+            saveSiteSetting(this.siteForm)
+              .then(res => {
+                this.$message.success(res.msg)
+                this.getSysSetItem('网站设置', 'siteForm')
+              })
+              .catch(() => {
+              })
+            this.btn.siteSaveLoading = false
+          }, 300)
+        }
+      })
+    },
     // 保存 SMTP 表单事件
     saveEmailForm () {
       this.$refs.emailForm.validate(valid => {
         if (valid) {
           this.btn.smtpSaveLoading = true
           setTimeout(() => {
-            saveSMTP(this.emailForm)
+            saveSMTPSetting(this.emailForm)
               .then(res => {
                 this.$message.success(res.msg)
                 this.getSysSetItem('邮件设置', 'emailForm')

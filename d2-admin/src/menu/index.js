@@ -29,6 +29,13 @@ export const menuHeader = supplementPath([
     ]
   },
   {
+    title: '用户',
+    icon: 'user',
+    children: [
+      { path: '/user', title: '用户信息', icon: 'user-o' }
+    ]
+  },
+  {
     title: '系统',
     icon: 'gears',
     children: [
@@ -49,6 +56,13 @@ export const menuAside = supplementPath([
       { path: '/tag', title: '标签', icon: 'tags' },
       { path: '/post', title: '文章', icon: 'edit' },
       { path: '/comment', title: '评论', icon: 'commenting-o' }
+    ]
+  },
+  {
+    title: '用户',
+    icon: 'user',
+    children: [
+      { path: '/user', title: '用户信息', icon: 'user-o' }
     ]
   },
   {

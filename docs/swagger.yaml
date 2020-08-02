@@ -340,6 +340,31 @@ definitions:
     - pwd
     - verify_code
     type: object
+  form.SiteForm:
+    properties:
+      footer_content:
+        type: string
+      head_content:
+        type: string
+      seo_key_words:
+        type: string
+      site_desc:
+        type: string
+      site_logo:
+        type: string
+      site_name:
+        type: string
+      site_url:
+        type: string
+      sys_id:
+        type: string
+      type_name:
+        type: string
+    required:
+    - site_name
+    - site_url
+    - type_name
+    type: object
   form.TagAddForm:
     properties:
       name:
@@ -973,12 +998,34 @@ paths:
       summary: 获取所有父级分类
       tags:
       - 分类
-  /api/v1/smtp:
+  /api/v1/site_setting:
     post:
       consumes:
       - application/json
       parameters:
-      - description: SMTP 表单
+      - description: 网站配置表单
+        in: body
+        name: siteForm
+        required: true
+        schema:
+          $ref: '#/definitions/form.SiteForm'
+      responses:
+        "100":
+          description: Continue
+          schema:
+            $ref: '#/definitions/util.Result'
+        "104":
+          schema:
+            $ref: '#/definitions/util.Result'
+      summary: 保存网站配置信息
+      tags:
+      - 系统设置
+  /api/v1/smtp_setting:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: SMTP 配置表单
         in: body
         name: emailForm
         required: true
@@ -1146,7 +1193,7 @@ paths:
       summary: 根据 ID 获取标签
       tags:
       - 标签
-  /api/v1/test_email:
+  /api/v1/test_send_email:
     post:
       consumes:
       - application/json
