@@ -219,3 +219,53 @@ func SendTestEmail(ctx *gin.Context) {
 		Data: nil,
 	})
 }
+
+// 获取后台首页所需数据
+func GetAdminIndexData(ctx *gin.Context) {
+	articleCount, err := model.Article{}.GetCount()
+	if err != nil {
+		log.Error("error: ", err.Error())
+		ctx.JSON(http.StatusOK, util.Result{
+			Code: util.ServerError,
+			Msg:  "服务器端错误",
+			Data: nil,
+		})
+	}
+	commentCount, err := model.Comment{}.GetCount()
+	if err != nil {
+		log.Error("error: ", err.Error())
+		ctx.JSON(http.StatusOK, util.Result{
+			Code: util.ServerError,
+			Msg:  "服务器端错误",
+			Data: nil,
+		})
+	}
+	latestArticles, err := model.Article{}.GetLatest(10)
+	if err != nil {
+		log.Error("error: ", err.Error())
+		ctx.JSON(http.StatusOK, util.Result{
+			Code: util.ServerError,
+			Msg:  "服务器端错误",
+			Data: nil,
+		})
+	}
+	latestComments, err := model.Comment{}.GetLatest(10)
+	if err != nil {
+		log.Error("error: ", err.Error())
+		ctx.JSON(http.StatusOK, util.Result{
+			Code: util.ServerError,
+			Msg:  "服务器端错误",
+			Data: nil,
+		})
+	}
+	ctx.JSON(http.StatusOK, util.Result{
+		Code: util.Success,
+		Msg:  "查询成功",
+		Data: gin.H{
+			"article_count":   articleCount,
+			"comment_count":   commentCount,
+			"latest_articles": latestArticles,
+			"latest_comments": latestComments,
+		},
+	})
+}

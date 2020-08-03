@@ -20,7 +20,7 @@ const frameIn = [
           title: '首页',
           auth: true
         },
-        component: _import('system/index')
+        component: _import('aries/system/index')
       },
       // 演示页面
       {

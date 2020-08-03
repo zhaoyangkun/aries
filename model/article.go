@@ -35,6 +35,20 @@ type Article struct {
 	VisitCount       uint     `gorm:"type:int;default:0;" json:"visit_count"`              // 浏览数
 }
 
+// 获取文章总数
+func (Article) GetCount() (int, error) {
+	count := 0
+	err := db.Db.Model(&Article{}).Count(&count).Error
+	return count, err
+}
+
+// 获取最近发布的文章
+func (Article) GetLatest(limit uint) (list []Article, err error) {
+	err = db.Db.Order("created_at desc", true).
+		Limit(limit).Find(&list).Error
+	return
+}
+
 // 获取所有文章
 func (Article) GetAll() (list []Article, err error) {
 	err = db.Db.Preload("Category").Preload("TagList").

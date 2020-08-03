@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-tag :type="type" effect="plain">{{text}}</el-tag>
+    <el-tag :type="type" effect="plain">{{ text }}</el-tag>
   </div>
 </template>
 

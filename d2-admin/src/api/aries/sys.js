@@ -34,3 +34,11 @@ export function sendTestEmail (data) {
     data: data
   })
 }
+
+// 获取后台首页数据
+export function getAdminIndexData () {
+  return request({
+    url: '/admin_index_data',
+    method: 'get'
+  })
+}

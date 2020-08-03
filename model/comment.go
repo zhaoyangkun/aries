@@ -31,6 +31,20 @@ type Comment struct {
 	IsChecked       *bool    `gorm:"type:bool;default:false" json:"is_checked"`        // 是否通过审核
 }
 
+// 获取评论数量
+func (Comment) GetCount() (int, error) {
+	count := 0
+	err := db.Db.Model(&Comment{}).Count(&count).Error
+	return count, err
+}
+
+// 获取最近发表的评论
+func (Comment) GetLatest(limit uint) (list []Comment, err error) {
+	err = db.Db.Preload("Article").Order("created_at desc", true).
+		Limit(limit).Find(&list).Error
+	return
+}
+
 // 获取所有评论
 func (Comment) GetAll() (list []Comment, err error) {
 	err = db.Db.Preload("Article").
