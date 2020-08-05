@@ -2,7 +2,7 @@
   <d2-container>
     <template slot="header">文章列表</template>
     <d2-crud
-      ref="d2Crud"
+      ref="d2Cru优化d"
       :loading="loading"
       :columns="columns"
       :data="data"
@@ -898,7 +898,11 @@ export default {
       movePostUp(form)
         .then(res => {
           this.$message.success(res.msg)
-          this.fetchPageData()
+          const newData = Array.from(this.data)
+          const temp = newData[index - 1]
+          newData[index - 1] = newData[index]
+          newData[index] = temp
+          this.data = newData
         })
         .catch(() => {
         })
@@ -910,11 +914,14 @@ export default {
         order_id: row.order_id,
         is_top: row.is_top
       }
-      console.log(index)
       movePostDown(form)
         .then(res => {
           this.$message.success(res.msg)
-          this.fetchPageData()
+          const newData = Array.from(this.data)
+          const temp = newData[index + 1]
+          newData[index + 1] = newData[index]
+          newData[index] = temp
+          this.data = newData
         })
         .catch(() => {
         })
