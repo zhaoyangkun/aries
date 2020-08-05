@@ -302,7 +302,15 @@ import tableHandle from '@/components/aries/post/tableHandle'
 import postTitle from '@/components/aries/post/postTitle'
 import { addCategory, getAllCategories, getAllParentCategories } from '@/api/aries/category'
 import { addTag, getAllTags } from '@/api/aries/tag'
-import { addPost, deletePost, getPostsByPage, importPostFromFiles, updatePost } from '@/api/aries/post'
+import {
+  addPost,
+  deletePost,
+  getPostsByPage,
+  importPostFromFiles,
+  movePostDown,
+  movePostUp,
+  updatePost
+} from '@/api/aries/post'
 
 export default {
   name: 'post',
@@ -325,21 +333,21 @@ export default {
       columns: [
         {
           title: '文章标题',
-          width: '260',
+          width: '250',
           component: {
             name: postTitle
           }
         },
         {
           title: '状态',
-          width: '86',
+          width: '80',
           component: {
             name: state
           }
         },
         {
           title: '分类',
-          width: '100',
+          width: '80',
           component: {
             name: singleTag,
             props: {
@@ -371,7 +379,9 @@ export default {
             props: {
               openEditDialog: this.openEditDialog,
               handleRowRemove: this.handleRowRemove,
-              handleRowRecycleOrRecover: this.handleRowRecycleOrRecover
+              handleRowRecycleOrRecover: this.handleRowRecycleOrRecover,
+              handleMoveUp: this.handleMoveUp,
+              handleMoveDown: this.handleMoveDown
             }
           }
         }
@@ -787,7 +797,7 @@ export default {
     },
     handleExceed (files, fileList) {
       this.$message.warning(
-          `当前限制选择 10 个文件，共选择了 ${files.length + fileList.length} 个文件`
+        `当前限制选择 10 个文件，共选择了 ${files.length + fileList.length} 个文件`
       )
     },
     // 文件变动事件
@@ -877,13 +887,44 @@ export default {
             })
         }
       })
+    },
+    // 向上移动文章事件
+    handleMoveUp (row, index) {
+      const form = {
+        id: row.ID,
+        order_id: row.order_id,
+        is_top: row.is_top
+      }
+      movePostUp(form)
+        .then(res => {
+          this.$message.success(res.msg)
+          this.fetchPageData()
+        })
+        .catch(() => {
+        })
+    },
+    // 向下移动文章事件
+    handleMoveDown (row, index) {
+      const form = {
+        id: row.ID,
+        order_id: row.order_id,
+        is_top: row.is_top
+      }
+      console.log(index)
+      movePostDown(form)
+        .then(res => {
+          this.$message.success(res.msg)
+          this.fetchPageData()
+        })
+        .catch(() => {
+        })
     }
   }
 }
 </script>
 
 <style lang="scss">
-  :focus {
-    outline: 0;
-  }
+:focus {
+  outline: 0;
+}
 </style>

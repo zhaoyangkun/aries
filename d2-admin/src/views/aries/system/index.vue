@@ -27,7 +27,7 @@
             <span>访问量</span>
             <el-button size="medium" icon="el-icon-view" style="float: right; padding: 3px 0" type="text"></el-button>
           </div>
-          <div class="text item"><h2 style="color: slategrey" class="card-num">100</h2></div>
+          <div class="text item"><h2 style="color: slategrey" class="card-num">0</h2></div>
         </el-card>
       </el-col>
       <el-col :span="24">
@@ -50,19 +50,6 @@
               </el-timeline-item>
             </el-timeline>
           </el-tab-pane>
-          <!--          <el-tab-pane label="最近动态">-->
-          <!--            <el-timeline>-->
-          <!--              <el-timeline-item timestamp="2018/4/12" placement="top">-->
-          <!--                更新 Github 模板-->
-          <!--              </el-timeline-item>-->
-          <!--              <el-timeline-item timestamp="2018/4/12" placement="top">-->
-          <!--                更新 Github 模板-->
-          <!--              </el-timeline-item>-->
-          <!--              <el-timeline-item timestamp="2018/4/12" placement="top">-->
-          <!--                更新 Github 模板-->
-          <!--              </el-timeline-item>-->
-          <!--            </el-timeline>-->
-          <!--          </el-tab-pane>-->
         </el-tabs>
       </el-col>
     </el-row>

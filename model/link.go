@@ -7,7 +7,7 @@ import (
 // 友情链接结构
 type Link struct {
 	gorm.Model
-	Category   Category `gorm:"foreignkey:CategoryId" json:"category"` // 分类
+	Category   Category `gorm:"ForeignKey:CategoryId" json:"category"` // 分类
 	CategoryId uint     `json:"category_id"`                           // 分类 ID
 	Name       string   `gorm:"varchar(100);not null;" json:"name"`    // 网站名称
 	Url        string   `gorm:"varchar(255);not null;" json:"url"`     // 网站地址

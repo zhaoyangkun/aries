@@ -55,6 +55,13 @@ type ArticleEditForm struct {
 	Keywords         string `json:"keywords" label:"SEO 关键词"`                             // SEO 关键词
 }
 
+// 文章排序表单
+type ArticleOrderForm struct {
+	ID      uint `json:"id" binding:"required" label:"ID"`
+	OrderId uint `json:"order_id" binding:"required" label:"排序 ID"`
+	IsTop   bool `json:"is_top" label:"是否置顶"`
+}
+
 // 绑定添加文章表单数据到实体结构
 func (form ArticleAddForm) BindToModel() model.Article {
 	return model.Article{
@@ -95,5 +102,14 @@ func (form ArticleEditForm) BindToModel() model.Article {
 		Content:          form.Content,
 		MDContent:        form.MDContent,
 		Keywords:         form.Keywords,
+	}
+}
+
+// 绑定文章排序表单数据到文章实体
+func (form ArticleOrderForm) BindToModel() model.Article {
+	return model.Article{
+		Model:   gorm.Model{ID: form.ID},
+		OrderId: form.OrderId,
+		IsTop:   &form.IsTop,
 	}
 }

@@ -333,3 +333,94 @@ func ImportArticlesFromFiles(ctx *gin.Context) {
 		Data: nil,
 	})
 }
+
+// @Summary 向上移动文章
+// @Tags 文章
+// @version 1.0
+// @Accept application/json
+// @Param oderForm body form.ArticleOrderForm true "文章排序表单"
+// @Success 100 object util.Result 成功
+// @Failure 103/104 object util.Result 失败
+// @Router /api/articles/move_up [post]
+func MoveArticleUp(ctx *gin.Context) {
+	orderForm := form.ArticleOrderForm{}
+	if err := ctx.ShouldBindJSON(&orderForm); err != nil {
+		ctx.JSON(http.StatusOK, util.Result{
+			Code: util.RequestError,
+			Msg:  err.Error(),
+			Data: nil,
+		})
+		return
+	}
+	currArticle := orderForm.BindToModel()
+	preArticle, _ := currArticle.GetPrevious(currArticle.OrderId, *currArticle.IsTop)
+	if preArticle.ID == 0 {
+		ctx.JSON(http.StatusOK, util.Result{
+			Code: util.RequestError,
+			Msg:  "无法再向上移动",
+			Data: nil,
+		})
+		return
+	}
+	err := model.Article{}.MoveUp(currArticle.ID, preArticle.ID, currArticle.OrderId, preArticle.OrderId)
+	if err != nil {
+		log.Errorln("error: ", err.Error())
+		ctx.JSON(http.StatusOK, util.Result{
+			Code: util.ServerError,
+			Msg:  "服务器端错误",
+			Data: nil,
+		})
+		return
+	}
+	ctx.JSON(http.StatusOK, util.Result{
+		Code: util.Success,
+		Msg:  "向上移动成功",
+		Data: nil,
+	})
+	return
+}
+
+// @Summary 向下移动文章
+// @Tags 文章
+// @version 1.0
+// @Accept application/json
+// @Param oderForm body form.ArticleOrderForm true "文章排序表单"
+// @Success 100 object util.Result 成功
+// @Failure 103/104 object util.Result 失败
+// @Router /api/v1/articles/move_down [post]
+func MoveArticleDown(ctx *gin.Context) {
+	orderForm := form.ArticleOrderForm{}
+	if err := ctx.ShouldBindJSON(&orderForm); err != nil {
+		ctx.JSON(http.StatusOK, util.Result{
+			Code: util.RequestError,
+			Msg:  err.Error(),
+			Data: nil,
+		})
+		return
+	}
+	currArticle := orderForm.BindToModel()
+	nextArticle, _ := currArticle.GetNext(currArticle.OrderId, *currArticle.IsTop)
+	if nextArticle.ID == 0 {
+		ctx.JSON(http.StatusOK, util.Result{
+			Code: util.RequestError,
+			Msg:  "无法再向下移动",
+			Data: nil,
+		})
+		return
+	}
+	err := model.Article{}.MoveDown(currArticle.ID, nextArticle.ID, currArticle.OrderId, nextArticle.OrderId)
+	if err != nil {
+		log.Errorln("error: ", err.Error())
+		ctx.JSON(http.StatusOK, util.Result{
+			Code: util.ServerError,
+			Msg:  "服务器端错误",
+			Data: nil,
+		})
+		return
+	}
+	ctx.JSON(http.StatusOK, util.Result{
+		Code: util.Success,
+		Msg:  "向下移动成功",
+		Data: nil,
+	})
+}

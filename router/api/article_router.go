@@ -17,5 +17,7 @@ func InitArticleApiRouter(rootPath string, router *gin.Engine) {
 		ArticleApiRouter.DELETE("/articles/:id", api.DeleteArticle)
 		ArticleApiRouter.DELETE("/articles", api.MultiDelArticles)
 		ArticleApiRouter.POST("/article_files", api.ImportArticlesFromFiles)
+		ArticleApiRouter.POST("/articles/move_up", api.MoveArticleUp)
+		ArticleApiRouter.POST("/articles/move_down", api.MoveArticleDown)
 	}
 }

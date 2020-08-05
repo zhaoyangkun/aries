@@ -1,6 +1,6 @@
 # 服务器配置
 server:
-  mode: "release"                             # 运行模式
+  mode: "release"                             # 运行模式，debug / release
   port: "8088"                                # 端口
   token_expire_time: 3600                     # JWT token 过期时间
   allowed_refers: ["localhost", "127.0.0.1"]  # 允许的 referer

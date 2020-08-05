@@ -11,15 +11,15 @@ import (
 // 评论结构
 type Comment struct {
 	gorm.Model
-	Page            Page     `gorm:"foreignkey:PageId" json:"page"`                    // 页面
+	Page            Page     `gorm:"ForeignKey:PageId" json:"page"`                    // 页面
 	PageId          uint     `json:"page_id"`                                          // 页面 ID
-	Article         Article  `gorm:"foreignkey:ArticleId" json:"article"`              // 文章
+	Article         Article  `gorm:"ForeignKey:ArticleId" json:"article"`              // 文章
 	ArticleId       uint     `json:"article_id"`                                       // 文章 ID
-	AdminUser       User     `gorm:"foreignkey:AdminUserId" json:"admin_user"`         // 博主
+	AdminUser       User     `gorm:"ForeignKey:AdminUserId" json:"admin_user"`         // 博主
 	AdminUserId     uint     `json:"admin_user_id"`                                    // 博主 ID
-	RootComment     *Comment `gorm:"foreignkey:RootCommentId" json:"root_comment"`     // 根评论
+	RootComment     *Comment `gorm:"ForeignKey:RootCommentId" json:"root_comment"`     // 根评论
 	RootCommentId   uint     `json:"root_comment_id"`                                  // 根评论 ID
-	ParentComment   *Comment `gorm:"foreignkey:ParentCommentId" json:"parent_comment"` // 父评论
+	ParentComment   *Comment `gorm:"ForeignKey:ParentCommentId" json:"parent_comment"` // 父评论
 	ParentCommentId uint     `json:"parent_comment_id"`                                // 父评论 ID
 	Type            uint     `gorm:"type:tinyint(1);unsigned;default:1" json:"type"`   // 类型，1 表文章评论，2 表友链页评论，3 表关于页评论，4 表示自定义页面评论
 	Email           string   `gorm:"type:varchar(50);not null;" json:"email"`          // 邮箱

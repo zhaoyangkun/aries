@@ -220,7 +220,13 @@ func SendTestEmail(ctx *gin.Context) {
 	})
 }
 
-// 获取后台首页所需数据
+// @Summary 获取后台首页数据
+// @Tags 系统设置
+// @version 1.0
+// @Accept application/json
+// @Success 100 object util.Result 成功
+// @Failure 103/104 object util.Result 失败
+// @Router /api/v1/admin_index_data [get]
 func GetAdminIndexData(ctx *gin.Context) {
 	articleCount, err := model.Article{}.GetCount()
 	if err != nil {

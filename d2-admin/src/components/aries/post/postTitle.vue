@@ -1,11 +1,12 @@
 <template>
   <div>
-    <div v-if="scope.row.is_top">
-      <i class="el-icon-magic-stick" style="color:red;"></i> {{ scope.row.title }}
-    </div>
-    <div v-else>
+    <i v-if="scope.row.is_top" class="el-icon-magic-stick" style="color:red;"></i>
+    <span v-if="scope.row.is_recycled" style="color: darkgrey">
       {{ scope.row.title }}
-    </div>
+    </span>
+    <span v-else>
+      {{ scope.row.title }}
+    </span>
   </div>
 </template>
 

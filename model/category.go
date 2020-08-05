@@ -10,7 +10,7 @@ import (
 // 分类结构
 type Category struct {
 	gorm.Model
-	Children []*Category `gorm:"foreignkey:ParentId" json:"children"`            // 子级分类列表
+	Children []*Category `gorm:"ForeignKey:ParentId" json:"children"`            // 子级分类列表
 	ParentId uint        `json:"parent_id"`                                      // 父类 ID：0 表父级分类，大于 0 表子级分类
 	Type     uint        `gorm:"type:tinyint(1);unsigned;default:0" json:"type"` // 分类类型，默认值为 0 表文章；1 表友链
 	Name     string      `gorm:"type:varchar(100);not null;" json:"name"`        // 分类名称

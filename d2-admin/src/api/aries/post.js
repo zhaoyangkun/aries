@@ -64,3 +64,21 @@ export function multiDelPosts (ids) {
     method: 'delete'
   })
 }
+
+// 向上移动文章
+export function movePostUp (data) {
+  return request({
+    url: '/articles/move_up',
+    method: 'post',
+    data: data
+  })
+}
+
+// 向下移动文章
+export function movePostDown (data) {
+  return request({
+    url: '/articles/move_down',
+    method: 'post',
+    data: data
+  })
+}

@@ -1,8 +1,14 @@
 <template>
   <div>
-    <el-tooltip content="编辑" placement="top-start">
+    <el-tooltip content="编辑" placement="top-start" v-if="!scope.row.is_recycled">
       <el-button size="small" icon="el-icon-edit"
                  @click="openEditDialog(scope.row)"></el-button>
+    </el-tooltip>
+    <el-tooltip content="向上" placement="top-start" v-if="!scope.row.is_recycled">
+      <el-button size="small" icon="el-icon-top" @click="handleMoveUp(scope.row,scope.$index)"></el-button>
+    </el-tooltip>
+    <el-tooltip content="向下" placement="top-start" v-if="!scope.row.is_recycled">
+      <el-button size="small" icon="el-icon-bottom" @click="handleMoveDown(scope.row,scope.$index)"></el-button>
     </el-tooltip>
     <el-tooltip content="加入回收站" placement="top-start" v-if="!scope.row.is_recycled">
       <el-button size="small" type="danger" icon="el-icon-close"
@@ -34,11 +40,16 @@ export default {
     },
     handleRowRecycleOrRecover: {
       type: Function
+    },
+    handleMoveUp: {
+      type: Function
+    },
+    handleMoveDown: {
+      type: Function
     }
   }
 }
 </script>
 
 <style scoped>
-
 </style>

@@ -13,11 +13,11 @@ import (
 // 文章结构
 type Article struct {
 	gorm.Model
-	User             User     `gorm:"foreignkey:UserId;not null;" json:"user"`             // 用户
+	User             User     `gorm:"ForeignKey:UserId;not null;" json:"user"`             // 用户
 	UserId           uint     `json:"user_id"`                                             // 用户 ID
-	Category         Category `gorm:"foreignKey:CategoryId" json:"category"`               // 分类
+	Category         Category `gorm:"ForeignKey:CategoryId" json:"category"`               // 分类
 	CategoryId       *uint    `json:"category_id"`                                         // 分类 ID
-	OrderId          uint     `gorm:"type:int;default:1;" json:"order_id"`                 // 排序 ID
+	OrderId          uint     `gorm:"type:int;default:0;" json:"order_id"`                 // 排序 ID
 	TagList          []Tag    `gorm:"many2many:tag_article" json:"tag_list"`               // 标签列表
 	IsTop            *bool    `gorm:"type:bool;default:false;" json:"is_top"`              // 是否置顶
 	IsRecycled       *bool    `gorm:"type:bool;default:false;" json:"is_recycled"`         // 是否回收
@@ -63,12 +63,36 @@ func (Article) GetById(id string) (article Article, err error) {
 	return
 }
 
+// 获取前一篇文章
+func (Article) GetPrevious(orderId uint, isTop bool) (article Article, err error) {
+	if isTop {
+		err = db.Db.Raw("select * from `articles` where `order_id` < ? and is_top = 1 "+
+			"order by `order_id` desc limit 1", orderId).Scan(&article).Error
+	} else {
+		err = db.Db.Raw("select * from `articles` where `order_id` < ? and is_top = 0 "+
+			"order by `order_id` desc limit 1", orderId).Scan(&article).Error
+	}
+	return
+}
+
+// 获取下一篇文章
+func (Article) GetNext(orderId uint, isTop bool) (article Article, err error) {
+	if isTop {
+		err = db.Db.Raw("select * from `articles` where `order_id` > ? and is_top = 1 "+
+			"order by `order_id` asc limit 1", orderId).Scan(&article).Error
+	} else {
+		err = db.Db.Raw("select * from `articles` where `order_id` > ? and is_top = 0 "+
+			"order by `order_id` asc limit 1", orderId).Scan(&article).Error
+	}
+	return
+}
+
 // 分页获取文章
 func (Article) GetByPage(page *util.Pagination, key string, state uint,
 	categoryId uint) ([]Article, uint, error) {
 	var list []Article
 	query := db.Db.Preload("Category").Preload("TagList").
-		Model(&Article{}).Order("is_top desc,order_id desc,created_at desc", true)
+		Model(&Article{}).Order("is_top desc,order_id asc,created_at desc", true)
 	if key != "" {
 		query = query.Where("title like concat('%',?,'%')", key)
 	}
@@ -130,6 +154,17 @@ func (article Article) Create(tagIds string) error {
 			return err
 		}
 	}
+	var maxOrderId *uint
+	err := db.Db.Raw("select MAX(`order_id`) `maxOrderId` from `articles`").
+		Row().Scan(&maxOrderId)
+	if maxOrderId == nil {
+		article.OrderId = 1
+	} else {
+		article.OrderId = *maxOrderId + 1
+	}
+	if err != nil {
+		return err
+	}
 	// 开始事务
 	tx := db.Db.Begin()
 	defer func() {
@@ -141,7 +176,7 @@ func (article Article) Create(tagIds string) error {
 		return err
 	}
 	// 添加文章
-	err := tx.Save(&article).Error
+	err = tx.Save(&article).Error
 	if err != nil {
 		tx.Rollback()
 		return err
@@ -271,6 +306,44 @@ func (article Article) RecycleOrRecover() (err error) {
 			"is_recycled": !*article.IsRecycled,
 		}).Error
 	return
+}
+
+// 向上移动文章
+func (article Article) MoveUp(currId, preId, currOrderId, preOrderId uint) error {
+	// 执行事务
+	return db.Db.Transaction(func(tx *gorm.DB) error {
+		// 交换当前文章和上一篇文章的 OrderId
+		err := db.Db.Model(&Article{}).Where("id = ?", currId).
+			Update("order_id", preOrderId).Error
+		if err != nil {
+			return err
+		}
+		err = db.Db.Model(&Article{}).Where("id = ?", preId).
+			Update("order_id", currOrderId).Error
+		if err != nil {
+			return err
+		}
+		return nil
+	})
+}
+
+// 向下移动文章
+func (article Article) MoveDown(currId, nextId, currOrderId, nextOrderId uint) error {
+	// 执行事务
+	return db.Db.Transaction(func(tx *gorm.DB) error {
+		// 交换当前文章和下一篇文章的 OrderId
+		err := db.Db.Model(&Article{}).Where("id = ?", currId).
+			Update("order_id", nextOrderId).Error
+		if err != nil {
+			return err
+		}
+		err = db.Db.Model(&Article{}).Where("id = ?", nextId).
+			Update("order_id", currOrderId).Error
+		if err != nil {
+			return err
+		}
+		return nil
+	})
 }
 
 // 删除文章
