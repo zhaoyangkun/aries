@@ -84,5 +84,8 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss">
+.vditor-toolbar--pin {
+  position: relative;
+}
 </style>

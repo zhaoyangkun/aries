@@ -59,7 +59,7 @@ func (Article) GetAll() (list []Article, err error) {
 // 根据 ID 获取文章
 func (Article) GetById(id string) (article Article, err error) {
 	err = db.Db.Preload("Category").Preload("TagList").
-		Where("id = ?", id).First(&article).Error
+		Where("`id` = ?", id).First(&article).Error
 	return
 }
 
@@ -232,7 +232,7 @@ func (article Article) Update(tagIds string) error {
 		return err
 	}
 	// 使用 map 来更新，避免 gorm 默认不更新值为 nil, false, 0 的字段
-	err := tx.Model(&Article{}).Where("id = ?", article.ID).
+	err := tx.Model(&Article{}).Where("`id` = ?", article.ID).
 		Updates(map[string]interface{}{
 			"category_id":        article.CategoryId,
 			"order_id":           article.OrderId,
@@ -254,7 +254,7 @@ func (article Article) Update(tagIds string) error {
 	}
 	// 获取原文章记录
 	a := Article{}
-	err = tx.Where("id = ?", article.ID).First(&a).Error
+	err = tx.Where("`id` = ?", article.ID).First(&a).Error
 	if err != nil {
 		tx.Rollback()
 		return err
@@ -269,7 +269,7 @@ func (article Article) Update(tagIds string) error {
 				return err
 			}
 		}
-		err = tx.Model(&Article{}).Where("id = ?", article.ID).
+		err = tx.Model(&Article{}).Where("`id` = ?", article.ID).
 			Updates(map[string]interface{}{
 				"pwd": article.Pwd,
 			}).Error
@@ -301,7 +301,7 @@ func (article Article) Update(tagIds string) error {
 
 // 将文章加入回收站或恢复
 func (article Article) RecycleOrRecover() (err error) {
-	err = db.Db.Model(&Article{}).Where("id = ?", article.ID).
+	err = db.Db.Model(&Article{}).Where("`id` = ?", article.ID).
 		Updates(map[string]interface{}{
 			"is_recycled": !*article.IsRecycled,
 		}).Error
@@ -313,12 +313,12 @@ func (article Article) MoveUp(currId, preId, currOrderId, preOrderId uint) error
 	// 执行事务
 	return db.Db.Transaction(func(tx *gorm.DB) error {
 		// 交换当前文章和上一篇文章的 OrderId
-		err := db.Db.Model(&Article{}).Where("id = ?", currId).
+		err := db.Db.Model(&Article{}).Where("`id` = ?", currId).
 			Update("order_id", preOrderId).Error
 		if err != nil {
 			return err
 		}
-		err = db.Db.Model(&Article{}).Where("id = ?", preId).
+		err = db.Db.Model(&Article{}).Where("`id` = ?", preId).
 			Update("order_id", currOrderId).Error
 		if err != nil {
 			return err
@@ -332,12 +332,12 @@ func (article Article) MoveDown(currId, nextId, currOrderId, nextOrderId uint) e
 	// 执行事务
 	return db.Db.Transaction(func(tx *gorm.DB) error {
 		// 交换当前文章和下一篇文章的 OrderId
-		err := db.Db.Model(&Article{}).Where("id = ?", currId).
+		err := db.Db.Model(&Article{}).Where("`id` = ?", currId).
 			Update("order_id", nextOrderId).Error
 		if err != nil {
 			return err
 		}
-		err = db.Db.Model(&Article{}).Where("id = ?", nextId).
+		err = db.Db.Model(&Article{}).Where("`id` = ?", nextId).
 			Update("order_id", currOrderId).Error
 		if err != nil {
 			return err
@@ -377,7 +377,7 @@ func (Article) MultiDelByIds(ids string) error {
 		return err
 	}
 	// 删除文章表中的记录
-	err = tx.Where("id in (?)", idList).Unscoped().Delete(&Article{}).Error
+	err = tx.Where("`id` in (?)", idList).Unscoped().Delete(&Article{}).Error
 	if err != nil {
 		tx.Rollback()
 		return err

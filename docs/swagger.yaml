@@ -115,6 +115,18 @@ definitions:
     - title
     - user_id
     type: object
+  form.ArticleOrderForm:
+    properties:
+      id:
+        type: integer
+      is_top:
+        type: boolean
+      order_id:
+        type: integer
+    required:
+    - id
+    - order_id
+    type: object
   form.CategoryAddForm:
     properties:
       name:
@@ -250,8 +262,6 @@ definitions:
         type: string
       port:
         type: string
-      protocol:
-        type: string
       pwd:
         type: string
       sender:
@@ -264,7 +274,6 @@ definitions:
     - account
     - address
     - port
-    - protocol
     - pwd
     - sender
     - type_name
@@ -296,31 +305,41 @@ definitions:
     - pwd
     - username
     type: object
+  form.PwdForm:
+    properties:
+      confirm_new_pwd:
+        type: string
+      new_pwd:
+        type: string
+      old_pwd:
+        type: string
+      username:
+        type: string
+    required:
+    - confirm_new_pwd
+    - new_pwd
+    - old_pwd
+    - username
+    type: object
   form.RegisterForm:
     properties:
       email:
-        description: 邮箱
-        type: string
-      nickname:
-        description: 用户名
         type: string
       pwd:
-        description: 密码
         type: string
       second_pwd:
-        description: 确认密码
+        type: string
+      site_name:
         type: string
       site_url:
-        description: 网址
         type: string
       username:
-        description: 用户名
         type: string
     required:
     - email
-    - nickname
     - pwd
     - second_pwd
+    - site_name
     - site_url
     - username
     type: object
@@ -382,6 +401,20 @@ definitions:
     - ID
     - name
     type: object
+  form.UserInfoForm:
+    properties:
+      email:
+        type: string
+      nickname:
+        type: string
+      signature:
+        type: string
+      username:
+        type: string
+    required:
+    - email
+    - username
+    type: object
   util.Result:
     properties:
       code:
@@ -406,6 +439,43 @@ info:
   title: Gin Swagger
   version: "1.0"
 paths:
+  /api/articles/move_up:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 文章排序表单
+        in: body
+        name: oderForm
+        required: true
+        schema:
+          $ref: '#/definitions/form.ArticleOrderForm'
+      responses:
+        "100":
+          description: Continue
+          schema:
+            $ref: '#/definitions/util.Result'
+        "104":
+          schema:
+            $ref: '#/definitions/util.Result'
+      summary: 向上移动文章
+      tags:
+      - 文章
+  /api/v1/admin_index_data:
+    get:
+      consumes:
+      - application/json
+      responses:
+        "100":
+          description: Continue
+          schema:
+            $ref: '#/definitions/util.Result'
+        "104":
+          schema:
+            $ref: '#/definitions/util.Result'
+      summary: 获取后台首页数据
+      tags:
+      - 系统设置
   /api/v1/all_articles:
     get:
       consumes:
@@ -457,6 +527,21 @@ paths:
       summary: 获取所有评论
       tags:
       - 评论
+  /api/v1/all_links:
+    get:
+      consumes:
+      - application/json
+      responses:
+        "100":
+          description: Continue
+          schema:
+            $ref: '#/definitions/util.Result'
+        "104":
+          schema:
+            $ref: '#/definitions/util.Result'
+      summary: 获取所有友链
+      tags:
+      - 友链
   /api/v1/all_tags:
     get:
       consumes:
@@ -639,6 +724,28 @@ paths:
           schema:
             $ref: '#/definitions/util.Result'
       summary: 根据 ID 获取文章
+      tags:
+      - 文章
+  /api/v1/articles/move_down:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 文章排序表单
+        in: body
+        name: oderForm
+        required: true
+        schema:
+          $ref: '#/definitions/form.ArticleOrderForm'
+      responses:
+        "100":
+          description: Continue
+          schema:
+            $ref: '#/definitions/util.Result'
+        "104":
+          schema:
+            $ref: '#/definitions/util.Result'
+      summary: 向下移动文章
       tags:
       - 文章
   /api/v1/auth/captcha:
@@ -977,6 +1084,70 @@ paths:
       summary: 删除评论
       tags:
       - 评论
+  /api/v1/links:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: IDS
+        in: query
+        name: ids
+        required: true
+        type: string
+      responses:
+        "100":
+          description: Continue
+          schema:
+            $ref: '#/definitions/util.Result'
+        "104":
+          schema:
+            $ref: '#/definitions/util.Result'
+      summary: 删除友链
+      tags:
+      - 友链
+    get:
+      consumes:
+      - application/json
+      responses:
+        "100":
+          description: Continue
+          schema:
+            $ref: '#/definitions/util.Result'
+        "104":
+          schema:
+            $ref: '#/definitions/util.Result'
+      summary: 分页获取友链
+      tags:
+      - 友链
+    post:
+      consumes:
+      - application/json
+      responses:
+        "100":
+          description: Continue
+          schema:
+            $ref: '#/definitions/util.Result'
+        "104":
+          schema:
+            $ref: '#/definitions/util.Result'
+      summary: 修改友链
+      tags:
+      - 友链
+  /api/v1/links/{id}:
+    delete:
+      consumes:
+      - application/json
+      responses:
+        "100":
+          description: Continue
+          schema:
+            $ref: '#/definitions/util.Result'
+        "104":
+          schema:
+            $ref: '#/definitions/util.Result'
+      summary: 删除友链
+      tags:
+      - 友链
   /api/v1/parent_categories:
     get:
       consumes:
@@ -1208,4 +1379,48 @@ paths:
       summary: 发送测试邮件
       tags:
       - 系统设置
+  /api/v1/users:
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: 用户信息表单
+        in: body
+        name: userForm
+        required: true
+        schema:
+          $ref: '#/definitions/form.UserInfoForm'
+      responses:
+        "100":
+          description: Continue
+          schema:
+            $ref: '#/definitions/util.Result'
+        "104":
+          schema:
+            $ref: '#/definitions/util.Result'
+      summary: 更新用户信息
+      tags:
+      - 用户
+  /api/v1/users/pwd:
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: 修改密码表单
+        in: body
+        name: pwdForm
+        required: true
+        schema:
+          $ref: '#/definitions/form.PwdForm'
+      responses:
+        "100":
+          description: Continue
+          schema:
+            $ref: '#/definitions/util.Result'
+        "104":
+          schema:
+            $ref: '#/definitions/util.Result'
+      summary: 修改密码
+      tags:
+      - 用户
 swagger: "2.0"

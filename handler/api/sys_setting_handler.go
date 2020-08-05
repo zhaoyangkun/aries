@@ -84,6 +84,7 @@ func SaveSiteSetting(ctx *gin.Context) {
 			Msg:  "服务器端错误",
 			Data: nil,
 		})
+		return
 	}
 	ctx.JSON(http.StatusOK, util.Result{
 		Code: util.Success,
@@ -146,6 +147,7 @@ func SaveSMTPSetting(ctx *gin.Context) {
 			Msg:  "服务器端错误",
 			Data: nil,
 		})
+		return
 	}
 	ctx.JSON(http.StatusOK, util.Result{
 		Code: util.Success,
@@ -180,6 +182,7 @@ func SendTestEmail(ctx *gin.Context) {
 			Msg:  "服务器端错误",
 			Data: nil,
 		})
+		return
 	}
 	if len(emailSetting) == 0 {
 		ctx.JSON(http.StatusOK, util.Result{
@@ -236,6 +239,7 @@ func GetAdminIndexData(ctx *gin.Context) {
 			Msg:  "服务器端错误",
 			Data: nil,
 		})
+		return
 	}
 	commentCount, err := model.Comment{}.GetCount()
 	if err != nil {
@@ -245,6 +249,7 @@ func GetAdminIndexData(ctx *gin.Context) {
 			Msg:  "服务器端错误",
 			Data: nil,
 		})
+		return
 	}
 	latestArticles, err := model.Article{}.GetLatest(10)
 	if err != nil {
@@ -254,6 +259,7 @@ func GetAdminIndexData(ctx *gin.Context) {
 			Msg:  "服务器端错误",
 			Data: nil,
 		})
+		return
 	}
 	latestComments, err := model.Comment{}.GetLatest(10)
 	if err != nil {
@@ -263,6 +269,7 @@ func GetAdminIndexData(ctx *gin.Context) {
 			Msg:  "服务器端错误",
 			Data: nil,
 		})
+		return
 	}
 	ctx.JSON(http.StatusOK, util.Result{
 		Code: util.Success,

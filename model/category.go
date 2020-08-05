@@ -123,13 +123,18 @@ func (category Category) DeleteById(id uint) error {
 	if err := tx.Error; err != nil {
 		return err
 	}
-	// 更新属于该分类的文章的分类 ID 为 null
+	//  更新关联文章
 	err := tx.Model(&Article{}).Where("`category_id` = ?", id).Update("category_id", nil).Error
 	if err != nil {
 		tx.Rollback()
 		return err
 	}
-	err = db.Db.Where("`id` = ?", id).Unscoped().Delete(&category).Error
+	err = tx.Exec("update `categories` set `parent_id` = 0 where `parent_id` = ?", id).Error
+	if err != nil {
+		tx.Rollback()
+		return err
+	}
+	err = tx.Where("`id` = ?", id).Unscoped().Delete(&category).Error
 	if err != nil {
 		tx.Rollback()
 		return err
@@ -149,14 +154,19 @@ func (category Category) MultiDelByIds(ids string) error {
 		return err
 	}
 	idList := strings.Split(ids, ",") // 根据 , 分割成字符串数组
-	// 更新属于该分类的文章的分类 ID 为 null
+	// 更新关联文章
 	err := tx.Model(&Article{}).Where("`category_id` in (?)", idList).
 		Update("category_id", nil).Error
 	if err != nil {
 		tx.Rollback()
 		return err
 	}
-	err = db.Db.Where("`id` in (?)", idList).Unscoped().Delete(&category).Error
+	err = tx.Exec("update `categories` set `parent_id` = 0 where `parent_id` in (?)", idList).Error
+	if err != nil {
+		tx.Rollback()
+		return err
+	}
+	err = tx.Where("`id` in (?)", idList).Unscoped().Delete(&category).Error
 	if err != nil {
 		tx.Rollback()
 		return err

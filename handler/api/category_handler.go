@@ -171,6 +171,7 @@ func AddCategory(ctx *gin.Context) {
 			Msg:  "服务器端错误",
 			Data: nil,
 		})
+		return
 	}
 	ctx.JSON(http.StatusOK, util.Result{
 		Code: util.Success,
@@ -225,6 +226,7 @@ func UpdateCategory(ctx *gin.Context) {
 			Msg:  "服务器端错误",
 			Data: nil,
 		})
+		return
 	}
 	ctx.JSON(http.StatusOK, util.Result{
 		Code: util.Success,
@@ -259,6 +261,7 @@ func DeleteCategory(ctx *gin.Context) {
 			Msg:  "服务器端错误",
 			Data: nil,
 		})
+		return
 	}
 	ctx.JSON(http.StatusOK, util.Result{ // 删除成功
 		Code: util.Success,
@@ -293,6 +296,7 @@ func MultiDelCategories(ctx *gin.Context) {
 			Msg:  "服务器端错误",
 			Data: nil,
 		})
+		return
 	}
 	ctx.JSON(http.StatusOK, util.Result{
 		Code: util.Success,

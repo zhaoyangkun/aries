@@ -9,15 +9,15 @@ import (
 	"net/http"
 )
 
-// @Summary 获取所有评论
-// @Tags 评论
+// @Summary 获取所有友链
+// @Tags 友链
 // @version 1.0
 // @Accept application/json
 // @Success 100 object util.Result 成功
 // @Failure 103/104 object util.Result 失败
-// @Router /api/v1/all_comments [get]
-func GetAllComments(ctx *gin.Context) {
-	list, err := model.Comment{}.GetAll()
+// @Router /api/v1/all_links [get]
+func GetAllLinks(ctx *gin.Context) {
+	list, err := model.Link{}.GetAll()
 	if err != nil {
 		log.Error("error: ", err.Error())
 		ctx.JSON(http.StatusOK, util.Result{
@@ -34,22 +34,18 @@ func GetAllComments(ctx *gin.Context) {
 	})
 }
 
-// @Summary 分页获取评论
-// @Tags 评论
+// @Summary 分页获取友链
+// @Tags 友链
 // @version 1.0
 // @Accept application/json
-// @Param page query int false "页码"
-// @Param size query int false "每页条数"
-// @Param key query string false "关键词"
-// @Param type query string false "类型"
-// @Param state query uint false "状态"
+// Param pageForm query orm.LinkPageForm true "友链分页表单"
 // @Success 100 object util.Result 成功
 // @Failure 103/104 object util.Result 失败
-// @Router /api/v1/comments [get]
-func GetCommentsByPage(ctx *gin.Context) {
-	pageForm := form.CommentPageForm{}
+// @Router /api/v1/links [get]
+func GetLinksByPage(ctx *gin.Context) {
+	pageForm := form.LinkPageForm{}
 	_ = ctx.ShouldBindQuery(&pageForm)
-	list, total, err := model.Comment{}.GetByPage(&pageForm.Pagination, pageForm.Key, pageForm.Type, pageForm.State)
+	list, total, err := model.Link{}.GetByPage(&pageForm.Pagination, pageForm.Key, pageForm.CategoryId)
 	if err != nil {
 		log.Error("error: ", err.Error())
 		ctx.JSON(http.StatusOK, util.Result{
@@ -66,18 +62,17 @@ func GetCommentsByPage(ctx *gin.Context) {
 	})
 }
 
-// @Summary 发表评论
-// @Tags 评论
+// @Summary 添加友链
+// @Tags 友链
 // @version 1.0
 // @Accept application/json
-// @Param form body form.CommentAddForm false "添加评论表单"
+// Param addForm body orm.LinkPageForm true "友链分页表单"
 // @Success 100 object util.Result 成功
 // @Failure 103/104 object util.Result 失败
-// @Router /api/v1/comments [post]
-func AddComment(ctx *gin.Context) {
-	addForm := form.CommentAddForm{}
-	err := ctx.ShouldBindJSON(&addForm)
-	if err != nil {
+// @Router /api/v1/links [post]
+func CreateLink(ctx *gin.Context) {
+	addForm := form.LinkAddForm{}
+	if err := ctx.ShouldBindJSON(&addForm); err != nil {
 		ctx.JSON(http.StatusOK, util.Result{
 			Code: util.RequestError,
 			Msg:  util.GetFormError(err),
@@ -85,8 +80,8 @@ func AddComment(ctx *gin.Context) {
 		})
 		return
 	}
-	comment := addForm.BindToModel()
-	if err := comment.Create(); err != nil {
+	link := addForm.BindToModel()
+	if err := link.Create(); err != nil {
 		log.Error("error: ", err.Error())
 		ctx.JSON(http.StatusOK, util.Result{
 			Code: util.ServerError,
@@ -97,21 +92,21 @@ func AddComment(ctx *gin.Context) {
 	}
 	ctx.JSON(http.StatusOK, util.Result{
 		Code: util.Success,
-		Msg:  "发表评论成功",
+		Msg:  "添加成功",
 		Data: nil,
 	})
 }
 
-// @Summary 修改评论
-// @Tags 评论
+// @Summary 修改友链
+// @Tags 友链
 // @version 1.0
 // @Accept application/json
-// @Param form body form.CommentEditForm false "修改评论表单"
+// Param addForm body orm.LinkPageForm true "友链分页表单"
 // @Success 100 object util.Result 成功
 // @Failure 103/104 object util.Result 失败
-// @Router /api/v1/comments [put]
-func UpdateComment(ctx *gin.Context) {
-	editForm := form.CommentEditForm{}
+// @Router /api/v1/links [post]
+func UpdateLink(ctx *gin.Context) {
+	editForm := form.LinkEditForm{}
 	if err := ctx.ShouldBindJSON(&editForm); err != nil {
 		ctx.JSON(http.StatusOK, util.Result{
 			Code: util.RequestError,
@@ -120,33 +115,34 @@ func UpdateComment(ctx *gin.Context) {
 		})
 		return
 	}
-	comment := editForm.BindToModel()
-	if err := comment.Update(); err != nil {
+	link := editForm.BindToModel()
+	if err := link.Update(); err != nil {
 		log.Error("error: ", err.Error())
 		ctx.JSON(http.StatusOK, util.Result{
 			Code: util.ServerError,
 			Msg:  "服务器端错误",
 			Data: nil,
 		})
+		return
 	}
 	ctx.JSON(http.StatusOK, util.Result{
 		Code: util.Success,
-		Msg:  "修改评论成功",
+		Msg:  "修改成功",
 		Data: nil,
 	})
 }
 
-// @Summary 删除评论
-// @Tags 评论
+// @Summary 删除友链
+// @Tags 友链
 // @version 1.0
 // @Accept application/json
-// @Param id path uint true "id"
+// Param id path int true "ID"
 // @Success 100 object util.Result 成功
 // @Failure 103/104 object util.Result 失败
-// @Router /api/v1/comments/{id} [delete]
-func DeleteComment(ctx *gin.Context) {
+// @Router /api/v1/links/{id} [delete]
+func DeleteLink(ctx *gin.Context) {
 	id := ctx.Param("id")
-	err := model.Comment{}.DeleteById(id)
+	err := model.Link{}.DeleteById(id)
 	if err != nil {
 		log.Error("error: ", err.Error())
 		ctx.JSON(http.StatusOK, util.Result{
@@ -154,6 +150,7 @@ func DeleteComment(ctx *gin.Context) {
 			Msg:  "服务器端错误",
 			Data: nil,
 		})
+		return
 	}
 	ctx.JSON(http.StatusOK, util.Result{
 		Code: util.Success,
@@ -162,27 +159,27 @@ func DeleteComment(ctx *gin.Context) {
 	})
 }
 
-// @Summary 批量删除评论
-// @Tags 评论
+// @Summary 删除友链
+// @Tags 友链
 // @version 1.0
 // @Accept application/json
-// @Param ids query string true "ids"
+// @Param ids query string true "IDS"
 // @Success 100 object util.Result 成功
 // @Failure 103/104 object util.Result 失败
-// @Router /api/v1/comments [delete]
-func MultiDelComments(ctx *gin.Context) {
-	ids := ctx.Query("ids")
+// @Router /api/v1/links [delete]
+func MultiDelLinks(ctx *gin.Context) {
+	ids := ctx.DefaultQuery("ids", "")
 	if ids == "" {
 		ctx.JSON(http.StatusOK, util.Result{
 			Code: util.RequestError,
-			Msg:  "请勾选要删除的条目",
+			Msg:  "请求参数错误",
 			Data: nil,
 		})
 		return
 	}
-	err := model.Comment{}.MultiDelByIds(ids)
+	err := model.Link{}.MultiDelByIds(ids)
 	if err != nil {
-		log.Error("error: ", err.Error())
+		log.Errorln("Error: ", err.Error())
 		ctx.JSON(http.StatusOK, util.Result{
 			Code: util.ServerError,
 			Msg:  "服务器端错误",

@@ -103,7 +103,7 @@ func (Tag) MultiDelByIds(ids string) error {
 		return err
 	}
 	// 删除标签表中的记录
-	err = db.Db.Where("`id` in (?)", idList).Unscoped().Delete(&Tag{}).Error
+	err = tx.Where("`id` in (?)", idList).Unscoped().Delete(&Tag{}).Error
 	if err != nil {
 		tx.Rollback()
 		return err

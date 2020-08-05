@@ -28,6 +28,65 @@ var doc = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/api/articles/move_up": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "文章"
+                ],
+                "summary": "向上移动文章",
+                "parameters": [
+                    {
+                        "description": "文章排序表单",
+                        "name": "oderForm",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/form.ArticleOrderForm"
+                        }
+                    }
+                ],
+                "responses": {
+                    "100": {
+                        "description": "Continue",
+                        "schema": {
+                            "$ref": "#/definitions/util.Result"
+                        }
+                    },
+                    "104": {
+                        "schema": {
+                            "$ref": "#/definitions/util.Result"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/admin_index_data": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "系统设置"
+                ],
+                "summary": "获取后台首页数据",
+                "responses": {
+                    "100": {
+                        "description": "Continue",
+                        "schema": {
+                            "$ref": "#/definitions/util.Result"
+                        }
+                    },
+                    "104": {
+                        "schema": {
+                            "$ref": "#/definitions/util.Result"
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/all_articles": {
             "get": {
                 "consumes": [
@@ -94,6 +153,30 @@ var doc = `{
                     "评论"
                 ],
                 "summary": "获取所有评论",
+                "responses": {
+                    "100": {
+                        "description": "Continue",
+                        "schema": {
+                            "$ref": "#/definitions/util.Result"
+                        }
+                    },
+                    "104": {
+                        "schema": {
+                            "$ref": "#/definitions/util.Result"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/all_links": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "友链"
+                ],
+                "summary": "获取所有友链",
                 "responses": {
                     "100": {
                         "description": "Continue",
@@ -317,6 +400,41 @@ var doc = `{
                         "name": "ids",
                         "in": "query",
                         "required": true
+                    }
+                ],
+                "responses": {
+                    "100": {
+                        "description": "Continue",
+                        "schema": {
+                            "$ref": "#/definitions/util.Result"
+                        }
+                    },
+                    "104": {
+                        "schema": {
+                            "$ref": "#/definitions/util.Result"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/articles/move_down": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "文章"
+                ],
+                "summary": "向下移动文章",
+                "parameters": [
+                    {
+                        "description": "文章排序表单",
+                        "name": "oderForm",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/form.ArticleOrderForm"
+                        }
                     }
                 ],
                 "responses": {
@@ -927,6 +1045,107 @@ var doc = `{
                 }
             }
         },
+        "/api/v1/links": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "友链"
+                ],
+                "summary": "分页获取友链",
+                "responses": {
+                    "100": {
+                        "description": "Continue",
+                        "schema": {
+                            "$ref": "#/definitions/util.Result"
+                        }
+                    },
+                    "104": {
+                        "schema": {
+                            "$ref": "#/definitions/util.Result"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "友链"
+                ],
+                "summary": "修改友链",
+                "responses": {
+                    "100": {
+                        "description": "Continue",
+                        "schema": {
+                            "$ref": "#/definitions/util.Result"
+                        }
+                    },
+                    "104": {
+                        "schema": {
+                            "$ref": "#/definitions/util.Result"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "友链"
+                ],
+                "summary": "删除友链",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "IDS",
+                        "name": "ids",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "100": {
+                        "description": "Continue",
+                        "schema": {
+                            "$ref": "#/definitions/util.Result"
+                        }
+                    },
+                    "104": {
+                        "schema": {
+                            "$ref": "#/definitions/util.Result"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/links/{id}": {
+            "delete": {
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "友链"
+                ],
+                "summary": "删除友链",
+                "responses": {
+                    "100": {
+                        "description": "Continue",
+                        "schema": {
+                            "$ref": "#/definitions/util.Result"
+                        }
+                    },
+                    "104": {
+                        "schema": {
+                            "$ref": "#/definitions/util.Result"
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/parent_categories": {
             "get": {
                 "consumes": [
@@ -1290,6 +1509,76 @@ var doc = `{
                     }
                 }
             }
+        },
+        "/api/v1/users": {
+            "put": {
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户"
+                ],
+                "summary": "更新用户信息",
+                "parameters": [
+                    {
+                        "description": "用户信息表单",
+                        "name": "userForm",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/form.UserInfoForm"
+                        }
+                    }
+                ],
+                "responses": {
+                    "100": {
+                        "description": "Continue",
+                        "schema": {
+                            "$ref": "#/definitions/util.Result"
+                        }
+                    },
+                    "104": {
+                        "schema": {
+                            "$ref": "#/definitions/util.Result"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/users/pwd": {
+            "put": {
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户"
+                ],
+                "summary": "修改密码",
+                "parameters": [
+                    {
+                        "description": "修改密码表单",
+                        "name": "pwdForm",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/form.PwdForm"
+                        }
+                    }
+                ],
+                "responses": {
+                    "100": {
+                        "description": "Continue",
+                        "schema": {
+                            "$ref": "#/definitions/util.Result"
+                        }
+                    },
+                    "104": {
+                        "schema": {
+                            "$ref": "#/definitions/util.Result"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -1444,6 +1733,24 @@ var doc = `{
                 },
                 "user_id": {
                     "description": "用户 ID",
+                    "type": "integer"
+                }
+            }
+        },
+        "form.ArticleOrderForm": {
+            "type": "object",
+            "required": [
+                "id",
+                "order_id"
+            ],
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "is_top": {
+                    "type": "boolean"
+                },
+                "order_id": {
                     "type": "integer"
                 }
             }
@@ -1625,7 +1932,6 @@ var doc = `{
                 "account",
                 "address",
                 "port",
-                "protocol",
                 "pwd",
                 "sender",
                 "type_name"
@@ -1638,9 +1944,6 @@ var doc = `{
                     "type": "string"
                 },
                 "port": {
-                    "type": "string"
-                },
-                "protocol": {
                     "type": "string"
                 },
                 "pwd": {
@@ -1695,39 +1998,56 @@ var doc = `{
                 }
             }
         },
+        "form.PwdForm": {
+            "type": "object",
+            "required": [
+                "confirm_new_pwd",
+                "new_pwd",
+                "old_pwd",
+                "username"
+            ],
+            "properties": {
+                "confirm_new_pwd": {
+                    "type": "string"
+                },
+                "new_pwd": {
+                    "type": "string"
+                },
+                "old_pwd": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
         "form.RegisterForm": {
             "type": "object",
             "required": [
                 "email",
-                "nickname",
                 "pwd",
                 "second_pwd",
+                "site_name",
                 "site_url",
                 "username"
             ],
             "properties": {
                 "email": {
-                    "description": "邮箱",
-                    "type": "string"
-                },
-                "nickname": {
-                    "description": "用户名",
                     "type": "string"
                 },
                 "pwd": {
-                    "description": "密码",
                     "type": "string"
                 },
                 "second_pwd": {
-                    "description": "确认密码",
+                    "type": "string"
+                },
+                "site_name": {
                     "type": "string"
                 },
                 "site_url": {
-                    "description": "网址",
                     "type": "string"
                 },
                 "username": {
-                    "description": "用户名",
                     "type": "string"
                 }
             }
@@ -1814,6 +2134,27 @@ var doc = `{
                     "type": "integer"
                 },
                 "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "form.UserInfoForm": {
+            "type": "object",
+            "required": [
+                "email",
+                "username"
+            ],
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "nickname": {
+                    "type": "string"
+                },
+                "signature": {
+                    "type": "string"
+                },
+                "username": {
                     "type": "string"
                 }
             }

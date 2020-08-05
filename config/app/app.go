@@ -75,6 +75,7 @@ func InitApp() *gin.Engine {
 	apiRouter.InitCommentApiRouter("/api/v1", router)
 	apiRouter.InitUserApiRouter("/api/v1", router)
 	apiRouter.InitSysSettingApiRouter("/api/v1", router)
+	apiRouter.InitLinkApiRouter("/api/v1", router)
 
 	return router
 }
