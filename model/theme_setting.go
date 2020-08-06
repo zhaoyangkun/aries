@@ -2,6 +2,7 @@ package model
 
 import "github.com/jinzhu/gorm"
 
+// 主题设置
 type ThemeSetting struct {
 	gorm.Model
 	ThemeID uint   `json:"theme_id"`                          // 主题 ID

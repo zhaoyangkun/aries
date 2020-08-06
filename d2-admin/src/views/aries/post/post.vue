@@ -70,7 +70,8 @@
         <el-row>
           <el-col :span="8">
             <el-form-item label="分类" prop="category_id">
-              <el-select size="small" v-model="addForm.category_id" clearable placeholder="请选择分类">
+              <el-select size="small" v-model="addForm.category_id" clearable @clear="editForm.category_id=null"
+                         placeholder="请选择分类">
                 <el-option
                   v-for="item in categories"
                   :key="item.ID"
@@ -156,7 +157,8 @@
         <el-row>
           <el-col :span="8">
             <el-form-item label="分类" prop="category_id">
-              <el-select size="small" v-model="editForm.category_id" clearable placeholder="请选择分类">
+              <el-select size="small" v-model="editForm.category_id" clearable placeholder="请选择分类"
+                         @clear="editForm.category_id=null">
                 <el-option
                   v-for="item in categories"
                   :key="item.ID"
@@ -298,7 +300,7 @@ import editEditor from '@/components/aries/post/editVditor'
 import singleTag from '@/components/aries/post/singleTag'
 import multiTag from '@/components/aries/post/multiTag'
 import state from '@/components/aries/post/state'
-import tableHandle from '@/components/aries/post/tableHandle'
+import tableHandler from '@/components/aries/post/tableHandler'
 import postTitle from '@/components/aries/post/postTitle'
 import { addCategory, getAllCategories, getAllParentCategories } from '@/api/aries/category'
 import { addTag, getAllTags } from '@/api/aries/tag'
@@ -315,16 +317,14 @@ import {
 export default {
   name: 'post',
   components: {
-    // eslint-disable-next-line vue/no-unused-components
     addEditor,
-    // eslint-disable-next-line vue/no-unused-components
     editEditor,
     // eslint-disable-next-line vue/no-unused-components
     singleTag,
     // eslint-disable-next-line vue/no-unused-components
     multiTag,
     // eslint-disable-next-line vue/no-unused-components
-    tableHandle,
+    tableHandler,
     // eslint-disable-next-line vue/no-unused-components
     postTitle
   },
@@ -375,7 +375,7 @@ export default {
         {
           title: '操作',
           component: {
-            name: tableHandle,
+            name: tableHandler,
             props: {
               openEditDialog: this.openEditDialog,
               handleRowRemove: this.handleRowRemove,
@@ -569,7 +569,7 @@ export default {
     },
     // 获取分类数据
     fetchCategoryData () {
-      getAllCategories(3)
+      getAllCategories(0)
         .then(res => {
           this.categories = res.data
         })
@@ -637,6 +637,7 @@ export default {
         tagIds.push(tag.ID)
       })
       this.editForm = row
+      this.editForm.category_id = this.editForm.category_id === 0 ? null : this.editForm.category_id
       this.$set(this.editForm, 'selectTagIds', tagIds)
     },
     // 打开导入文章弹窗

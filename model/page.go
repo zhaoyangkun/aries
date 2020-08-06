@@ -2,7 +2,7 @@ package model
 
 import "github.com/jinzhu/gorm"
 
-// 页面结构
+// 页面
 type Page struct {
 	gorm.Model
 	Title string `gorm:"varchar(100);not null;" json:"title"` // 标题

@@ -10,7 +10,7 @@ import (
 	"time"
 )
 
-// 文章结构
+// 文章
 type Article struct {
 	gorm.Model
 	User             User     `gorm:"ForeignKey:UserId;not null;" json:"user"`             // 用户

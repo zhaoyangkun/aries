@@ -200,12 +200,11 @@ export default {
       this.selection = selection
     },
     // 删除
-    handleRowRemove ({ index, row }, done) {
+    handleRowRemove (row) {
       setTimeout(() => {
         deleteTag(row.ID)
           .then(res => {
             this.$message.success(res.msg)
-            done()
             this.fetchData()
             this.fetchParentCategories()
           })

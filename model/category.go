@@ -7,7 +7,7 @@ import (
 	"strings"
 )
 
-// 分类结构
+// 分类
 type Category struct {
 	gorm.Model
 	Children []*Category `gorm:"ForeignKey:ParentId" json:"children"`            // 子级分类列表

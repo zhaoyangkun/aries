@@ -8,7 +8,7 @@ import (
 	"strings"
 )
 
-// 评论结构
+// 评论
 type Comment struct {
 	gorm.Model
 	Page            Page     `gorm:"ForeignKey:PageId" json:"page"`                    // 页面

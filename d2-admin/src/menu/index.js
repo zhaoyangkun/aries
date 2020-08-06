@@ -15,24 +15,48 @@ function supplementPath (menu) {
   }))
 }
 
-// 顶部菜单栏
-export const menuHeader = supplementPath([
+// 菜单
+const menu = [
   { path: '/index', title: '首页', icon: 'home' },
   {
-    title: '内容',
+    title: '文章',
     icon: 'file-text',
     children: [
       { path: '/category', title: '分类', icon: 'list' },
       { path: '/tag', title: '标签', icon: 'tags' },
-      { path: '/post', title: '文章', icon: 'edit' },
-      { path: '/comment', title: '评论', icon: 'commenting-o' }
+      { path: '/post', title: '文章', icon: 'edit' }
+    ]
+  },
+  {
+    title: '外观',
+    icon: 'film',
+    children: [
+      { path: '/nav', title: '菜单', icon: 'location-arrow' },
+      {
+        title: '主题',
+        icon: 'tachometer',
+        children: [
+          { path: '/theme', title: '主题', icon: 'tachometer' },
+          { path: '/theme/edit', title: '主题编辑', icon: 'pencil' }
+        ]
+      }
     ]
   },
   {
     title: '用户',
     icon: 'user',
     children: [
-      { path: '/user', title: '用户信息', icon: 'user-o' }
+      { path: '/user', title: '用户信息', icon: 'user-o' },
+      { path: '/comment', title: '评论', icon: 'commenting-o' },
+      { path: '/page', title: '页面', icon: 'columns' },
+      {
+        title: '友链',
+        icon: 'link',
+        children: [
+          { path: '/link', title: '友链', icon: 'link' },
+          { path: '/link/category', title: '分类', icon: 'list-ul' }
+        ]
+      }
     ]
   },
   {
@@ -40,37 +64,15 @@ export const menuHeader = supplementPath([
     icon: 'gears',
     children: [
       { path: '/setting', title: '设置', icon: 'cog' },
-      { path: '/doc', title: 'API 文档', icon: 'chain' }
+      { path: '/attachment', title: '附件', icon: 'save' },
+      { path: '/doc', title: 'API 文档', icon: 'book' },
+      { path: '/about', title: '关于', icon: 'paper-plane' }
     ]
   }
-])
+]
+
+// 顶部菜单栏
+export const menuHeader = supplementPath(menu)
 
 // 侧边菜单栏
-export const menuAside = supplementPath([
-  { path: '/index', title: '首页', icon: 'home' },
-  {
-    title: '内容',
-    icon: 'file-text',
-    children: [
-      { path: '/category', title: '分类', icon: 'list' },
-      { path: '/tag', title: '标签', icon: 'tags' },
-      { path: '/post', title: '文章', icon: 'edit' },
-      { path: '/comment', title: '评论', icon: 'commenting-o' }
-    ]
-  },
-  {
-    title: '用户',
-    icon: 'user',
-    children: [
-      { path: '/user', title: '用户信息', icon: 'user-o' }
-    ]
-  },
-  {
-    title: '系统',
-    icon: 'gears',
-    children: [
-      { path: '/setting', title: '设置', icon: 'cog' },
-      { path: '/doc', title: 'API 文档', icon: 'chain' }
-    ]
-  }
-])
+export const menuAside = supplementPath(menu)

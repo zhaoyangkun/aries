@@ -70,7 +70,7 @@ import { addComment, deleteComment, getCommentsByPage, updateComment } from '@/a
 import nickName from '@/components/aries/comment/nickName'
 import date from '@/components/aries/common/date'
 import state from '@/components/aries/comment/state'
-import tableHandle from '@/components/aries/comment/tableHandle'
+import tableHandler from '@/components/aries/comment/tableHandler'
 import editVditor from '@/components/aries/post/editVditor'
 import { getAllUsers } from '@/api/aries/user'
 
@@ -84,7 +84,7 @@ export default {
     // eslint-disable-next-line vue/no-unused-components
     nickName,
     // eslint-disable-next-line vue/no-unused-components
-    tableHandle,
+    tableHandler,
     editVditor
   },
   data () {
@@ -132,7 +132,7 @@ export default {
           title: '操作',
           width: '200',
           component: {
-            name: tableHandle,
+            name: tableHandler,
             props: {
               openReplyDialog: this.openReplyDialog,
               handleRowRemove: this.handleRowRemove,

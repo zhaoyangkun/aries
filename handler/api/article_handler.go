@@ -154,6 +154,7 @@ func UpdateArticle(ctx *gin.Context) {
 	editForm := form.ArticleEditForm{}
 	err := ctx.ShouldBindJSON(&editForm)
 	if err != nil {
+		log.Error("err: ", err.Error())
 		ctx.JSON(http.StatusOK, util.Result{
 			Code: util.RequestError,
 			Msg:  util.GetFormError(err),

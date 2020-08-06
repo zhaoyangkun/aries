@@ -6,7 +6,7 @@ import (
 	"strconv"
 )
 
-// 系统设置条目结构
+// 系统设置条目
 type SysSettingItem struct {
 	gorm.Model
 	SysId uint   `json:"sys_id"`                            // 系统设置 ID

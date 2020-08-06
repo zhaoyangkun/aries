@@ -2,7 +2,7 @@ package model
 
 import "github.com/jinzhu/gorm"
 
-// 导航栏结构
+// 导航栏
 type Nav struct {
 	gorm.Model
 	ParentNav   *Nav   `gorm:"ForeignKey:ParentNavId" json:"parent_nav"`    // 父级菜单

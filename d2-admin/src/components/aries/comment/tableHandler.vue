@@ -21,7 +21,7 @@
 
 <script>
 export default {
-  name: 'tableHandle',
+  name: 'tableHandler',
   props: {
     scope: {
       default: null

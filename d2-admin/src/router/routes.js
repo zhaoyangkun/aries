@@ -78,6 +78,15 @@ const frameIn = [
         component: _import('aries/system/setting')
       },
       {
+        path: 'link',
+        name: 'link',
+        meta: {
+          title: '友链',
+          auth: true
+        },
+        component: _import('aries/link/links')
+      },
+      {
         path: 'doc',
         name: 'doc',
         meta: {

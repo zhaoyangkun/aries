@@ -7,7 +7,7 @@ import (
 	"strings"
 )
 
-// 友情链接结构
+// 友情链接
 type Link struct {
 	gorm.Model
 	Category   Category `gorm:"ForeignKey:CategoryId" json:"category"` // 分类
@@ -46,7 +46,7 @@ func (Link) GetById(id string) (link Link, err error) {
 
 // 添加友链
 func (link *Link) Create() (err error) {
-	err = db.Db.Create(link).Error
+	err = db.Db.Create(&link).Error
 	return
 }
 

@@ -4,7 +4,7 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
-// 主题结构
+// 主题
 type Theme struct {
 	gorm.Model
 	ThemeName string `gorm:"type:varchar(100);not null;" json:"theme_name"` // 主题名称
