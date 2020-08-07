@@ -29,7 +29,7 @@ export function createCaptcha () {
 // 忘记密码
 export function forgetPwd (data) {
   return request({
-    url: '/auth/forget_pwd',
+    url: '/auth/pwd/forget',
     method: 'post',
     data: data
   })
@@ -38,7 +38,7 @@ export function forgetPwd (data) {
 // 重置密码
 export function resetPwd (data) {
   return request({
-    url: '/auth/reset_pwd',
+    url: '/auth/pwd/reset',
     method: 'post',
     data: data
   })

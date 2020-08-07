@@ -2,7 +2,7 @@
   <d2-container>
     <template slot="header">文章列表</template>
     <d2-crud
-      ref="d2Cru优化d"
+      ref="d2Crud"
       :loading="loading"
       :columns="columns"
       :data="data"
@@ -259,7 +259,7 @@
       </el-button>
     </el-dialog>
 
-    <!-- 添加文章抽题 -->
+    <!-- 添加分类抽屉 -->
     <el-drawer
       title="添加分类"
       :visible.sync="drawOptions.addVisible"
@@ -302,7 +302,7 @@ import multiTag from '@/components/aries/post/multiTag'
 import state from '@/components/aries/post/state'
 import tableHandler from '@/components/aries/post/tableHandler'
 import postTitle from '@/components/aries/post/postTitle'
-import { addCategory, getAllCategories, getAllParentCategories } from '@/api/aries/category'
+import { addArticleCategory, getAllCategories, getAllParentCategories } from '@/api/aries/category'
 import { addTag, getAllTags } from '@/api/aries/tag'
 import {
   addPost,
@@ -854,7 +854,7 @@ export default {
         if (valid) {
           this.drawOptions.addBtnLoading = true
           setTimeout(() => {
-            addCategory(this.addCategoryForm)
+            addArticleCategory(this.addCategoryForm)
               .then(res => {
                 this.$message.success(res.msg)
                 this.fetchCategoryData()

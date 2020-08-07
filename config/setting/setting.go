@@ -12,6 +12,33 @@ import (
 	"strings"
 )
 
+// 翻译器
+var Trans ut.Translator
+
+// 全局配置
+var Config = &Setting{}
+
+// lute
+var LuteEngine = &lute.Lute{}
+
+// cache
+var Cache = &persistence.InMemoryStore{}
+
+// 博客全局变量
+type BlogVariable struct {
+	Theme        string
+	ContextPath  string
+	SiteName     string
+	SiteDesc     string
+	SiteKeywords string
+	SiteLogo     string
+	GlobalHeader string
+	GlobalFooter string
+}
+
+// 博客全局变量
+var BlogVars BlogVariable
+
 // 总配置
 type Setting struct {
 	Server   server   `yaml:"server"`
@@ -47,18 +74,6 @@ type smtp struct {
 	Password string `yaml:"password"`
 }
 
-// 翻译器
-var Trans ut.Translator
-
-// 全局配置
-var Config = &Setting{}
-
-// lute
-var LuteEngine = &lute.Lute{}
-
-// Cache
-var Cache = &persistence.InMemoryStore{}
-
 // 读取 yaml 配置文件
 func InitSetting() {
 	// 获取当前项目根目录
@@ -77,5 +92,37 @@ func InitSetting() {
 	err = yaml.Unmarshal(yamlFile, Config)
 	if err != nil {
 		log.Panicln("配置参数转换失败：", err.Error())
+	}
+}
+
+// 配置博客全局变量
+func (b *BlogVariable) InitBlogVars(siteSetting map[string]string) {
+	if theme, ok := siteSetting["theme"]; ok {
+		b.Theme = theme
+	} else {
+		b.Theme = "xue"
+	}
+	if siteName, ok := siteSetting["site_name"]; ok {
+		b.SiteName = siteName
+	} else {
+		b.SiteName = "Aries"
+	}
+	if siteDesc, ok := siteSetting["site_desc"]; ok {
+		b.SiteDesc = siteDesc
+	} else {
+		b.SiteDesc = "Aries Blog"
+	}
+	if siteKeywords, ok := siteSetting["seo_key_words"]; ok {
+		b.SiteKeywords = siteKeywords
+	}
+	if siteLogo, ok := siteSetting["site_logo"]; ok {
+		b.SiteLogo = siteLogo
+	} else {
+		b.SiteLogo = "https://s1.ax1x.com/2020/08/07/aWuU41.png"
+	}
+	if contextPath, ok := siteSetting["site_url"]; ok {
+		b.ContextPath = contextPath
+	} else {
+		b.ContextPath = "http://localhost:8088"
 	}
 }

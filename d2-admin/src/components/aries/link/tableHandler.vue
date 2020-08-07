@@ -1,7 +1,7 @@
 <template>
   <div>
-    <el-button size="small" @click="openEditDialog(scope.row)">编辑</el-button>
-    <el-button size="small" type="danger" @click="handleRowRemove(scope.row.ID)">删除</el-button>
+    <el-button size="small" icon="el-icon-edit" @click="openEditDialog(scope.row)">编辑</el-button>
+    <el-button size="small" type="danger" icon="el-icon-delete" @click="handleRowRemove(scope.row.ID)">删除</el-button>
   </div>
 </template>
 

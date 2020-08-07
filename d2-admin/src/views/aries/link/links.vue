@@ -1,6 +1,6 @@
 <template>
   <d2-container>
-    <template slot="header">友链列表</template>
+    <template slot="header">用户 / 友链 / 友链列表</template>
     <d2-crud
       ref="d2Crud"
       :options="options"
@@ -23,6 +23,16 @@
           <el-button size="small" type="primary" style="margin-bottom: 5px" @click="dialogOptions.addVisible = true">
             <i class="el-icon-plus"></i> 新增
           </el-button>
+        </el-form-item>
+        <el-form-item>
+          <el-select style="width: 150px" size="small" v-model="pagination.category_id" clearable placeholder="请选择分类">
+            <el-option
+              v-for="item in categories"
+              :key="item.ID"
+              :label="item.name"
+              :value="item.ID">
+            </el-option>
+          </el-select>
         </el-form-item>
         <el-form-item>
           <el-input size="small" clearable placeholder="请输入关键字" v-model="pagination.key"></el-input>
@@ -64,7 +74,10 @@
               :label="item.name"
               :value="item.ID">
             </el-option>
-          </el-select>
+          </el-select>&nbsp;
+          <el-button size="small" type="primary" style="margin-bottom: 5px" @click="drawOptions.addVisible = true">
+            <i class="el-icon-plus"></i> 新增
+          </el-button>
         </el-form-item>
         <el-form-item label="网站描述" prop="desc">
           <el-input size="small" v-model="addForm.desc" type="text" autocomplete="off"
@@ -121,12 +134,31 @@
         </el-form-item>
       </el-form>
     </el-dialog>
+
+    <!-- 添加分类抽屉 -->
+    <el-drawer
+      title="添加友链分类"
+      :visible.sync="drawOptions.addVisible"
+      direction="rtl"
+    >
+      <el-form ref="addCategoryForm" :model="addCategoryForm" :rules="addCategoryRules" label-width="80px">
+        <el-form-item label="名称" prop="name">
+          <el-input style="width: 280px" size="small" type="text" v-model="addCategoryForm.name"></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" :loading="drawOptions.addBtnLoading"
+                     @click="handleCategoryAdd">保存
+          </el-button>
+          <el-button @click="drawOptions.addVisible=false">取消</el-button>
+        </el-form-item>
+      </el-form>
+    </el-drawer>
   </d2-container>
 </template>
 
 <script>
 import { createLink, deleteLink, getLinksByPage, multiDelLinks, updateLink } from '@api/aries/link'
-import { getAllCategories } from '@api/aries/category'
+import { addLinkCategory, getAllCategories } from '@api/aries/category'
 import tableHandler from '@/components/aries/link/tableHandler'
 
 export default {
@@ -181,6 +213,10 @@ export default {
         desc: '',
         icon: ''
       },
+      addCategoryForm: {
+        type: 1,
+        name: ''
+      },
       addRules: {
         name: [
           { required: true, trigger: 'blur', message: '请输入网站名称' },
@@ -215,6 +251,11 @@ export default {
           { max: 255, trigger: 'blur', message: '网站图标不能超过 255 个字符' }
         ]
       },
+      addCategoryRules: {
+        name: [
+          { required: true, trigger: 'blur', message: '请输入分类名称' }
+        ]
+      },
       pagination: {
         currentPage: 1, // 页码
         pageSize: 10, // 每页条数
@@ -237,6 +278,10 @@ export default {
         addBtnLoading: false,
         editBtnLoading: false
       },
+      drawOptions: {
+        addBtnLoading: false,
+        addVisible: false
+      },
       loading: false
     }
   },
@@ -252,6 +297,7 @@ export default {
         getLinksByPage({
           page: this.pagination.currentPage,
           size: this.pagination.pageSize,
+          category_id: this.pagination.category_id,
           key: this.pagination.key
         })
           .then(res => {
@@ -390,6 +436,22 @@ export default {
         }).catch(() => {
         })
       }
+    },
+    // 添加友链分类
+    handleCategoryAdd () {
+      this.drawOptions.addBtnLoading = true
+      setTimeout(() => {
+        addLinkCategory(this.addCategoryForm)
+          .then(res => {
+            this.$message.success(res.msg)
+            this.drawOptions.addVisible = false
+            this.resetForm('addCategoryForm')
+            this.fetchLinkCategories()
+          })
+          .catch(() => {
+          })
+        this.drawOptions.addBtnLoading = false
+      }, 300)
     }
   }
 }

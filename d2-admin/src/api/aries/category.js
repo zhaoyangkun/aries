@@ -25,19 +25,37 @@ export function getAllParentCategories (type) {
   })
 }
 
-// 添加分类
-export function addCategory (data) {
+// 添加文章分类
+export function addArticleCategory (data) {
   return request({
-    url: '/categories',
+    url: '/categories/article',
     method: 'post',
     data: data
   })
 }
 
-// 修改分类
-export function updateCategory (data) {
+// 修改文章分类
+export function updateArticleCategory (data) {
   return request({
-    url: '/categories',
+    url: '/categories/article',
+    method: 'put',
+    data: data
+  })
+}
+
+// 添加友链分类
+export function addLinkCategory (data) {
+  return request({
+    url: '/categories/link',
+    method: 'post',
+    data: data
+  })
+}
+
+// 修改友链分类
+export function updateLinkCategory (data) {
+  return request({
+    url: '/categories/link',
     method: 'put',
     data: data
   })

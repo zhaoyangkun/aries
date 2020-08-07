@@ -63,30 +63,6 @@ var doc = `{
                 }
             }
         },
-        "/api/v1/admin_index_data": {
-            "get": {
-                "consumes": [
-                    "application/json"
-                ],
-                "tags": [
-                    "系统设置"
-                ],
-                "summary": "获取后台首页数据",
-                "responses": {
-                    "100": {
-                        "description": "Continue",
-                        "schema": {
-                            "$ref": "#/definitions/util.Result"
-                        }
-                    },
-                    "104": {
-                        "schema": {
-                            "$ref": "#/definitions/util.Result"
-                        }
-                    }
-                }
-            }
-        },
         "/api/v1/all_articles": {
             "get": {
                 "consumes": [
@@ -540,41 +516,6 @@ var doc = `{
                 }
             }
         },
-        "/api/v1/auth/forget_pwd": {
-            "post": {
-                "consumes": [
-                    "application/json"
-                ],
-                "tags": [
-                    "授权"
-                ],
-                "summary": "忘记密码",
-                "parameters": [
-                    {
-                        "description": "忘记密码表单",
-                        "name": "forgetPwdForm",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/form.ForgetPwdForm"
-                        }
-                    }
-                ],
-                "responses": {
-                    "100": {
-                        "description": "Continue",
-                        "schema": {
-                            "$ref": "#/definitions/util.Result"
-                        }
-                    },
-                    "104": {
-                        "schema": {
-                            "$ref": "#/definitions/util.Result"
-                        }
-                    }
-                }
-            }
-        },
         "/api/v1/auth/login": {
             "post": {
                 "consumes": [
@@ -610,7 +551,7 @@ var doc = `{
                 }
             }
         },
-        "/api/v1/auth/register": {
+        "/api/v1/auth/pwd/forget": {
             "post": {
                 "consumes": [
                     "application/json"
@@ -618,15 +559,15 @@ var doc = `{
                 "tags": [
                     "授权"
                 ],
-                "summary": "注册",
+                "summary": "忘记密码",
                 "parameters": [
                     {
-                        "description": "注册表单",
-                        "name": "regForm",
+                        "description": "忘记密码表单",
+                        "name": "forgetPwdForm",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/form.RegisterForm"
+                            "$ref": "#/definitions/form.ForgetPwdForm"
                         }
                     }
                 ],
@@ -645,7 +586,7 @@ var doc = `{
                 }
             }
         },
-        "/api/v1/auth/reset_pwd": {
+        "/api/v1/auth/pwd/reset": {
             "post": {
                 "consumes": [
                     "application/json"
@@ -662,6 +603,41 @@ var doc = `{
                         "required": true,
                         "schema": {
                             "$ref": "#/definitions/form.ResetPwdForm"
+                        }
+                    }
+                ],
+                "responses": {
+                    "100": {
+                        "description": "Continue",
+                        "schema": {
+                            "$ref": "#/definitions/util.Result"
+                        }
+                    },
+                    "104": {
+                        "schema": {
+                            "$ref": "#/definitions/util.Result"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/auth/register": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "授权"
+                ],
+                "summary": "注册",
+                "parameters": [
+                    {
+                        "description": "注册表单",
+                        "name": "regForm",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/form.RegisterForm"
                         }
                     }
                 ],
@@ -730,6 +706,39 @@ var doc = `{
                     }
                 }
             },
+            "delete": {
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "分类"
+                ],
+                "summary": "批量删除分类",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ids",
+                        "name": "ids",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "100": {
+                        "description": "Continue",
+                        "schema": {
+                            "$ref": "#/definitions/util.Result"
+                        }
+                    },
+                    "104": {
+                        "schema": {
+                            "$ref": "#/definitions/util.Result"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/categories/article": {
             "put": {
                 "consumes": [
                     "application/json"
@@ -737,15 +746,15 @@ var doc = `{
                 "tags": [
                     "分类"
                 ],
-                "summary": "修改分类",
+                "summary": "修改文章分类",
                 "parameters": [
                     {
-                        "description": "修改分类表单",
+                        "description": "修改文章分类表单",
                         "name": "editForm",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/form.CategoryEditForm"
+                            "$ref": "#/definitions/form.ArticleCategoryEditForm"
                         }
                     }
                 ],
@@ -770,15 +779,50 @@ var doc = `{
                 "tags": [
                     "分类"
                 ],
-                "summary": "添加分类",
+                "summary": "添加文章分类",
                 "parameters": [
                     {
-                        "description": "添加分类表单",
+                        "description": "添加文章分类表单",
                         "name": "addForm",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/form.CategoryAddForm"
+                            "$ref": "#/definitions/form.ArticleCategoryAddForm"
+                        }
+                    }
+                ],
+                "responses": {
+                    "100": {
+                        "description": "Continue",
+                        "schema": {
+                            "$ref": "#/definitions/util.Result"
+                        }
+                    },
+                    "104": {
+                        "schema": {
+                            "$ref": "#/definitions/util.Result"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/categories/link": {
+            "put": {
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "分类"
+                ],
+                "summary": "修改友链分类",
+                "parameters": [
+                    {
+                        "description": "修改友链分类表单",
+                        "name": "editForm",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/form.LinkCategoryEditForm"
                         }
                     }
                 ],
@@ -796,21 +840,23 @@ var doc = `{
                     }
                 }
             },
-            "delete": {
+            "post": {
                 "consumes": [
                     "application/json"
                 ],
                 "tags": [
                     "分类"
                 ],
-                "summary": "批量删除分类",
+                "summary": "添加友链分类",
                 "parameters": [
                     {
-                        "type": "string",
-                        "description": "ids",
-                        "name": "ids",
-                        "in": "query",
-                        "required": true
+                        "description": "添加友链分类表单",
+                        "name": "addForm",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/form.LinkCategoryAddForm"
+                        }
                     }
                 ],
                 "responses": {
@@ -1179,7 +1225,7 @@ var doc = `{
                 }
             }
         },
-        "/api/v1/site_setting": {
+        "/api/v1/sys_setting/email/test": {
             "post": {
                 "consumes": [
                     "application/json"
@@ -1187,18 +1233,7 @@ var doc = `{
                 "tags": [
                     "系统设置"
                 ],
-                "summary": "保存网站配置信息",
-                "parameters": [
-                    {
-                        "description": "网站配置表单",
-                        "name": "siteForm",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/form.SiteForm"
-                        }
-                    }
-                ],
+                "summary": "发送测试邮件",
                 "responses": {
                     "100": {
                         "description": "Continue",
@@ -1214,26 +1249,15 @@ var doc = `{
                 }
             }
         },
-        "/api/v1/smtp_setting": {
-            "post": {
+        "/api/v1/sys_setting/index_info": {
+            "get": {
                 "consumes": [
                     "application/json"
                 ],
                 "tags": [
                     "系统设置"
                 ],
-                "summary": "保存 SMTP 服务配置信息",
-                "parameters": [
-                    {
-                        "description": "SMTP 配置表单",
-                        "name": "emailForm",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/form.EmailForm"
-                        }
-                    }
-                ],
+                "summary": "获取后台首页数据",
                 "responses": {
                     "100": {
                         "description": "Continue",
@@ -1249,7 +1273,7 @@ var doc = `{
                 }
             }
         },
-        "/api/v1/sys_setting_items": {
+        "/api/v1/sys_setting/items": {
             "get": {
                 "consumes": [
                     "application/json"
@@ -1264,6 +1288,111 @@ var doc = `{
                         "description": "设置名称",
                         "name": "name",
                         "in": "query"
+                    }
+                ],
+                "responses": {
+                    "100": {
+                        "description": "Continue",
+                        "schema": {
+                            "$ref": "#/definitions/util.Result"
+                        }
+                    },
+                    "104": {
+                        "schema": {
+                            "$ref": "#/definitions/util.Result"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/sys_setting/pic_bed": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "系统设置"
+                ],
+                "summary": "保存图床配置信息",
+                "parameters": [
+                    {
+                        "description": "图床配置表单",
+                        "name": "settingForm",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/form.PicBedSettingForm"
+                        }
+                    }
+                ],
+                "responses": {
+                    "100": {
+                        "description": "Continue",
+                        "schema": {
+                            "$ref": "#/definitions/util.Result"
+                        }
+                    },
+                    "104": {
+                        "schema": {
+                            "$ref": "#/definitions/util.Result"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/sys_setting/site": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "系统设置"
+                ],
+                "summary": "保存网站配置信息",
+                "parameters": [
+                    {
+                        "description": "网站配置表单",
+                        "name": "settingForm",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/form.SiteSettingForm"
+                        }
+                    }
+                ],
+                "responses": {
+                    "100": {
+                        "description": "Continue",
+                        "schema": {
+                            "$ref": "#/definitions/util.Result"
+                        }
+                    },
+                    "104": {
+                        "schema": {
+                            "$ref": "#/definitions/util.Result"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/sys_setting/smtp": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "系统设置"
+                ],
+                "summary": "保存 SMTP 服务配置信息",
+                "parameters": [
+                    {
+                        "description": "SMTP 配置表单",
+                        "name": "settingForm",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/form.EmailSettingForm"
+                        }
                     }
                 ],
                 "responses": {
@@ -1486,30 +1615,6 @@ var doc = `{
                 }
             }
         },
-        "/api/v1/test_send_email": {
-            "post": {
-                "consumes": [
-                    "application/json"
-                ],
-                "tags": [
-                    "系统设置"
-                ],
-                "summary": "发送测试邮件",
-                "responses": {
-                    "100": {
-                        "description": "Continue",
-                        "schema": {
-                            "$ref": "#/definitions/util.Result"
-                        }
-                    },
-                    "104": {
-                        "schema": {
-                            "$ref": "#/definitions/util.Result"
-                        }
-                    }
-                }
-            }
-        },
         "/api/v1/users": {
             "put": {
                 "consumes": [
@@ -1657,6 +1762,60 @@ var doc = `{
                 }
             }
         },
+        "form.ArticleCategoryAddForm": {
+            "type": "object",
+            "required": [
+                "name",
+                "url"
+            ],
+            "properties": {
+                "name": {
+                    "description": "分类名称",
+                    "type": "string"
+                },
+                "parent_id": {
+                    "description": "父级分类 ID",
+                    "type": "integer"
+                },
+                "type": {
+                    "description": "分类类型，默认值为 0 表文章；1 表友链",
+                    "type": "integer"
+                },
+                "url": {
+                    "description": "访问 URL",
+                    "type": "string"
+                }
+            }
+        },
+        "form.ArticleCategoryEditForm": {
+            "type": "object",
+            "required": [
+                "ID",
+                "name",
+                "url"
+            ],
+            "properties": {
+                "ID": {
+                    "type": "integer"
+                },
+                "name": {
+                    "description": "分类名称",
+                    "type": "string"
+                },
+                "parent_id": {
+                    "description": "父级分类 ID",
+                    "type": "integer"
+                },
+                "type": {
+                    "description": "分类类型，默认值为 0 表文章；1 表友链",
+                    "type": "integer"
+                },
+                "url": {
+                    "description": "访问 URL",
+                    "type": "string"
+                }
+            }
+        },
         "form.ArticleEditForm": {
             "type": "object",
             "required": [
@@ -1752,60 +1911,6 @@ var doc = `{
                 },
                 "order_id": {
                     "type": "integer"
-                }
-            }
-        },
-        "form.CategoryAddForm": {
-            "type": "object",
-            "required": [
-                "name",
-                "url"
-            ],
-            "properties": {
-                "name": {
-                    "description": "分类名称",
-                    "type": "string"
-                },
-                "parent_id": {
-                    "description": "父级分类 ID",
-                    "type": "integer"
-                },
-                "type": {
-                    "description": "分类类型，默认值为 0 表文章；1 表友链",
-                    "type": "integer"
-                },
-                "url": {
-                    "description": "访问 URL",
-                    "type": "string"
-                }
-            }
-        },
-        "form.CategoryEditForm": {
-            "type": "object",
-            "required": [
-                "ID",
-                "name",
-                "url"
-            ],
-            "properties": {
-                "ID": {
-                    "type": "integer"
-                },
-                "name": {
-                    "description": "分类名称",
-                    "type": "string"
-                },
-                "parent_id": {
-                    "description": "父级分类 ID",
-                    "type": "integer"
-                },
-                "type": {
-                    "description": "分类类型，默认值为 0 表文章；1 表友链",
-                    "type": "integer"
-                },
-                "url": {
-                    "description": "访问 URL",
-                    "type": "string"
                 }
             }
         },
@@ -1926,7 +2031,7 @@ var doc = `{
                 }
             }
         },
-        "form.EmailForm": {
+        "form.EmailSettingForm": {
             "type": "object",
             "required": [
                 "account",
@@ -1971,6 +2076,42 @@ var doc = `{
                 }
             }
         },
+        "form.LinkCategoryAddForm": {
+            "type": "object",
+            "required": [
+                "name"
+            ],
+            "properties": {
+                "name": {
+                    "description": "分类名称",
+                    "type": "string"
+                },
+                "type": {
+                    "description": "分类类型，默认值为 0 表文章；1 表友链",
+                    "type": "integer"
+                }
+            }
+        },
+        "form.LinkCategoryEditForm": {
+            "type": "object",
+            "required": [
+                "ID",
+                "name"
+            ],
+            "properties": {
+                "ID": {
+                    "type": "integer"
+                },
+                "name": {
+                    "description": "分类名称",
+                    "type": "string"
+                },
+                "type": {
+                    "description": "分类类型，默认值为 0 表文章；1 表友链",
+                    "type": "integer"
+                }
+            }
+        },
         "form.LoginForm": {
             "type": "object",
             "required": [
@@ -1994,6 +2135,39 @@ var doc = `{
                 },
                 "username": {
                     "description": "用户名",
+                    "type": "string"
+                }
+            }
+        },
+        "form.PicBedSettingForm": {
+            "type": "object",
+            "required": [
+                "folder",
+                "token",
+                "type",
+                "type_name"
+            ],
+            "properties": {
+                "api_type": {
+                    "type": "string"
+                },
+                "folder": {
+                    "type": "string"
+                },
+                "private_storage": {
+                    "type": "string"
+                },
+                "sys_id": {
+                    "type": "string"
+                },
+                "token": {
+                    "type": "string"
+                },
+                "type": {
+                    "description": "0 表示公有云，1 表示私有云",
+                    "type": "string"
+                },
+                "type_name": {
                     "type": "string"
                 }
             }
@@ -2075,7 +2249,7 @@ var doc = `{
                 }
             }
         },
-        "form.SiteForm": {
+        "form.SiteSettingForm": {
             "type": "object",
             "required": [
                 "site_name",

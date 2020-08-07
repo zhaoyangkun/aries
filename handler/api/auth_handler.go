@@ -190,7 +190,7 @@ func CreateCaptcha(ctx *gin.Context) {
 // @Param forgetPwdForm body form.ForgetPwdForm true "忘记密码表单"
 // @Success 100 object util.Result 成功
 // @Failure 103/104 object util.Result 失败
-// @Router /api/v1/auth/forget_pwd [post]
+// @Router /api/v1/auth/pwd/forget [post]
 func ForgetPwd(ctx *gin.Context) {
 	forgetPwdForm := form.ForgetPwdForm{}
 	if err := ctx.ShouldBindJSON(&forgetPwdForm); err != nil {
@@ -253,7 +253,7 @@ func ForgetPwd(ctx *gin.Context) {
 // @Param resetPwdForm body form.ResetPwdForm true "重置密码表单"
 // @Success 100 object util.Result 成功
 // @Failure 103/104 object util.Result 失败
-// @Router /api/v1/auth/reset_pwd [post]
+// @Router /api/v1/auth/pwd/reset [post]
 func ResetPwd(ctx *gin.Context) {
 	resetPwdForm := form.ResetPwdForm{}
 	if err := ctx.ShouldBindJSON(&resetPwdForm); err != nil {

@@ -125,16 +125,16 @@ func GetCategoriesByPage(ctx *gin.Context) {
 	})
 }
 
-// @Summary 添加分类
+// @Summary 添加文章分类
 // @Tags 分类
 // @version 1.0
 // @Accept application/json
-// @Param addForm body form.CategoryAddForm true "添加分类表单"
+// @Param addForm body form.ArticleCategoryAddForm true "添加文章分类表单"
 // @Success 100 object util.Result 成功
 // @Failure 103/104 object util.Result 失败
-// @Router /api/v1/categories [post]
-func AddCategory(ctx *gin.Context) {
-	addForm := form.CategoryAddForm{}
+// @Router /api/v1/categories/article [post]
+func AddArticleCategory(ctx *gin.Context) {
+	addForm := form.ArticleCategoryAddForm{}
 	if err := ctx.ShouldBindJSON(&addForm); err != nil {
 		ctx.JSON(http.StatusOK, util.Result{
 			Code: util.RequestError,
@@ -180,16 +180,16 @@ func AddCategory(ctx *gin.Context) {
 	})
 }
 
-// @Summary 修改分类
+// @Summary 修改文章分类
 // @Tags 分类
 // @version 1.0
 // @Accept application/json
-// @Param editForm body form.CategoryEditForm true "修改分类表单"
+// @Param editForm body form.ArticleCategoryEditForm true "修改文章分类表单"
 // @Success 100 object util.Result 成功
 // @Failure 103/104 object util.Result 失败
-// @Router /api/v1/categories [put]
-func UpdateCategory(ctx *gin.Context) {
-	editForm := form.CategoryEditForm{}
+// @Router /api/v1/categories/article [put]
+func UpdateArticleCategory(ctx *gin.Context) {
+	editForm := form.ArticleCategoryEditForm{}
 	if err := ctx.ShouldBindJSON(&editForm); err != nil {
 		ctx.JSON(http.StatusOK, util.Result{
 			Code: util.RequestError,
@@ -214,6 +214,96 @@ func UpdateCategory(ctx *gin.Context) {
 		ctx.JSON(http.StatusOK, util.Result{
 			Code: util.RequestError,
 			Msg:  "Url 不能重复",
+			Data: nil,
+		})
+		return
+	}
+	category := editForm.BindToModel()
+	if err := category.Update(); err != nil {
+		log.Error("error: ", err.Error())
+		ctx.JSON(http.StatusOK, util.Result{
+			Code: util.ServerError,
+			Msg:  "服务器端错误",
+			Data: nil,
+		})
+		return
+	}
+	ctx.JSON(http.StatusOK, util.Result{
+		Code: util.Success,
+		Msg:  "修改成功",
+		Data: category,
+	})
+}
+
+// @Summary 添加友链分类
+// @Tags 分类
+// @version 1.0
+// @Accept application/json
+// @Param addForm body form.LinkCategoryAddForm true "添加友链分类表单"
+// @Success 100 object util.Result 成功
+// @Failure 103/104 object util.Result 失败
+// @Router /api/v1/categories/link [post]
+func AddLinkCategory(ctx *gin.Context) {
+	addForm := form.LinkCategoryAddForm{}
+	if err := ctx.ShouldBindJSON(&addForm); err != nil {
+		ctx.JSON(http.StatusOK, util.Result{
+			Code: util.RequestError,
+			Msg:  util.GetFormError(err),
+			Data: nil,
+		})
+		return
+	}
+	// 校验分类名称唯一性
+	existCategory, _ := model.Category{}.GetByName(addForm.Name)
+	if existCategory.Name != "" {
+		ctx.JSON(http.StatusOK, util.Result{
+			Code: util.RequestError,
+			Msg:  "分类名不能重复",
+			Data: nil,
+		})
+		return
+	}
+	category := addForm.BindToModel()
+	if err := category.Create(); err != nil {
+		log.Error("error: ", err.Error())
+		ctx.JSON(http.StatusOK, util.Result{
+			Code: util.ServerError,
+			Msg:  "服务器端错误",
+			Data: nil,
+		})
+		return
+	}
+	ctx.JSON(http.StatusOK, util.Result{
+		Code: util.Success,
+		Msg:  "创建成功",
+		Data: category,
+	})
+}
+
+// @Summary 修改友链分类
+// @Tags 分类
+// @version 1.0
+// @Accept application/json
+// @Param editForm body form.LinkCategoryEditForm true "修改友链分类表单"
+// @Success 100 object util.Result 成功
+// @Failure 103/104 object util.Result 失败
+// @Router /api/v1/categories/link [put]
+func UpdateLinkCategory(ctx *gin.Context) {
+	editForm := form.LinkCategoryEditForm{}
+	if err := ctx.ShouldBindJSON(&editForm); err != nil {
+		ctx.JSON(http.StatusOK, util.Result{
+			Code: util.RequestError,
+			Msg:  util.GetFormError(err),
+			Data: nil,
+		})
+		return
+	}
+	// 校验分类名称唯一性
+	existCategory, _ := model.Category{}.GetByName(editForm.Name)
+	if existCategory.ID > 0 && existCategory.ID != editForm.ID {
+		ctx.JSON(http.StatusOK, util.Result{
+			Code: util.RequestError,
+			Msg:  "分类名不能重复",
 			Data: nil,
 		})
 		return

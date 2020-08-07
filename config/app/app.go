@@ -5,8 +5,10 @@ import (
 	"aries/config/migrate"
 	"aries/config/setting"
 	"aries/middleware"
+	"aries/model"
 	templRouter "aries/router"
 	apiRouter "aries/router/api"
+	"fmt"
 	"github.com/88250/lute"
 	"github.com/gin-contrib/cache/persistence"
 	"github.com/gin-gonic/gin"
@@ -21,53 +23,40 @@ import (
 
 // 初始化 gin
 func InitApp() *gin.Engine {
-	// 加载配置文件
+	// 加载配置
 	setting.InitSetting()
-	// 连接数据库
 	db.InitDb()
-	// 反向生成数据表
 	migrate.Migrate()
-	// 初始化 lute
 	setting.LuteEngine = lute.New()
-
-	// 设置运行模式
-	gin.SetMode(setting.Config.Server.Mode)
-	//// 开启日志颜色
-	//gin.ForceConsoleColor()
-	// 获取 engine
-	router := gin.New()
-	// 加载中间件
-	router.Use(middleware.LoggerMiddleWare(), gin.Recovery())
-	// 初始化缓存
 	setting.Cache = persistence.NewInMemoryStore(time.Hour * 1)
+	gin.SetMode(setting.Config.Server.Mode)
 
-	// 表单翻译参数
+	// 加载中间件
+	router := gin.New()
+	router.Use(middleware.LoggerMiddleWare(), gin.Recovery())
+
+	// 配置表单校验
 	uni := ut.New(zh.New())
 	setting.Trans, _ = uni.GetTranslator("zh")
-	// 表单校验配置
 	if v, ok := binding.Validator.Engine().(*validator.Validate); ok {
-		// 注册翻译器
 		_ = translations.RegisterDefaultTranslations(v, setting.Trans)
-		// 注册一个函数，获取 struct tag 里自定义的 label 作为字段名
 		v.RegisterTagNameFunc(func(field reflect.StructField) string {
 			name := field.Tag.Get("label")
 			return name
 		})
 	}
 
-	// 加载静态资源
-	//router.Static("/static", "./static")
+	// 配置博客全局变量
+	blogSetting, _ := model.SysSettingItem{}.GetBySysSettingName("网站设置")
+	setting.BlogVars.InitBlogVars(blogSetting)
 
-	// 根据运行模式加载模板
-	//if mode := gin.Mode(); mode == gin.TestMode {
-	//	router.LoadHTMLGlob("../template/**/*")
-	//} else {
-	//	router.LoadHTMLGlob("template/**/*")
-	//}
+	// 加载静态资源和模板
+	router.Static("/static", fmt.Sprintf("theme/%s/static", setting.BlogVars.Theme))
+	router.LoadHTMLGlob(fmt.Sprintf("theme/%s/template/**", setting.BlogVars.Theme))
 
-	// 模板路由
+	// 路由
+	templRouter.InitFrontRouter("", router)
 	templRouter.InitSwaggerRouter("/swagger", router)
-	// api 路由
 	apiRouter.InitCategoryApiRouter("/api/v1", router)
 	apiRouter.InitAuthApiRouter("/api/v1", router)
 	apiRouter.InitTagApiRouter("/api/v1", router)

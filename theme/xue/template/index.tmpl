@@ -1,95 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh-cmn-Hans">
-<head>
-    <meta charset="UTF-8">
-    <meta name="keywords" content="java,python,go,linux,web开发,算法,教程,个人博客"/>
-    <meta name="description" content="致力于分享web编程技术知识"/>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <meta name="generator" content="Halo 1.3.2"/>
-    <link rel="shortcut icon" type="images/x-icon" href="https://s1.ax1x.com/2020/07/19/URtaY6.jpg">
-    <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
-    <link rel="dns-prefetch" href="https://cdn.bootcdn.net">
-    <link rel="dns-prefetch" href="https://zyk-1300089264.cos.ap-shanghai.myqcloud.com">
-    <link rel="dns-prefetch" href="https://s1.ax1x.com">
-    <link rel="dns-prefetch" href="https://i.loli.net">
-    <style>
-        .media-left .image img {
-            width: 100%
-        }
-
-        #menuLinks .item {
-            border-bottom: none
-        }
-    </style>
-    <title>苍茫误此生博客</title>
-
-    <script language=javascript>
-        <!--
-        window.onerror = function () {
-            return true;
-        }
-        // -->
-    </script>
-
-    <style type="text/css">
-        :root {
-            --header-bg-color: #fff;
-            --header-link-color: #504b4d;
-            --base-color: #4facfe;
-            --base-hover-color: #4facfe;
-            --cd-hover-color: #E53A40;
-            --btn-pri-bg-color: #E53A40;
-            --base-hl-color: #E53A40;
-            /*--btn-pri-bg-color: #ff5f5f;*/
-            --text-color: #333333;
-            --text-hover-color: #4facfe;
-            --toc-bg-color: #8e8787;
-            /*夜晚默认*/
-            --night-toc-bg-color: #e5e5e5;
-            --night-tag-txt-color: #e5e5e5;
-            --night-tag-bg-color: #555;
-            --night-link-card-bg-color: rgba(0, 0, 0, .4);
-            --night-background: #292a2d;
-            --night-txt-color: #a9a9b3;
-            --night-input-backgrround: #2d2d2d;
-            --night-code-txt-color: #c5c8c6;
-            --night-code-color: #969896;
-            --night-code-bg-color: #2d2d2d;
-            --night-code-hljs-string-color: #0857b3;
-            --night-page-a-color: #fffff;
-            --monospace: "Lucida Console", Consolas, "Courier", monospace;
-        }
-
-
-        @media only screen and (min-width: 861px) {
-            .home-page .bg-cover {
-                height: 100vh !important;
-            }
-        }
-
-    </style>
-
-
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@1.4.6/dist/tailwind.min.css">
-    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/viewerjs@1.5.0/dist/viewer.min.css">
-    <!-- 相册 -->
-    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css">
-    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.1.1/styles/github-gist.css">
-
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.css">
-
-    <link rel="stylesheet" href="https://www.cangmangai.cn/themes/bao/dist/style.min.css?ver=202007281305">
-    <script type="application/javascript">
-        <!--
-        window.onerror = function () {
-            return true;
-        }
-        // -->
-    </script>
-</head>
+{{template "head" .}}
 <body>
 
 <header class="nav-wrapper -sticky" id="navHeader">
@@ -793,37 +704,37 @@
 
 
 </body>
-<script src="//cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js"></script>
+<script src="{{ .ContextPath }}/static/js/jquery.min.js"></script>
 
 <script type="text/javascript">
-    var autoNightModeOpen = true;
+    let autoNightModeOpen = true;
 </script>
-<script src="https://www.cangmangai.cn/themes/bao/dist/1ef78256ded850d390d7ea7d2eb3b4ed.js?ver=202007270000"></script>
+<script src="{{ .ContextPath }}/static/js/common.js"></script>
 
-<script src="https://www.cangmangai.cn/themes/bao/source/js/post.js?ver=202007270000"></script>
-<script src="//cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.min.js"></script>
-<script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.0.0/build/highlight.min.js"></script>
-<script src="//cdn.jsdelivr.net/gh/hshanx/static@master/js/highlight.lang.js"></script>
-<script src="//cdn.jsdelivr.net/npm/highlightjs-line-numbers.js@2.7.0/dist/highlightjs-line-numbers.min.js"></script>
+<script src="{{ .ContextPath }}/static/js/post.js"></script>
+<script src="{{ .ContextPath }}/static/js/vue.min.js"></script>
+<script src="{{ .ContextPath }}/static/js/highlight.min.js"></script>
+<script src="{{ .ContextPath }}/static/js/highlight.lang.js"></script>
+<script src="{{ .ContextPath }}/static/js/highlightjs-line-numbers.min.js"></script>
 <!--图片预览插件-->
-<script data-pjax-viewer src="//cdn.jsdelivr.net/npm/viewerjs@1.5.0/dist/viewer.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/micromodal/dist/micromodal.min.js"></script>
-<script src="//cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js"></script>
+<script data-pjax-viewer src="{{ .ContextPath }}/static/js/viewer.min.js"></script>
+<script src="{{ .ContextPath }}/static/js/micromodal.min.js"></script>
+<script src="{{ .ContextPath }}/static/js/jquery.justifiedGallery.min.js"></script>
 
-<script src="https://cdn.jsdelivr.net/gh/hshanx/static@master/js/simply-nav.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/hshanx/static@master/js/moon.js"></script>
+<script src="{{ .ContextPath }}/static/js/simply-nav.js"></script>
+<script src="{{ .ContextPath }}/static/js/moon.js"></script>
 
-<script src="//cdn.jsdelivr.net/npm/tocbot@4.11.2/dist/tocbot.min.js"></script>
-<script src="//cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.js"></script>
-<script src="//cdn.jsdelivr.net/npm/meting@2/dist/Meting.min.js"></script>
+<script src="{{ .ContextPath }}/static/js/tocbot.min.js"></script>
+<script src="{{ .ContextPath }}/static/js/APlayer.min.js"></script>
+<script src="{{ .ContextPath }}/static/js/Meting.min.js"></script>
 <script type="text/javascript">
     $('.arrow-down').on('click', function () {
-        var postHeight = $('#homeHeader').height();
+        let postHeight = $('#homeHeader').height();
         window.scroll({top: postHeight - 50, behavior: 'smooth'});
     })
 </script>
 <script type="text/javascript">
-    var katex_config = {
+    let katex_config = {
         delimiters:
             [
                 {left: "$$", right: "$$", display: true},
@@ -833,8 +744,8 @@
             ]
     };
 </script>
-<script defer src="//cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js"></script>
-<script defer src="//cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js"
+<script defer src="{{ .ContextPath }}/static/js/katex.min.js"></script>
+<script defer src="{{ .ContextPath }}/static/js/auto-render.min.js"
         onload="if (document.getElementById('write'))
             { renderMathInElement(document.getElementById('write'), katex_config)}
             else if (document.getElementById('tree-hole'))
@@ -862,11 +773,10 @@
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/pjax@0.2.8/pjax.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js"></script>
-<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css">
+<script src="{{ .ContextPath }}/static/js/pjax.js"></script>
+<script src="{{ .ContextPath }}/static/js/nprogress.min.js"></script>
 <script type="text/javascript">
-    var pjax = new Pjax({
+    let pjax = new Pjax({
         elements: 'a[href]:not([href^="#"]):not([data-not-pjax]):not([target^="_blank"]), form', // default is "a[href], form[action]"
         cacheBust: false,
         debug: false,
@@ -916,8 +826,8 @@
 
         // 重新加载 评论
         $('script[data-pjax-comment]').each(function () {
-            var commentParent = $(this).parent()
-            var comment = $(this).remove();
+            let commentParent = $(this).parent()
+            let comment = $(this).remove();
             commentParent.append(comment);
         });
 
@@ -952,7 +862,6 @@
             post.removeFirstUL()
 
             // 模态框
-            //  模态框
             coffeeModal.toggleCoffeeModal();
 
             // 初始展示二维码
@@ -1027,8 +936,7 @@
 </script>
 <script type="text/javascript">
     // console.clear();
-    console.log("%c 有朋自远方来, 不亦说乎.", "background:#24272A; color:#ffffff", "");
-    console.log("%c Github %c", "background:#24272A; color:#ffffff", "", "https://github.com/hshanx");
-    // console.log("%c 版本号: %c", "background:#24272A; color:#ffffff", "", "1.4.2");
+    console.log("%c 感谢使用 Aries 博客", "background:#24272A; color:#ffffff", "");
+    console.log("%c Github %c", "background:#24272A; color:#ffffff", "", "https://github.com/zhaoyangkun/aries");
 </script>
 </html>

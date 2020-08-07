@@ -55,6 +55,45 @@ definitions:
     - title
     - user_id
     type: object
+  form.ArticleCategoryAddForm:
+    properties:
+      name:
+        description: 分类名称
+        type: string
+      parent_id:
+        description: 父级分类 ID
+        type: integer
+      type:
+        description: 分类类型，默认值为 0 表文章；1 表友链
+        type: integer
+      url:
+        description: 访问 URL
+        type: string
+    required:
+    - name
+    - url
+    type: object
+  form.ArticleCategoryEditForm:
+    properties:
+      ID:
+        type: integer
+      name:
+        description: 分类名称
+        type: string
+      parent_id:
+        description: 父级分类 ID
+        type: integer
+      type:
+        description: 分类类型，默认值为 0 表文章；1 表友链
+        type: integer
+      url:
+        description: 访问 URL
+        type: string
+    required:
+    - ID
+    - name
+    - url
+    type: object
   form.ArticleEditForm:
     properties:
       category_id:
@@ -126,45 +165,6 @@ definitions:
     required:
     - id
     - order_id
-    type: object
-  form.CategoryAddForm:
-    properties:
-      name:
-        description: 分类名称
-        type: string
-      parent_id:
-        description: 父级分类 ID
-        type: integer
-      type:
-        description: 分类类型，默认值为 0 表文章；1 表友链
-        type: integer
-      url:
-        description: 访问 URL
-        type: string
-    required:
-    - name
-    - url
-    type: object
-  form.CategoryEditForm:
-    properties:
-      ID:
-        type: integer
-      name:
-        description: 分类名称
-        type: string
-      parent_id:
-        description: 父级分类 ID
-        type: integer
-      type:
-        description: 分类类型，默认值为 0 表文章；1 表友链
-        type: integer
-      url:
-        description: 访问 URL
-        type: string
-    required:
-    - ID
-    - name
-    - url
     type: object
   form.CommentAddForm:
     properties:
@@ -254,7 +254,7 @@ definitions:
     - nick_name
     - url
     type: object
-  form.EmailForm:
+  form.EmailSettingForm:
     properties:
       account:
         type: string
@@ -285,6 +285,31 @@ definitions:
     required:
     - email
     type: object
+  form.LinkCategoryAddForm:
+    properties:
+      name:
+        description: 分类名称
+        type: string
+      type:
+        description: 分类类型，默认值为 0 表文章；1 表友链
+        type: integer
+    required:
+    - name
+    type: object
+  form.LinkCategoryEditForm:
+    properties:
+      ID:
+        type: integer
+      name:
+        description: 分类名称
+        type: string
+      type:
+        description: 分类类型，默认值为 0 表文章；1 表友链
+        type: integer
+    required:
+    - ID
+    - name
+    type: object
   form.LoginForm:
     properties:
       captcha_id:
@@ -304,6 +329,29 @@ definitions:
     - captcha_val
     - pwd
     - username
+    type: object
+  form.PicBedSettingForm:
+    properties:
+      api_type:
+        type: string
+      folder:
+        type: string
+      private_storage:
+        type: string
+      sys_id:
+        type: string
+      token:
+        type: string
+      type:
+        description: 0 表示公有云，1 表示私有云
+        type: string
+      type_name:
+        type: string
+    required:
+    - folder
+    - token
+    - type
+    - type_name
     type: object
   form.PwdForm:
     properties:
@@ -359,7 +407,7 @@ definitions:
     - pwd
     - verify_code
     type: object
-  form.SiteForm:
+  form.SiteSettingForm:
     properties:
       footer_content:
         type: string
@@ -461,21 +509,6 @@ paths:
       summary: 向上移动文章
       tags:
       - 文章
-  /api/v1/admin_index_data:
-    get:
-      consumes:
-      - application/json
-      responses:
-        "100":
-          description: Continue
-          schema:
-            $ref: '#/definitions/util.Result'
-        "104":
-          schema:
-            $ref: '#/definitions/util.Result'
-      summary: 获取后台首页数据
-      tags:
-      - 系统设置
   /api/v1/all_articles:
     get:
       consumes:
@@ -763,28 +796,6 @@ paths:
       summary: 创建验证码
       tags:
       - 授权
-  /api/v1/auth/forget_pwd:
-    post:
-      consumes:
-      - application/json
-      parameters:
-      - description: 忘记密码表单
-        in: body
-        name: forgetPwdForm
-        required: true
-        schema:
-          $ref: '#/definitions/form.ForgetPwdForm'
-      responses:
-        "100":
-          description: Continue
-          schema:
-            $ref: '#/definitions/util.Result'
-        "104":
-          schema:
-            $ref: '#/definitions/util.Result'
-      summary: 忘记密码
-      tags:
-      - 授权
   /api/v1/auth/login:
     post:
       consumes:
@@ -807,6 +818,50 @@ paths:
       summary: 登录
       tags:
       - 授权
+  /api/v1/auth/pwd/forget:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 忘记密码表单
+        in: body
+        name: forgetPwdForm
+        required: true
+        schema:
+          $ref: '#/definitions/form.ForgetPwdForm'
+      responses:
+        "100":
+          description: Continue
+          schema:
+            $ref: '#/definitions/util.Result'
+        "104":
+          schema:
+            $ref: '#/definitions/util.Result'
+      summary: 忘记密码
+      tags:
+      - 授权
+  /api/v1/auth/pwd/reset:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 重置密码表单
+        in: body
+        name: resetPwdForm
+        required: true
+        schema:
+          $ref: '#/definitions/form.ResetPwdForm'
+      responses:
+        "100":
+          description: Continue
+          schema:
+            $ref: '#/definitions/util.Result'
+        "104":
+          schema:
+            $ref: '#/definitions/util.Result'
+      summary: 重置密码
+      tags:
+      - 授权
   /api/v1/auth/register:
     post:
       consumes:
@@ -827,28 +882,6 @@ paths:
           schema:
             $ref: '#/definitions/util.Result'
       summary: 注册
-      tags:
-      - 授权
-  /api/v1/auth/reset_pwd:
-    post:
-      consumes:
-      - application/json
-      parameters:
-      - description: 重置密码表单
-        in: body
-        name: resetPwdForm
-        required: true
-        schema:
-          $ref: '#/definitions/form.ResetPwdForm'
-      responses:
-        "100":
-          description: Continue
-          schema:
-            $ref: '#/definitions/util.Result'
-        "104":
-          schema:
-            $ref: '#/definitions/util.Result'
-      summary: 重置密码
       tags:
       - 授权
   /api/v1/categories:
@@ -904,48 +937,6 @@ paths:
       summary: 分页获取分类数据
       tags:
       - 分类
-    post:
-      consumes:
-      - application/json
-      parameters:
-      - description: 添加分类表单
-        in: body
-        name: addForm
-        required: true
-        schema:
-          $ref: '#/definitions/form.CategoryAddForm'
-      responses:
-        "100":
-          description: Continue
-          schema:
-            $ref: '#/definitions/util.Result'
-        "104":
-          schema:
-            $ref: '#/definitions/util.Result'
-      summary: 添加分类
-      tags:
-      - 分类
-    put:
-      consumes:
-      - application/json
-      parameters:
-      - description: 修改分类表单
-        in: body
-        name: editForm
-        required: true
-        schema:
-          $ref: '#/definitions/form.CategoryEditForm'
-      responses:
-        "100":
-          description: Continue
-          schema:
-            $ref: '#/definitions/util.Result'
-        "104":
-          schema:
-            $ref: '#/definitions/util.Result'
-      summary: 修改分类
-      tags:
-      - 分类
   /api/v1/categories/{id}:
     delete:
       consumes:
@@ -965,6 +956,92 @@ paths:
           schema:
             $ref: '#/definitions/util.Result'
       summary: 删除分类
+      tags:
+      - 分类
+  /api/v1/categories/article:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 添加文章分类表单
+        in: body
+        name: addForm
+        required: true
+        schema:
+          $ref: '#/definitions/form.ArticleCategoryAddForm'
+      responses:
+        "100":
+          description: Continue
+          schema:
+            $ref: '#/definitions/util.Result'
+        "104":
+          schema:
+            $ref: '#/definitions/util.Result'
+      summary: 添加文章分类
+      tags:
+      - 分类
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: 修改文章分类表单
+        in: body
+        name: editForm
+        required: true
+        schema:
+          $ref: '#/definitions/form.ArticleCategoryEditForm'
+      responses:
+        "100":
+          description: Continue
+          schema:
+            $ref: '#/definitions/util.Result'
+        "104":
+          schema:
+            $ref: '#/definitions/util.Result'
+      summary: 修改文章分类
+      tags:
+      - 分类
+  /api/v1/categories/link:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 添加友链分类表单
+        in: body
+        name: addForm
+        required: true
+        schema:
+          $ref: '#/definitions/form.LinkCategoryAddForm'
+      responses:
+        "100":
+          description: Continue
+          schema:
+            $ref: '#/definitions/util.Result'
+        "104":
+          schema:
+            $ref: '#/definitions/util.Result'
+      summary: 添加友链分类
+      tags:
+      - 分类
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: 修改友链分类表单
+        in: body
+        name: editForm
+        required: true
+        schema:
+          $ref: '#/definitions/form.LinkCategoryEditForm'
+      responses:
+        "100":
+          description: Continue
+          schema:
+            $ref: '#/definitions/util.Result'
+        "104":
+          schema:
+            $ref: '#/definitions/util.Result'
+      summary: 修改友链分类
       tags:
       - 分类
   /api/v1/comments:
@@ -1169,17 +1246,10 @@ paths:
       summary: 获取所有父级分类
       tags:
       - 分类
-  /api/v1/site_setting:
+  /api/v1/sys_setting/email/test:
     post:
       consumes:
       - application/json
-      parameters:
-      - description: 网站配置表单
-        in: body
-        name: siteForm
-        required: true
-        schema:
-          $ref: '#/definitions/form.SiteForm'
       responses:
         "100":
           description: Continue
@@ -1188,20 +1258,13 @@ paths:
         "104":
           schema:
             $ref: '#/definitions/util.Result'
-      summary: 保存网站配置信息
+      summary: 发送测试邮件
       tags:
       - 系统设置
-  /api/v1/smtp_setting:
-    post:
+  /api/v1/sys_setting/index_info:
+    get:
       consumes:
       - application/json
-      parameters:
-      - description: SMTP 配置表单
-        in: body
-        name: emailForm
-        required: true
-        schema:
-          $ref: '#/definitions/form.EmailForm'
       responses:
         "100":
           description: Continue
@@ -1210,10 +1273,10 @@ paths:
         "104":
           schema:
             $ref: '#/definitions/util.Result'
-      summary: 保存 SMTP 服务配置信息
+      summary: 获取后台首页数据
       tags:
       - 系统设置
-  /api/v1/sys_setting_items:
+  /api/v1/sys_setting/items:
     get:
       consumes:
       - application/json
@@ -1231,6 +1294,72 @@ paths:
           schema:
             $ref: '#/definitions/util.Result'
       summary: 获取设置条目
+      tags:
+      - 系统设置
+  /api/v1/sys_setting/pic_bed:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 图床配置表单
+        in: body
+        name: settingForm
+        required: true
+        schema:
+          $ref: '#/definitions/form.PicBedSettingForm'
+      responses:
+        "100":
+          description: Continue
+          schema:
+            $ref: '#/definitions/util.Result'
+        "104":
+          schema:
+            $ref: '#/definitions/util.Result'
+      summary: 保存图床配置信息
+      tags:
+      - 系统设置
+  /api/v1/sys_setting/site:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 网站配置表单
+        in: body
+        name: settingForm
+        required: true
+        schema:
+          $ref: '#/definitions/form.SiteSettingForm'
+      responses:
+        "100":
+          description: Continue
+          schema:
+            $ref: '#/definitions/util.Result'
+        "104":
+          schema:
+            $ref: '#/definitions/util.Result'
+      summary: 保存网站配置信息
+      tags:
+      - 系统设置
+  /api/v1/sys_setting/smtp:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: SMTP 配置表单
+        in: body
+        name: settingForm
+        required: true
+        schema:
+          $ref: '#/definitions/form.EmailSettingForm'
+      responses:
+        "100":
+          description: Continue
+          schema:
+            $ref: '#/definitions/util.Result'
+        "104":
+          schema:
+            $ref: '#/definitions/util.Result'
+      summary: 保存 SMTP 服务配置信息
       tags:
       - 系统设置
   /api/v1/tags:
@@ -1364,21 +1493,6 @@ paths:
       summary: 根据 ID 获取标签
       tags:
       - 标签
-  /api/v1/test_send_email:
-    post:
-      consumes:
-      - application/json
-      responses:
-        "100":
-          description: Continue
-          schema:
-            $ref: '#/definitions/util.Result'
-        "104":
-          schema:
-            $ref: '#/definitions/util.Result'
-      summary: 发送测试邮件
-      tags:
-      - 系统设置
   /api/v1/users:
     put:
       consumes:

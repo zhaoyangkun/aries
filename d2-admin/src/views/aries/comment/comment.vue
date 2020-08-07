@@ -1,6 +1,6 @@
 <template>
   <d2-container>
-    <template slot="header">评论列表</template>
+    <template slot="header">用户 / 评论列表</template>
     <d2-crud
       ref="d2Crud"
       :options="options"

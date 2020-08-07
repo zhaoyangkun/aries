@@ -9,10 +9,11 @@ import (
 func InitSysSettingApiRouter(rootPath string, router *gin.Engine) {
 	sysSettingApiRouter := router.Group(rootPath, middleware.JWTAuthMiddleWare())
 	{
-		sysSettingApiRouter.GET("/sys_setting_items", api.GetSysSettingItem)
-		sysSettingApiRouter.POST("/site_setting", api.SaveSiteSetting)
-		sysSettingApiRouter.POST("/smtp_setting", api.SaveSMTPSetting)
-		sysSettingApiRouter.POST("/test_send_email", api.SendTestEmail)
-		sysSettingApiRouter.GET("/admin_index_data", api.GetAdminIndexData)
+		sysSettingApiRouter.GET("/sys_setting/items", api.GetSysSettingItem)
+		sysSettingApiRouter.POST("/sys_setting/site", api.SaveSiteSetting)
+		sysSettingApiRouter.POST("/sys_setting/smtp", api.SaveSMTPSetting)
+		sysSettingApiRouter.POST("/sys_setting/pic_bed", api.SavePicBedSetting)
+		sysSettingApiRouter.POST("/sys_setting/email/test", api.SendTestEmail)
+		sysSettingApiRouter.GET("/sys_setting/index_info", api.GetAdminIndexData)
 	}
 }

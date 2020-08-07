@@ -1,0 +1,77 @@
+{{define "head"}}
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+        <meta name="keywords" content="{{ .blogVars.SiteKeywords }}">
+        <meta name="description" content="{{ .blogVars.SiteDesc }}">
+        <link rel="shortcut icon" type="images/x-icon" href="{{ .blogVars.SiteLogo }}">
+        <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+        <title>{{ .blogVars.SiteName }}</title>
+
+        <script language=javascript>
+            <!--
+            window.onerror = function () {
+                return true;
+            }
+            // -->
+        </script>
+
+        <style type="text/css">
+            :root {
+                --header-bg-color: #fff;
+                --header-link-color: #504b4d;
+                --base-color: #4facfe;
+                --base-hover-color: #4facfe;
+                --cd-hover-color: #E53A40;
+                --btn-pri-bg-color: #E53A40;
+                --base-hl-color: #E53A40;
+                /*--btn-pri-bg-color: #ff5f5f;*/
+                --text-color: #333333;
+                --text-hover-color: #4facfe;
+                --toc-bg-color: #8e8787;
+                /*夜晚默认*/
+                --night-toc-bg-color: #e5e5e5;
+                --night-tag-txt-color: #e5e5e5;
+                --night-tag-bg-color: #555;
+                --night-link-card-bg-color: rgba(0, 0, 0, .4);
+                --night-background: #292a2d;
+                --night-txt-color: #a9a9b3;
+                --night-input-backgrround: #2d2d2d;
+                --night-code-txt-color: #c5c8c6;
+                --night-code-color: #969896;
+                --night-code-bg-color: #2d2d2d;
+                --night-code-hljs-string-color: #0857b3;
+                --night-page-a-color: #fffff;
+                --monospace: "Lucida Console", Consolas, "Courier", monospace;
+            }
+
+
+            @media only screen and (min-width: 861px) {
+                .home-page .bg-cover {
+                    height: 100vh !important;
+                }
+            }
+
+        </style>
+        <link rel="stylesheet" href="{{ .blogVars.ContextPath }}/static/css/tailwind.min.css">
+        <link rel="stylesheet" href="{{ .blogVars.ContextPath }}/static/css/viewer.min.css">
+        <!-- 相册 -->
+        <link rel="stylesheet" href="{{ .blogVars.ContextPath }}/static/css/lightgallery.min.css">
+        <link rel="stylesheet" href="{{ .blogVars.ContextPath }}/static/css/justifiedGallery.min.css">
+        <link rel="stylesheet" href="{{ .blogVars.ContextPath }}/static/css/github-gist.min.css">
+
+        <link rel="stylesheet" href="{{ .blogVars.ContextPath }}/static/css/katex.min.css">
+        <link rel="stylesheet" href="{{ .blogVars.ContextPath }}/static/css/APlayer.min.css">
+        <link rel="stylesheet" href="{{ .blogVars.ContextPath }}/static/css/nprogress.min.css">
+
+        <link rel="stylesheet" href="{{ .blogVars.ContextPath }}/static/css/style.min.css">
+        <script type="application/javascript">
+            <!--
+            window.onerror = function () {
+                return true;
+            }
+            // -->
+        </script>
+    </head>
+{{end}}

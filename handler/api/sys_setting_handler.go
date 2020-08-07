@@ -1,6 +1,7 @@
 package api
 
 import (
+	"aries/config/setting"
 	"aries/form"
 	"aries/model"
 	"aries/util"
@@ -20,7 +21,7 @@ import (
 // @Param name query string false "设置名称"
 // @Success 100 object util.Result 成功
 // @Failure 103/104 object util.Result 失败
-// @Router /api/v1/sys_setting_items [get]
+// @Router /api/v1/sys_setting/items [get]
 func GetSysSettingItem(ctx *gin.Context) {
 	name := ctx.Query("name")
 	result, _ := model.SysSettingItem{}.GetBySysSettingName(name)
@@ -35,13 +36,13 @@ func GetSysSettingItem(ctx *gin.Context) {
 // @Tags 系统设置
 // @version 1.0
 // @Accept application/json
-// @Param siteForm body form.SiteForm true "网站配置表单"
+// @Param settingForm body form.SiteSettingForm true "网站配置表单"
 // @Success 100 object util.Result 成功
 // @Failure 103/104 object util.Result 失败
-// @Router /api/v1/site_setting [post]
+// @Router /api/v1/sys_setting/site [post]
 func SaveSiteSetting(ctx *gin.Context) {
-	siteForm := form.SiteForm{}
-	if err := ctx.ShouldBindJSON(&siteForm); err != nil {
+	settingForm := form.SiteSettingForm{}
+	if err := ctx.ShouldBindJSON(&settingForm); err != nil {
 		ctx.JSON(http.StatusOK, util.Result{
 			Code: util.RequestError,
 			Msg:  util.GetFormError(err),
@@ -49,10 +50,10 @@ func SaveSiteSetting(ctx *gin.Context) {
 		})
 		return
 	}
-	sysId, _ := strconv.ParseUint(siteForm.SysId, 10, 0)
+	sysId, _ := strconv.ParseUint(settingForm.SysId, 10, 0)
 	sysSetting := model.SysSetting{
 		Model: gorm.Model{ID: uint(sysId)},
-		Name:  siteForm.TypeName,
+		Name:  settingForm.TypeName,
 	}
 	if sysId == 0 {
 		if err := sysSetting.Create(); err != nil {
@@ -65,8 +66,73 @@ func SaveSiteSetting(ctx *gin.Context) {
 			return
 		}
 	}
-	t := reflect.TypeOf(siteForm)
-	v := reflect.ValueOf(siteForm)
+	t := reflect.TypeOf(settingForm)
+	v := reflect.ValueOf(settingForm)
+	var itemList []model.SysSettingItem
+	for i := 0; i < t.NumField(); i++ {
+		item := model.SysSettingItem{
+			SysId: sysSetting.ID,
+			Key:   t.Field(i).Tag.Get("json"),
+			Val:   v.Field(i).Interface().(string),
+		}
+		itemList = append(itemList, item)
+	}
+	err := model.SysSettingItem{}.MultiCreateOrUpdate(sysSetting.ID, itemList)
+	if err != nil {
+		log.Error("error: ", err.Error())
+		ctx.JSON(http.StatusOK, util.Result{
+			Code: util.ServerError,
+			Msg:  "服务器端错误",
+			Data: nil,
+		})
+		return
+	}
+	blogSetting, _ := model.SysSettingItem{}.GetBySysSettingName("网站设置")
+	setting.BlogVars.InitBlogVars(blogSetting)
+	ctx.JSON(http.StatusOK, util.Result{
+		Code: util.Success,
+		Msg:  "保存成功",
+		Data: nil,
+	})
+}
+
+// @Summary 保存 SMTP 服务配置信息
+// @Tags 系统设置
+// @version 1.0
+// @Accept application/json
+// @Param settingForm body form.EmailSettingForm true "SMTP 配置表单"
+// @Success 100 object util.Result 成功
+// @Failure 103/104 object util.Result 失败
+// @Router /api/v1/sys_setting/smtp [post]
+func SaveSMTPSetting(ctx *gin.Context) {
+	settingForm := form.EmailSettingForm{}
+	if err := ctx.ShouldBindJSON(&settingForm); err != nil {
+		ctx.JSON(http.StatusOK, util.Result{
+			Code: util.RequestError,
+			Msg:  util.GetFormError(err),
+			Data: nil,
+		})
+		return
+	}
+	sysId, _ := strconv.ParseUint(settingForm.SysId, 10, 0)
+	sysSetting := model.SysSetting{
+		Model: gorm.Model{ID: uint(sysId)},
+		Name:  settingForm.TypeName,
+	}
+	if sysId == 0 {
+		if err := sysSetting.Create(); err != nil {
+			log.Errorln("error: ", err.Error())
+			ctx.JSON(http.StatusOK, util.Result{
+				Code: util.ServerError,
+				Msg:  "服务器端错误",
+				Data: nil,
+			})
+			return
+		}
+	}
+	settingForm.SysId = strconv.Itoa(int(sysSetting.ID))
+	t := reflect.TypeOf(settingForm)
+	v := reflect.ValueOf(settingForm)
 	var itemList []model.SysSettingItem
 	for i := 0; i < t.NumField(); i++ {
 		item := model.SysSettingItem{
@@ -93,17 +159,17 @@ func SaveSiteSetting(ctx *gin.Context) {
 	})
 }
 
-// @Summary 保存 SMTP 服务配置信息
+// @Summary 保存图床配置信息
 // @Tags 系统设置
 // @version 1.0
 // @Accept application/json
-// @Param emailForm body form.EmailForm true "SMTP 配置表单"
+// @Param settingForm body form.PicBedSettingForm true "图床配置表单"
 // @Success 100 object util.Result 成功
 // @Failure 103/104 object util.Result 失败
-// @Router /api/v1/smtp_setting [post]
-func SaveSMTPSetting(ctx *gin.Context) {
-	emailForm := form.EmailForm{}
-	if err := ctx.ShouldBindJSON(&emailForm); err != nil {
+// @Router /api/v1/sys_setting/pic_bed [post]
+func SavePicBedSetting(ctx *gin.Context) {
+	settingForm := form.PicBedSettingForm{}
+	if err := ctx.ShouldBindJSON(&settingForm); err != nil {
 		ctx.JSON(http.StatusOK, util.Result{
 			Code: util.RequestError,
 			Msg:  util.GetFormError(err),
@@ -111,10 +177,10 @@ func SaveSMTPSetting(ctx *gin.Context) {
 		})
 		return
 	}
-	sysId, _ := strconv.ParseUint(emailForm.SysId, 10, 0)
+	sysId, _ := strconv.ParseUint(settingForm.SysId, 10, 0)
 	sysSetting := model.SysSetting{
 		Model: gorm.Model{ID: uint(sysId)},
-		Name:  emailForm.TypeName,
+		Name:  settingForm.TypeName,
 	}
 	if sysId == 0 {
 		if err := sysSetting.Create(); err != nil {
@@ -127,9 +193,9 @@ func SaveSMTPSetting(ctx *gin.Context) {
 			return
 		}
 	}
-	emailForm.SysId = strconv.Itoa(int(sysSetting.ID))
-	t := reflect.TypeOf(emailForm)
-	v := reflect.ValueOf(emailForm)
+	settingForm.SysId = strconv.Itoa(int(sysSetting.ID))
+	t := reflect.TypeOf(settingForm)
+	v := reflect.ValueOf(settingForm)
 	var itemList []model.SysSettingItem
 	for i := 0; i < t.NumField(); i++ {
 		item := model.SysSettingItem{
@@ -163,7 +229,7 @@ func SaveSMTPSetting(ctx *gin.Context) {
 // Param sendForm body orm.EmailSendForm true "发送邮件表单"
 // @Success 100 object util.Result 成功
 // @Failure 103/104 object util.Result 失败
-// @Router /api/v1/test_send_email [post]
+// @Router /api/v1/sys_setting/email/test [post]
 func SendTestEmail(ctx *gin.Context) {
 	sendForm := form.EmailSendForm{}
 	if err := ctx.ShouldBindJSON(&sendForm); err != nil {
@@ -229,7 +295,7 @@ func SendTestEmail(ctx *gin.Context) {
 // @Accept application/json
 // @Success 100 object util.Result 成功
 // @Failure 103/104 object util.Result 失败
-// @Router /api/v1/admin_index_data [get]
+// @Router /api/v1/sys_setting/index_info [get]
 func GetAdminIndexData(ctx *gin.Context) {
 	articleCount, err := model.Article{}.GetCount()
 	if err != nil {

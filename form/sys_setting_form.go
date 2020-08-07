@@ -1,7 +1,7 @@
 package form
 
 // 网站设置表单
-type SiteForm struct {
+type SiteSettingForm struct {
 	SysId         string `json:"sys_id" label:"设置 ID"`
 	TypeName      string `json:"type_name" binding:"required,max=50" label:"设置类型名称"`
 	SiteName      string `json:"site_name" binding:"required,max=50" label:"网站名称"`
@@ -14,7 +14,7 @@ type SiteForm struct {
 }
 
 // SMTP 配置表单
-type EmailForm struct {
+type EmailSettingForm struct {
 	SysId    string `json:"sys_id" label:"设置 ID"`
 	TypeName string `json:"type_name" binding:"required,max=50" label:"设置类型名称"`
 	Address  string `json:"address" binding:"required,max=30" label:"SMTP 地址"`
@@ -30,4 +30,15 @@ type EmailSendForm struct {
 	ReceiveEmail string `json:"receive_email" binding:"required,max=30,email" label:"接收邮箱"`
 	Title        string `json:"title" binding:"required,max=100" label:"邮箱标题"`
 	Content      string `json:"content" binding:"required,max=1200" label:"邮件内容"`
+}
+
+// 图床设置表单
+type PicBedSettingForm struct {
+	SysId          string `json:"sys_id" label:"设置 ID"`
+	TypeName       string `json:"type_name" binding:"required,max=50" label:"设置类型名称"`
+	Type           string `json:"type" binding:"required,max=1" label:"图床性质"` // 0 表示公有云，1 表示私有云
+	ApiType        string `json:"api_type" binding:"max=20" label:"公有云图床类型"`
+	PrivateStorage string `json:"private_storage" binding:"max=20" label:"私有云存储类型"`
+	Token          string `json:"token" binding:"required,max=50" label:"Token"`
+	Folder         string `json:"folder" binding:"required,max=50" label:""`
 }

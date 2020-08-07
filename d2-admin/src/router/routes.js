@@ -27,7 +27,7 @@ const frameIn = [
         path: 'category',
         name: 'category',
         meta: {
-          title: '分类',
+          title: '文章分类',
           auth: true
         },
         component: _import('aries/category/category')
@@ -85,6 +85,15 @@ const frameIn = [
           auth: true
         },
         component: _import('aries/link/links')
+      },
+      {
+        path: 'link/category',
+        name: 'linkCategory',
+        meta: {
+          title: '友链分类',
+          auth: true
+        },
+        component: _import('aries/link/category')
       },
       {
         path: 'doc',
