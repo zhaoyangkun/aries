@@ -12,7 +12,7 @@
     },
     "host": "localhost:8088",
     "paths": {
-        "/api/articles/move_up": {
+        "/api/articles/up": {
             "post": {
                 "consumes": [
                     "application/json"
@@ -200,30 +200,6 @@
                 }
             }
         },
-        "/api/v1/article_files": {
-            "post": {
-                "consumes": [
-                    "multipart/form-data"
-                ],
-                "tags": [
-                    "文章"
-                ],
-                "summary": "从文件导入文章",
-                "responses": {
-                    "100": {
-                        "description": "Continue",
-                        "schema": {
-                            "$ref": "#/definitions/util.Result"
-                        }
-                    },
-                    "104": {
-                        "schema": {
-                            "$ref": "#/definitions/util.Result"
-                        }
-                    }
-                }
-            }
-        },
         "/api/v1/articles": {
             "get": {
                 "consumes": [
@@ -377,7 +353,7 @@
                 }
             }
         },
-        "/api/v1/articles/move_down": {
+        "/api/v1/articles/down": {
             "post": {
                 "consumes": [
                     "application/json"
@@ -397,6 +373,30 @@
                         }
                     }
                 ],
+                "responses": {
+                    "100": {
+                        "description": "Continue",
+                        "schema": {
+                            "$ref": "#/definitions/util.Result"
+                        }
+                    },
+                    "104": {
+                        "schema": {
+                            "$ref": "#/definitions/util.Result"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/articles/files": {
+            "post": {
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "tags": [
+                    "文章"
+                ],
+                "summary": "从文件导入文章",
                 "responses": {
                     "100": {
                         "description": "Continue",

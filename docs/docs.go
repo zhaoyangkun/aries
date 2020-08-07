@@ -28,7 +28,7 @@ var doc = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/api/articles/move_up": {
+        "/api/articles/up": {
             "post": {
                 "consumes": [
                     "application/json"
@@ -216,30 +216,6 @@ var doc = `{
                 }
             }
         },
-        "/api/v1/article_files": {
-            "post": {
-                "consumes": [
-                    "multipart/form-data"
-                ],
-                "tags": [
-                    "文章"
-                ],
-                "summary": "从文件导入文章",
-                "responses": {
-                    "100": {
-                        "description": "Continue",
-                        "schema": {
-                            "$ref": "#/definitions/util.Result"
-                        }
-                    },
-                    "104": {
-                        "schema": {
-                            "$ref": "#/definitions/util.Result"
-                        }
-                    }
-                }
-            }
-        },
         "/api/v1/articles": {
             "get": {
                 "consumes": [
@@ -393,7 +369,7 @@ var doc = `{
                 }
             }
         },
-        "/api/v1/articles/move_down": {
+        "/api/v1/articles/down": {
             "post": {
                 "consumes": [
                     "application/json"
@@ -413,6 +389,30 @@ var doc = `{
                         }
                     }
                 ],
+                "responses": {
+                    "100": {
+                        "description": "Continue",
+                        "schema": {
+                            "$ref": "#/definitions/util.Result"
+                        }
+                    },
+                    "104": {
+                        "schema": {
+                            "$ref": "#/definitions/util.Result"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/articles/files": {
+            "post": {
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "tags": [
+                    "文章"
+                ],
+                "summary": "从文件导入文章",
                 "responses": {
                     "100": {
                         "description": "Continue",

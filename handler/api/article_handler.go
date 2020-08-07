@@ -11,6 +11,9 @@ import (
 	"path"
 )
 
+type ArticleHandler struct {
+}
+
 // @Summary 获取所有文章
 // @Tags 文章
 // @version 1.0
@@ -18,7 +21,7 @@ import (
 // @Success 100 object util.Result 成功
 // @Failure 103/104 object util.Result 失败
 // @Router /api/v1/all_articles [get]
-func GetAllArticles(ctx *gin.Context) {
+func (a *ArticleHandler) GetAllArticles(ctx *gin.Context) {
 	list, err := model.Article{}.GetAll()
 	if err != nil {
 		log.Errorln("error: ", err.Error())
@@ -48,7 +51,7 @@ func GetAllArticles(ctx *gin.Context) {
 // @Success 100 object util.Result 成功
 // @Failure 103/104 object util.Result 失败
 // @Router /api/v1/articles [get]
-func GetArticlesByPage(ctx *gin.Context) {
+func (a *ArticleHandler) GetArticlesByPage(ctx *gin.Context) {
 	pageForm := form.ArticlePageForm{}
 	_ = ctx.ShouldBindQuery(&pageForm)
 	list, totalNum, err := model.Article{}.GetByPage(&pageForm.Pagination, pageForm.Key,
@@ -77,7 +80,7 @@ func GetArticlesByPage(ctx *gin.Context) {
 // @Success 100 object util.Result 成功
 // @Failure 103/104 object util.Result 失败
 // @Router /api/v1/articles/{id} [get]
-func GetArticleById(ctx *gin.Context) {
+func (a *ArticleHandler) GetArticleById(ctx *gin.Context) {
 	id := ctx.Param("id")
 	article, err := model.Article{}.GetById(id)
 	if err != nil {
@@ -104,7 +107,7 @@ func GetArticleById(ctx *gin.Context) {
 // @Success 100 object util.Result 成功
 // @Failure 103/104 object util.Result 失败
 // @Router /api/v1/articles [post]
-func AddArticle(ctx *gin.Context) {
+func (a *ArticleHandler) AddArticle(ctx *gin.Context) {
 	addForm := form.ArticleAddForm{}
 	err := ctx.ShouldBindJSON(&addForm)
 	if err != nil {
@@ -150,7 +153,7 @@ func AddArticle(ctx *gin.Context) {
 // @Success 100 object util.Result 成功
 // @Failure 103/104 object util.Result 失败
 // @Router /api/v1/articles [put]
-func UpdateArticle(ctx *gin.Context) {
+func (a *ArticleHandler) UpdateArticle(ctx *gin.Context) {
 	editForm := form.ArticleEditForm{}
 	err := ctx.ShouldBindJSON(&editForm)
 	if err != nil {
@@ -197,7 +200,7 @@ func UpdateArticle(ctx *gin.Context) {
 // @Success 100 object util.Result 成功
 // @Failure 103/104 object util.Result 失败
 // @Router /api/v1/articles/{id} [delete]
-func DeleteArticle(ctx *gin.Context) {
+func (a *ArticleHandler) DeleteArticle(ctx *gin.Context) {
 	id := ctx.Param("id")
 	err := model.Article{}.DeleteById(id)
 	if err != nil {
@@ -224,7 +227,7 @@ func DeleteArticle(ctx *gin.Context) {
 // @Success 100 object util.Result 成功
 // @Failure 103/104 object util.Result 失败
 // @Router /api/v1/articles [delete]
-func MultiDelArticles(ctx *gin.Context) {
+func (a *ArticleHandler) MultiDelArticles(ctx *gin.Context) {
 	ids := ctx.DefaultQuery("ids", "") // 获取 ids
 	if ids == "" {
 		ctx.JSON(http.StatusOK, util.Result{
@@ -257,8 +260,8 @@ func MultiDelArticles(ctx *gin.Context) {
 // @Accept multipart/form-data
 // @Success 100 object util.Result 成功
 // @Failure 103/104 object util.Result 失败
-// @Router /api/v1/article_files [post]
-func ImportArticlesFromFiles(ctx *gin.Context) {
+// @Router /api/v1/articles/files [post]
+func (a *ArticleHandler) ImportArticlesFromFiles(ctx *gin.Context) {
 	multiForm, err := ctx.MultipartForm()
 	if err != nil {
 		ctx.JSON(http.StatusOK, util.Result{
@@ -342,8 +345,8 @@ func ImportArticlesFromFiles(ctx *gin.Context) {
 // @Param oderForm body form.ArticleOrderForm true "文章排序表单"
 // @Success 100 object util.Result 成功
 // @Failure 103/104 object util.Result 失败
-// @Router /api/articles/move_up [post]
-func MoveArticleUp(ctx *gin.Context) {
+// @Router /api/articles/up [post]
+func (a *ArticleHandler) MoveArticleUp(ctx *gin.Context) {
 	orderForm := form.ArticleOrderForm{}
 	if err := ctx.ShouldBindJSON(&orderForm); err != nil {
 		ctx.JSON(http.StatusOK, util.Result{
@@ -388,8 +391,8 @@ func MoveArticleUp(ctx *gin.Context) {
 // @Param oderForm body form.ArticleOrderForm true "文章排序表单"
 // @Success 100 object util.Result 成功
 // @Failure 103/104 object util.Result 失败
-// @Router /api/v1/articles/move_down [post]
-func MoveArticleDown(ctx *gin.Context) {
+// @Router /api/v1/articles/down [post]
+func (a *ArticleHandler) MoveArticleDown(ctx *gin.Context) {
 	orderForm := form.ArticleOrderForm{}
 	if err := ctx.ShouldBindJSON(&orderForm); err != nil {
 		ctx.JSON(http.StatusOK, util.Result{

@@ -333,7 +333,7 @@ export default {
       columns: [
         {
           title: '文章标题',
-          width: '250',
+          width: '230',
           component: {
             name: postTitle
           }
@@ -364,12 +364,12 @@ export default {
         },
         {
           title: '评论数',
-          width: '60',
+          width: '70',
           key: 'comment_count'
         },
         {
           title: '浏览数',
-          width: '60',
+          width: '70',
           key: 'visit_count'
         },
         {

@@ -9,6 +9,9 @@ import (
 	"net/http"
 )
 
+type CommentHandler struct {
+}
+
 // @Summary 获取所有评论
 // @Tags 评论
 // @version 1.0
@@ -16,7 +19,7 @@ import (
 // @Success 100 object util.Result 成功
 // @Failure 103/104 object util.Result 失败
 // @Router /api/v1/all_comments [get]
-func GetAllComments(ctx *gin.Context) {
+func (c *CommentHandler) GetAllComments(ctx *gin.Context) {
 	list, err := model.Comment{}.GetAll()
 	if err != nil {
 		log.Error("error: ", err.Error())
@@ -46,7 +49,7 @@ func GetAllComments(ctx *gin.Context) {
 // @Success 100 object util.Result 成功
 // @Failure 103/104 object util.Result 失败
 // @Router /api/v1/comments [get]
-func GetCommentsByPage(ctx *gin.Context) {
+func (c *CommentHandler) GetCommentsByPage(ctx *gin.Context) {
 	pageForm := form.CommentPageForm{}
 	_ = ctx.ShouldBindQuery(&pageForm)
 	list, total, err := model.Comment{}.GetByPage(&pageForm.Pagination, pageForm.Key, pageForm.Type, pageForm.State)
@@ -74,7 +77,7 @@ func GetCommentsByPage(ctx *gin.Context) {
 // @Success 100 object util.Result 成功
 // @Failure 103/104 object util.Result 失败
 // @Router /api/v1/comments [post]
-func AddComment(ctx *gin.Context) {
+func (c *CommentHandler) AddComment(ctx *gin.Context) {
 	addForm := form.CommentAddForm{}
 	err := ctx.ShouldBindJSON(&addForm)
 	if err != nil {
@@ -110,7 +113,7 @@ func AddComment(ctx *gin.Context) {
 // @Success 100 object util.Result 成功
 // @Failure 103/104 object util.Result 失败
 // @Router /api/v1/comments [put]
-func UpdateComment(ctx *gin.Context) {
+func (c *CommentHandler) UpdateComment(ctx *gin.Context) {
 	editForm := form.CommentEditForm{}
 	if err := ctx.ShouldBindJSON(&editForm); err != nil {
 		ctx.JSON(http.StatusOK, util.Result{
@@ -144,7 +147,7 @@ func UpdateComment(ctx *gin.Context) {
 // @Success 100 object util.Result 成功
 // @Failure 103/104 object util.Result 失败
 // @Router /api/v1/comments/{id} [delete]
-func DeleteComment(ctx *gin.Context) {
+func (c *CommentHandler) DeleteComment(ctx *gin.Context) {
 	id := ctx.Param("id")
 	err := model.Comment{}.DeleteById(id)
 	if err != nil {
@@ -170,7 +173,7 @@ func DeleteComment(ctx *gin.Context) {
 // @Success 100 object util.Result 成功
 // @Failure 103/104 object util.Result 失败
 // @Router /api/v1/comments [delete]
-func MultiDelComments(ctx *gin.Context) {
+func (c *CommentHandler) MultiDelComments(ctx *gin.Context) {
 	ids := ctx.Query("ids")
 	if ids == "" {
 		ctx.JSON(http.StatusOK, util.Result{

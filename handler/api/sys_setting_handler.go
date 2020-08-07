@@ -14,6 +14,9 @@ import (
 	"strconv"
 )
 
+type SysSettingHandler struct {
+}
+
 // @Summary 获取设置条目
 // @Tags 系统设置
 // @version 1.0
@@ -22,7 +25,7 @@ import (
 // @Success 100 object util.Result 成功
 // @Failure 103/104 object util.Result 失败
 // @Router /api/v1/sys_setting/items [get]
-func GetSysSettingItem(ctx *gin.Context) {
+func (s *SysSettingHandler) GetSysSettingItem(ctx *gin.Context) {
 	name := ctx.Query("name")
 	result, _ := model.SysSettingItem{}.GetBySysSettingName(name)
 	ctx.JSON(http.StatusOK, util.Result{
@@ -40,7 +43,7 @@ func GetSysSettingItem(ctx *gin.Context) {
 // @Success 100 object util.Result 成功
 // @Failure 103/104 object util.Result 失败
 // @Router /api/v1/sys_setting/site [post]
-func SaveSiteSetting(ctx *gin.Context) {
+func (s *SysSettingHandler) SaveSiteSetting(ctx *gin.Context) {
 	settingForm := form.SiteSettingForm{}
 	if err := ctx.ShouldBindJSON(&settingForm); err != nil {
 		ctx.JSON(http.StatusOK, util.Result{
@@ -104,7 +107,7 @@ func SaveSiteSetting(ctx *gin.Context) {
 // @Success 100 object util.Result 成功
 // @Failure 103/104 object util.Result 失败
 // @Router /api/v1/sys_setting/smtp [post]
-func SaveSMTPSetting(ctx *gin.Context) {
+func (s *SysSettingHandler) SaveSMTPSetting(ctx *gin.Context) {
 	settingForm := form.EmailSettingForm{}
 	if err := ctx.ShouldBindJSON(&settingForm); err != nil {
 		ctx.JSON(http.StatusOK, util.Result{
@@ -167,7 +170,7 @@ func SaveSMTPSetting(ctx *gin.Context) {
 // @Success 100 object util.Result 成功
 // @Failure 103/104 object util.Result 失败
 // @Router /api/v1/sys_setting/pic_bed [post]
-func SavePicBedSetting(ctx *gin.Context) {
+func (s *SysSettingHandler) SavePicBedSetting(ctx *gin.Context) {
 	settingForm := form.PicBedSettingForm{}
 	if err := ctx.ShouldBindJSON(&settingForm); err != nil {
 		ctx.JSON(http.StatusOK, util.Result{
@@ -230,7 +233,7 @@ func SavePicBedSetting(ctx *gin.Context) {
 // @Success 100 object util.Result 成功
 // @Failure 103/104 object util.Result 失败
 // @Router /api/v1/sys_setting/email/test [post]
-func SendTestEmail(ctx *gin.Context) {
+func (s *SysSettingHandler) SendTestEmail(ctx *gin.Context) {
 	sendForm := form.EmailSendForm{}
 	if err := ctx.ShouldBindJSON(&sendForm); err != nil {
 		ctx.JSON(http.StatusOK, util.Result{
@@ -296,7 +299,7 @@ func SendTestEmail(ctx *gin.Context) {
 // @Success 100 object util.Result 成功
 // @Failure 103/104 object util.Result 失败
 // @Router /api/v1/sys_setting/index_info [get]
-func GetAdminIndexData(ctx *gin.Context) {
+func (s *SysSettingHandler) GetAdminIndexData(ctx *gin.Context) {
 	articleCount, err := model.Article{}.GetCount()
 	if err != nil {
 		log.Error("error: ", err.Error())
@@ -317,7 +320,7 @@ func GetAdminIndexData(ctx *gin.Context) {
 		})
 		return
 	}
-	latestArticles, err := model.Article{}.GetLatest(10)
+	latestArticles, err := model.Article{}.GetLatest(6)
 	if err != nil {
 		log.Error("error: ", err.Error())
 		ctx.JSON(http.StatusOK, util.Result{
@@ -327,7 +330,7 @@ func GetAdminIndexData(ctx *gin.Context) {
 		})
 		return
 	}
-	latestComments, err := model.Comment{}.GetLatest(10)
+	latestComments, err := model.Comment{}.GetLatest(6)
 	if err != nil {
 		log.Error("error: ", err.Error())
 		ctx.JSON(http.StatusOK, util.Result{

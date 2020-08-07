@@ -9,6 +9,9 @@ import (
 	"net/http"
 )
 
+type LinkHandler struct {
+}
+
 // @Summary 获取所有友链
 // @Tags 友链
 // @version 1.0
@@ -16,7 +19,7 @@ import (
 // @Success 100 object util.Result 成功
 // @Failure 103/104 object util.Result 失败
 // @Router /api/v1/all_links [get]
-func GetAllLinks(ctx *gin.Context) {
+func (l *LinkHandler) GetAllLinks(ctx *gin.Context) {
 	list, err := model.Link{}.GetAll()
 	if err != nil {
 		log.Error("error: ", err.Error())
@@ -42,7 +45,7 @@ func GetAllLinks(ctx *gin.Context) {
 // @Success 100 object util.Result 成功
 // @Failure 103/104 object util.Result 失败
 // @Router /api/v1/links [get]
-func GetLinksByPage(ctx *gin.Context) {
+func (l *LinkHandler) GetLinksByPage(ctx *gin.Context) {
 	pageForm := form.LinkPageForm{}
 	_ = ctx.ShouldBindQuery(&pageForm)
 	list, total, err := model.Link{}.GetByPage(&pageForm.Pagination, pageForm.Key, pageForm.CategoryId)
@@ -70,7 +73,7 @@ func GetLinksByPage(ctx *gin.Context) {
 // @Success 100 object util.Result 成功
 // @Failure 103/104 object util.Result 失败
 // @Router /api/v1/links [post]
-func CreateLink(ctx *gin.Context) {
+func (l *LinkHandler) CreateLink(ctx *gin.Context) {
 	addForm := form.LinkAddForm{}
 	if err := ctx.ShouldBindJSON(&addForm); err != nil {
 		ctx.JSON(http.StatusOK, util.Result{
@@ -105,7 +108,7 @@ func CreateLink(ctx *gin.Context) {
 // @Success 100 object util.Result 成功
 // @Failure 103/104 object util.Result 失败
 // @Router /api/v1/links [post]
-func UpdateLink(ctx *gin.Context) {
+func (l *LinkHandler) UpdateLink(ctx *gin.Context) {
 	editForm := form.LinkEditForm{}
 	if err := ctx.ShouldBindJSON(&editForm); err != nil {
 		ctx.JSON(http.StatusOK, util.Result{
@@ -140,7 +143,7 @@ func UpdateLink(ctx *gin.Context) {
 // @Success 100 object util.Result 成功
 // @Failure 103/104 object util.Result 失败
 // @Router /api/v1/links/{id} [delete]
-func DeleteLink(ctx *gin.Context) {
+func (l *LinkHandler) DeleteLink(ctx *gin.Context) {
 	id := ctx.Param("id")
 	err := model.Link{}.DeleteById(id)
 	if err != nil {
@@ -167,7 +170,7 @@ func DeleteLink(ctx *gin.Context) {
 // @Success 100 object util.Result 成功
 // @Failure 103/104 object util.Result 失败
 // @Router /api/v1/links [delete]
-func MultiDelLinks(ctx *gin.Context) {
+func (l *LinkHandler) MultiDelLinks(ctx *gin.Context) {
 	ids := ctx.DefaultQuery("ids", "")
 	if ids == "" {
 		ctx.JSON(http.StatusOK, util.Result{

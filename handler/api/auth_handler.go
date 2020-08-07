@@ -13,6 +13,9 @@ import (
 	"time"
 )
 
+type AuthHandler struct {
+}
+
 // @Summary 注册
 // @Tags 授权
 // @version 1.0
@@ -21,7 +24,7 @@ import (
 // @Success 100 object util.Result 成功
 // @Failure 103/104 object util.Result 失败
 // @Router /api/v1/auth/register [post]
-func Register(ctx *gin.Context) {
+func (a *AuthHandler) Register(ctx *gin.Context) {
 	regForm := form.RegisterForm{}
 	result := util.Result{ // 定义 api 返回信息结构
 		Code: util.Success,
@@ -92,7 +95,7 @@ func Register(ctx *gin.Context) {
 // @Success 100 object util.Result 成功
 // @Failure 103/104 object util.Result 失败
 // @Router /api/v1/auth/login [post]
-func Login(ctx *gin.Context) {
+func (a *AuthHandler) Login(ctx *gin.Context) {
 	loginForm := form.LoginForm{}
 	result := util.Result{ // 定义 api 返回信息结构
 		Code: util.Success,
@@ -162,7 +165,7 @@ func Login(ctx *gin.Context) {
 // @Success 100 object util.Result 成功
 // @Failure 103/104 object util.Result 失败
 // @Router /api/v1/auth/captcha [get]
-func CreateCaptcha(ctx *gin.Context) {
+func (a *AuthHandler) CreateCaptcha(ctx *gin.Context) {
 	captcha := util.CaptchaConfig{} // 创建验证码配置结构
 	result := util.Result{          // 返回数据结构
 		Code: util.Success,
@@ -191,7 +194,7 @@ func CreateCaptcha(ctx *gin.Context) {
 // @Success 100 object util.Result 成功
 // @Failure 103/104 object util.Result 失败
 // @Router /api/v1/auth/pwd/forget [post]
-func ForgetPwd(ctx *gin.Context) {
+func (a *AuthHandler) ForgetPwd(ctx *gin.Context) {
 	forgetPwdForm := form.ForgetPwdForm{}
 	if err := ctx.ShouldBindJSON(&forgetPwdForm); err != nil {
 		ctx.JSON(http.StatusOK, util.Result{
@@ -254,7 +257,7 @@ func ForgetPwd(ctx *gin.Context) {
 // @Success 100 object util.Result 成功
 // @Failure 103/104 object util.Result 失败
 // @Router /api/v1/auth/pwd/reset [post]
-func ResetPwd(ctx *gin.Context) {
+func (a *AuthHandler) ResetPwd(ctx *gin.Context) {
 	resetPwdForm := form.ResetPwdForm{}
 	if err := ctx.ShouldBindJSON(&resetPwdForm); err != nil {
 		ctx.JSON(http.StatusOK, util.Result{

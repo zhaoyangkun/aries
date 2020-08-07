@@ -29,7 +29,7 @@ export function addPost (data) {
 // 从文件导入文章
 export function importPostFromFiles (data) {
   return request({
-    url: '/article_files',
+    url: '/articles/files',
     method: 'post',
     data: data,
     headers: {
@@ -68,7 +68,7 @@ export function multiDelPosts (ids) {
 // 向上移动文章
 export function movePostUp (data) {
   return request({
-    url: '/articles/move_up',
+    url: '/articles/up',
     method: 'post',
     data: data
   })
@@ -77,7 +77,7 @@ export function movePostUp (data) {
 // 向下移动文章
 export function movePostDown (data) {
   return request({
-    url: '/articles/move_down',
+    url: '/articles/down',
     method: 'post',
     data: data
   })

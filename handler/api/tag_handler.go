@@ -9,6 +9,9 @@ import (
 	"net/http"
 )
 
+type TagHandler struct {
+}
+
 // @Summary 获取所有标签
 // @Tags 标签
 // @version 1.0
@@ -16,7 +19,7 @@ import (
 // @Success 100 object util.Result 成功
 // @Failure 103/104 object util.Result 失败
 // @Router /api/v1/all_tags [get]
-func GetAllTags(ctx *gin.Context) {
+func (t *TagHandler) GetAllTags(ctx *gin.Context) {
 	list, err := model.Tag{}.GetAll()
 	if err != nil {
 		log.Errorln("Error: ", err.Error())
@@ -44,7 +47,7 @@ func GetAllTags(ctx *gin.Context) {
 // @Success 100 object util.Result 成功
 // @Failure 103/104 object util.Result 失败
 // @Router /api/v1/tags [get]
-func GetTagsByPage(ctx *gin.Context) {
+func (t *TagHandler) GetTagsByPage(ctx *gin.Context) {
 	pageForm := form.TagPageForm{}
 	_ = ctx.ShouldBindQuery(&pageForm)
 	list, totalNum, err := model.Tag{}.GetByPage(&pageForm.Pagination, pageForm.Key)
@@ -72,7 +75,7 @@ func GetTagsByPage(ctx *gin.Context) {
 // @Success 100 object util.Result 成功
 // @Failure 103/104 object util.Result 失败
 // @Router /api/v1/tags/{id} [get]
-func GetTagById(ctx *gin.Context) {
+func (t *TagHandler) GetTagById(ctx *gin.Context) {
 	id := ctx.Param("id")
 	tag, err := model.Tag{}.GetById(id)
 	if err != nil {
@@ -99,7 +102,7 @@ func GetTagById(ctx *gin.Context) {
 // @Success 100 object util.Result 成功
 // @Failure 103/104 object util.Result 失败
 // @Router /api/v1/tags [post]
-func AddTag(ctx *gin.Context) {
+func (t *TagHandler) AddTag(ctx *gin.Context) {
 	addForm := form.TagAddForm{}
 	err := ctx.ShouldBindJSON(&addForm)
 	if err != nil {
@@ -145,7 +148,7 @@ func AddTag(ctx *gin.Context) {
 // @Success 100 object util.Result 成功
 // @Failure 103/104 object util.Result 失败
 // @Router /api/v1/tags [put]
-func UpdateTag(ctx *gin.Context) {
+func (t *TagHandler) UpdateTag(ctx *gin.Context) {
 	editForm := form.TagEditForm{}
 	err := ctx.ShouldBindJSON(&editForm)
 	if err != nil {
@@ -191,7 +194,7 @@ func UpdateTag(ctx *gin.Context) {
 // @Success 100 object util.Result 成功
 // @Failure 103/104 object util.Result 失败
 // @Router /api/v1/tags/{id} [delete]
-func DeleteTag(ctx *gin.Context) {
+func (t *TagHandler) DeleteTag(ctx *gin.Context) {
 	id := ctx.Param("id")
 	err := model.Tag{}.DeleteById(id)
 	if err != nil {
@@ -218,7 +221,7 @@ func DeleteTag(ctx *gin.Context) {
 // @Success 100 object util.Result 成功
 // @Failure 103/104 object util.Result 失败
 // @Router /api/v1/tags [delete]
-func MultiDelTags(ctx *gin.Context) {
+func (t *TagHandler) MultiDelTags(ctx *gin.Context) {
 	ids := ctx.DefaultQuery("ids", "")
 	if ids == "" {
 		ctx.JSON(http.StatusOK, util.Result{

@@ -9,6 +9,9 @@ import (
 	"net/http"
 )
 
+type UserHandler struct {
+}
+
 // @Summary 获取所有用户
 // @Tags 用户
 // @version 1.0
@@ -16,7 +19,7 @@ import (
 // @Success 100 object util.Result 成功
 // @Failure 103/104 object util.Result 失败
 // @Router /api/v1/all_users [get]
-func GetAllUsers(ctx *gin.Context) {
+func (u *UserHandler) GetAllUsers(ctx *gin.Context) {
 	list, err := model.User{}.GetAll()
 	if err != nil {
 		log.Error("error: ", err.Error())
@@ -42,7 +45,7 @@ func GetAllUsers(ctx *gin.Context) {
 // @Success 100 object util.Result 成功
 // @Failure 103/104 object util.Result 失败
 // @Router /api/v1/users [put]
-func UpdateUser(ctx *gin.Context) {
+func (u *UserHandler) UpdateUser(ctx *gin.Context) {
 	userForm := form.UserInfoForm{}
 	if err := ctx.ShouldBindJSON(&userForm); err != nil {
 		ctx.JSON(http.StatusOK, util.Result{
@@ -77,7 +80,7 @@ func UpdateUser(ctx *gin.Context) {
 // @Success 100 object util.Result 成功
 // @Failure 103/104 object util.Result 失败
 // @Router /api/v1/users/pwd [put]
-func UpdateUserPwd(ctx *gin.Context) {
+func (u *UserHandler) UpdateUserPwd(ctx *gin.Context) {
 	pwdForm := form.PwdForm{}
 	if err := ctx.ShouldBindJSON(&pwdForm); err != nil {
 		ctx.JSON(http.StatusOK, util.Result{

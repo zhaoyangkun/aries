@@ -10,6 +10,9 @@ import (
 	"strconv"
 )
 
+type CategoryHandler struct {
+}
+
 // @Summary 获取所有分类
 // @Tags 分类
 // @version 1.0
@@ -18,7 +21,7 @@ import (
 // @Success 100 object util.Result 成功
 // @Failure 103/104 object util.Result 失败
 // @Router /api/v1/all_categories [get]
-func GetAllCategories(ctx *gin.Context) {
+func (c *CategoryHandler) GetAllCategories(ctx *gin.Context) {
 	categoryType := ctx.Query("category_type")
 	cType, err := strconv.Atoi(categoryType)
 	if err != nil {
@@ -55,7 +58,7 @@ func GetAllCategories(ctx *gin.Context) {
 // @Success 100 object util.Result 成功
 // @Failure 103/104 object util.Result 失败
 // @Router /api/v1/parent_categories [get]
-func GetAllParentCategories(ctx *gin.Context) {
+func (c *CategoryHandler) GetAllParentCategories(ctx *gin.Context) {
 	categoryType := ctx.Query("category_type")
 	cType, err := strconv.Atoi(categoryType)
 	if err != nil {
@@ -95,7 +98,7 @@ func GetAllParentCategories(ctx *gin.Context) {
 // @Success 100 object util.Result 成功
 // @Failure 103/104 object util.Result 失败
 // @Router /api/v1/categories [get]
-func GetCategoriesByPage(ctx *gin.Context) {
+func (c *CategoryHandler) GetCategoriesByPage(ctx *gin.Context) {
 	pageForm := form.CategoryPageForm{}
 	err := ctx.ShouldBindQuery(&pageForm)
 	if err != nil {
@@ -133,7 +136,7 @@ func GetCategoriesByPage(ctx *gin.Context) {
 // @Success 100 object util.Result 成功
 // @Failure 103/104 object util.Result 失败
 // @Router /api/v1/categories/article [post]
-func AddArticleCategory(ctx *gin.Context) {
+func (c *CategoryHandler) AddArticleCategory(ctx *gin.Context) {
 	addForm := form.ArticleCategoryAddForm{}
 	if err := ctx.ShouldBindJSON(&addForm); err != nil {
 		ctx.JSON(http.StatusOK, util.Result{
@@ -188,7 +191,7 @@ func AddArticleCategory(ctx *gin.Context) {
 // @Success 100 object util.Result 成功
 // @Failure 103/104 object util.Result 失败
 // @Router /api/v1/categories/article [put]
-func UpdateArticleCategory(ctx *gin.Context) {
+func (c *CategoryHandler) UpdateArticleCategory(ctx *gin.Context) {
 	editForm := form.ArticleCategoryEditForm{}
 	if err := ctx.ShouldBindJSON(&editForm); err != nil {
 		ctx.JSON(http.StatusOK, util.Result{
@@ -243,7 +246,7 @@ func UpdateArticleCategory(ctx *gin.Context) {
 // @Success 100 object util.Result 成功
 // @Failure 103/104 object util.Result 失败
 // @Router /api/v1/categories/link [post]
-func AddLinkCategory(ctx *gin.Context) {
+func (c *CategoryHandler) AddLinkCategory(ctx *gin.Context) {
 	addForm := form.LinkCategoryAddForm{}
 	if err := ctx.ShouldBindJSON(&addForm); err != nil {
 		ctx.JSON(http.StatusOK, util.Result{
@@ -288,7 +291,7 @@ func AddLinkCategory(ctx *gin.Context) {
 // @Success 100 object util.Result 成功
 // @Failure 103/104 object util.Result 失败
 // @Router /api/v1/categories/link [put]
-func UpdateLinkCategory(ctx *gin.Context) {
+func (c *CategoryHandler) UpdateLinkCategory(ctx *gin.Context) {
 	editForm := form.LinkCategoryEditForm{}
 	if err := ctx.ShouldBindJSON(&editForm); err != nil {
 		ctx.JSON(http.StatusOK, util.Result{
@@ -333,7 +336,7 @@ func UpdateLinkCategory(ctx *gin.Context) {
 // @Success 100 object util.Result 成功
 // @Failure 103/104 object util.Result 失败
 // @Router /api/v1/categories/{id} [delete]
-func DeleteCategory(ctx *gin.Context) {
+func (c *CategoryHandler) DeleteCategory(ctx *gin.Context) {
 	id, err := strconv.Atoi(ctx.Param("id")) // 将 string 转换为 int
 	if err != nil {                          // 类型转换失败
 		ctx.JSON(http.StatusOK, util.Result{
@@ -368,7 +371,7 @@ func DeleteCategory(ctx *gin.Context) {
 // @Success 100 object util.Result 成功
 // @Failure 103/104 object util.Result 失败
 // @Router /api/v1/categories [delete]
-func MultiDelCategories(ctx *gin.Context) {
+func (c *CategoryHandler) MultiDelCategories(ctx *gin.Context) {
 	ids := ctx.DefaultQuery("ids", "") // 获取 ids
 	if ids == "" {
 		ctx.JSON(http.StatusOK, util.Result{

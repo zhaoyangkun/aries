@@ -160,11 +160,13 @@
 import { createLink, deleteLink, getLinksByPage, multiDelLinks, updateLink } from '@api/aries/link'
 import { addLinkCategory, getAllCategories } from '@api/aries/category'
 import tableHandler from '@/components/aries/link/tableHandler'
+import tag from '@/components/aries/link/tag'
 
 export default {
   name: 'links',
   comments: {
-    tableHandler
+    tableHandler,
+    tag
   },
   data () {
     return {
@@ -181,8 +183,9 @@ export default {
         },
         {
           title: '分类',
-          key: 'category.name',
-          width: '180'
+          component: {
+            name: tag
+          }
         },
         {
           title: '操作',

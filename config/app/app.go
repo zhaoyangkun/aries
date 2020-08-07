@@ -6,8 +6,7 @@ import (
 	"aries/config/setting"
 	"aries/middleware"
 	"aries/model"
-	templRouter "aries/router"
-	apiRouter "aries/router/api"
+	routers "aries/router"
 	"fmt"
 	"github.com/88250/lute"
 	"github.com/gin-contrib/cache/persistence"
@@ -54,17 +53,11 @@ func InitApp() *gin.Engine {
 	router.Static("/static", fmt.Sprintf("theme/%s/static", setting.BlogVars.Theme))
 	router.LoadHTMLGlob(fmt.Sprintf("theme/%s/template/**", setting.BlogVars.Theme))
 
-	// 路由
-	templRouter.InitFrontRouter("", router)
-	templRouter.InitSwaggerRouter("/swagger", router)
-	apiRouter.InitCategoryApiRouter("/api/v1", router)
-	apiRouter.InitAuthApiRouter("/api/v1", router)
-	apiRouter.InitTagApiRouter("/api/v1", router)
-	apiRouter.InitArticleApiRouter("/api/v1", router)
-	apiRouter.InitCommentApiRouter("/api/v1", router)
-	apiRouter.InitUserApiRouter("/api/v1", router)
-	apiRouter.InitSysSettingApiRouter("/api/v1", router)
-	apiRouter.InitLinkApiRouter("/api/v1", router)
+	// 加载路由
+	apiRouter := routers.ApiRouter{}
+	tmplRouter := routers.TmplRouter{}
+	tmplRouter.InitTemplateRouter("", router)
+	apiRouter.InitApiRouter("/api/v1", router)
 
 	return router
 }
