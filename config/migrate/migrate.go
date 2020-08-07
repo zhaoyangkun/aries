@@ -2,15 +2,15 @@ package migrate
 
 import (
 	"aries/config/db"
-	"aries/model"
+	"aries/models"
 )
 
 func Migrate() {
 	// 根据实体结构，反向生成数据表（自动迁移）
 	db.Db.AutoMigrate(
-		&model.Article{}, &model.Category{}, &model.Comment{},
-		&model.Tag{}, &model.Theme{}, &model.User{},
-		&model.Link{}, &model.Nav{}, &model.Page{},
-		&model.SysSetting{}, &model.SysSettingItem{}, &model.ThemeSetting{},
+		&models.Article{}, &models.Category{}, &models.Comment{},
+		&models.Tag{}, &models.Theme{}, &models.User{},
+		&models.Link{}, &models.Nav{}, &models.Page{},
+		&models.SysSetting{}, &models.SysSettingItem{}, &models.ThemeSetting{},
 	)
 }

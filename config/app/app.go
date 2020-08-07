@@ -4,9 +4,9 @@ import (
 	"aries/config/db"
 	"aries/config/migrate"
 	"aries/config/setting"
-	"aries/middleware"
-	"aries/model"
-	routers "aries/router"
+	"aries/middlewares"
+	"aries/models"
+	"aries/routers"
 	"fmt"
 	"github.com/88250/lute"
 	"github.com/gin-contrib/cache/persistence"
@@ -32,7 +32,7 @@ func InitApp() *gin.Engine {
 
 	// 加载中间件
 	router := gin.New()
-	router.Use(middleware.LoggerMiddleWare(), gin.Recovery())
+	router.Use(middlewares.LoggerMiddleWare(), gin.Recovery())
 
 	// 配置表单校验
 	uni := ut.New(zh.New())
@@ -46,12 +46,12 @@ func InitApp() *gin.Engine {
 	}
 
 	// 配置博客全局变量
-	blogSetting, _ := model.SysSettingItem{}.GetBySysSettingName("网站设置")
+	blogSetting, _ := models.SysSettingItem{}.GetBySysSettingName("网站设置")
 	setting.BlogVars.InitBlogVars(blogSetting)
 
 	// 加载静态资源和模板
-	router.Static("/static", fmt.Sprintf("theme/%s/static", setting.BlogVars.Theme))
-	router.LoadHTMLGlob(fmt.Sprintf("theme/%s/template/**", setting.BlogVars.Theme))
+	router.Static("/static", fmt.Sprintf("themes/%s/static", setting.BlogVars.Theme))
+	router.LoadHTMLGlob(fmt.Sprintf("themes/%s/templates/**", setting.BlogVars.Theme))
 
 	// 加载路由
 	apiRouter := routers.ApiRouter{}
