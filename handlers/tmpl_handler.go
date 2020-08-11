@@ -6,11 +6,11 @@ import (
 	"net/http"
 )
 
-type FrontHandler struct {
+type TmplHandler struct {
 }
 
 // 首页
-func (f *FrontHandler) IndexHTML(ctx *gin.Context) {
+func (f *TmplHandler) IndexHTML(ctx *gin.Context) {
 	ctx.HTML(http.StatusOK, "index.tmpl", gin.H{
 		"blogVars": setting.BlogVars,
 	})

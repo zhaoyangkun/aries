@@ -11,11 +11,11 @@ type TmplRouter struct {
 }
 
 func (t *TmplRouter) InitTemplateRouter(rootPath string, router *gin.Engine) {
-	frontHandler := handlers.FrontHandler{}
-	frontRouter := router.Group(rootPath)
+	tmplHandler := handlers.TmplHandler{}
+	tmplRouter := router.Group(rootPath)
+	url := ginSwagger.URL("/swagger/doc.json")
 	{
-		url := ginSwagger.URL("/swagger/doc.json")
-		frontRouter.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, url))
-		frontRouter.GET("", frontHandler.IndexHTML)
+		tmplRouter.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, url))
+		tmplRouter.GET("", tmplHandler.IndexHTML)
 	}
 }

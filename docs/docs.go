@@ -44,7 +44,7 @@ var doc = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/form.ArticleOrderForm"
+                            "$ref": "#/definitions/forms.ArticleOrderForm"
                         }
                     }
                 ],
@@ -52,12 +52,12 @@ var doc = `{
                     "100": {
                         "description": "Continue",
                         "schema": {
-                            "$ref": "#/definitions/util.Result"
+                            "$ref": "#/definitions/utils.Result"
                         }
                     },
                     "104": {
                         "schema": {
-                            "$ref": "#/definitions/util.Result"
+                            "$ref": "#/definitions/utils.Result"
                         }
                     }
                 }
@@ -76,12 +76,12 @@ var doc = `{
                     "100": {
                         "description": "Continue",
                         "schema": {
-                            "$ref": "#/definitions/util.Result"
+                            "$ref": "#/definitions/utils.Result"
                         }
                     },
                     "104": {
                         "schema": {
-                            "$ref": "#/definitions/util.Result"
+                            "$ref": "#/definitions/utils.Result"
                         }
                     }
                 }
@@ -109,12 +109,12 @@ var doc = `{
                     "100": {
                         "description": "Continue",
                         "schema": {
-                            "$ref": "#/definitions/util.Result"
+                            "$ref": "#/definitions/utils.Result"
                         }
                     },
                     "104": {
                         "schema": {
-                            "$ref": "#/definitions/util.Result"
+                            "$ref": "#/definitions/utils.Result"
                         }
                     }
                 }
@@ -133,12 +133,12 @@ var doc = `{
                     "100": {
                         "description": "Continue",
                         "schema": {
-                            "$ref": "#/definitions/util.Result"
+                            "$ref": "#/definitions/utils.Result"
                         }
                     },
                     "104": {
                         "schema": {
-                            "$ref": "#/definitions/util.Result"
+                            "$ref": "#/definitions/utils.Result"
                         }
                     }
                 }
@@ -157,12 +157,12 @@ var doc = `{
                     "100": {
                         "description": "Continue",
                         "schema": {
-                            "$ref": "#/definitions/util.Result"
+                            "$ref": "#/definitions/utils.Result"
                         }
                     },
                     "104": {
                         "schema": {
-                            "$ref": "#/definitions/util.Result"
+                            "$ref": "#/definitions/utils.Result"
                         }
                     }
                 }
@@ -181,12 +181,12 @@ var doc = `{
                     "100": {
                         "description": "Continue",
                         "schema": {
-                            "$ref": "#/definitions/util.Result"
+                            "$ref": "#/definitions/utils.Result"
                         }
                     },
                     "104": {
                         "schema": {
-                            "$ref": "#/definitions/util.Result"
+                            "$ref": "#/definitions/utils.Result"
                         }
                     }
                 }
@@ -205,12 +205,12 @@ var doc = `{
                     "100": {
                         "description": "Continue",
                         "schema": {
-                            "$ref": "#/definitions/util.Result"
+                            "$ref": "#/definitions/utils.Result"
                         }
                     },
                     "104": {
                         "schema": {
-                            "$ref": "#/definitions/util.Result"
+                            "$ref": "#/definitions/utils.Result"
                         }
                     }
                 }
@@ -261,12 +261,12 @@ var doc = `{
                     "100": {
                         "description": "Continue",
                         "schema": {
-                            "$ref": "#/definitions/util.Result"
+                            "$ref": "#/definitions/utils.Result"
                         }
                     },
                     "104": {
                         "schema": {
-                            "$ref": "#/definitions/util.Result"
+                            "$ref": "#/definitions/utils.Result"
                         }
                     }
                 }
@@ -286,7 +286,7 @@ var doc = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/form.ArticleEditForm"
+                            "$ref": "#/definitions/forms.ArticleEditForm"
                         }
                     }
                 ],
@@ -294,12 +294,12 @@ var doc = `{
                     "100": {
                         "description": "Continue",
                         "schema": {
-                            "$ref": "#/definitions/util.Result"
+                            "$ref": "#/definitions/utils.Result"
                         }
                     },
                     "104": {
                         "schema": {
-                            "$ref": "#/definitions/util.Result"
+                            "$ref": "#/definitions/utils.Result"
                         }
                     }
                 }
@@ -319,7 +319,7 @@ var doc = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/form.ArticleAddForm"
+                            "$ref": "#/definitions/forms.ArticleAddForm"
                         }
                     }
                 ],
@@ -327,12 +327,12 @@ var doc = `{
                     "100": {
                         "description": "Continue",
                         "schema": {
-                            "$ref": "#/definitions/util.Result"
+                            "$ref": "#/definitions/utils.Result"
                         }
                     },
                     "104": {
                         "schema": {
-                            "$ref": "#/definitions/util.Result"
+                            "$ref": "#/definitions/utils.Result"
                         }
                     }
                 }
@@ -358,12 +358,12 @@ var doc = `{
                     "100": {
                         "description": "Continue",
                         "schema": {
-                            "$ref": "#/definitions/util.Result"
+                            "$ref": "#/definitions/utils.Result"
                         }
                     },
                     "104": {
                         "schema": {
-                            "$ref": "#/definitions/util.Result"
+                            "$ref": "#/definitions/utils.Result"
                         }
                     }
                 }
@@ -385,7 +385,7 @@ var doc = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/form.ArticleOrderForm"
+                            "$ref": "#/definitions/forms.ArticleOrderForm"
                         }
                     }
                 ],
@@ -393,12 +393,12 @@ var doc = `{
                     "100": {
                         "description": "Continue",
                         "schema": {
-                            "$ref": "#/definitions/util.Result"
+                            "$ref": "#/definitions/utils.Result"
                         }
                     },
                     "104": {
                         "schema": {
-                            "$ref": "#/definitions/util.Result"
+                            "$ref": "#/definitions/utils.Result"
                         }
                     }
                 }
@@ -417,12 +417,12 @@ var doc = `{
                     "100": {
                         "description": "Continue",
                         "schema": {
-                            "$ref": "#/definitions/util.Result"
+                            "$ref": "#/definitions/utils.Result"
                         }
                     },
                     "104": {
                         "schema": {
-                            "$ref": "#/definitions/util.Result"
+                            "$ref": "#/definitions/utils.Result"
                         }
                     }
                 }
@@ -450,12 +450,12 @@ var doc = `{
                     "100": {
                         "description": "Continue",
                         "schema": {
-                            "$ref": "#/definitions/util.Result"
+                            "$ref": "#/definitions/utils.Result"
                         }
                     },
                     "104": {
                         "schema": {
-                            "$ref": "#/definitions/util.Result"
+                            "$ref": "#/definitions/utils.Result"
                         }
                     }
                 }
@@ -481,12 +481,12 @@ var doc = `{
                     "100": {
                         "description": "Continue",
                         "schema": {
-                            "$ref": "#/definitions/util.Result"
+                            "$ref": "#/definitions/utils.Result"
                         }
                     },
                     "104": {
                         "schema": {
-                            "$ref": "#/definitions/util.Result"
+                            "$ref": "#/definitions/utils.Result"
                         }
                     }
                 }
@@ -505,12 +505,12 @@ var doc = `{
                     "100": {
                         "description": "Continue",
                         "schema": {
-                            "$ref": "#/definitions/util.Result"
+                            "$ref": "#/definitions/utils.Result"
                         }
                     },
                     "104": {
                         "schema": {
-                            "$ref": "#/definitions/util.Result"
+                            "$ref": "#/definitions/utils.Result"
                         }
                     }
                 }
@@ -532,7 +532,7 @@ var doc = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/form.LoginForm"
+                            "$ref": "#/definitions/forms.LoginForm"
                         }
                     }
                 ],
@@ -540,12 +540,12 @@ var doc = `{
                     "100": {
                         "description": "Continue",
                         "schema": {
-                            "$ref": "#/definitions/util.Result"
+                            "$ref": "#/definitions/utils.Result"
                         }
                     },
                     "104": {
                         "schema": {
-                            "$ref": "#/definitions/util.Result"
+                            "$ref": "#/definitions/utils.Result"
                         }
                     }
                 }
@@ -567,7 +567,7 @@ var doc = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/form.ForgetPwdForm"
+                            "$ref": "#/definitions/forms.ForgetPwdForm"
                         }
                     }
                 ],
@@ -575,12 +575,12 @@ var doc = `{
                     "100": {
                         "description": "Continue",
                         "schema": {
-                            "$ref": "#/definitions/util.Result"
+                            "$ref": "#/definitions/utils.Result"
                         }
                     },
                     "104": {
                         "schema": {
-                            "$ref": "#/definitions/util.Result"
+                            "$ref": "#/definitions/utils.Result"
                         }
                     }
                 }
@@ -602,7 +602,7 @@ var doc = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/form.ResetPwdForm"
+                            "$ref": "#/definitions/forms.ResetPwdForm"
                         }
                     }
                 ],
@@ -610,12 +610,12 @@ var doc = `{
                     "100": {
                         "description": "Continue",
                         "schema": {
-                            "$ref": "#/definitions/util.Result"
+                            "$ref": "#/definitions/utils.Result"
                         }
                     },
                     "104": {
                         "schema": {
-                            "$ref": "#/definitions/util.Result"
+                            "$ref": "#/definitions/utils.Result"
                         }
                     }
                 }
@@ -637,7 +637,7 @@ var doc = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/form.RegisterForm"
+                            "$ref": "#/definitions/forms.RegisterForm"
                         }
                     }
                 ],
@@ -645,12 +645,12 @@ var doc = `{
                     "100": {
                         "description": "Continue",
                         "schema": {
-                            "$ref": "#/definitions/util.Result"
+                            "$ref": "#/definitions/utils.Result"
                         }
                     },
                     "104": {
                         "schema": {
-                            "$ref": "#/definitions/util.Result"
+                            "$ref": "#/definitions/utils.Result"
                         }
                     }
                 }
@@ -696,12 +696,12 @@ var doc = `{
                     "100": {
                         "description": "Continue",
                         "schema": {
-                            "$ref": "#/definitions/util.Result"
+                            "$ref": "#/definitions/utils.Result"
                         }
                     },
                     "104": {
                         "schema": {
-                            "$ref": "#/definitions/util.Result"
+                            "$ref": "#/definitions/utils.Result"
                         }
                     }
                 }
@@ -727,12 +727,12 @@ var doc = `{
                     "100": {
                         "description": "Continue",
                         "schema": {
-                            "$ref": "#/definitions/util.Result"
+                            "$ref": "#/definitions/utils.Result"
                         }
                     },
                     "104": {
                         "schema": {
-                            "$ref": "#/definitions/util.Result"
+                            "$ref": "#/definitions/utils.Result"
                         }
                     }
                 }
@@ -754,7 +754,7 @@ var doc = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/form.ArticleCategoryEditForm"
+                            "$ref": "#/definitions/forms.ArticleCategoryEditForm"
                         }
                     }
                 ],
@@ -762,12 +762,12 @@ var doc = `{
                     "100": {
                         "description": "Continue",
                         "schema": {
-                            "$ref": "#/definitions/util.Result"
+                            "$ref": "#/definitions/utils.Result"
                         }
                     },
                     "104": {
                         "schema": {
-                            "$ref": "#/definitions/util.Result"
+                            "$ref": "#/definitions/utils.Result"
                         }
                     }
                 }
@@ -787,7 +787,7 @@ var doc = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/form.ArticleCategoryAddForm"
+                            "$ref": "#/definitions/forms.ArticleCategoryAddForm"
                         }
                     }
                 ],
@@ -795,12 +795,12 @@ var doc = `{
                     "100": {
                         "description": "Continue",
                         "schema": {
-                            "$ref": "#/definitions/util.Result"
+                            "$ref": "#/definitions/utils.Result"
                         }
                     },
                     "104": {
                         "schema": {
-                            "$ref": "#/definitions/util.Result"
+                            "$ref": "#/definitions/utils.Result"
                         }
                     }
                 }
@@ -822,7 +822,7 @@ var doc = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/form.LinkCategoryEditForm"
+                            "$ref": "#/definitions/forms.LinkCategoryEditForm"
                         }
                     }
                 ],
@@ -830,12 +830,12 @@ var doc = `{
                     "100": {
                         "description": "Continue",
                         "schema": {
-                            "$ref": "#/definitions/util.Result"
+                            "$ref": "#/definitions/utils.Result"
                         }
                     },
                     "104": {
                         "schema": {
-                            "$ref": "#/definitions/util.Result"
+                            "$ref": "#/definitions/utils.Result"
                         }
                     }
                 }
@@ -855,7 +855,7 @@ var doc = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/form.LinkCategoryAddForm"
+                            "$ref": "#/definitions/forms.LinkCategoryAddForm"
                         }
                     }
                 ],
@@ -863,12 +863,12 @@ var doc = `{
                     "100": {
                         "description": "Continue",
                         "schema": {
-                            "$ref": "#/definitions/util.Result"
+                            "$ref": "#/definitions/utils.Result"
                         }
                     },
                     "104": {
                         "schema": {
-                            "$ref": "#/definitions/util.Result"
+                            "$ref": "#/definitions/utils.Result"
                         }
                     }
                 }
@@ -896,12 +896,12 @@ var doc = `{
                     "100": {
                         "description": "Continue",
                         "schema": {
-                            "$ref": "#/definitions/util.Result"
+                            "$ref": "#/definitions/utils.Result"
                         }
                     },
                     "104": {
                         "schema": {
-                            "$ref": "#/definitions/util.Result"
+                            "$ref": "#/definitions/utils.Result"
                         }
                     }
                 }
@@ -952,12 +952,12 @@ var doc = `{
                     "100": {
                         "description": "Continue",
                         "schema": {
-                            "$ref": "#/definitions/util.Result"
+                            "$ref": "#/definitions/utils.Result"
                         }
                     },
                     "104": {
                         "schema": {
-                            "$ref": "#/definitions/util.Result"
+                            "$ref": "#/definitions/utils.Result"
                         }
                     }
                 }
@@ -976,7 +976,7 @@ var doc = `{
                         "name": "form",
                         "in": "body",
                         "schema": {
-                            "$ref": "#/definitions/form.CommentEditForm"
+                            "$ref": "#/definitions/forms.CommentEditForm"
                         }
                     }
                 ],
@@ -984,12 +984,12 @@ var doc = `{
                     "100": {
                         "description": "Continue",
                         "schema": {
-                            "$ref": "#/definitions/util.Result"
+                            "$ref": "#/definitions/utils.Result"
                         }
                     },
                     "104": {
                         "schema": {
-                            "$ref": "#/definitions/util.Result"
+                            "$ref": "#/definitions/utils.Result"
                         }
                     }
                 }
@@ -1008,7 +1008,7 @@ var doc = `{
                         "name": "form",
                         "in": "body",
                         "schema": {
-                            "$ref": "#/definitions/form.CommentAddForm"
+                            "$ref": "#/definitions/forms.CommentAddForm"
                         }
                     }
                 ],
@@ -1016,12 +1016,12 @@ var doc = `{
                     "100": {
                         "description": "Continue",
                         "schema": {
-                            "$ref": "#/definitions/util.Result"
+                            "$ref": "#/definitions/utils.Result"
                         }
                     },
                     "104": {
                         "schema": {
-                            "$ref": "#/definitions/util.Result"
+                            "$ref": "#/definitions/utils.Result"
                         }
                     }
                 }
@@ -1047,12 +1047,12 @@ var doc = `{
                     "100": {
                         "description": "Continue",
                         "schema": {
-                            "$ref": "#/definitions/util.Result"
+                            "$ref": "#/definitions/utils.Result"
                         }
                     },
                     "104": {
                         "schema": {
-                            "$ref": "#/definitions/util.Result"
+                            "$ref": "#/definitions/utils.Result"
                         }
                     }
                 }
@@ -1080,12 +1080,12 @@ var doc = `{
                     "100": {
                         "description": "Continue",
                         "schema": {
-                            "$ref": "#/definitions/util.Result"
+                            "$ref": "#/definitions/utils.Result"
                         }
                     },
                     "104": {
                         "schema": {
-                            "$ref": "#/definitions/util.Result"
+                            "$ref": "#/definitions/utils.Result"
                         }
                     }
                 }
@@ -1104,12 +1104,12 @@ var doc = `{
                     "100": {
                         "description": "Continue",
                         "schema": {
-                            "$ref": "#/definitions/util.Result"
+                            "$ref": "#/definitions/utils.Result"
                         }
                     },
                     "104": {
                         "schema": {
-                            "$ref": "#/definitions/util.Result"
+                            "$ref": "#/definitions/utils.Result"
                         }
                     }
                 }
@@ -1126,12 +1126,12 @@ var doc = `{
                     "100": {
                         "description": "Continue",
                         "schema": {
-                            "$ref": "#/definitions/util.Result"
+                            "$ref": "#/definitions/utils.Result"
                         }
                     },
                     "104": {
                         "schema": {
-                            "$ref": "#/definitions/util.Result"
+                            "$ref": "#/definitions/utils.Result"
                         }
                     }
                 }
@@ -1157,12 +1157,12 @@ var doc = `{
                     "100": {
                         "description": "Continue",
                         "schema": {
-                            "$ref": "#/definitions/util.Result"
+                            "$ref": "#/definitions/utils.Result"
                         }
                     },
                     "104": {
                         "schema": {
-                            "$ref": "#/definitions/util.Result"
+                            "$ref": "#/definitions/utils.Result"
                         }
                     }
                 }
@@ -1181,12 +1181,166 @@ var doc = `{
                     "100": {
                         "description": "Continue",
                         "schema": {
-                            "$ref": "#/definitions/util.Result"
+                            "$ref": "#/definitions/utils.Result"
                         }
                     },
                     "104": {
                         "schema": {
-                            "$ref": "#/definitions/util.Result"
+                            "$ref": "#/definitions/utils.Result"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/navs": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "菜单"
+                ],
+                "summary": "获取所有菜单",
+                "responses": {
+                    "100": {
+                        "description": "Continue",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Result"
+                        }
+                    },
+                    "104": {
+                        "schema": {
+                            "$ref": "#/definitions/utils.Result"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "菜单"
+                ],
+                "summary": "修改菜单",
+                "parameters": [
+                    {
+                        "description": "修改菜单表单",
+                        "name": "addForm",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/forms.NavEditForm"
+                        }
+                    }
+                ],
+                "responses": {
+                    "100": {
+                        "description": "Continue",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Result"
+                        }
+                    },
+                    "104": {
+                        "schema": {
+                            "$ref": "#/definitions/utils.Result"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "菜单"
+                ],
+                "summary": "添加菜单",
+                "parameters": [
+                    {
+                        "description": "添加菜单表单",
+                        "name": "addForm",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/forms.NavAddForm"
+                        }
+                    }
+                ],
+                "responses": {
+                    "100": {
+                        "description": "Continue",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Result"
+                        }
+                    },
+                    "104": {
+                        "schema": {
+                            "$ref": "#/definitions/utils.Result"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "菜单"
+                ],
+                "summary": "批量删除菜单",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ids",
+                        "name": "ids",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "100": {
+                        "description": "Continue",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Result"
+                        }
+                    },
+                    "104": {
+                        "schema": {
+                            "$ref": "#/definitions/utils.Result"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/navs/{id}": {
+            "delete": {
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "菜单"
+                ],
+                "summary": "删除菜单",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "100": {
+                        "description": "Continue",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Result"
+                        }
+                    },
+                    "104": {
+                        "schema": {
+                            "$ref": "#/definitions/utils.Result"
                         }
                     }
                 }
@@ -1214,12 +1368,12 @@ var doc = `{
                     "100": {
                         "description": "Continue",
                         "schema": {
-                            "$ref": "#/definitions/util.Result"
+                            "$ref": "#/definitions/utils.Result"
                         }
                     },
                     "104": {
                         "schema": {
-                            "$ref": "#/definitions/util.Result"
+                            "$ref": "#/definitions/utils.Result"
                         }
                     }
                 }
@@ -1238,12 +1392,12 @@ var doc = `{
                     "100": {
                         "description": "Continue",
                         "schema": {
-                            "$ref": "#/definitions/util.Result"
+                            "$ref": "#/definitions/utils.Result"
                         }
                     },
                     "104": {
                         "schema": {
-                            "$ref": "#/definitions/util.Result"
+                            "$ref": "#/definitions/utils.Result"
                         }
                     }
                 }
@@ -1262,12 +1416,12 @@ var doc = `{
                     "100": {
                         "description": "Continue",
                         "schema": {
-                            "$ref": "#/definitions/util.Result"
+                            "$ref": "#/definitions/utils.Result"
                         }
                     },
                     "104": {
                         "schema": {
-                            "$ref": "#/definitions/util.Result"
+                            "$ref": "#/definitions/utils.Result"
                         }
                     }
                 }
@@ -1294,12 +1448,12 @@ var doc = `{
                     "100": {
                         "description": "Continue",
                         "schema": {
-                            "$ref": "#/definitions/util.Result"
+                            "$ref": "#/definitions/utils.Result"
                         }
                     },
                     "104": {
                         "schema": {
-                            "$ref": "#/definitions/util.Result"
+                            "$ref": "#/definitions/utils.Result"
                         }
                     }
                 }
@@ -1321,7 +1475,7 @@ var doc = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/form.PicBedSettingForm"
+                            "$ref": "#/definitions/forms.PicBedSettingForm"
                         }
                     }
                 ],
@@ -1329,12 +1483,12 @@ var doc = `{
                     "100": {
                         "description": "Continue",
                         "schema": {
-                            "$ref": "#/definitions/util.Result"
+                            "$ref": "#/definitions/utils.Result"
                         }
                     },
                     "104": {
                         "schema": {
-                            "$ref": "#/definitions/util.Result"
+                            "$ref": "#/definitions/utils.Result"
                         }
                     }
                 }
@@ -1356,7 +1510,7 @@ var doc = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/form.SiteSettingForm"
+                            "$ref": "#/definitions/forms.SiteSettingForm"
                         }
                     }
                 ],
@@ -1364,12 +1518,12 @@ var doc = `{
                     "100": {
                         "description": "Continue",
                         "schema": {
-                            "$ref": "#/definitions/util.Result"
+                            "$ref": "#/definitions/utils.Result"
                         }
                     },
                     "104": {
                         "schema": {
-                            "$ref": "#/definitions/util.Result"
+                            "$ref": "#/definitions/utils.Result"
                         }
                     }
                 }
@@ -1391,7 +1545,7 @@ var doc = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/form.EmailSettingForm"
+                            "$ref": "#/definitions/forms.EmailSettingForm"
                         }
                     }
                 ],
@@ -1399,12 +1553,12 @@ var doc = `{
                     "100": {
                         "description": "Continue",
                         "schema": {
-                            "$ref": "#/definitions/util.Result"
+                            "$ref": "#/definitions/utils.Result"
                         }
                     },
                     "104": {
                         "schema": {
-                            "$ref": "#/definitions/util.Result"
+                            "$ref": "#/definitions/utils.Result"
                         }
                     }
                 }
@@ -1443,12 +1597,12 @@ var doc = `{
                     "100": {
                         "description": "Continue",
                         "schema": {
-                            "$ref": "#/definitions/util.Result"
+                            "$ref": "#/definitions/utils.Result"
                         }
                     },
                     "104": {
                         "schema": {
-                            "$ref": "#/definitions/util.Result"
+                            "$ref": "#/definitions/utils.Result"
                         }
                     }
                 }
@@ -1468,7 +1622,7 @@ var doc = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/form.TagEditForm"
+                            "$ref": "#/definitions/forms.TagEditForm"
                         }
                     }
                 ],
@@ -1476,12 +1630,12 @@ var doc = `{
                     "100": {
                         "description": "Continue",
                         "schema": {
-                            "$ref": "#/definitions/util.Result"
+                            "$ref": "#/definitions/utils.Result"
                         }
                     },
                     "104": {
                         "schema": {
-                            "$ref": "#/definitions/util.Result"
+                            "$ref": "#/definitions/utils.Result"
                         }
                     }
                 }
@@ -1501,7 +1655,7 @@ var doc = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/form.TagAddForm"
+                            "$ref": "#/definitions/forms.TagAddForm"
                         }
                     }
                 ],
@@ -1509,12 +1663,12 @@ var doc = `{
                     "100": {
                         "description": "Continue",
                         "schema": {
-                            "$ref": "#/definitions/util.Result"
+                            "$ref": "#/definitions/utils.Result"
                         }
                     },
                     "104": {
                         "schema": {
-                            "$ref": "#/definitions/util.Result"
+                            "$ref": "#/definitions/utils.Result"
                         }
                     }
                 }
@@ -1540,12 +1694,12 @@ var doc = `{
                     "100": {
                         "description": "Continue",
                         "schema": {
-                            "$ref": "#/definitions/util.Result"
+                            "$ref": "#/definitions/utils.Result"
                         }
                     },
                     "104": {
                         "schema": {
-                            "$ref": "#/definitions/util.Result"
+                            "$ref": "#/definitions/utils.Result"
                         }
                     }
                 }
@@ -1573,12 +1727,12 @@ var doc = `{
                     "100": {
                         "description": "Continue",
                         "schema": {
-                            "$ref": "#/definitions/util.Result"
+                            "$ref": "#/definitions/utils.Result"
                         }
                     },
                     "104": {
                         "schema": {
-                            "$ref": "#/definitions/util.Result"
+                            "$ref": "#/definitions/utils.Result"
                         }
                     }
                 }
@@ -1604,12 +1758,12 @@ var doc = `{
                     "100": {
                         "description": "Continue",
                         "schema": {
-                            "$ref": "#/definitions/util.Result"
+                            "$ref": "#/definitions/utils.Result"
                         }
                     },
                     "104": {
                         "schema": {
-                            "$ref": "#/definitions/util.Result"
+                            "$ref": "#/definitions/utils.Result"
                         }
                     }
                 }
@@ -1631,7 +1785,7 @@ var doc = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/form.UserInfoForm"
+                            "$ref": "#/definitions/forms.UserInfoForm"
                         }
                     }
                 ],
@@ -1639,12 +1793,12 @@ var doc = `{
                     "100": {
                         "description": "Continue",
                         "schema": {
-                            "$ref": "#/definitions/util.Result"
+                            "$ref": "#/definitions/utils.Result"
                         }
                     },
                     "104": {
                         "schema": {
-                            "$ref": "#/definitions/util.Result"
+                            "$ref": "#/definitions/utils.Result"
                         }
                     }
                 }
@@ -1666,7 +1820,7 @@ var doc = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/form.PwdForm"
+                            "$ref": "#/definitions/forms.PwdForm"
                         }
                     }
                 ],
@@ -1674,12 +1828,12 @@ var doc = `{
                     "100": {
                         "description": "Continue",
                         "schema": {
-                            "$ref": "#/definitions/util.Result"
+                            "$ref": "#/definitions/utils.Result"
                         }
                     },
                     "104": {
                         "schema": {
-                            "$ref": "#/definitions/util.Result"
+                            "$ref": "#/definitions/utils.Result"
                         }
                     }
                 }
@@ -1687,7 +1841,7 @@ var doc = `{
         }
     },
     "definitions": {
-        "form.ArticleAddForm": {
+        "forms.ArticleAddForm": {
             "type": "object",
             "required": [
                 "content",
@@ -1762,7 +1916,7 @@ var doc = `{
                 }
             }
         },
-        "form.ArticleCategoryAddForm": {
+        "forms.ArticleCategoryAddForm": {
             "type": "object",
             "required": [
                 "name",
@@ -1787,7 +1941,7 @@ var doc = `{
                 }
             }
         },
-        "form.ArticleCategoryEditForm": {
+        "forms.ArticleCategoryEditForm": {
             "type": "object",
             "required": [
                 "ID",
@@ -1816,7 +1970,7 @@ var doc = `{
                 }
             }
         },
-        "form.ArticleEditForm": {
+        "forms.ArticleEditForm": {
             "type": "object",
             "required": [
                 "content",
@@ -1896,7 +2050,7 @@ var doc = `{
                 }
             }
         },
-        "form.ArticleOrderForm": {
+        "forms.ArticleOrderForm": {
             "type": "object",
             "required": [
                 "id",
@@ -1914,7 +2068,7 @@ var doc = `{
                 }
             }
         },
-        "form.CommentAddForm": {
+        "forms.CommentAddForm": {
             "type": "object",
             "required": [
                 "article_id",
@@ -1970,7 +2124,7 @@ var doc = `{
                 }
             }
         },
-        "form.CommentEditForm": {
+        "forms.CommentEditForm": {
             "type": "object",
             "required": [
                 "article_id",
@@ -2031,7 +2185,7 @@ var doc = `{
                 }
             }
         },
-        "form.EmailSettingForm": {
+        "forms.EmailSettingForm": {
             "type": "object",
             "required": [
                 "account",
@@ -2065,7 +2219,7 @@ var doc = `{
                 }
             }
         },
-        "form.ForgetPwdForm": {
+        "forms.ForgetPwdForm": {
             "type": "object",
             "required": [
                 "email"
@@ -2076,7 +2230,7 @@ var doc = `{
                 }
             }
         },
-        "form.LinkCategoryAddForm": {
+        "forms.LinkCategoryAddForm": {
             "type": "object",
             "required": [
                 "name"
@@ -2092,7 +2246,7 @@ var doc = `{
                 }
             }
         },
-        "form.LinkCategoryEditForm": {
+        "forms.LinkCategoryEditForm": {
             "type": "object",
             "required": [
                 "ID",
@@ -2112,7 +2266,7 @@ var doc = `{
                 }
             }
         },
-        "form.LoginForm": {
+        "forms.LoginForm": {
             "type": "object",
             "required": [
                 "captcha_id",
@@ -2139,7 +2293,61 @@ var doc = `{
                 }
             }
         },
-        "form.PicBedSettingForm": {
+        "forms.NavAddForm": {
+            "type": "object",
+            "required": [
+                "icon",
+                "name",
+                "url"
+            ],
+            "properties": {
+                "icon": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "open_type": {
+                    "type": "integer"
+                },
+                "parent_nav_id": {
+                    "type": "integer"
+                },
+                "url": {
+                    "type": "string"
+                }
+            }
+        },
+        "forms.NavEditForm": {
+            "type": "object",
+            "required": [
+                "icon",
+                "id",
+                "name",
+                "url"
+            ],
+            "properties": {
+                "icon": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "open_type": {
+                    "type": "integer"
+                },
+                "parent_nav_id": {
+                    "type": "integer"
+                },
+                "url": {
+                    "type": "string"
+                }
+            }
+        },
+        "forms.PicBedSettingForm": {
             "type": "object",
             "required": [
                 "folder",
@@ -2172,7 +2380,7 @@ var doc = `{
                 }
             }
         },
-        "form.PwdForm": {
+        "forms.PwdForm": {
             "type": "object",
             "required": [
                 "confirm_new_pwd",
@@ -2195,7 +2403,7 @@ var doc = `{
                 }
             }
         },
-        "form.RegisterForm": {
+        "forms.RegisterForm": {
             "type": "object",
             "required": [
                 "email",
@@ -2226,7 +2434,7 @@ var doc = `{
                 }
             }
         },
-        "form.ResetPwdForm": {
+        "forms.ResetPwdForm": {
             "type": "object",
             "required": [
                 "confirm_pwd",
@@ -2249,7 +2457,7 @@ var doc = `{
                 }
             }
         },
-        "form.SiteSettingForm": {
+        "forms.SiteSettingForm": {
             "type": "object",
             "required": [
                 "site_name",
@@ -2286,7 +2494,7 @@ var doc = `{
                 }
             }
         },
-        "form.TagAddForm": {
+        "forms.TagAddForm": {
             "type": "object",
             "required": [
                 "name"
@@ -2297,7 +2505,7 @@ var doc = `{
                 }
             }
         },
-        "form.TagEditForm": {
+        "forms.TagEditForm": {
             "type": "object",
             "required": [
                 "ID",
@@ -2312,7 +2520,7 @@ var doc = `{
                 }
             }
         },
-        "form.UserInfoForm": {
+        "forms.UserInfoForm": {
             "type": "object",
             "required": [
                 "email",
@@ -2333,7 +2541,7 @@ var doc = `{
                 }
             }
         },
-        "util.Result": {
+        "utils.Result": {
             "type": "object",
             "properties": {
                 "code": {

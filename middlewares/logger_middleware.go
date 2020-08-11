@@ -2,12 +2,12 @@ package middlewares
 
 import (
 	"aries/config/setting"
-	"aries/utils"
-	"fmt"
 	"github.com/gin-gonic/gin"
+	"github.com/lestrrat-go/file-rotatelogs"
+	"github.com/rifflock/lfshook"
 	"github.com/sirupsen/logrus"
 	"os"
-	"path/filepath"
+	"path"
 	"time"
 )
 
@@ -31,9 +31,11 @@ func LoggerMiddleWare() gin.HandlerFunc {
 		statusCode := ctx.Writer.Status()
 		// 请求IP
 		clientIP := ctx.ClientIP()
+
 		// 日志格式
-		logger.Infof("| %3d | %13v | %15s | %s | %s |", statusCode, latencyTime,
+		logger.Infof("| %3d | %13v | %s | %s | %s |", statusCode, latencyTime,
 			clientIP, reqMethod, reqUri)
+
 		// 控制台打印日志
 		logrus.Infof("| %3d | %13v | %s | %s | %s |", statusCode, latencyTime,
 			clientIP, reqMethod, reqUri)
@@ -41,28 +43,23 @@ func LoggerMiddleWare() gin.HandlerFunc {
 }
 
 func initLogger() *logrus.Logger {
-	now := time.Now()
-	logFilePath := ""
-	if rootPath, err := os.Getwd(); err == nil {
-		logFilePath = filepath.Join(rootPath, "logs")
+	logDir := setting.Config.Logger.LogDir
+	if err := os.MkdirAll(logDir, 0777); err != nil {
+		logrus.Error("err: ", err.Error())
 	}
-	if err := os.MkdirAll(logFilePath, 0777); err != nil {
-		fmt.Println("err: ", err.Error())
-	}
-	logFileName := now.Format("2006-01-02") + ".log"
-	fileName := filepath.Join(logFilePath, logFileName)
-	// 创建日志文件
-	if !utils.FileIsExists(fileName) {
-		if _, err := os.Create(fileName); err != nil {
-			fmt.Println("err: ", err.Error())
-		}
-	}
+	logFilePath := path.Join(logDir, "aries.log")
 	// 打开文件
-	src, err := os.OpenFile(fileName, os.O_APPEND|os.O_WRONLY, os.ModeAppend)
+	src, err := os.OpenFile(logFilePath, os.O_CREATE|os.O_WRONLY|os.O_APPEND, os.ModeAppend)
 	if err != nil {
-		fmt.Println("err: ", err.Error())
+		logrus.Error("err: ", err.Error())
 	}
-
+	defer func() {
+		// 关闭文件
+		err := src.Close()
+		if err != nil {
+			logrus.Error("err: ", err.Error())
+		}
+	}()
 	// 实例化
 	logger := logrus.New()
 	// 设置输出
@@ -74,10 +71,33 @@ func initLogger() *logrus.Logger {
 		logger.SetLevel(logrus.InfoLevel)
 	}
 
-	// 设置日志格式
-	logger.SetFormatter(&logrus.TextFormatter{
+	// 设置 rotateLogs
+	logWriter, err := rotatelogs.New(
+		// 分割后的文件名称
+		logFilePath+".%Y-%m-%d.log",
+		// 生成软链，指向最新日志文件
+		rotatelogs.WithLinkName(logFilePath),
+		// 设置最大保存时间(7天)
+		rotatelogs.WithMaxAge(7*24*time.Hour),
+		// 设置日志切割时间间隔(1天)
+		rotatelogs.WithRotationTime(24*time.Hour),
+	)
+	if err != nil {
+		logrus.Error("Failed to create logs: %s", err)
+	}
+	writeMap := lfshook.WriterMap{
+		logrus.InfoLevel:  logWriter,
+		logrus.FatalLevel: logWriter,
+		logrus.DebugLevel: logWriter,
+		logrus.WarnLevel:  logWriter,
+		logrus.ErrorLevel: logWriter,
+		logrus.PanicLevel: logWriter,
+	}
+	lfHook := lfshook.NewHook(writeMap, &logrus.TextFormatter{
 		TimestampFormat: "2006-01-02 15:04:05",
 	})
+	// 新增 Hook
+	logger.AddHook(lfHook)
 
 	return logger
 }

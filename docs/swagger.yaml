@@ -1,5 +1,5 @@
 definitions:
-  form.ArticleAddForm:
+  forms.ArticleAddForm:
     properties:
       category_id:
         description: 分类 ID
@@ -55,7 +55,7 @@ definitions:
     - title
     - user_id
     type: object
-  form.ArticleCategoryAddForm:
+  forms.ArticleCategoryAddForm:
     properties:
       name:
         description: 分类名称
@@ -73,7 +73,7 @@ definitions:
     - name
     - url
     type: object
-  form.ArticleCategoryEditForm:
+  forms.ArticleCategoryEditForm:
     properties:
       ID:
         type: integer
@@ -94,7 +94,7 @@ definitions:
     - name
     - url
     type: object
-  form.ArticleEditForm:
+  forms.ArticleEditForm:
     properties:
       category_id:
         description: 分类 ID
@@ -154,7 +154,7 @@ definitions:
     - title
     - user_id
     type: object
-  form.ArticleOrderForm:
+  forms.ArticleOrderForm:
     properties:
       id:
         type: integer
@@ -166,7 +166,7 @@ definitions:
     - id
     - order_id
     type: object
-  form.CommentAddForm:
+  forms.CommentAddForm:
     properties:
       admin_user_id:
         description: 博主 ID
@@ -208,7 +208,7 @@ definitions:
     - nick_name
     - url
     type: object
-  form.CommentEditForm:
+  forms.CommentEditForm:
     properties:
       admin_user_id:
         description: 博主 ID
@@ -254,7 +254,7 @@ definitions:
     - nick_name
     - url
     type: object
-  form.EmailSettingForm:
+  forms.EmailSettingForm:
     properties:
       account:
         type: string
@@ -278,14 +278,14 @@ definitions:
     - sender
     - type_name
     type: object
-  form.ForgetPwdForm:
+  forms.ForgetPwdForm:
     properties:
       email:
         type: string
     required:
     - email
     type: object
-  form.LinkCategoryAddForm:
+  forms.LinkCategoryAddForm:
     properties:
       name:
         description: 分类名称
@@ -296,7 +296,7 @@ definitions:
     required:
     - name
     type: object
-  form.LinkCategoryEditForm:
+  forms.LinkCategoryEditForm:
     properties:
       ID:
         type: integer
@@ -310,7 +310,7 @@ definitions:
     - ID
     - name
     type: object
-  form.LoginForm:
+  forms.LoginForm:
     properties:
       captcha_id:
         description: 验证码 ID
@@ -330,7 +330,44 @@ definitions:
     - pwd
     - username
     type: object
-  form.PicBedSettingForm:
+  forms.NavAddForm:
+    properties:
+      icon:
+        type: string
+      name:
+        type: string
+      open_type:
+        type: integer
+      parent_nav_id:
+        type: integer
+      url:
+        type: string
+    required:
+    - icon
+    - name
+    - url
+    type: object
+  forms.NavEditForm:
+    properties:
+      icon:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      open_type:
+        type: integer
+      parent_nav_id:
+        type: integer
+      url:
+        type: string
+    required:
+    - icon
+    - id
+    - name
+    - url
+    type: object
+  forms.PicBedSettingForm:
     properties:
       api_type:
         type: string
@@ -353,7 +390,7 @@ definitions:
     - type
     - type_name
     type: object
-  form.PwdForm:
+  forms.PwdForm:
     properties:
       confirm_new_pwd:
         type: string
@@ -369,7 +406,7 @@ definitions:
     - old_pwd
     - username
     type: object
-  form.RegisterForm:
+  forms.RegisterForm:
     properties:
       email:
         type: string
@@ -391,7 +428,7 @@ definitions:
     - site_url
     - username
     type: object
-  form.ResetPwdForm:
+  forms.ResetPwdForm:
     properties:
       confirm_pwd:
         type: string
@@ -407,7 +444,7 @@ definitions:
     - pwd
     - verify_code
     type: object
-  form.SiteSettingForm:
+  forms.SiteSettingForm:
     properties:
       footer_content:
         type: string
@@ -432,14 +469,14 @@ definitions:
     - site_url
     - type_name
     type: object
-  form.TagAddForm:
+  forms.TagAddForm:
     properties:
       name:
         type: string
     required:
     - name
     type: object
-  form.TagEditForm:
+  forms.TagEditForm:
     properties:
       ID:
         type: integer
@@ -449,7 +486,7 @@ definitions:
     - ID
     - name
     type: object
-  form.UserInfoForm:
+  forms.UserInfoForm:
     properties:
       email:
         type: string
@@ -463,7 +500,7 @@ definitions:
     - email
     - username
     type: object
-  util.Result:
+  utils.Result:
     properties:
       code:
         description: 状态码
@@ -497,15 +534,15 @@ paths:
         name: oderForm
         required: true
         schema:
-          $ref: '#/definitions/form.ArticleOrderForm'
+          $ref: '#/definitions/forms.ArticleOrderForm'
       responses:
         "100":
           description: Continue
           schema:
-            $ref: '#/definitions/util.Result'
+            $ref: '#/definitions/utils.Result'
         "104":
           schema:
-            $ref: '#/definitions/util.Result'
+            $ref: '#/definitions/utils.Result'
       summary: 向上移动文章
       tags:
       - 文章
@@ -517,10 +554,10 @@ paths:
         "100":
           description: Continue
           schema:
-            $ref: '#/definitions/util.Result'
+            $ref: '#/definitions/utils.Result'
         "104":
           schema:
-            $ref: '#/definitions/util.Result'
+            $ref: '#/definitions/utils.Result'
       summary: 获取所有文章
       tags:
       - 文章
@@ -538,10 +575,10 @@ paths:
         "100":
           description: Continue
           schema:
-            $ref: '#/definitions/util.Result'
+            $ref: '#/definitions/utils.Result'
         "104":
           schema:
-            $ref: '#/definitions/util.Result'
+            $ref: '#/definitions/utils.Result'
       summary: 获取所有分类
       tags:
       - 分类
@@ -553,10 +590,10 @@ paths:
         "100":
           description: Continue
           schema:
-            $ref: '#/definitions/util.Result'
+            $ref: '#/definitions/utils.Result'
         "104":
           schema:
-            $ref: '#/definitions/util.Result'
+            $ref: '#/definitions/utils.Result'
       summary: 获取所有评论
       tags:
       - 评论
@@ -568,10 +605,10 @@ paths:
         "100":
           description: Continue
           schema:
-            $ref: '#/definitions/util.Result'
+            $ref: '#/definitions/utils.Result'
         "104":
           schema:
-            $ref: '#/definitions/util.Result'
+            $ref: '#/definitions/utils.Result'
       summary: 获取所有友链
       tags:
       - 友链
@@ -583,10 +620,10 @@ paths:
         "100":
           description: Continue
           schema:
-            $ref: '#/definitions/util.Result'
+            $ref: '#/definitions/utils.Result'
         "104":
           schema:
-            $ref: '#/definitions/util.Result'
+            $ref: '#/definitions/utils.Result'
       summary: 获取所有标签
       tags:
       - 标签
@@ -598,10 +635,10 @@ paths:
         "100":
           description: Continue
           schema:
-            $ref: '#/definitions/util.Result'
+            $ref: '#/definitions/utils.Result'
         "104":
           schema:
-            $ref: '#/definitions/util.Result'
+            $ref: '#/definitions/utils.Result'
       summary: 获取所有用户
       tags:
       - 用户
@@ -619,10 +656,10 @@ paths:
         "100":
           description: Continue
           schema:
-            $ref: '#/definitions/util.Result'
+            $ref: '#/definitions/utils.Result'
         "104":
           schema:
-            $ref: '#/definitions/util.Result'
+            $ref: '#/definitions/utils.Result'
       summary: 批量删除文章
       tags:
       - 文章
@@ -654,10 +691,10 @@ paths:
         "100":
           description: Continue
           schema:
-            $ref: '#/definitions/util.Result'
+            $ref: '#/definitions/utils.Result'
         "104":
           schema:
-            $ref: '#/definitions/util.Result'
+            $ref: '#/definitions/utils.Result'
       summary: 分页获取文章
       tags:
       - 文章
@@ -670,15 +707,15 @@ paths:
         name: addForm
         required: true
         schema:
-          $ref: '#/definitions/form.ArticleAddForm'
+          $ref: '#/definitions/forms.ArticleAddForm'
       responses:
         "100":
           description: Continue
           schema:
-            $ref: '#/definitions/util.Result'
+            $ref: '#/definitions/utils.Result'
         "104":
           schema:
-            $ref: '#/definitions/util.Result'
+            $ref: '#/definitions/utils.Result'
       summary: 添加文章
       tags:
       - 文章
@@ -691,15 +728,15 @@ paths:
         name: editForm
         required: true
         schema:
-          $ref: '#/definitions/form.ArticleEditForm'
+          $ref: '#/definitions/forms.ArticleEditForm'
       responses:
         "100":
           description: Continue
           schema:
-            $ref: '#/definitions/util.Result'
+            $ref: '#/definitions/utils.Result'
         "104":
           schema:
-            $ref: '#/definitions/util.Result'
+            $ref: '#/definitions/utils.Result'
       summary: 修改文章
       tags:
       - 文章
@@ -717,10 +754,10 @@ paths:
         "100":
           description: Continue
           schema:
-            $ref: '#/definitions/util.Result'
+            $ref: '#/definitions/utils.Result'
         "104":
           schema:
-            $ref: '#/definitions/util.Result'
+            $ref: '#/definitions/utils.Result'
       summary: 删除文章
       tags:
       - 文章
@@ -737,10 +774,10 @@ paths:
         "100":
           description: Continue
           schema:
-            $ref: '#/definitions/util.Result'
+            $ref: '#/definitions/utils.Result'
         "104":
           schema:
-            $ref: '#/definitions/util.Result'
+            $ref: '#/definitions/utils.Result'
       summary: 根据 ID 获取文章
       tags:
       - 文章
@@ -754,15 +791,15 @@ paths:
         name: oderForm
         required: true
         schema:
-          $ref: '#/definitions/form.ArticleOrderForm'
+          $ref: '#/definitions/forms.ArticleOrderForm'
       responses:
         "100":
           description: Continue
           schema:
-            $ref: '#/definitions/util.Result'
+            $ref: '#/definitions/utils.Result'
         "104":
           schema:
-            $ref: '#/definitions/util.Result'
+            $ref: '#/definitions/utils.Result'
       summary: 向下移动文章
       tags:
       - 文章
@@ -774,10 +811,10 @@ paths:
         "100":
           description: Continue
           schema:
-            $ref: '#/definitions/util.Result'
+            $ref: '#/definitions/utils.Result'
         "104":
           schema:
-            $ref: '#/definitions/util.Result'
+            $ref: '#/definitions/utils.Result'
       summary: 从文件导入文章
       tags:
       - 文章
@@ -789,10 +826,10 @@ paths:
         "100":
           description: Continue
           schema:
-            $ref: '#/definitions/util.Result'
+            $ref: '#/definitions/utils.Result'
         "104":
           schema:
-            $ref: '#/definitions/util.Result'
+            $ref: '#/definitions/utils.Result'
       summary: 创建验证码
       tags:
       - 授权
@@ -806,15 +843,15 @@ paths:
         name: loginForm
         required: true
         schema:
-          $ref: '#/definitions/form.LoginForm'
+          $ref: '#/definitions/forms.LoginForm'
       responses:
         "100":
           description: Continue
           schema:
-            $ref: '#/definitions/util.Result'
+            $ref: '#/definitions/utils.Result'
         "104":
           schema:
-            $ref: '#/definitions/util.Result'
+            $ref: '#/definitions/utils.Result'
       summary: 登录
       tags:
       - 授权
@@ -828,15 +865,15 @@ paths:
         name: forgetPwdForm
         required: true
         schema:
-          $ref: '#/definitions/form.ForgetPwdForm'
+          $ref: '#/definitions/forms.ForgetPwdForm'
       responses:
         "100":
           description: Continue
           schema:
-            $ref: '#/definitions/util.Result'
+            $ref: '#/definitions/utils.Result'
         "104":
           schema:
-            $ref: '#/definitions/util.Result'
+            $ref: '#/definitions/utils.Result'
       summary: 忘记密码
       tags:
       - 授权
@@ -850,15 +887,15 @@ paths:
         name: resetPwdForm
         required: true
         schema:
-          $ref: '#/definitions/form.ResetPwdForm'
+          $ref: '#/definitions/forms.ResetPwdForm'
       responses:
         "100":
           description: Continue
           schema:
-            $ref: '#/definitions/util.Result'
+            $ref: '#/definitions/utils.Result'
         "104":
           schema:
-            $ref: '#/definitions/util.Result'
+            $ref: '#/definitions/utils.Result'
       summary: 重置密码
       tags:
       - 授权
@@ -872,15 +909,15 @@ paths:
         name: regForm
         required: true
         schema:
-          $ref: '#/definitions/form.RegisterForm'
+          $ref: '#/definitions/forms.RegisterForm'
       responses:
         "100":
           description: Continue
           schema:
-            $ref: '#/definitions/util.Result'
+            $ref: '#/definitions/utils.Result'
         "104":
           schema:
-            $ref: '#/definitions/util.Result'
+            $ref: '#/definitions/utils.Result'
       summary: 注册
       tags:
       - 授权
@@ -898,10 +935,10 @@ paths:
         "100":
           description: Continue
           schema:
-            $ref: '#/definitions/util.Result'
+            $ref: '#/definitions/utils.Result'
         "104":
           schema:
-            $ref: '#/definitions/util.Result'
+            $ref: '#/definitions/utils.Result'
       summary: 批量删除分类
       tags:
       - 分类
@@ -930,10 +967,10 @@ paths:
         "100":
           description: Continue
           schema:
-            $ref: '#/definitions/util.Result'
+            $ref: '#/definitions/utils.Result'
         "104":
           schema:
-            $ref: '#/definitions/util.Result'
+            $ref: '#/definitions/utils.Result'
       summary: 分页获取分类数据
       tags:
       - 分类
@@ -951,10 +988,10 @@ paths:
         "100":
           description: Continue
           schema:
-            $ref: '#/definitions/util.Result'
+            $ref: '#/definitions/utils.Result'
         "104":
           schema:
-            $ref: '#/definitions/util.Result'
+            $ref: '#/definitions/utils.Result'
       summary: 删除分类
       tags:
       - 分类
@@ -968,15 +1005,15 @@ paths:
         name: addForm
         required: true
         schema:
-          $ref: '#/definitions/form.ArticleCategoryAddForm'
+          $ref: '#/definitions/forms.ArticleCategoryAddForm'
       responses:
         "100":
           description: Continue
           schema:
-            $ref: '#/definitions/util.Result'
+            $ref: '#/definitions/utils.Result'
         "104":
           schema:
-            $ref: '#/definitions/util.Result'
+            $ref: '#/definitions/utils.Result'
       summary: 添加文章分类
       tags:
       - 分类
@@ -989,15 +1026,15 @@ paths:
         name: editForm
         required: true
         schema:
-          $ref: '#/definitions/form.ArticleCategoryEditForm'
+          $ref: '#/definitions/forms.ArticleCategoryEditForm'
       responses:
         "100":
           description: Continue
           schema:
-            $ref: '#/definitions/util.Result'
+            $ref: '#/definitions/utils.Result'
         "104":
           schema:
-            $ref: '#/definitions/util.Result'
+            $ref: '#/definitions/utils.Result'
       summary: 修改文章分类
       tags:
       - 分类
@@ -1011,15 +1048,15 @@ paths:
         name: addForm
         required: true
         schema:
-          $ref: '#/definitions/form.LinkCategoryAddForm'
+          $ref: '#/definitions/forms.LinkCategoryAddForm'
       responses:
         "100":
           description: Continue
           schema:
-            $ref: '#/definitions/util.Result'
+            $ref: '#/definitions/utils.Result'
         "104":
           schema:
-            $ref: '#/definitions/util.Result'
+            $ref: '#/definitions/utils.Result'
       summary: 添加友链分类
       tags:
       - 分类
@@ -1032,15 +1069,15 @@ paths:
         name: editForm
         required: true
         schema:
-          $ref: '#/definitions/form.LinkCategoryEditForm'
+          $ref: '#/definitions/forms.LinkCategoryEditForm'
       responses:
         "100":
           description: Continue
           schema:
-            $ref: '#/definitions/util.Result'
+            $ref: '#/definitions/utils.Result'
         "104":
           schema:
-            $ref: '#/definitions/util.Result'
+            $ref: '#/definitions/utils.Result'
       summary: 修改友链分类
       tags:
       - 分类
@@ -1058,10 +1095,10 @@ paths:
         "100":
           description: Continue
           schema:
-            $ref: '#/definitions/util.Result'
+            $ref: '#/definitions/utils.Result'
         "104":
           schema:
-            $ref: '#/definitions/util.Result'
+            $ref: '#/definitions/utils.Result'
       summary: 批量删除评论
       tags:
       - 评论
@@ -1093,10 +1130,10 @@ paths:
         "100":
           description: Continue
           schema:
-            $ref: '#/definitions/util.Result'
+            $ref: '#/definitions/utils.Result'
         "104":
           schema:
-            $ref: '#/definitions/util.Result'
+            $ref: '#/definitions/utils.Result'
       summary: 分页获取评论
       tags:
       - 评论
@@ -1108,15 +1145,15 @@ paths:
         in: body
         name: form
         schema:
-          $ref: '#/definitions/form.CommentAddForm'
+          $ref: '#/definitions/forms.CommentAddForm'
       responses:
         "100":
           description: Continue
           schema:
-            $ref: '#/definitions/util.Result'
+            $ref: '#/definitions/utils.Result'
         "104":
           schema:
-            $ref: '#/definitions/util.Result'
+            $ref: '#/definitions/utils.Result'
       summary: 发表评论
       tags:
       - 评论
@@ -1128,15 +1165,15 @@ paths:
         in: body
         name: form
         schema:
-          $ref: '#/definitions/form.CommentEditForm'
+          $ref: '#/definitions/forms.CommentEditForm'
       responses:
         "100":
           description: Continue
           schema:
-            $ref: '#/definitions/util.Result'
+            $ref: '#/definitions/utils.Result'
         "104":
           schema:
-            $ref: '#/definitions/util.Result'
+            $ref: '#/definitions/utils.Result'
       summary: 修改评论
       tags:
       - 评论
@@ -1154,10 +1191,10 @@ paths:
         "100":
           description: Continue
           schema:
-            $ref: '#/definitions/util.Result'
+            $ref: '#/definitions/utils.Result'
         "104":
           schema:
-            $ref: '#/definitions/util.Result'
+            $ref: '#/definitions/utils.Result'
       summary: 删除评论
       tags:
       - 评论
@@ -1175,10 +1212,10 @@ paths:
         "100":
           description: Continue
           schema:
-            $ref: '#/definitions/util.Result'
+            $ref: '#/definitions/utils.Result'
         "104":
           schema:
-            $ref: '#/definitions/util.Result'
+            $ref: '#/definitions/utils.Result'
       summary: 删除友链
       tags:
       - 友链
@@ -1189,10 +1226,10 @@ paths:
         "100":
           description: Continue
           schema:
-            $ref: '#/definitions/util.Result'
+            $ref: '#/definitions/utils.Result'
         "104":
           schema:
-            $ref: '#/definitions/util.Result'
+            $ref: '#/definitions/utils.Result'
       summary: 分页获取友链
       tags:
       - 友链
@@ -1203,10 +1240,10 @@ paths:
         "100":
           description: Continue
           schema:
-            $ref: '#/definitions/util.Result'
+            $ref: '#/definitions/utils.Result'
         "104":
           schema:
-            $ref: '#/definitions/util.Result'
+            $ref: '#/definitions/utils.Result'
       summary: 修改友链
       tags:
       - 友链
@@ -1218,13 +1255,111 @@ paths:
         "100":
           description: Continue
           schema:
-            $ref: '#/definitions/util.Result'
+            $ref: '#/definitions/utils.Result'
         "104":
           schema:
-            $ref: '#/definitions/util.Result'
+            $ref: '#/definitions/utils.Result'
       summary: 删除友链
       tags:
       - 友链
+  /api/v1/navs:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: ids
+        in: query
+        name: ids
+        required: true
+        type: string
+      responses:
+        "100":
+          description: Continue
+          schema:
+            $ref: '#/definitions/utils.Result'
+        "104":
+          schema:
+            $ref: '#/definitions/utils.Result'
+      summary: 批量删除菜单
+      tags:
+      - 菜单
+    get:
+      consumes:
+      - application/json
+      responses:
+        "100":
+          description: Continue
+          schema:
+            $ref: '#/definitions/utils.Result'
+        "104":
+          schema:
+            $ref: '#/definitions/utils.Result'
+      summary: 获取所有菜单
+      tags:
+      - 菜单
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 添加菜单表单
+        in: body
+        name: addForm
+        required: true
+        schema:
+          $ref: '#/definitions/forms.NavAddForm'
+      responses:
+        "100":
+          description: Continue
+          schema:
+            $ref: '#/definitions/utils.Result'
+        "104":
+          schema:
+            $ref: '#/definitions/utils.Result'
+      summary: 添加菜单
+      tags:
+      - 菜单
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: 修改菜单表单
+        in: body
+        name: addForm
+        required: true
+        schema:
+          $ref: '#/definitions/forms.NavEditForm'
+      responses:
+        "100":
+          description: Continue
+          schema:
+            $ref: '#/definitions/utils.Result'
+        "104":
+          schema:
+            $ref: '#/definitions/utils.Result'
+      summary: 修改菜单
+      tags:
+      - 菜单
+  /api/v1/navs/{id}:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "100":
+          description: Continue
+          schema:
+            $ref: '#/definitions/utils.Result'
+        "104":
+          schema:
+            $ref: '#/definitions/utils.Result'
+      summary: 删除菜单
+      tags:
+      - 菜单
   /api/v1/parent_categories:
     get:
       consumes:
@@ -1239,10 +1374,10 @@ paths:
         "100":
           description: Continue
           schema:
-            $ref: '#/definitions/util.Result'
+            $ref: '#/definitions/utils.Result'
         "104":
           schema:
-            $ref: '#/definitions/util.Result'
+            $ref: '#/definitions/utils.Result'
       summary: 获取所有父级分类
       tags:
       - 分类
@@ -1254,10 +1389,10 @@ paths:
         "100":
           description: Continue
           schema:
-            $ref: '#/definitions/util.Result'
+            $ref: '#/definitions/utils.Result'
         "104":
           schema:
-            $ref: '#/definitions/util.Result'
+            $ref: '#/definitions/utils.Result'
       summary: 发送测试邮件
       tags:
       - 系统设置
@@ -1269,10 +1404,10 @@ paths:
         "100":
           description: Continue
           schema:
-            $ref: '#/definitions/util.Result'
+            $ref: '#/definitions/utils.Result'
         "104":
           schema:
-            $ref: '#/definitions/util.Result'
+            $ref: '#/definitions/utils.Result'
       summary: 获取后台首页数据
       tags:
       - 系统设置
@@ -1289,10 +1424,10 @@ paths:
         "100":
           description: Continue
           schema:
-            $ref: '#/definitions/util.Result'
+            $ref: '#/definitions/utils.Result'
         "104":
           schema:
-            $ref: '#/definitions/util.Result'
+            $ref: '#/definitions/utils.Result'
       summary: 获取设置条目
       tags:
       - 系统设置
@@ -1306,15 +1441,15 @@ paths:
         name: settingForm
         required: true
         schema:
-          $ref: '#/definitions/form.PicBedSettingForm'
+          $ref: '#/definitions/forms.PicBedSettingForm'
       responses:
         "100":
           description: Continue
           schema:
-            $ref: '#/definitions/util.Result'
+            $ref: '#/definitions/utils.Result'
         "104":
           schema:
-            $ref: '#/definitions/util.Result'
+            $ref: '#/definitions/utils.Result'
       summary: 保存图床配置信息
       tags:
       - 系统设置
@@ -1328,15 +1463,15 @@ paths:
         name: settingForm
         required: true
         schema:
-          $ref: '#/definitions/form.SiteSettingForm'
+          $ref: '#/definitions/forms.SiteSettingForm'
       responses:
         "100":
           description: Continue
           schema:
-            $ref: '#/definitions/util.Result'
+            $ref: '#/definitions/utils.Result'
         "104":
           schema:
-            $ref: '#/definitions/util.Result'
+            $ref: '#/definitions/utils.Result'
       summary: 保存网站配置信息
       tags:
       - 系统设置
@@ -1350,15 +1485,15 @@ paths:
         name: settingForm
         required: true
         schema:
-          $ref: '#/definitions/form.EmailSettingForm'
+          $ref: '#/definitions/forms.EmailSettingForm'
       responses:
         "100":
           description: Continue
           schema:
-            $ref: '#/definitions/util.Result'
+            $ref: '#/definitions/utils.Result'
         "104":
           schema:
-            $ref: '#/definitions/util.Result'
+            $ref: '#/definitions/utils.Result'
       summary: 保存 SMTP 服务配置信息
       tags:
       - 系统设置
@@ -1376,10 +1511,10 @@ paths:
         "100":
           description: Continue
           schema:
-            $ref: '#/definitions/util.Result'
+            $ref: '#/definitions/utils.Result'
         "104":
           schema:
-            $ref: '#/definitions/util.Result'
+            $ref: '#/definitions/utils.Result'
       summary: 批量删除标签
       tags:
       - 标签
@@ -1403,10 +1538,10 @@ paths:
         "100":
           description: Continue
           schema:
-            $ref: '#/definitions/util.Result'
+            $ref: '#/definitions/utils.Result'
         "104":
           schema:
-            $ref: '#/definitions/util.Result'
+            $ref: '#/definitions/utils.Result'
       summary: 分页获取标签
       tags:
       - 标签
@@ -1419,15 +1554,15 @@ paths:
         name: addForm
         required: true
         schema:
-          $ref: '#/definitions/form.TagAddForm'
+          $ref: '#/definitions/forms.TagAddForm'
       responses:
         "100":
           description: Continue
           schema:
-            $ref: '#/definitions/util.Result'
+            $ref: '#/definitions/utils.Result'
         "104":
           schema:
-            $ref: '#/definitions/util.Result'
+            $ref: '#/definitions/utils.Result'
       summary: 添加标签
       tags:
       - 标签
@@ -1440,15 +1575,15 @@ paths:
         name: editForm
         required: true
         schema:
-          $ref: '#/definitions/form.TagEditForm'
+          $ref: '#/definitions/forms.TagEditForm'
       responses:
         "100":
           description: Continue
           schema:
-            $ref: '#/definitions/util.Result'
+            $ref: '#/definitions/utils.Result'
         "104":
           schema:
-            $ref: '#/definitions/util.Result'
+            $ref: '#/definitions/utils.Result'
       summary: 修改标签
       tags:
       - 标签
@@ -1466,10 +1601,10 @@ paths:
         "100":
           description: Continue
           schema:
-            $ref: '#/definitions/util.Result'
+            $ref: '#/definitions/utils.Result'
         "104":
           schema:
-            $ref: '#/definitions/util.Result'
+            $ref: '#/definitions/utils.Result'
       summary: 删除标签
       tags:
       - 标签
@@ -1486,10 +1621,10 @@ paths:
         "100":
           description: Continue
           schema:
-            $ref: '#/definitions/util.Result'
+            $ref: '#/definitions/utils.Result'
         "104":
           schema:
-            $ref: '#/definitions/util.Result'
+            $ref: '#/definitions/utils.Result'
       summary: 根据 ID 获取标签
       tags:
       - 标签
@@ -1503,15 +1638,15 @@ paths:
         name: userForm
         required: true
         schema:
-          $ref: '#/definitions/form.UserInfoForm'
+          $ref: '#/definitions/forms.UserInfoForm'
       responses:
         "100":
           description: Continue
           schema:
-            $ref: '#/definitions/util.Result'
+            $ref: '#/definitions/utils.Result'
         "104":
           schema:
-            $ref: '#/definitions/util.Result'
+            $ref: '#/definitions/utils.Result'
       summary: 更新用户信息
       tags:
       - 用户
@@ -1525,15 +1660,15 @@ paths:
         name: pwdForm
         required: true
         schema:
-          $ref: '#/definitions/form.PwdForm'
+          $ref: '#/definitions/forms.PwdForm'
       responses:
         "100":
           description: Continue
           schema:
-            $ref: '#/definitions/util.Result'
+            $ref: '#/definitions/utils.Result'
         "104":
           schema:
-            $ref: '#/definitions/util.Result'
+            $ref: '#/definitions/utils.Result'
       summary: 修改密码
       tags:
       - 用户

@@ -1,6 +1,6 @@
 <template>
   <d2-container>
-    <template slot="header">用户 / 友链 / 友链列表</template>
+    <template slot="header">用户 / 友链 / 友链</template>
     <d2-crud
       ref="d2Crud"
       :options="options"

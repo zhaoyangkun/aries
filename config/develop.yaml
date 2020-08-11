@@ -14,6 +14,10 @@ db:
   time_zone: "Local"      # 时区
   max_idle_conn: 10       # 最大空闲连接数
   max_open_conn: 20       # 最大打开连接数
+# 日志配置
+logger:
+  log_dir: "/home/zyk/projects/go/aries/logs" # 日志目录
+  max_size: 10 # 最大体积（MB）
 # smtp 配置（仅用于重置密码）
 smtp:
   address: "smtp.qq.com"       # 协议地址

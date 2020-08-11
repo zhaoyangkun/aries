@@ -20,9 +20,9 @@ type AuthHandler struct {
 // @Tags 授权
 // @version 1.0
 // @Accept application/json
-// @Param regForm body form.RegisterForm true "注册表单"
-// @Success 100 object util.Result 成功
-// @Failure 103/104 object util.Result 失败
+// @Param regForm body forms.RegisterForm true "注册表单"
+// @Success 100 object utils.Result 成功
+// @Failure 103/104 object utils.Result 失败
 // @Router /api/v1/auth/register [post]
 func (a *AuthHandler) Register(ctx *gin.Context) {
 	regForm := forms.RegisterForm{}
@@ -91,9 +91,9 @@ func (a *AuthHandler) Register(ctx *gin.Context) {
 // @Tags 授权
 // @version 1.0
 // @Accept application/json
-// @Param loginForm body form.LoginForm true "登录表单"
-// @Success 100 object util.Result 成功
-// @Failure 103/104 object util.Result 失败
+// @Param loginForm body forms.LoginForm true "登录表单"
+// @Success 100 object utils.Result 成功
+// @Failure 103/104 object utils.Result 失败
 // @Router /api/v1/auth/login [post]
 func (a *AuthHandler) Login(ctx *gin.Context) {
 	loginForm := forms.LoginForm{}
@@ -162,8 +162,8 @@ func (a *AuthHandler) Login(ctx *gin.Context) {
 // @Tags 授权
 // @version 1.0
 // @Accept application/json
-// @Success 100 object util.Result 成功
-// @Failure 103/104 object util.Result 失败
+// @Success 100 object utils.Result 成功
+// @Failure 103/104 object utils.Result 失败
 // @Router /api/v1/auth/captcha [get]
 func (a *AuthHandler) CreateCaptcha(ctx *gin.Context) {
 	captcha := utils.CaptchaConfig{} // 创建验证码配置结构
@@ -190,9 +190,9 @@ func (a *AuthHandler) CreateCaptcha(ctx *gin.Context) {
 // @Tags 授权
 // @version 1.0
 // @Accept application/json
-// @Param forgetPwdForm body form.ForgetPwdForm true "忘记密码表单"
-// @Success 100 object util.Result 成功
-// @Failure 103/104 object util.Result 失败
+// @Param forgetPwdForm body forms.ForgetPwdForm true "忘记密码表单"
+// @Success 100 object utils.Result 成功
+// @Failure 103/104 object utils.Result 失败
 // @Router /api/v1/auth/pwd/forget [post]
 func (a *AuthHandler) ForgetPwd(ctx *gin.Context) {
 	forgetPwdForm := forms.ForgetPwdForm{}
@@ -253,9 +253,9 @@ func (a *AuthHandler) ForgetPwd(ctx *gin.Context) {
 // @Tags 授权
 // @version 1.0
 // @Accept application/json
-// @Param resetPwdForm body form.ResetPwdForm true "重置密码表单"
-// @Success 100 object util.Result 成功
-// @Failure 103/104 object util.Result 失败
+// @Param resetPwdForm body forms.ResetPwdForm true "重置密码表单"
+// @Success 100 object utils.Result 成功
+// @Failure 103/104 object utils.Result 失败
 // @Router /api/v1/auth/pwd/reset [post]
 func (a *AuthHandler) ResetPwd(ctx *gin.Context) {
 	resetPwdForm := forms.ResetPwdForm{}

@@ -96,6 +96,15 @@ const frameIn = [
         component: _import('aries/link/category')
       },
       {
+        path: 'nav',
+        name: 'nav',
+        meta: {
+          title: '菜单',
+          auth: true
+        },
+        component: _import('aries/nav/navs')
+      },
+      {
         path: 'doc',
         name: 'doc',
         meta: {

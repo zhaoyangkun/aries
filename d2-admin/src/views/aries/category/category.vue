@@ -1,6 +1,6 @@
 <template>
   <d2-container>
-    <template slot="header">文章 / 分类列表</template>
+    <template slot="header">文章 / 分类</template>
     <d2-crud
       ref="d2Crud"
       :loading="loading"

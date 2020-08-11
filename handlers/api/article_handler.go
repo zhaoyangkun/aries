@@ -18,8 +18,8 @@ type ArticleHandler struct {
 // @Tags 文章
 // @version 1.0
 // @Accept application/json
-// @Success 100 object util.Result 成功
-// @Failure 103/104 object util.Result 失败
+// @Success 100 object utils.Result 成功
+// @Failure 103/104 object utils.Result 失败
 // @Router /api/v1/all_articles [get]
 func (a *ArticleHandler) GetAllArticles(ctx *gin.Context) {
 	list, err := models.Article{}.GetAll()
@@ -48,8 +48,8 @@ func (a *ArticleHandler) GetAllArticles(ctx *gin.Context) {
 // @Param key query string false "关键词"
 // @Param state query int false "状态"
 // @Param category_id query int false "分类 ID"
-// @Success 100 object util.Result 成功
-// @Failure 103/104 object util.Result 失败
+// @Success 100 object utils.Result 成功
+// @Failure 103/104 object utils.Result 失败
 // @Router /api/v1/articles [get]
 func (a *ArticleHandler) GetArticlesByPage(ctx *gin.Context) {
 	pageForm := forms.ArticlePageForm{}
@@ -77,8 +77,8 @@ func (a *ArticleHandler) GetArticlesByPage(ctx *gin.Context) {
 // @version 1.0
 // @Accept application/json
 // @Param id path int true "id"
-// @Success 100 object util.Result 成功
-// @Failure 103/104 object util.Result 失败
+// @Success 100 object utils.Result 成功
+// @Failure 103/104 object utils.Result 失败
 // @Router /api/v1/articles/{id} [get]
 func (a *ArticleHandler) GetArticleById(ctx *gin.Context) {
 	id := ctx.Param("id")
@@ -103,9 +103,9 @@ func (a *ArticleHandler) GetArticleById(ctx *gin.Context) {
 // @Tags 文章
 // @version 1.0
 // @Accept application/json
-// @Param addForm body form.ArticleAddForm true "添加文章表单"
-// @Success 100 object util.Result 成功
-// @Failure 103/104 object util.Result 失败
+// @Param addForm body forms.ArticleAddForm true "添加文章表单"
+// @Success 100 object utils.Result 成功
+// @Failure 103/104 object utils.Result 失败
 // @Router /api/v1/articles [post]
 func (a *ArticleHandler) AddArticle(ctx *gin.Context) {
 	addForm := forms.ArticleAddForm{}
@@ -149,9 +149,9 @@ func (a *ArticleHandler) AddArticle(ctx *gin.Context) {
 // @Tags 文章
 // @version 1.0
 // @Accept application/json
-// @Param editForm body form.ArticleEditForm true "修改文章表单"
-// @Success 100 object util.Result 成功
-// @Failure 103/104 object util.Result 失败
+// @Param editForm body forms.ArticleEditForm true "修改文章表单"
+// @Success 100 object utils.Result 成功
+// @Failure 103/104 object utils.Result 失败
 // @Router /api/v1/articles [put]
 func (a *ArticleHandler) UpdateArticle(ctx *gin.Context) {
 	editForm := forms.ArticleEditForm{}
@@ -197,8 +197,8 @@ func (a *ArticleHandler) UpdateArticle(ctx *gin.Context) {
 // @version 1.0
 // @Accept application/json
 // @Param id path int true "id"
-// @Success 100 object util.Result 成功
-// @Failure 103/104 object util.Result 失败
+// @Success 100 object utils.Result 成功
+// @Failure 103/104 object utils.Result 失败
 // @Router /api/v1/articles/{id} [delete]
 func (a *ArticleHandler) DeleteArticle(ctx *gin.Context) {
 	id := ctx.Param("id")
@@ -224,8 +224,8 @@ func (a *ArticleHandler) DeleteArticle(ctx *gin.Context) {
 // @version 1.0
 // @Accept application/json
 // @Param ids query string true "ids"
-// @Success 100 object util.Result 成功
-// @Failure 103/104 object util.Result 失败
+// @Success 100 object utils.Result 成功
+// @Failure 103/104 object utils.Result 失败
 // @Router /api/v1/articles [delete]
 func (a *ArticleHandler) MultiDelArticles(ctx *gin.Context) {
 	ids := ctx.DefaultQuery("ids", "") // 获取 ids
@@ -258,8 +258,8 @@ func (a *ArticleHandler) MultiDelArticles(ctx *gin.Context) {
 // @Tags 文章
 // @version 1.0
 // @Accept multipart/form-data
-// @Success 100 object util.Result 成功
-// @Failure 103/104 object util.Result 失败
+// @Success 100 object utils.Result 成功
+// @Failure 103/104 object utils.Result 失败
 // @Router /api/v1/articles/files [post]
 func (a *ArticleHandler) ImportArticlesFromFiles(ctx *gin.Context) {
 	multiForm, err := ctx.MultipartForm()
@@ -342,9 +342,9 @@ func (a *ArticleHandler) ImportArticlesFromFiles(ctx *gin.Context) {
 // @Tags 文章
 // @version 1.0
 // @Accept application/json
-// @Param oderForm body form.ArticleOrderForm true "文章排序表单"
-// @Success 100 object util.Result 成功
-// @Failure 103/104 object util.Result 失败
+// @Param oderForm body forms.ArticleOrderForm true "文章排序表单"
+// @Success 100 object utils.Result 成功
+// @Failure 103/104 object utils.Result 失败
 // @Router /api/articles/up [post]
 func (a *ArticleHandler) MoveArticleUp(ctx *gin.Context) {
 	orderForm := forms.ArticleOrderForm{}
@@ -388,9 +388,9 @@ func (a *ArticleHandler) MoveArticleUp(ctx *gin.Context) {
 // @Tags 文章
 // @version 1.0
 // @Accept application/json
-// @Param oderForm body form.ArticleOrderForm true "文章排序表单"
-// @Success 100 object util.Result 成功
-// @Failure 103/104 object util.Result 失败
+// @Param oderForm body forms.ArticleOrderForm true "文章排序表单"
+// @Success 100 object utils.Result 成功
+// @Failure 103/104 object utils.Result 失败
 // @Router /api/v1/articles/down [post]
 func (a *ArticleHandler) MoveArticleDown(ctx *gin.Context) {
 	orderForm := forms.ArticleOrderForm{}

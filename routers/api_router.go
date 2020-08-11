@@ -78,7 +78,11 @@ func (a *ApiRouter) InitApiRouter(rootPath string, router *gin.Engine) {
 
 	navApiRouter := router.Group(rootPath)
 	{
-		navApiRouter.GET("/all_navs", navHandler.GetAllNavs)
+		navApiRouter.GET("/navs", navHandler.GetAllNavs)
+		navApiRouter.POST("/navs", navHandler.CreateNav)
+		navApiRouter.PUT("/navs", navHandler.UpdateNav)
+		navApiRouter.DELETE("/navs/:id", navHandler.DeleteNav)
+		navApiRouter.DELETE("/navs", navHandler.MultiDelNavs)
 	}
 
 	sysSettingApiRouter := router.Group(rootPath, middlewares.JWTAuthMiddleWare())

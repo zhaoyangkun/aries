@@ -16,8 +16,8 @@ type LinkHandler struct {
 // @Tags 友链
 // @version 1.0
 // @Accept application/json
-// @Success 100 object util.Result 成功
-// @Failure 103/104 object util.Result 失败
+// @Success 100 object utils.Result 成功
+// @Failure 103/104 object utils.Result 失败
 // @Router /api/v1/all_links [get]
 func (l *LinkHandler) GetAllLinks(ctx *gin.Context) {
 	list, err := models.Link{}.GetAll()
@@ -42,8 +42,8 @@ func (l *LinkHandler) GetAllLinks(ctx *gin.Context) {
 // @version 1.0
 // @Accept application/json
 // Param pageForm query orm.LinkPageForm true "友链分页表单"
-// @Success 100 object util.Result 成功
-// @Failure 103/104 object util.Result 失败
+// @Success 100 object utils.Result 成功
+// @Failure 103/104 object utils.Result 失败
 // @Router /api/v1/links [get]
 func (l *LinkHandler) GetLinksByPage(ctx *gin.Context) {
 	pageForm := forms.LinkPageForm{}
@@ -70,8 +70,8 @@ func (l *LinkHandler) GetLinksByPage(ctx *gin.Context) {
 // @version 1.0
 // @Accept application/json
 // Param addForm body orm.LinkPageForm true "友链分页表单"
-// @Success 100 object util.Result 成功
-// @Failure 103/104 object util.Result 失败
+// @Success 100 object utils.Result 成功
+// @Failure 103/104 object utils.Result 失败
 // @Router /api/v1/links [post]
 func (l *LinkHandler) CreateLink(ctx *gin.Context) {
 	addForm := forms.LinkAddForm{}
@@ -105,8 +105,8 @@ func (l *LinkHandler) CreateLink(ctx *gin.Context) {
 // @version 1.0
 // @Accept application/json
 // Param addForm body orm.LinkPageForm true "友链分页表单"
-// @Success 100 object util.Result 成功
-// @Failure 103/104 object util.Result 失败
+// @Success 100 object utils.Result 成功
+// @Failure 103/104 object utils.Result 失败
 // @Router /api/v1/links [post]
 func (l *LinkHandler) UpdateLink(ctx *gin.Context) {
 	editForm := forms.LinkEditForm{}
@@ -140,8 +140,8 @@ func (l *LinkHandler) UpdateLink(ctx *gin.Context) {
 // @version 1.0
 // @Accept application/json
 // Param id path int true "ID"
-// @Success 100 object util.Result 成功
-// @Failure 103/104 object util.Result 失败
+// @Success 100 object utils.Result 成功
+// @Failure 103/104 object utils.Result 失败
 // @Router /api/v1/links/{id} [delete]
 func (l *LinkHandler) DeleteLink(ctx *gin.Context) {
 	id := ctx.Param("id")
@@ -167,8 +167,8 @@ func (l *LinkHandler) DeleteLink(ctx *gin.Context) {
 // @version 1.0
 // @Accept application/json
 // @Param ids query string true "IDS"
-// @Success 100 object util.Result 成功
-// @Failure 103/104 object util.Result 失败
+// @Success 100 object utils.Result 成功
+// @Failure 103/104 object utils.Result 失败
 // @Router /api/v1/links [delete]
 func (l *LinkHandler) MultiDelLinks(ctx *gin.Context) {
 	ids := ctx.DefaultQuery("ids", "")

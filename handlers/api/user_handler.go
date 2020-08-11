@@ -16,8 +16,8 @@ type UserHandler struct {
 // @Tags 用户
 // @version 1.0
 // @Accept application/json
-// @Success 100 object util.Result 成功
-// @Failure 103/104 object util.Result 失败
+// @Success 100 object utils.Result 成功
+// @Failure 103/104 object utils.Result 失败
 // @Router /api/v1/all_users [get]
 func (u *UserHandler) GetAllUsers(ctx *gin.Context) {
 	list, err := models.User{}.GetAll()
@@ -41,9 +41,9 @@ func (u *UserHandler) GetAllUsers(ctx *gin.Context) {
 // @Tags 用户
 // @version 1.0
 // @Accept application/json
-// @Param userForm body form.UserInfoForm true "用户信息表单"
-// @Success 100 object util.Result 成功
-// @Failure 103/104 object util.Result 失败
+// @Param userForm body forms.UserInfoForm true "用户信息表单"
+// @Success 100 object utils.Result 成功
+// @Failure 103/104 object utils.Result 失败
 // @Router /api/v1/users [put]
 func (u *UserHandler) UpdateUser(ctx *gin.Context) {
 	userForm := forms.UserInfoForm{}
@@ -76,9 +76,9 @@ func (u *UserHandler) UpdateUser(ctx *gin.Context) {
 // @Tags 用户
 // @version 1.0
 // @Accept application/json
-// @Param pwdForm body form.PwdForm true "修改密码表单"
-// @Success 100 object util.Result 成功
-// @Failure 103/104 object util.Result 失败
+// @Param pwdForm body forms.PwdForm true "修改密码表单"
+// @Success 100 object utils.Result 成功
+// @Failure 103/104 object utils.Result 失败
 // @Router /api/v1/users/pwd [put]
 func (u *UserHandler) UpdateUserPwd(ctx *gin.Context) {
 	pwdForm := forms.PwdForm{}

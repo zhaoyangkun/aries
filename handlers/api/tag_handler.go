@@ -16,8 +16,8 @@ type TagHandler struct {
 // @Tags 标签
 // @version 1.0
 // @Accept application/json
-// @Success 100 object util.Result 成功
-// @Failure 103/104 object util.Result 失败
+// @Success 100 object utils.Result 成功
+// @Failure 103/104 object utils.Result 失败
 // @Router /api/v1/all_tags [get]
 func (t *TagHandler) GetAllTags(ctx *gin.Context) {
 	list, err := models.Tag{}.GetAll()
@@ -44,8 +44,8 @@ func (t *TagHandler) GetAllTags(ctx *gin.Context) {
 // @Param page query int false "页码"
 // @Param size query int false "每页条数"
 // @Param key query string false "关键词"
-// @Success 100 object util.Result 成功
-// @Failure 103/104 object util.Result 失败
+// @Success 100 object utils.Result 成功
+// @Failure 103/104 object utils.Result 失败
 // @Router /api/v1/tags [get]
 func (t *TagHandler) GetTagsByPage(ctx *gin.Context) {
 	pageForm := forms.TagPageForm{}
@@ -72,8 +72,8 @@ func (t *TagHandler) GetTagsByPage(ctx *gin.Context) {
 // @version 1.0
 // @Accept application/json
 // @Param id path int true "ID"
-// @Success 100 object util.Result 成功
-// @Failure 103/104 object util.Result 失败
+// @Success 100 object utils.Result 成功
+// @Failure 103/104 object utils.Result 失败
 // @Router /api/v1/tags/{id} [get]
 func (t *TagHandler) GetTagById(ctx *gin.Context) {
 	id := ctx.Param("id")
@@ -98,9 +98,9 @@ func (t *TagHandler) GetTagById(ctx *gin.Context) {
 // @Tags 标签
 // @version 1.0
 // @Accept application/json
-// @Param addForm body form.TagAddForm true "添加标签表单"
-// @Success 100 object util.Result 成功
-// @Failure 103/104 object util.Result 失败
+// @Param addForm body forms.TagAddForm true "添加标签表单"
+// @Success 100 object utils.Result 成功
+// @Failure 103/104 object utils.Result 失败
 // @Router /api/v1/tags [post]
 func (t *TagHandler) AddTag(ctx *gin.Context) {
 	addForm := forms.TagAddForm{}
@@ -144,9 +144,9 @@ func (t *TagHandler) AddTag(ctx *gin.Context) {
 // @Tags 标签
 // @version 1.0
 // @Accept application/json
-// @Param editForm body form.TagEditForm true "修改标签表单"
-// @Success 100 object util.Result 成功
-// @Failure 103/104 object util.Result 失败
+// @Param editForm body forms.TagEditForm true "修改标签表单"
+// @Success 100 object utils.Result 成功
+// @Failure 103/104 object utils.Result 失败
 // @Router /api/v1/tags [put]
 func (t *TagHandler) UpdateTag(ctx *gin.Context) {
 	editForm := forms.TagEditForm{}
@@ -191,8 +191,8 @@ func (t *TagHandler) UpdateTag(ctx *gin.Context) {
 // @version 1.0
 // @Accept application/json
 // @Param id path int true "ID"
-// @Success 100 object util.Result 成功
-// @Failure 103/104 object util.Result 失败
+// @Success 100 object utils.Result 成功
+// @Failure 103/104 object utils.Result 失败
 // @Router /api/v1/tags/{id} [delete]
 func (t *TagHandler) DeleteTag(ctx *gin.Context) {
 	id := ctx.Param("id")
@@ -218,8 +218,8 @@ func (t *TagHandler) DeleteTag(ctx *gin.Context) {
 // @version 1.0
 // @Accept application/json
 // @Param ids query string true "ids"
-// @Success 100 object util.Result 成功
-// @Failure 103/104 object util.Result 失败
+// @Success 100 object utils.Result 成功
+// @Failure 103/104 object utils.Result 失败
 // @Router /api/v1/tags [delete]
 func (t *TagHandler) MultiDelTags(ctx *gin.Context) {
 	ids := ctx.DefaultQuery("ids", "")

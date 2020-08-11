@@ -22,8 +22,8 @@ type SysSettingHandler struct {
 // @version 1.0
 // @Accept application/json
 // @Param name query string false "设置名称"
-// @Success 100 object util.Result 成功
-// @Failure 103/104 object util.Result 失败
+// @Success 100 object utils.Result 成功
+// @Failure 103/104 object utils.Result 失败
 // @Router /api/v1/sys_setting/items [get]
 func (s *SysSettingHandler) GetSysSettingItem(ctx *gin.Context) {
 	name := ctx.Query("name")
@@ -39,9 +39,9 @@ func (s *SysSettingHandler) GetSysSettingItem(ctx *gin.Context) {
 // @Tags 系统设置
 // @version 1.0
 // @Accept application/json
-// @Param settingForm body form.SiteSettingForm true "网站配置表单"
-// @Success 100 object util.Result 成功
-// @Failure 103/104 object util.Result 失败
+// @Param settingForm body forms.SiteSettingForm true "网站配置表单"
+// @Success 100 object utils.Result 成功
+// @Failure 103/104 object utils.Result 失败
 // @Router /api/v1/sys_setting/site [post]
 func (s *SysSettingHandler) SaveSiteSetting(ctx *gin.Context) {
 	settingForm := forms.SiteSettingForm{}
@@ -103,9 +103,9 @@ func (s *SysSettingHandler) SaveSiteSetting(ctx *gin.Context) {
 // @Tags 系统设置
 // @version 1.0
 // @Accept application/json
-// @Param settingForm body form.EmailSettingForm true "SMTP 配置表单"
-// @Success 100 object util.Result 成功
-// @Failure 103/104 object util.Result 失败
+// @Param settingForm body forms.EmailSettingForm true "SMTP 配置表单"
+// @Success 100 object utils.Result 成功
+// @Failure 103/104 object utils.Result 失败
 // @Router /api/v1/sys_setting/smtp [post]
 func (s *SysSettingHandler) SaveSMTPSetting(ctx *gin.Context) {
 	settingForm := forms.EmailSettingForm{}
@@ -166,9 +166,9 @@ func (s *SysSettingHandler) SaveSMTPSetting(ctx *gin.Context) {
 // @Tags 系统设置
 // @version 1.0
 // @Accept application/json
-// @Param settingForm body form.PicBedSettingForm true "图床配置表单"
-// @Success 100 object util.Result 成功
-// @Failure 103/104 object util.Result 失败
+// @Param settingForm body forms.PicBedSettingForm true "图床配置表单"
+// @Success 100 object utils.Result 成功
+// @Failure 103/104 object utils.Result 失败
 // @Router /api/v1/sys_setting/pic_bed [post]
 func (s *SysSettingHandler) SavePicBedSetting(ctx *gin.Context) {
 	settingForm := forms.PicBedSettingForm{}
@@ -230,8 +230,8 @@ func (s *SysSettingHandler) SavePicBedSetting(ctx *gin.Context) {
 // @version 1.0
 // @Accept application/json
 // Param sendForm body orm.EmailSendForm true "发送邮件表单"
-// @Success 100 object util.Result 成功
-// @Failure 103/104 object util.Result 失败
+// @Success 100 object utils.Result 成功
+// @Failure 103/104 object utils.Result 失败
 // @Router /api/v1/sys_setting/email/test [post]
 func (s *SysSettingHandler) SendTestEmail(ctx *gin.Context) {
 	sendForm := forms.EmailSendForm{}
@@ -296,8 +296,8 @@ func (s *SysSettingHandler) SendTestEmail(ctx *gin.Context) {
 // @Tags 系统设置
 // @version 1.0
 // @Accept application/json
-// @Success 100 object util.Result 成功
-// @Failure 103/104 object util.Result 失败
+// @Success 100 object utils.Result 成功
+// @Failure 103/104 object utils.Result 失败
 // @Router /api/v1/sys_setting/index_info [get]
 func (s *SysSettingHandler) GetAdminIndexData(ctx *gin.Context) {
 	articleCount, err := models.Article{}.GetCount()

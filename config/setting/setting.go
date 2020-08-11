@@ -43,6 +43,7 @@ var BlogVars BlogVariable
 type Setting struct {
 	Server   server   `yaml:"server"`
 	Database database `yaml:"db"`
+	Logger   logger   `yaml:"logger"`
 	SMTP     smtp     `yaml:"smtp"`
 }
 
@@ -64,6 +65,11 @@ type database struct {
 	TimeZone    string `yaml:"time_zone"`     // 时区
 	MaxIdleConn int    `yaml:"max_idle_conn"` // 最大空闲连接数
 	MaxOpenConn int    `yaml:"max_open_conn"` // 最大打开连接数
+}
+
+type logger struct {
+	LogDir  string `yaml:"log_dir"`
+	MaxSize int    `yaml:"max_size"`
 }
 
 // 忘记密码 smtp 信息

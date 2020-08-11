@@ -16,8 +16,8 @@ type CommentHandler struct {
 // @Tags 评论
 // @version 1.0
 // @Accept application/json
-// @Success 100 object util.Result 成功
-// @Failure 103/104 object util.Result 失败
+// @Success 100 object utils.Result 成功
+// @Failure 103/104 object utils.Result 失败
 // @Router /api/v1/all_comments [get]
 func (c *CommentHandler) GetAllComments(ctx *gin.Context) {
 	list, err := models.Comment{}.GetAll()
@@ -46,8 +46,8 @@ func (c *CommentHandler) GetAllComments(ctx *gin.Context) {
 // @Param key query string false "关键词"
 // @Param type query string false "类型"
 // @Param state query uint false "状态"
-// @Success 100 object util.Result 成功
-// @Failure 103/104 object util.Result 失败
+// @Success 100 object utils.Result 成功
+// @Failure 103/104 object utils.Result 失败
 // @Router /api/v1/comments [get]
 func (c *CommentHandler) GetCommentsByPage(ctx *gin.Context) {
 	pageForm := forms.CommentPageForm{}
@@ -73,9 +73,9 @@ func (c *CommentHandler) GetCommentsByPage(ctx *gin.Context) {
 // @Tags 评论
 // @version 1.0
 // @Accept application/json
-// @Param form body form.CommentAddForm false "添加评论表单"
-// @Success 100 object util.Result 成功
-// @Failure 103/104 object util.Result 失败
+// @Param form body forms.CommentAddForm false "添加评论表单"
+// @Success 100 object utils.Result 成功
+// @Failure 103/104 object utils.Result 失败
 // @Router /api/v1/comments [post]
 func (c *CommentHandler) AddComment(ctx *gin.Context) {
 	addForm := forms.CommentAddForm{}
@@ -109,9 +109,9 @@ func (c *CommentHandler) AddComment(ctx *gin.Context) {
 // @Tags 评论
 // @version 1.0
 // @Accept application/json
-// @Param form body form.CommentEditForm false "修改评论表单"
-// @Success 100 object util.Result 成功
-// @Failure 103/104 object util.Result 失败
+// @Param form body forms.CommentEditForm false "修改评论表单"
+// @Success 100 object utils.Result 成功
+// @Failure 103/104 object utils.Result 失败
 // @Router /api/v1/comments [put]
 func (c *CommentHandler) UpdateComment(ctx *gin.Context) {
 	editForm := forms.CommentEditForm{}
@@ -144,8 +144,8 @@ func (c *CommentHandler) UpdateComment(ctx *gin.Context) {
 // @version 1.0
 // @Accept application/json
 // @Param id path uint true "id"
-// @Success 100 object util.Result 成功
-// @Failure 103/104 object util.Result 失败
+// @Success 100 object utils.Result 成功
+// @Failure 103/104 object utils.Result 失败
 // @Router /api/v1/comments/{id} [delete]
 func (c *CommentHandler) DeleteComment(ctx *gin.Context) {
 	id := ctx.Param("id")
@@ -170,8 +170,8 @@ func (c *CommentHandler) DeleteComment(ctx *gin.Context) {
 // @version 1.0
 // @Accept application/json
 // @Param ids query string true "ids"
-// @Success 100 object util.Result 成功
-// @Failure 103/104 object util.Result 失败
+// @Success 100 object utils.Result 成功
+// @Failure 103/104 object utils.Result 失败
 // @Router /api/v1/comments [delete]
 func (c *CommentHandler) MultiDelComments(ctx *gin.Context) {
 	ids := ctx.Query("ids")
