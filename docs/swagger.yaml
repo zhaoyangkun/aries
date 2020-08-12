@@ -343,7 +343,6 @@ definitions:
       url:
         type: string
     required:
-    - icon
     - name
     - url
     type: object
@@ -362,7 +361,6 @@ definitions:
       url:
         type: string
     required:
-    - icon
     - id
     - name
     - url
@@ -1358,6 +1356,48 @@ paths:
           schema:
             $ref: '#/definitions/utils.Result'
       summary: 删除菜单
+      tags:
+      - 菜单
+  /api/v1/navs/down/{order_id}:
+    patch:
+      consumes:
+      - application/json
+      parameters:
+      - description: order_id
+        in: path
+        name: order_id
+        required: true
+        type: integer
+      responses:
+        "100":
+          description: Continue
+          schema:
+            $ref: '#/definitions/utils.Result'
+        "104":
+          schema:
+            $ref: '#/definitions/utils.Result'
+      summary: 向移下动菜单
+      tags:
+      - 菜单
+  /api/v1/navs/up/{order_id}:
+    patch:
+      consumes:
+      - application/json
+      parameters:
+      - description: order_id
+        in: path
+        name: order_id
+        required: true
+        type: integer
+      responses:
+        "100":
+          description: Continue
+          schema:
+            $ref: '#/definitions/utils.Result'
+        "104":
+          schema:
+            $ref: '#/definitions/utils.Result'
+      summary: 向上移动菜单
       tags:
       - 菜单
   /api/v1/parent_categories:

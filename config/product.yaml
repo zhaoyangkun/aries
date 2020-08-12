@@ -17,7 +17,10 @@ db:
 # 日志配置
 logger:
   log_dir: "/home/zyk/projects/go/aries/logs" # 日志目录
-  max_size: 10 # 最大体积（MB）
+  log_name: "aries.log"                       # 日志名称
+  max_age: 7                                  # 保存时间（天）
+  level: "info"                               # 日志级别（"debug", "info", "warning", "error", "fatal", "panic"）
+  formatter: "text"                           # 日志格式（"json", "text"）
 # smtp 配置（仅用于重置密码）
 smtp:
   address: "smtp.qq.com"       # 协议地址

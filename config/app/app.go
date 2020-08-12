@@ -32,6 +32,7 @@ func InitApp() *gin.Engine {
 
 	// 加载中间件
 	router := gin.New()
+	middlewares.InitLogger()
 	router.Use(middlewares.LoggerMiddleWare(), gin.Recovery())
 
 	// 配置表单校验

@@ -4,7 +4,7 @@
     <div class="operation-box">
       <el-form :inline="true" class="demo-form-inline" slot="header">
         <el-form-item>
-          <el-button size="small" type="danger">
+          <el-button size="small" type="danger" @click="handleNavsMultiDel">
             <i class="el-icon-delete"></i> 批量删除
           </el-button>
         </el-form-item>
@@ -18,6 +18,7 @@
     <el-table
       v-loading="loading"
       :data="tableData"
+      @selection-change="handleSelectChange"
       style="width: 100%;margin-bottom: 20px;"
       row-key="ID"
       border
@@ -44,13 +45,16 @@
             <el-button size="small" icon="el-icon-edit" @click="openEditDialog(scope.row)"></el-button>
           </el-tooltip>
           <el-tooltip content="向上移动" placement="top-start">
-            <el-button size="small" icon="el-icon-top" @click="handleNavUp"></el-button>
+            <el-button size="small" icon="el-icon-top"
+                       @click="handleNavMoveUp(scope.row,scope.$index)"></el-button>
           </el-tooltip>
           <el-tooltip content="向下移动" placement="top-start">
-            <el-button size="small" icon="el-icon-bottom" @click="handleNavDown"></el-button>
+            <el-button size="small" icon="el-icon-bottom"
+                       @click="handleNavMoveDown(scope.row,scope.$index)"></el-button>
           </el-tooltip>
           <el-tooltip content="删除" placement="top-start">
-            <el-button size="small" type="danger" icon="el-icon-delete" @click="handleNavDelete(scope.row.ID)"></el-button>
+            <el-button size="small" type="danger" icon="el-icon-delete"
+                       @click="handleNavDelete(scope.row.ID)"></el-button>
           </el-tooltip>
         </template>
       </el-table-column>
@@ -137,13 +141,14 @@
 </template>
 
 <script>
-import { addNav, deleteNav, getNavs, updateNav } from '@api/aries/nav'
+import { addNav, deleteNav, getNavs, moveNavDown, moveNavUp, multiDelNavs, updateNav } from '@api/aries/nav'
 
 export default {
   name: 'navs',
   data () {
     return {
       tableData: [],
+      selectList: [],
       addForm: {
         name: '',
         parent_nav_id: null,
@@ -259,6 +264,10 @@ export default {
     handleNavEdit () {
       this.$refs.editForm.validate(valid => {
         if (valid) {
+          if (this.editForm.parent_nav_id === this.editForm.ID) {
+            this.$message.error('不能将自身设置为父级菜单')
+            return
+          }
           this.dialogOptions.editBtnLoading = true
           setTimeout(() => {
             updateNav(this.editForm)
@@ -273,6 +282,28 @@ export default {
           }, 300)
         }
       })
+    },
+    // 向上移动菜单
+    handleNavMoveUp (row, index) {
+      const navType = row.parent_nav_id === 0 ? 'parent' : 'child'
+      moveNavUp(navType, row.order_id)
+        .then(res => {
+          this.$message.success(res.msg)
+          this.fetchTableData()
+        })
+        .catch(() => {
+        })
+    },
+    // 向下移动菜单
+    handleNavMoveDown (row, index) {
+      const navType = row.parent_nav_id === 0 ? 'parent' : 'child'
+      moveNavDown(navType, row.order_id)
+        .then(res => {
+          this.$message.success(res.msg)
+          this.fetchTableData()
+        })
+        .catch(() => {
+        })
     },
     // 删除菜单
     handleNavDelete (id) {
@@ -293,14 +324,35 @@ export default {
         .catch(() => {
         })
     },
+    // 选项发生变化
+    handleSelectChange (selection) {
+      selection.forEach(val => {
+        this.selectList.push(val.ID)
+      })
+    },
     // 批量删除菜单
     handleNavsMultiDel () {
-    },
-    // 向上移动菜单
-    handleNavUp () {
-    },
-    // 向下移动菜单
-    handleNavDown () {
+      if (this.selectList.length === 0) {
+        this.$message.error('请勾选要删除的条目')
+        return
+      }
+      this.$confirm('确定要删除吗?', '删除', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'error'
+      })
+        .then(() => {
+          const ids = this.selectList.join(',')
+          multiDelNavs(ids)
+            .then(res => {
+              this.$message.success(res.msg)
+              this.fetchTableData()
+            })
+            .catch(() => {
+            })
+        })
+        .catch(() => {
+        })
     }
   }
 }

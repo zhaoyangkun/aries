@@ -18,11 +18,14 @@ var Trans ut.Translator
 // 全局配置
 var Config = &Setting{}
 
-// lute
+// Lute
 var LuteEngine = &lute.Lute{}
 
-// cache
+// Cache
 var Cache = &persistence.InMemoryStore{}
+
+// Logger
+var Logger = &log.Logger{}
 
 // 博客全局变量
 type BlogVariable struct {
@@ -68,8 +71,11 @@ type database struct {
 }
 
 type logger struct {
-	LogDir  string `yaml:"log_dir"`
-	MaxSize int    `yaml:"max_size"`
+	LogDir    string `yaml:"log_dir"`
+	LogName   string `yaml:"log_name"`
+	MaxAge    int    `yaml:"max_age"`
+	Level     string `yaml:"level"`
+	Formatter string `yaml:"formatter"`
 }
 
 // 忘记密码 smtp 信息

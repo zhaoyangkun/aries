@@ -157,13 +157,13 @@ func (article Article) Create(tagIds string) error {
 	var maxOrderId *uint
 	err := db.Db.Raw("select MAX(`order_id`) `maxOrderId` from `articles`").
 		Row().Scan(&maxOrderId)
+	if err != nil {
+		return err
+	}
 	if maxOrderId == nil {
 		article.OrderId = 1
 	} else {
 		article.OrderId = *maxOrderId + 1
-	}
-	if err != nil {
-		return err
 	}
 	// 开始事务
 	tx := db.Db.Begin()

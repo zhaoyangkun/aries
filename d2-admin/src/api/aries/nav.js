@@ -26,6 +26,22 @@ export function updateNav (data) {
   })
 }
 
+// 向上移动菜单
+export function moveNavUp (navType, orderId) {
+  return request({
+    url: `/navs/${navType}/up/${orderId}`,
+    method: 'patch'
+  })
+}
+
+// 向下移动菜单
+export function moveNavDown (navType, orderId) {
+  return request({
+    url: `/navs/${navType}/down/${orderId}`,
+    method: 'patch'
+  })
+}
+
 // 删除菜单
 export function deleteNav (id) {
   return request({

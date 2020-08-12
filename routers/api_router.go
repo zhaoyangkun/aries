@@ -20,6 +20,22 @@ func (a *ApiRouter) InitApiRouter(rootPath string, router *gin.Engine) {
 	tagHandler := api.TagHandler{}
 	userHandler := api.UserHandler{}
 
+	authApiRouter := router.Group(rootPath)
+	{
+		authApiRouter.POST("/auth/login", authHandler.Login)
+		authApiRouter.POST("/auth/register", authHandler.Register)
+		authApiRouter.GET("/auth/captcha", authHandler.CreateCaptcha)
+		authApiRouter.POST("/auth/pwd/forget", authHandler.ForgetPwd)
+		authApiRouter.POST("/auth/pwd/reset", authHandler.ResetPwd)
+	}
+
+	userApiRouter := router.Group(rootPath)
+	{
+		userApiRouter.GET("/all_users", userHandler.GetAllUsers)
+		userApiRouter.PUT("/users", userHandler.UpdateUser)
+		userApiRouter.PUT("/users/pwd", userHandler.UpdateUserPwd)
+	}
+
 	ArticleApiRouter := router.Group(rootPath, middlewares.JWTAuthMiddleWare())
 	{
 		ArticleApiRouter.GET("/all_articles", articleHandler.GetAllArticles)
@@ -32,15 +48,6 @@ func (a *ApiRouter) InitApiRouter(rootPath string, router *gin.Engine) {
 		ArticleApiRouter.POST("/articles/files", articleHandler.ImportArticlesFromFiles)
 		ArticleApiRouter.POST("/articles/up", articleHandler.MoveArticleUp)
 		ArticleApiRouter.POST("/articles/down", articleHandler.MoveArticleDown)
-	}
-
-	authApiRouter := router.Group(rootPath)
-	{
-		authApiRouter.POST("/auth/login", authHandler.Login)
-		authApiRouter.POST("/auth/register", authHandler.Register)
-		authApiRouter.GET("/auth/captcha", authHandler.CreateCaptcha)
-		authApiRouter.POST("/auth/pwd/forget", authHandler.ForgetPwd)
-		authApiRouter.POST("/auth/pwd/reset", authHandler.ResetPwd)
 	}
 
 	categoryApiRouter := router.Group(rootPath, middlewares.JWTAuthMiddleWare())
@@ -76,11 +83,13 @@ func (a *ApiRouter) InitApiRouter(rootPath string, router *gin.Engine) {
 		linkApiRouter.DELETE("/links", linkHandler.MultiDelLinks)
 	}
 
-	navApiRouter := router.Group(rootPath)
+	navApiRouter := router.Group(rootPath, middlewares.JWTAuthMiddleWare())
 	{
 		navApiRouter.GET("/navs", navHandler.GetAllNavs)
 		navApiRouter.POST("/navs", navHandler.CreateNav)
 		navApiRouter.PUT("/navs", navHandler.UpdateNav)
+		navApiRouter.PATCH("/navs/:type/up/:order_id", navHandler.MoveNavUp)
+		navApiRouter.PATCH("/navs/:type/down/:order_id", navHandler.MoveNavDown)
 		navApiRouter.DELETE("/navs/:id", navHandler.DeleteNav)
 		navApiRouter.DELETE("/navs", navHandler.MultiDelNavs)
 	}
@@ -104,12 +113,5 @@ func (a *ApiRouter) InitApiRouter(rootPath string, router *gin.Engine) {
 		tagApiRouter.PUT("/tags", tagHandler.UpdateTag)
 		tagApiRouter.DELETE("/tags/:id", tagHandler.DeleteTag)
 		tagApiRouter.DELETE("/tags", tagHandler.MultiDelTags)
-	}
-
-	userApiRouter := router.Group(rootPath)
-	{
-		userApiRouter.GET("/all_users", userHandler.GetAllUsers)
-		userApiRouter.PUT("/users", userHandler.UpdateUser)
-		userApiRouter.PUT("/users/pwd", userHandler.UpdateUserPwd)
 	}
 }

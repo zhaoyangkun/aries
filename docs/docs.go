@@ -1313,6 +1313,72 @@ var doc = `{
                 }
             }
         },
+        "/api/v1/navs/down/{order_id}": {
+            "patch": {
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "菜单"
+                ],
+                "summary": "向移下动菜单",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "order_id",
+                        "name": "order_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "100": {
+                        "description": "Continue",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Result"
+                        }
+                    },
+                    "104": {
+                        "schema": {
+                            "$ref": "#/definitions/utils.Result"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/navs/up/{order_id}": {
+            "patch": {
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "菜单"
+                ],
+                "summary": "向上移动菜单",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "order_id",
+                        "name": "order_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "100": {
+                        "description": "Continue",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Result"
+                        }
+                    },
+                    "104": {
+                        "schema": {
+                            "$ref": "#/definitions/utils.Result"
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/navs/{id}": {
             "delete": {
                 "consumes": [
@@ -2296,7 +2362,6 @@ var doc = `{
         "forms.NavAddForm": {
             "type": "object",
             "required": [
-                "icon",
                 "name",
                 "url"
             ],
@@ -2321,7 +2386,6 @@ var doc = `{
         "forms.NavEditForm": {
             "type": "object",
             "required": [
-                "icon",
                 "id",
                 "name",
                 "url"

@@ -899,11 +899,12 @@ export default {
       movePostUp(form)
         .then(res => {
           this.$message.success(res.msg)
-          const newData = Array.from(this.data)
-          const temp = newData[index - 1]
-          newData[index - 1] = newData[index]
-          newData[index] = temp
-          this.data = newData
+          this.fetchPageData()
+          // const newData = [...this.data]
+          // const temp = newData[index - 1]
+          // newData[index - 1] = newData[index]
+          // newData[index] = temp
+          // this.data = newData
         })
         .catch(() => {
         })
@@ -918,11 +919,12 @@ export default {
       movePostDown(form)
         .then(res => {
           this.$message.success(res.msg)
-          const newData = Array.from(this.data)
-          const temp = newData[index + 1]
-          newData[index + 1] = newData[index]
-          newData[index] = temp
-          this.data = newData
+          this.fetchPageData()
+          // const newData = [...this.data]
+          // const temp = newData[index + 1]
+          // newData[index + 1] = newData[index]
+          // newData[index] = temp
+          // this.data = newData
         })
         .catch(() => {
         })

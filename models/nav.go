@@ -18,16 +18,28 @@ type Nav struct {
 	Icon        string `gorm:"varchar(255);" json:"icon"`                   // 图标
 }
 
+// 根据 OrderId 获取菜单
+func (Nav) GetByOrderId(orderId uint) (nav Nav, err error) {
+	err = db.Db.Where("`order_id` = ?", orderId).First(&nav).Error
+	return
+}
+
+// 根据名称获取菜单
+func (Nav) GetByName(name string) (nav Nav, err error) {
+	err = db.Db.Where("`name` = ?", name).First(&nav).Error
+	return
+}
+
 // 获取所有菜单（子菜单包含在父菜单中）
 func (Nav) GetAll() ([]Nav, error) {
 	var childNavs []Nav
 	var parentNavs []Nav
-	err := db.Db.Where("parent_nav_id > 0").Order("order_id desc", true).
+	err := db.Db.Where("parent_nav_id > 0").Order("order_id ASC", true).
 		Find(&childNavs).Error
 	if err != nil {
 		return parentNavs, err
 	}
-	err = db.Db.Where("parent_nav_id = 0").Order("order_id desc", true).
+	err = db.Db.Where("parent_nav_id = 0").Order("order_id ASC", true).
 		Find(&parentNavs).Error
 	if err != nil {
 		return parentNavs, err
@@ -50,7 +62,11 @@ func (n *Nav) Create() error {
 	if err != nil {
 		return err
 	}
-	n.OrderId = *maxOrderId
+	if maxOrderId == nil {
+		n.OrderId = 1
+	} else {
+		n.OrderId = *maxOrderId + 1
+	}
 	return db.Db.Create(&n).Error
 }
 
@@ -60,29 +76,41 @@ func (n *Nav) Update() error {
 }
 
 // 获取前一个菜单
-func (n *Nav) GetPre() (Nav, error) {
+func (n *Nav) GetPre(navType string) (Nav, error) {
 	preNav := Nav{}
-	err := db.Db.Where("order_id < ?", n.OrderId).Order("order_id DESC", true).
-		First(&preNav).Error
+	var err error
+	if navType == "parent" {
+		err = db.Db.Where("`parent_nav_id` = 0 and `order_id` < ?", n.OrderId).
+			Order("order_id DESC", true).First(&preNav).Error
+	} else {
+		err = db.Db.Where("`parent_nav_id` > 0 and `order_id` < ?", n.OrderId).
+			Order("order_id DESC", true).First(&preNav).Error
+	}
 	return preNav, err
 }
 
 // 获取后一个菜单
-func (n *Nav) GetNext() (Nav, error) {
+func (n *Nav) GetNext(navType string) (Nav, error) {
 	nextNav := Nav{}
-	err := db.Db.Where("order_id > ?", n.OrderId).Order("order_id ASC", true).
-		First(&nextNav).Error
+	var err error
+	if navType == "parent" {
+		err = db.Db.Where("`parent_nav_id` = 0 and `order_id` > ?", n.OrderId).
+			Order("order_id ASC", true).First(&nextNav).Error
+	} else {
+		err = db.Db.Where("`parent_nav_id` > 0 and `order_id` > ?", n.OrderId).
+			Order("order_id ASC", true).First(&nextNav).Error
+	}
 	return nextNav, err
 }
 
 // 向上移动菜单
-func (n *Nav) MoveUp(currId, preId, currOrderId, preOrderId uint) error {
+func (n *Nav) MoveUp(preNav Nav) error {
 	return db.Db.Transaction(func(tx *gorm.DB) error {
-		err := db.Db.Where("`id` = ?", currId).Update("order_id", preOrderId).Error
+		err := db.Db.Model(&Nav{}).Where("`id` = ?", n.ID).Update("order_id", preNav.OrderId).Error
 		if err != nil {
 			return err
 		}
-		err = db.Db.Where("`id` = ?", preId).Update("order_id", currOrderId).Error
+		err = db.Db.Model(&Nav{}).Where("`id` = ?", preNav.ID).Update("order_id", n.OrderId).Error
 		if err != nil {
 			return err
 		}
@@ -91,13 +119,13 @@ func (n *Nav) MoveUp(currId, preId, currOrderId, preOrderId uint) error {
 }
 
 // 向下移动菜单
-func (n *Nav) MoveDown(currId, nextId, currOrderId, nextOrderId uint) error {
+func (n *Nav) MoveDown(nextNav Nav) error {
 	return db.Db.Transaction(func(tx *gorm.DB) error {
-		err := db.Db.Where("`id` = ?", currId).Update("order_id", nextOrderId).Error
+		err := db.Db.Model(&Nav{}).Where("`id` = ?", n.ID).Update("order_id", nextNav.OrderId).Error
 		if err != nil {
 			return err
 		}
-		err = db.Db.Where("`id` = ?", nextId).Update("order_id", currOrderId).Error
+		err = db.Db.Model(&Nav{}).Where("`id` = ?", nextNav.ID).Update("order_id", n.OrderId).Error
 		if err != nil {
 			return err
 		}
