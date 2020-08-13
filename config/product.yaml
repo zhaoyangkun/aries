@@ -16,7 +16,7 @@ db:
   max_open_conn: 20       # 最大打开连接数
 # 日志配置
 logger:
-  log_dir: "/home/zyk/projects/go/aries/logs" # 日志目录
+  log_dir: "~/.aries/logs" # 日志目录
   log_name: "aries.log"                       # 日志名称
   max_age: 7                                  # 保存时间（天）
   level: "info"                               # 日志级别（"debug", "info", "warning", "error", "fatal", "panic"）

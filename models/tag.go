@@ -10,8 +10,8 @@ import (
 // 标签
 type Tag struct {
 	gorm.Model
-	Name        string    `gorm:"type:varchar(100);not null;" json:"name"` // 标签名
-	ArticleList []Article `gorm:"many2many:tag_article"`                   // 文章列表
+	Name        string    `gorm:"type:varchar(100);not null;" json:"name"`   // 标签名
+	ArticleList []Article `gorm:"many2many:tag_article" json:"article_list"` // 文章列表
 }
 
 // 获取所有标签

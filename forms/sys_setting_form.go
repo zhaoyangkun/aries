@@ -34,11 +34,25 @@ type EmailSendForm struct {
 
 // 图床设置表单
 type PicBedSettingForm struct {
-	SysId          string `json:"sys_id" label:"设置 ID"`
-	TypeName       string `json:"type_name" binding:"required,max=50" label:"设置类型名称"`
-	Type           string `json:"type" binding:"required,max=1" label:"图床性质"` // 0 表示公有云，1 表示私有云
-	ApiType        string `json:"api_type" binding:"max=20" label:"公有云图床类型"`
-	PrivateStorage string `json:"private_storage" binding:"max=20" label:"私有云存储类型"`
-	Token          string `json:"token" binding:"required,max=50" label:"Token"`
-	Folder         string `json:"folder" binding:"required,max=50" label:""`
+	StorageType string `json:"storage_type"`
+}
+
+// sm.ms 表单
+type SmmsForm struct {
+	SysId       string `json:"sys_id" label:"设置 ID"`
+	StorageType string `json:"storage_type" binding:"required,max=20" label:"设置类型名称"`
+	Token       string `json:"token" binding:"required,max=100"`
+}
+
+// 腾讯云 COS 表单
+type TencentCosForm struct {
+	SysId       string `json:"sys_id" label:"设置 ID"`
+	StorageType string `json:"storage_type" binding:"required,max=20" label:"设置类型名称"`
+	Host        string `json:"host" binding:"required,max=255" label:"存储桶地址"`
+	Scheme      string `json:"scheme" binding:"required,max=5" label:"传输协议"`
+	Region      string `json:"region" binding:"required,max=20" label:"区域"`
+	SecretId    string `json:"secret_id" binding:"required,max=255" label:"secret_id"`
+	SecretKey   string `json:"secret_key" binding:"required,max=255" label:"secret_key"`
+	FolderPath  string `json:"folder_path" binding:"required,max=255" label:"上传目录"`
+	ImgProcess  string `json:"img_process" binding:"max=255" label:"图片处理"`
 }

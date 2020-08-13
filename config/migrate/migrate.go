@@ -12,5 +12,6 @@ func Migrate() {
 		&models.Tag{}, &models.Theme{}, &models.User{},
 		&models.Link{}, &models.Nav{}, &models.Page{},
 		&models.SysSetting{}, &models.SysSettingItem{}, &models.ThemeSetting{},
+		&models.Picture{},
 	)
 }

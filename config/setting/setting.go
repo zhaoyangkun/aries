@@ -138,3 +138,12 @@ func (b *BlogVariable) InitBlogVars(siteSetting map[string]string) {
 		b.ContextPath = "http://localhost:8088"
 	}
 }
+
+// 初始化 log
+func init() {
+	log.SetFormatter(&log.TextFormatter{
+		DisableColors:   false,
+		TimestampFormat: "2006-01-02 15:04:05",
+	})
+	log.SetLevel(log.InfoLevel)
+}

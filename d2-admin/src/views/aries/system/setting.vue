@@ -95,50 +95,74 @@
       </el-tab-pane>
 
       <el-tab-pane label="图床设置" style="width: 500px">
-        <el-alert
-          title="提示"
-          description="目前仅支持土豆图床： https://images.ac.cn/"
-          type="success"
-          :closable="false">
-        </el-alert>
-        <el-form :model="picBedForm" :rules="picBedFormRules" ref="picBedForm" label-width="130px">
-          <el-form-item label="图床性质" prop="type">
-            <el-select size="small" v-model="picBedForm.type" type="text" autocomplete="off"
-                       placeholder="请选择图床性质" @change="bedTypeChange">
-              <el-option value="0" label="公有云"></el-option>
-              <el-option value="1" label="私有云"></el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item label="公有云图床类型" prop="api_type" v-show="is_public">
-            <el-select size="small" v-model="picBedForm.api_type" placeholder="请选择公有云图床类型">
+        <el-form :model="storageForm" :rules="storageFormRules" ref="storageForm" label-width="130px">
+          <el-form-item label="存储类型" prop="storageType">
+            <el-select size="small" v-model="storageForm.storageType" placeholder="请选择存储类型">
               <el-option
-                v-for="item in publicBedTypes"
+                v-for="item in storageTypes"
                 :value="item.value"
                 :key="item.value"
                 :label="item.name">
               </el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="私有云存储类型" prop="private_storage" v-show="!is_public">
-            <el-select size="small" v-model="picBedForm.private_storage" placeholder="请选择私有云存储类型">
-              <el-option
-                v-for="item in privateTypes"
-                :value="item.value"
-                :key="item.value"
-                :label="item.name"
-              ></el-option>
-            </el-select>
-          </el-form-item>
+        </el-form>
+        <el-form :model="smmsForm" :rules="smmsFormRules" ref="smmsForm" label-width="130px"
+                 v-show="storageForm.storageType==='sm.ms'">
           <el-form-item label="Token" prop="token">
-            <el-input size="small" :rows="5" v-model="picBedForm.token" type="text" autocomplete="off"
-                      placeholder="请输入Token"></el-input>
-          </el-form-item>
-          <el-form-item label="上传目录" prop="folder">
-            <el-input size="small" :rows="5" v-model="picBedForm.folder" type="text" autocomplete="off"
-                      placeholder="请输入上传目录"></el-input>
+            <el-input size="small" v-model="smmsForm.token" type="text" autocomplete="off"
+                      placeholder="Token"></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button size="small" type="primary" :loading="btn.bedSaveLoading" @click="savePicBedForm">保存</el-button>
+            <el-button size="small" type="primary" :loading="btn.bedSaveLoading" @click="saveSmmsForm">
+              保存
+            </el-button>
+          </el-form-item>
+        </el-form>
+        <el-form :model="tencentCosForm" ref="tencentCosForm" label-width="130px"
+                 v-show="storageForm.storageType==='cos'">
+          <el-form-item label="存储桶地址" prop="host">
+            <el-input size="small" v-model="tencentCosForm.host" type="text" autocomplete="off"
+                      placeholder="存储桶地址"></el-input>
+          </el-form-item>
+          <el-form-item label="传输协议" prop="scheme">
+            <el-radio v-model="tencentCosForm.scheme" label="http">http</el-radio>
+            <el-radio v-model="tencentCosForm.scheme" label="https">https</el-radio>
+          </el-form-item>
+          <el-form-item label="区域" prop="region">
+            <el-select size="small" v-model="tencentCosForm.region" placeholder="请选择区域">
+              <el-option
+                v-for="item in cosRegions"
+                :key="item.value"
+                :label="item.name"
+                :value="item.value"
+              >
+                <span style="float: left">{{ item.name }}</span>
+                <span style="float: right; color: #8492a6; font-size: 13px">{{ item.value }}</span>
+              </el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="secret_id" prop="secret_id">
+            <el-input size="small" v-model="tencentCosForm.secret_id" type="text" autocomplete="off"
+                      placeholder="secret_id"></el-input>
+          </el-form-item>
+          <el-form-item label="secret_key" prop="secret_key">
+            <el-input size="small" v-model="tencentCosForm.secret_key" type="text" autocomplete="off"
+                      placeholder="secret_key"></el-input>
+          </el-form-item>
+          <el-form-item labe
+                        l="上传目录" prop="folder_path">
+            <el-input size="small" v-model="tencentCosForm.folder_path" type="text" autocomplete="off"
+                      placeholder="上传目录"></el-input>
+          </el-form-item>
+          <el-form-item label="图片处理" prop="img_process">
+            <el-input size="small" v-model="tencentCosForm.img_process" type="text" autocomplete="off"
+                      placeholder="请参照腾讯云 COS 图片处理文档"></el-input>
+          </el-form-item>
+          <el-form-item>
+            <el-button size="small" type="primary" :loading="btn.bedSaveLoading"
+                       @click="savePicBedForm('tencentCosForm')">保存
+            </el-button>
           </el-form-item>
         </el-form>
       </el-tab-pane>
@@ -154,23 +178,21 @@ export default {
   data () {
     return {
       tabPosition: 'top',
-      publicBedTypes: [
-        { value: 'xiaomi', name: '小米' },
-        { value: 'Catbox', name: 'Catbox' },
-        { value: 'SuNing', name: '苏宁' },
-        { value: 'juejin', name: '掘金论坛' },
-        { value: 'Neteasy', name: '网易' },
-        { value: 'toutiao', name: '头条' },
-        { value: 'BaiDu', name: '百度' }
+      storageTypes: [
+        { value: 'sm.ms', name: 'sm.ms' },
+        { value: 'cos', name: '腾讯云' }
       ],
-      privateTypes: [
-        { value: 'ftp', name: 'FTP' },
-        { value: 'upyun', name: '又拍云' },
-        { value: 'qiniu', name: '七牛云' },
-        { value: 'oos', name: '阿里云OSS' },
-        { value: 'cos', name: '腾讯云COS' },
-        { value: 'ufile', name: 'U-file' },
-        { value: 'zzidc', name: '快云' }
+      cosRegions: [
+        { name: '北京一区', value: 'ap-beijing-1' },
+        { name: '北京', value: 'ap-beijing' },
+        { name: '南京', value: 'ap-nanjing' },
+        { name: '上海', value: 'ap-shanghai' },
+        { name: '广州', value: 'ap-guangzhou' },
+        { name: '成都', value: 'ap-chengdu' },
+        { name: '重庆', value: 'ap-chongqing' },
+        { name: '深圳金融', value: 'ap-shenzhen-fsi' },
+        { name: '上海金融', value: 'ap-shanghai-fsi' },
+        { name: '北京金融', value: 'ap-beijing-fsi' }
       ],
       siteForm: {
         sys_id: null,
@@ -198,14 +220,24 @@ export default {
         title: '',
         content: ''
       },
-      picBedForm: {
+      storageForm: {
+        storageType: 'sm.ms'
+      },
+      smmsForm: {
         sys_id: null,
-        type_name: '图床设置',
-        type: '0',
-        api_type: '',
-        private_storage: '',
-        token: '',
-        folder: ''
+        storage_type: 'sm.ms',
+        token: ''
+      },
+      tencentCosForm: {
+        sys_id: null,
+        storage_type: 'cos',
+        host: '',
+        scheme: 'https',
+        region: '',
+        secret_id: '',
+        secret_key: '',
+        folder_path: '',
+        img_process: ''
       },
       siteRules: {
         site_name: [
@@ -246,17 +278,17 @@ export default {
           { required: true, message: '请输入邮件内容', trigger: 'blur' }
         ]
       },
-      picBedFormRules: {
-        type: [
-          { required: true, message: '请选择图床性质', trigger: 'blur' }
-        ],
-        token: [
-          { required: true, message: '请输入 Token', trigger: 'blur' }
-        ],
-        folder: [
-          { required: true, message: '请输入上传目录', trigger: 'blur' }
+      storageFormRules: {
+        storageType: [
+          { required: true, message: '请选择存储类型', trigger: 'blur' }
         ]
       },
+      smmsFormRules: {
+        token: [
+          { required: true, message: '请输入 Token', trigger: 'blur' }
+        ]
+      },
+      tencentCosFormRules: {},
       btn: {
         siteSaveLoading: false,
         smtpSaveLoading: false,
@@ -344,22 +376,34 @@ export default {
         }
       })
     },
-    // 监听图床性质
-    bedTypeChange (value) {
-      this.picBedForm.api_type = ''
-      this.picBedForm.private_storage = ''
-      this.is_public = value === '0'
-    },
-    // 保存图床设置
-    savePicBedForm () {
-      this.$refs.picBedForm.validate(valid => {
+    // 保存 sm.ms 设置
+    saveSmmsForm () {
+      this.$refs.smmsForm.validate(valid => {
         if (valid) {
           this.btn.bedSaveLoading = true
           setTimeout(() => {
-            savePicBedSetting(this.picBedForm)
+            savePicBedSetting(this.smmsForm)
               .then(res => {
                 this.$message.success(res.msg)
-                this.getSysSetItem('图床设置', 'picBedForm')
+                this.getSysSetItem('图床设置', 'smmsForm')
+              })
+              .catch(() => {
+              })
+            this.btn.bedSaveLoading = false
+          }, 300)
+        }
+      })
+    },
+    // 保存腾讯云 COS 设置
+    saveTencentCosForm () {
+      this.$refs.tencentCosForm.validate(valid => {
+        if (valid) {
+          this.btn.bedSaveLoading = true
+          setTimeout(() => {
+            savePicBedSetting(this.tencentCosForm)
+              .then(res => {
+                this.$message.success(res.msg)
+                this.getSysSetItem('图床设置', 'tencentCosForm')
               })
               .catch(() => {
               })

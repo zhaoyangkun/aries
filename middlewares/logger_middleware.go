@@ -7,7 +7,7 @@ import (
 	"github.com/rifflock/lfshook"
 	"github.com/sirupsen/logrus"
 	"os"
-	"path"
+	"path/filepath"
 	"time"
 )
 
@@ -57,7 +57,8 @@ func InitLogger() {
 	if err := os.MkdirAll(logDir, 0777); err != nil {
 		logrus.Error("err: ", err.Error())
 	}
-	logFilePath := path.Join(logDir, logName)
+	logFilePath := filepath.Join(logDir, logName)
+	logrus.Info("logFilePath: ", logFilePath)
 
 	// 打开文件
 	src, err := os.OpenFile(logFilePath, os.O_CREATE|os.O_WRONLY, 0666)

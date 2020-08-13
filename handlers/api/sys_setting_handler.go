@@ -162,16 +162,16 @@ func (s *SysSettingHandler) SaveSMTPSetting(ctx *gin.Context) {
 	})
 }
 
-// @Summary 保存图床配置信息
+// @Summary 保存 sm.ms 配置信息
 // @Tags 系统设置
 // @version 1.0
 // @Accept application/json
-// @Param settingForm body forms.PicBedSettingForm true "图床配置表单"
+// @Param settingForm body forms.SmmsForm true "sm.ms 配置表单"
 // @Success 100 object utils.Result 成功
 // @Failure 103/104 object utils.Result 失败
-// @Router /api/v1/sys_setting/pic_bed [post]
-func (s *SysSettingHandler) SavePicBedSetting(ctx *gin.Context) {
-	settingForm := forms.PicBedSettingForm{}
+// @Router /api/v1/sys_setting/pic_bed/smms [post]
+func (s *SysSettingHandler) SaveSmmsSetting(ctx *gin.Context) {
+	settingForm := forms.SmmsForm{}
 	if err := ctx.ShouldBindJSON(&settingForm); err != nil {
 		ctx.JSON(http.StatusOK, utils.Result{
 			Code: utils.RequestError,
@@ -183,7 +183,7 @@ func (s *SysSettingHandler) SavePicBedSetting(ctx *gin.Context) {
 	sysId, _ := strconv.ParseUint(settingForm.SysId, 10, 0)
 	sysSetting := models.SysSetting{
 		Model: gorm.Model{ID: uint(sysId)},
-		Name:  settingForm.TypeName,
+		Name:  settingForm.StorageType,
 	}
 	if sysId == 0 {
 		if err := sysSetting.Create(); err != nil {
