@@ -21,8 +21,6 @@
       @selection-change="handleSelectChange"
       style="width: 100%;margin-bottom: 20px;"
       row-key="ID"
-      border
-      default-expand-all
       :tree-props="{children: 'child_navs', hasChildren: 'hasChildren'}">
       <el-table-column
         type="selection"

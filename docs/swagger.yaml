@@ -365,29 +365,6 @@ definitions:
     - name
     - url
     type: object
-  forms.PicBedSettingForm:
-    properties:
-      api_type:
-        type: string
-      folder:
-        type: string
-      private_storage:
-        type: string
-      sys_id:
-        type: string
-      token:
-        type: string
-      type:
-        description: 0 表示公有云，1 表示私有云
-        type: string
-      type_name:
-        type: string
-    required:
-    - folder
-    - token
-    - type
-    - type_name
-    type: object
   forms.PwdForm:
     properties:
       confirm_new_pwd:
@@ -467,6 +444,18 @@ definitions:
     - site_url
     - type_name
     type: object
+  forms.SmmsForm:
+    properties:
+      storage_type:
+        type: string
+      sys_id:
+        type: string
+      token:
+        type: string
+    required:
+    - storage_type
+    - token
+    type: object
   forms.TagAddForm:
     properties:
       name:
@@ -483,6 +472,35 @@ definitions:
     required:
     - ID
     - name
+    type: object
+  forms.TencentCosForm:
+    properties:
+      folder_path:
+        type: string
+      host:
+        type: string
+      img_process:
+        type: string
+      region:
+        type: string
+      scheme:
+        type: string
+      secret_id:
+        type: string
+      secret_key:
+        type: string
+      storage_type:
+        type: string
+      sys_id:
+        type: string
+    required:
+    - folder_path
+    - host
+    - region
+    - scheme
+    - secret_id
+    - secret_key
+    - storage_type
     type: object
   forms.UserInfoForm:
     properties:
@@ -1358,7 +1376,7 @@ paths:
       summary: 删除菜单
       tags:
       - 菜单
-  /api/v1/navs/down/{order_id}:
+  /api/v1/navs/{type}/down/{order_id}:
     patch:
       consumes:
       - application/json
@@ -1368,6 +1386,11 @@ paths:
         name: order_id
         required: true
         type: integer
+      - description: type
+        in: path
+        name: type
+        required: true
+        type: string
       responses:
         "100":
           description: Continue
@@ -1379,7 +1402,7 @@ paths:
       summary: 向移下动菜单
       tags:
       - 菜单
-  /api/v1/navs/up/{order_id}:
+  /api/v1/navs/{type}/up/{order_id}:
     patch:
       consumes:
       - application/json
@@ -1389,6 +1412,11 @@ paths:
         name: order_id
         required: true
         type: integer
+      - description: type
+        in: path
+        name: type
+        required: true
+        type: string
       responses:
         "100":
           description: Continue
@@ -1471,17 +1499,17 @@ paths:
       summary: 获取设置条目
       tags:
       - 系统设置
-  /api/v1/sys_setting/pic_bed:
+  /api/v1/sys_setting/pic_bed/smms:
     post:
       consumes:
       - application/json
       parameters:
-      - description: 图床配置表单
+      - description: sm.ms 配置表单
         in: body
         name: settingForm
         required: true
         schema:
-          $ref: '#/definitions/forms.PicBedSettingForm'
+          $ref: '#/definitions/forms.SmmsForm'
       responses:
         "100":
           description: Continue
@@ -1490,7 +1518,29 @@ paths:
         "104":
           schema:
             $ref: '#/definitions/utils.Result'
-      summary: 保存图床配置信息
+      summary: 保存 sm.ms 配置信息
+      tags:
+      - 系统设置
+  /api/v1/sys_setting/pic_bed/tencent_cos:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 腾讯云 COS 配置表单
+        in: body
+        name: cosForm
+        required: true
+        schema:
+          $ref: '#/definitions/forms.TencentCosForm'
+      responses:
+        "100":
+          description: Continue
+          schema:
+            $ref: '#/definitions/utils.Result'
+        "104":
+          schema:
+            $ref: '#/definitions/utils.Result'
+      summary: 保存腾讯云 COS 配置信息
       tags:
       - 系统设置
   /api/v1/sys_setting/site:

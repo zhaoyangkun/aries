@@ -1313,7 +1313,40 @@ var doc = `{
                 }
             }
         },
-        "/api/v1/navs/down/{order_id}": {
+        "/api/v1/navs/{id}": {
+            "delete": {
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "菜单"
+                ],
+                "summary": "删除菜单",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "100": {
+                        "description": "Continue",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Result"
+                        }
+                    },
+                    "104": {
+                        "schema": {
+                            "$ref": "#/definitions/utils.Result"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/navs/{type}/down/{order_id}": {
             "patch": {
                 "consumes": [
                     "application/json"
@@ -1329,37 +1362,11 @@ var doc = `{
                         "name": "order_id",
                         "in": "path",
                         "required": true
-                    }
-                ],
-                "responses": {
-                    "100": {
-                        "description": "Continue",
-                        "schema": {
-                            "$ref": "#/definitions/utils.Result"
-                        }
                     },
-                    "104": {
-                        "schema": {
-                            "$ref": "#/definitions/utils.Result"
-                        }
-                    }
-                }
-            }
-        },
-        "/api/v1/navs/up/{order_id}": {
-            "patch": {
-                "consumes": [
-                    "application/json"
-                ],
-                "tags": [
-                    "菜单"
-                ],
-                "summary": "向上移动菜单",
-                "parameters": [
                     {
-                        "type": "integer",
-                        "description": "order_id",
-                        "name": "order_id",
+                        "type": "string",
+                        "description": "type",
+                        "name": "type",
                         "in": "path",
                         "required": true
                     }
@@ -1379,20 +1386,27 @@ var doc = `{
                 }
             }
         },
-        "/api/v1/navs/{id}": {
-            "delete": {
+        "/api/v1/navs/{type}/up/{order_id}": {
+            "patch": {
                 "consumes": [
                     "application/json"
                 ],
                 "tags": [
                     "菜单"
                 ],
-                "summary": "删除菜单",
+                "summary": "向上移动菜单",
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "id",
-                        "name": "id",
+                        "description": "order_id",
+                        "name": "order_id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "type",
+                        "name": "type",
                         "in": "path",
                         "required": true
                     }
@@ -1525,7 +1539,7 @@ var doc = `{
                 }
             }
         },
-        "/api/v1/sys_setting/pic_bed": {
+        "/api/v1/sys_setting/pic_bed/smms": {
             "post": {
                 "consumes": [
                     "application/json"
@@ -1533,15 +1547,50 @@ var doc = `{
                 "tags": [
                     "系统设置"
                 ],
-                "summary": "保存图床配置信息",
+                "summary": "保存 sm.ms 配置信息",
                 "parameters": [
                     {
-                        "description": "图床配置表单",
+                        "description": "sm.ms 配置表单",
                         "name": "settingForm",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/forms.PicBedSettingForm"
+                            "$ref": "#/definitions/forms.SmmsForm"
+                        }
+                    }
+                ],
+                "responses": {
+                    "100": {
+                        "description": "Continue",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Result"
+                        }
+                    },
+                    "104": {
+                        "schema": {
+                            "$ref": "#/definitions/utils.Result"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/sys_setting/pic_bed/tencent_cos": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "系统设置"
+                ],
+                "summary": "保存腾讯云 COS 配置信息",
+                "parameters": [
+                    {
+                        "description": "腾讯云 COS 配置表单",
+                        "name": "cosForm",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/forms.TencentCosForm"
                         }
                     }
                 ],
@@ -2411,39 +2460,6 @@ var doc = `{
                 }
             }
         },
-        "forms.PicBedSettingForm": {
-            "type": "object",
-            "required": [
-                "folder",
-                "token",
-                "type",
-                "type_name"
-            ],
-            "properties": {
-                "api_type": {
-                    "type": "string"
-                },
-                "folder": {
-                    "type": "string"
-                },
-                "private_storage": {
-                    "type": "string"
-                },
-                "sys_id": {
-                    "type": "string"
-                },
-                "token": {
-                    "type": "string"
-                },
-                "type": {
-                    "description": "0 表示公有云，1 表示私有云",
-                    "type": "string"
-                },
-                "type_name": {
-                    "type": "string"
-                }
-            }
-        },
         "forms.PwdForm": {
             "type": "object",
             "required": [
@@ -2558,6 +2574,24 @@ var doc = `{
                 }
             }
         },
+        "forms.SmmsForm": {
+            "type": "object",
+            "required": [
+                "storage_type",
+                "token"
+            ],
+            "properties": {
+                "storage_type": {
+                    "type": "string"
+                },
+                "sys_id": {
+                    "type": "string"
+                },
+                "token": {
+                    "type": "string"
+                }
+            }
+        },
         "forms.TagAddForm": {
             "type": "object",
             "required": [
@@ -2580,6 +2614,47 @@ var doc = `{
                     "type": "integer"
                 },
                 "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "forms.TencentCosForm": {
+            "type": "object",
+            "required": [
+                "folder_path",
+                "host",
+                "region",
+                "scheme",
+                "secret_id",
+                "secret_key",
+                "storage_type"
+            ],
+            "properties": {
+                "folder_path": {
+                    "type": "string"
+                },
+                "host": {
+                    "type": "string"
+                },
+                "img_process": {
+                    "type": "string"
+                },
+                "region": {
+                    "type": "string"
+                },
+                "scheme": {
+                    "type": "string"
+                },
+                "secret_id": {
+                    "type": "string"
+                },
+                "secret_key": {
+                    "type": "string"
+                },
+                "storage_type": {
+                    "type": "string"
+                },
+                "sys_id": {
                     "type": "string"
                 }
             }

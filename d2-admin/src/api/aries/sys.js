@@ -26,10 +26,19 @@ export function saveSMTPSetting (data) {
   })
 }
 
-// 保存图床配置
-export function savePicBedSetting (data) {
+// 保存 sm.ms 配置
+export function saveSmmsSetting (data) {
   return request({
-    url: '/sys_setting/pic_bed',
+    url: '/sys_setting/pic_bed/smms',
+    method: 'post',
+    data: data
+  })
+}
+
+// 保存腾讯云 COS 配置
+export function saveTencentCosSetting (data) {
+  return request({
+    url: '/sys_setting/pic_bed/tencent_cos',
     method: 'post',
     data: data
   })

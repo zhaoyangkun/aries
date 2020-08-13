@@ -34,6 +34,7 @@ type EmailSendForm struct {
 
 // 图床设置表单
 type PicBedSettingForm struct {
+	SysId       string `json:"sys_id"`
 	StorageType string `json:"storage_type"`
 }
 

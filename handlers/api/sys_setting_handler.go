@@ -171,8 +171,8 @@ func (s *SysSettingHandler) SaveSMTPSetting(ctx *gin.Context) {
 // @Failure 103/104 object utils.Result 失败
 // @Router /api/v1/sys_setting/pic_bed/smms [post]
 func (s *SysSettingHandler) SaveSmmsSetting(ctx *gin.Context) {
-	settingForm := forms.SmmsForm{}
-	if err := ctx.ShouldBindJSON(&settingForm); err != nil {
+	smmsForm := forms.SmmsForm{}
+	if err := ctx.ShouldBindJSON(&smmsForm); err != nil {
 		ctx.JSON(http.StatusOK, utils.Result{
 			Code: utils.RequestError,
 			Msg:  utils.GetFormError(err),
@@ -180,13 +180,31 @@ func (s *SysSettingHandler) SaveSmmsSetting(ctx *gin.Context) {
 		})
 		return
 	}
-	sysId, _ := strconv.ParseUint(settingForm.SysId, 10, 0)
-	sysSetting := models.SysSetting{
+	sysId, _ := strconv.ParseUint(smmsForm.SysId, 10, 0)
+	smmsSetting := models.SysSetting{
 		Model: gorm.Model{ID: uint(sysId)},
-		Name:  settingForm.StorageType,
+		Name:  smmsForm.StorageType,
+	}
+	picBedSetting := models.SysSetting{
+		Name: "图床设置",
+	}
+	picBedSettingItems, _ := models.SysSettingItem{}.GetBySysSettingName("图床设置")
+	if len(picBedSettingItems) == 0 {
+		if err := picBedSetting.Create(); err != nil {
+			log.Errorln("error: ", err.Error())
+			ctx.JSON(http.StatusOK, utils.Result{
+				Code: utils.ServerError,
+				Msg:  "服务器端错误",
+				Data: nil,
+			})
+			return
+		}
+	} else {
+		sysId, _ := strconv.Atoi(picBedSettingItems["sys_id"])
+		picBedSetting.ID = uint(sysId)
 	}
 	if sysId == 0 {
-		if err := sysSetting.Create(); err != nil {
+		if err := smmsSetting.Create(); err != nil {
 			log.Errorln("error: ", err.Error())
 			ctx.JSON(http.StatusOK, utils.Result{
 				Code: utils.ServerError,
@@ -196,19 +214,150 @@ func (s *SysSettingHandler) SaveSmmsSetting(ctx *gin.Context) {
 			return
 		}
 	}
-	settingForm.SysId = strconv.Itoa(int(sysSetting.ID))
-	t := reflect.TypeOf(settingForm)
-	v := reflect.ValueOf(settingForm)
+	picBedForm := forms.PicBedSettingForm{
+		SysId:       strconv.Itoa(int(picBedSetting.ID)),
+		StorageType: "sm.ms",
+	}
+	t := reflect.TypeOf(picBedForm)
+	v := reflect.ValueOf(picBedForm)
 	var itemList []models.SysSettingItem
 	for i := 0; i < t.NumField(); i++ {
 		item := models.SysSettingItem{
-			SysId: sysSetting.ID,
+			SysId: picBedSetting.ID,
 			Key:   t.Field(i).Tag.Get("json"),
 			Val:   v.Field(i).Interface().(string),
 		}
 		itemList = append(itemList, item)
 	}
-	err := models.SysSettingItem{}.MultiCreateOrUpdate(sysSetting.ID, itemList)
+	err := models.SysSettingItem{}.MultiCreateOrUpdate(picBedSetting.ID, itemList)
+	if err != nil {
+		log.Error("error: ", err.Error())
+		ctx.JSON(http.StatusOK, utils.Result{
+			Code: utils.ServerError,
+			Msg:  "服务器端错误",
+			Data: nil,
+		})
+		return
+	}
+	smmsForm.SysId = strconv.Itoa(int(smmsSetting.ID))
+	t = reflect.TypeOf(smmsForm)
+	v = reflect.ValueOf(smmsForm)
+	itemList = []models.SysSettingItem{}
+	for i := 0; i < t.NumField(); i++ {
+		item := models.SysSettingItem{
+			SysId: smmsSetting.ID,
+			Key:   t.Field(i).Tag.Get("json"),
+			Val:   v.Field(i).Interface().(string),
+		}
+		itemList = append(itemList, item)
+	}
+	err = models.SysSettingItem{}.MultiCreateOrUpdate(smmsSetting.ID, itemList)
+	if err != nil {
+		log.Error("error: ", err.Error())
+		ctx.JSON(http.StatusOK, utils.Result{
+			Code: utils.ServerError,
+			Msg:  "服务器端错误",
+			Data: nil,
+		})
+		return
+	}
+	ctx.JSON(http.StatusOK, utils.Result{
+		Code: utils.Success,
+		Msg:  "保存成功",
+		Data: nil,
+	})
+}
+
+// @Summary 保存腾讯云 COS 配置信息
+// @Tags 系统设置
+// @version 1.0
+// @Accept application/json
+// @Param cosForm body forms.TencentCosForm true "腾讯云 COS 配置表单"
+// @Success 100 object utils.Result 成功
+// @Failure 103/104 object utils.Result 失败
+// @Router /api/v1/sys_setting/pic_bed/tencent_cos [post]
+func (s *SysSettingHandler) SaveTencentCosSetting(ctx *gin.Context) {
+	cosForm := forms.TencentCosForm{}
+	if err := ctx.ShouldBindJSON(&cosForm); err != nil {
+		ctx.JSON(http.StatusOK, utils.Result{
+			Code: utils.RequestError,
+			Msg:  utils.GetFormError(err),
+			Data: nil,
+		})
+		return
+	}
+	sysId, _ := strconv.ParseUint(cosForm.SysId, 10, 0)
+	cosSetting := models.SysSetting{
+		Model: gorm.Model{ID: uint(sysId)},
+		Name:  cosForm.StorageType,
+	}
+	picBedSetting := models.SysSetting{
+		Name: "图床设置",
+	}
+	picBedSettingItems, _ := models.SysSettingItem{}.GetBySysSettingName("图床设置")
+	if len(picBedSettingItems) == 0 {
+		if err := picBedSetting.Create(); err != nil {
+			log.Errorln("error: ", err.Error())
+			ctx.JSON(http.StatusOK, utils.Result{
+				Code: utils.ServerError,
+				Msg:  "服务器端错误",
+				Data: nil,
+			})
+			return
+		}
+	} else {
+		sysId, _ := strconv.Atoi(picBedSettingItems["sys_id"])
+		picBedSetting.ID = uint(sysId)
+	}
+	if sysId == 0 {
+		if err := cosSetting.Create(); err != nil {
+			log.Errorln("error: ", err.Error())
+			ctx.JSON(http.StatusOK, utils.Result{
+				Code: utils.ServerError,
+				Msg:  "服务器端错误",
+				Data: nil,
+			})
+			return
+		}
+	}
+	picBedForm := forms.PicBedSettingForm{
+		SysId:       strconv.Itoa(int(picBedSetting.ID)),
+		StorageType: "cos",
+	}
+	t := reflect.TypeOf(picBedForm)
+	v := reflect.ValueOf(picBedForm)
+	var itemList []models.SysSettingItem
+	for i := 0; i < t.NumField(); i++ {
+		item := models.SysSettingItem{
+			SysId: picBedSetting.ID,
+			Key:   t.Field(i).Tag.Get("json"),
+			Val:   v.Field(i).Interface().(string),
+		}
+		itemList = append(itemList, item)
+	}
+	err := models.SysSettingItem{}.MultiCreateOrUpdate(picBedSetting.ID, itemList)
+	if err != nil {
+		log.Error("error: ", err.Error())
+		ctx.JSON(http.StatusOK, utils.Result{
+			Code: utils.ServerError,
+			Msg:  "服务器端错误",
+			Data: nil,
+		})
+		return
+	}
+	cosForm.SysId = strconv.Itoa(int(cosSetting.ID))
+	t = reflect.TypeOf(cosForm)
+	v = reflect.ValueOf(cosForm)
+	itemList = []models.SysSettingItem{}
+	for i := 0; i < t.NumField(); i++ {
+		item := models.SysSettingItem{
+			SysId: cosSetting.ID,
+			Key:   t.Field(i).Tag.Get("json"),
+			Val:   v.Field(i).Interface().(string),
+		}
+		itemList = append(itemList, item)
+	}
+	err = models.SysSettingItem{}.MultiCreateOrUpdate(cosSetting.ID, itemList)
 	if err != nil {
 		log.Error("error: ", err.Error())
 		ctx.JSON(http.StatusOK, utils.Result{

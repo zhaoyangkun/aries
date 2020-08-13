@@ -114,9 +114,7 @@
                       placeholder="Token"></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button size="small" type="primary" :loading="btn.bedSaveLoading" @click="saveSmmsForm">
-              保存
-            </el-button>
+            <el-button size="small" type="primary" :loading="btn.bedSaveLoading" @click="saveSmmsForm">保存</el-button>
           </el-form-item>
         </el-form>
         <el-form :model="tencentCosForm" ref="tencentCosForm" label-width="130px"
@@ -160,8 +158,7 @@
                       placeholder="请参照腾讯云 COS 图片处理文档"></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button size="small" type="primary" :loading="btn.bedSaveLoading"
-                       @click="savePicBedForm('tencentCosForm')">保存
+            <el-button size="small" type="primary" :loading="btn.bedSaveLoading" @click="saveTencentCosForm">保存
             </el-button>
           </el-form-item>
         </el-form>
@@ -171,7 +168,7 @@
 </template>
 
 <script>
-import { getSysSettingItem, savePicBedSetting, saveSiteSetting, saveSMTPSetting, sendTestEmail } from '@/api/aries/sys'
+import { getSysSettingItem, saveSiteSetting, saveSmmsSetting, saveSMTPSetting, sendTestEmail } from '@/api/aries/sys'
 
 export default {
   name: 'setting',
@@ -382,10 +379,10 @@ export default {
         if (valid) {
           this.btn.bedSaveLoading = true
           setTimeout(() => {
-            savePicBedSetting(this.smmsForm)
+            saveSmmsSetting(this.smmsForm)
               .then(res => {
                 this.$message.success(res.msg)
-                this.getSysSetItem('图床设置', 'smmsForm')
+                this.getSysSetItem('sm.ms', 'smmsForm')
               })
               .catch(() => {
               })
@@ -400,10 +397,10 @@ export default {
         if (valid) {
           this.btn.bedSaveLoading = true
           setTimeout(() => {
-            savePicBedSetting(this.tencentCosForm)
+            this.saveTencentCosForm(this.tencentCosForm)
               .then(res => {
                 this.$message.success(res.msg)
-                this.getSysSetItem('图床设置', 'tencentCosForm')
+                this.getSysSetItem('cos', 'tencentCosForm')
               })
               .catch(() => {
               })
