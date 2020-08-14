@@ -1,15 +1,16 @@
 package setting
 
 import (
+	"io/ioutil"
+	"os"
+	"path/filepath"
+	"strings"
+
 	"github.com/88250/lute"
 	"github.com/gin-contrib/cache/persistence"
 	ut "github.com/go-playground/universal-translator"
 	log "github.com/sirupsen/logrus"
 	"gopkg.in/yaml.v2"
-	"io/ioutil"
-	"os"
-	"path/filepath"
-	"strings"
 )
 
 // 翻译器

@@ -2,8 +2,9 @@ package models
 
 import (
 	"aries/config/db"
-	"github.com/jinzhu/gorm"
 	"strconv"
+
+	"github.com/jinzhu/gorm"
 )
 
 // 系统设置条目
@@ -45,7 +46,7 @@ func (SysSettingItem) GetBySysSettingName(settingName string) (map[string]string
 }
 
 // 批量创建设置条目
-func (SysSettingItem) MultiCreateOrUpdate(sysId uint, itemList []SysSettingItem) error {
+func (SysSettingItem) MultiCreateOrUpdate(itemList []SysSettingItem) error {
 	// 开启事务
 	tx := db.Db.Begin()
 	defer func() {
@@ -56,28 +57,20 @@ func (SysSettingItem) MultiCreateOrUpdate(sysId uint, itemList []SysSettingItem)
 	if err := tx.Error; err != nil {
 		return err
 	}
-	for _, item := range itemList {
-		err := tx.Model(&SysSettingItem{}).Where("`sys_id` = ? and `key` = ?", item.SysId, item.Key).
-			Update("val", item.Val).Error
-		if err != nil {
-			tx.Rollback()
-			return err
-		}
-	}
-	var count int
-	for _, item := range itemList {
+	count := 0
+	for i := range itemList {
 		count = 0
-		err := tx.Model(&SysSettingItem{}).Where("`sys_id` = ? and `key` = ?", item.SysId, item.Key).
+		err := tx.Model(&SysSettingItem{}).Where("`sys_id` = ? and `key` = ?", itemList[i].SysId, itemList[i].Key).
 			Count(&count).Error
 		if err != nil {
 			tx.Rollback()
 			return err
 		}
 		if count == 0 {
-			err = tx.Create(&item).Error
+			err = tx.Create(&itemList[i]).Error
 		} else {
-			err = tx.Model(&SysSettingItem{}).Where("`sys_id` = ? and `key` = ?", item.SysId, item.Key).
-				Update("val", item.Val).Error
+			err = tx.Model(&SysSettingItem{}).Where("`sys_id` = ? and `key` = ?", itemList[i].SysId, itemList[i].Key).
+				Update("val", itemList[i].Val).Error
 		}
 		if err != nil {
 			tx.Rollback()

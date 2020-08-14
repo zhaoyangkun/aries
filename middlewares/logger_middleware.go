@@ -2,13 +2,14 @@ package middlewares
 
 import (
 	"aries/config/setting"
-	"github.com/gin-gonic/gin"
-	"github.com/lestrrat-go/file-rotatelogs"
-	"github.com/rifflock/lfshook"
-	"github.com/sirupsen/logrus"
 	"os"
 	"path/filepath"
 	"time"
+
+	"github.com/gin-gonic/gin"
+	rotatelogs "github.com/lestrrat-go/file-rotatelogs"
+	"github.com/rifflock/lfshook"
+	"github.com/sirupsen/logrus"
 )
 
 // 日志中间件
@@ -109,7 +110,7 @@ func InitLogger() {
 		logrus.PanicLevel: logWriter,
 	}
 
-	lfHook := &lfshook.LfsHook{}
+	var lfHook *lfshook.LfsHook
 	// 设置日志格式
 	switch logFormatter {
 	case "text":

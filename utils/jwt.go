@@ -3,8 +3,9 @@ package utils
 import (
 	"aries/config/setting"
 	"errors"
-	"github.com/dgrijalva/jwt-go"
 	"time"
+
+	"github.com/dgrijalva/jwt-go"
 )
 
 // JWT 签名结构
@@ -21,11 +22,11 @@ type CustomClaims struct {
 
 // 常量
 var (
-	TokenExpired     = errors.New("令牌已过期")
-	TokenNotValidYet = errors.New("令牌未激活")
-	TokenMalformed   = errors.New("令牌格式有误")
-	TokenInvalid     = errors.New("无效的令牌")
-	SignKey          = "aries-open-source-blog" // 签名
+	ErrTokenExpired     = errors.New("令牌已过期")
+	ErrTokenNotValidYet = errors.New("令牌未激活")
+	ErrTokenMalformed   = errors.New("令牌格式有误")
+	ErrTokenInvalid     = errors.New("无效的令牌")
+	SignKey             = "aries-open-source-blog" // 签名
 )
 
 //创建一个 JWT 实例
@@ -54,26 +55,28 @@ func (j *JWT) CreateToken(claims CustomClaims) (string, error) {
 
 // 解析 Token
 func (j *JWT) ParseToken(tokenString string) (*CustomClaims, error) {
-	token, err := jwt.ParseWithClaims(tokenString, &CustomClaims{}, func(token *jwt.Token) (interface{}, error) {
-		return j.SigningKey, nil
-	})
+	token, err := jwt.ParseWithClaims(
+		tokenString, &CustomClaims{},
+		func(token *jwt.Token) (interface{}, error) {
+			return j.SigningKey, nil
+		})
 	if err != nil {
 		if ve, ok := err.(*jwt.ValidationError); ok {
 			if ve.Errors&jwt.ValidationErrorMalformed != 0 {
-				return nil, TokenMalformed
+				return nil, ErrTokenMalformed
 			} else if ve.Errors&jwt.ValidationErrorExpired != 0 {
-				return nil, TokenExpired
+				return nil, ErrTokenExpired
 			} else if ve.Errors&jwt.ValidationErrorNotValidYet != 0 {
-				return nil, TokenNotValidYet
+				return nil, ErrTokenNotValidYet
 			} else {
-				return nil, TokenInvalid
+				return nil, ErrTokenInvalid
 			}
 		}
 	}
 	if claims, ok := token.Claims.(*CustomClaims); ok && token.Valid {
 		return claims, nil
 	}
-	return nil, TokenInvalid
+	return nil, ErrTokenInvalid
 }
 
 // 更新 Token
@@ -94,5 +97,5 @@ func (j *JWT) RefreshToken(tokenString string) (string, error) {
 			Duration(setting.Config.Server.TokenExpireTime)).Unix()
 		return j.CreateToken(*claims)
 	}
-	return "", TokenInvalid
+	return "", ErrTokenInvalid
 }

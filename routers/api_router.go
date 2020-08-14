@@ -3,6 +3,7 @@ package routers
 import (
 	"aries/handlers/api"
 	"aries/middlewares"
+
 	"github.com/gin-gonic/gin"
 )
 

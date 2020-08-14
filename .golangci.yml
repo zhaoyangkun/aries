@@ -1,0 +1,27 @@
+linters-settings:
+  lll:
+    line-length: 135
+
+linters:
+  disable-all: true
+  enable:
+    - errcheck
+    - ineffassign
+    - gas
+    - gofmt
+    - goimports
+    - golint
+    - gosimple
+    - govet
+    - lll
+    - varcheck
+    - unused
+
+issues:
+  exclude-rules:
+    - linters:
+        - golint
+      text: "(const|var|type|method|func|struct field) .+ should be"
+    - linters:
+        - golint
+      text: "(method parameter|func parameter|func result) .+ should be"

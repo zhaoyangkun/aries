@@ -2,6 +2,7 @@ package models
 
 import (
 	"aries/config/db"
+
 	"github.com/jinzhu/gorm"
 )
 

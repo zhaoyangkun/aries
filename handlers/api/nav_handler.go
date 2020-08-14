@@ -4,10 +4,11 @@ import (
 	"aries/forms"
 	"aries/models"
 	"aries/utils"
-	"github.com/gin-gonic/gin"
-	log "github.com/sirupsen/logrus"
 	"net/http"
 	"strconv"
+
+	"github.com/gin-gonic/gin"
+	log "github.com/sirupsen/logrus"
 )
 
 type NavHandler struct {

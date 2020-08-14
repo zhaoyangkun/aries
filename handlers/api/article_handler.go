@@ -4,11 +4,12 @@ import (
 	"aries/forms"
 	"aries/models"
 	"aries/utils"
-	"github.com/gin-gonic/gin"
-	log "github.com/sirupsen/logrus"
 	"io/ioutil"
 	"net/http"
 	"path"
+
+	"github.com/gin-gonic/gin"
+	log "github.com/sirupsen/logrus"
 )
 
 type ArticleHandler struct {
@@ -316,6 +317,15 @@ func (a *ArticleHandler) ImportArticlesFromFiles(ctx *gin.Context) {
 		_ = src.Close()
 		// 读取文件
 		bytes, err := ioutil.ReadAll(src)
+		if err != nil {
+			log.Errorln("error: ", err.Error())
+			ctx.JSON(http.StatusOK, utils.Result{
+				Code: utils.ServerError,
+				Msg:  "服务器端错误",
+				Data: nil,
+			})
+			return
+		}
 		article := models.Article{
 			Content: string(bytes),
 			Title:   utils.GetFileNameOnly(file.Filename),
@@ -381,7 +391,6 @@ func (a *ArticleHandler) MoveArticleUp(ctx *gin.Context) {
 		Msg:  "向上移动成功",
 		Data: nil,
 	})
-	return
 }
 
 // @Summary 向下移动文章

@@ -2,12 +2,13 @@ package test
 
 import (
 	"aries/config/app"
-	"github.com/gin-gonic/gin"
-	"github.com/go-playground/assert/v2"
-	log "github.com/sirupsen/logrus"
 	"net/http"
 	"net/http/httptest"
 	"testing"
+
+	"github.com/gin-gonic/gin"
+	"github.com/go-playground/assert/v2"
+	log "github.com/sirupsen/logrus"
 )
 
 var TestRouter *gin.Engine

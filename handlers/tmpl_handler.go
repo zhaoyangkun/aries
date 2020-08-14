@@ -2,8 +2,9 @@ package handlers
 
 import (
 	"aries/config/setting"
-	"github.com/gin-gonic/gin"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
 )
 
 type TmplHandler struct {

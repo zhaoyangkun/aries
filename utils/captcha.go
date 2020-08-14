@@ -52,8 +52,5 @@ func GenerateCaptcha(captcha *CaptchaConfig) (string, error) {
 
 // 校验验证码
 func CaptchaVerify(captcha *CaptchaConfig) bool {
-	if store.Verify(captcha.Id, captcha.VerifyValue, false) {
-		return true
-	}
-	return false
+	return store.Verify(captcha.Id, captcha.VerifyValue, false)
 }

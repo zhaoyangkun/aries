@@ -1,10 +1,11 @@
 package utils
 
 import (
+	"bytes"
+	"crypto/rand"
 	"fmt"
-	"math/rand"
+	"math/big"
 	"strings"
-	"time"
 )
 
 func GetEmailHTML(title string, receiver string, content string) string {
@@ -140,16 +141,17 @@ func GetForgetPwdEmailHTML(userName string, code string) string {
 }
 
 func GetFeedBackEmailHTML() {
-
 }
 
 func CreateRandomCode(num int) string {
-	numBytes := [10]byte{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}
-	r := len(numBytes)
-	rand.Seed(time.Now().UnixNano())
+	numBytes := []byte{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}
+	length := bytes.NewReader(numBytes).Len()
 	var sb strings.Builder
 	for i := 0; i < num; i++ {
-		_, _ = fmt.Fprintf(&sb, "%d", numBytes[rand.Intn(r)])
+		random, err := rand.Int(rand.Reader, big.NewInt(int64(length)))
+		if err != nil {
+		}
+		_, _ = fmt.Fprintf(&sb, "%d", numBytes[random.Int64()])
 	}
 	return sb.String()
 }

@@ -96,8 +96,9 @@
 
       <el-tab-pane label="图床设置" style="width: 500px">
         <el-form :model="storageForm" :rules="storageFormRules" ref="storageForm" label-width="130px">
-          <el-form-item label="存储类型" prop="storageType">
-            <el-select size="small" v-model="storageForm.storageType" placeholder="请选择存储类型">
+          <el-form-item label="存储类型" prop="storage_type">
+            <el-select size="small" v-model="storageForm.storage_type" placeholder="请选择存储类型"
+                       @change="storageTypeSelectChange">
               <el-option
                 v-for="item in storageTypes"
                 :value="item.value"
@@ -108,7 +109,7 @@
           </el-form-item>
         </el-form>
         <el-form :model="smmsForm" :rules="smmsFormRules" ref="smmsForm" label-width="130px"
-                 v-show="storageForm.storageType==='sm.ms'">
+                 v-show="storageForm.storage_type==='sm.ms'">
           <el-form-item label="Token" prop="token">
             <el-input size="small" v-model="smmsForm.token" type="text" autocomplete="off"
                       placeholder="Token"></el-input>
@@ -118,7 +119,7 @@
           </el-form-item>
         </el-form>
         <el-form :model="tencentCosForm" ref="tencentCosForm" label-width="130px"
-                 v-show="storageForm.storageType==='cos'">
+                 v-show="storageForm.storage_type==='cos'">
           <el-form-item label="存储桶地址" prop="host">
             <el-input size="small" v-model="tencentCosForm.host" type="text" autocomplete="off"
                       placeholder="存储桶地址"></el-input>
@@ -148,8 +149,7 @@
             <el-input size="small" v-model="tencentCosForm.secret_key" type="text" autocomplete="off"
                       placeholder="secret_key"></el-input>
           </el-form-item>
-          <el-form-item labe
-                        l="上传目录" prop="folder_path">
+          <el-form-item label="上传目录" prop="folder_path">
             <el-input size="small" v-model="tencentCosForm.folder_path" type="text" autocomplete="off"
                       placeholder="上传目录"></el-input>
           </el-form-item>
@@ -163,12 +163,33 @@
           </el-form-item>
         </el-form>
       </el-tab-pane>
+
+      <el-tab-pane label="评论设置" style="width: 500px">
+        <el-form :model="tencentCosForm" ref="tencentCosForm" label-width="130px"
+                 v-show="storageForm.storage_type==='cos'">
+          <el-form-item label="存储桶地址" prop="host">
+            <el-input size="small" v-model="tencentCosForm.host" type="text" autocomplete="off"
+                      placeholder="存储桶地址"></el-input>
+          </el-form-item>
+          <el-form-item>
+            <el-button size="small" type="primary" :loading="btn.bedSaveLoading">保存
+            </el-button>
+          </el-form-item>
+        </el-form>
+      </el-tab-pane>
     </el-tabs>
   </d2-container>
 </template>
 
 <script>
-import { getSysSettingItem, saveSiteSetting, saveSmmsSetting, saveSMTPSetting, sendTestEmail } from '@/api/aries/sys'
+import {
+  getSysSettingItem,
+  saveSiteSetting,
+  saveSmmsSetting,
+  saveSMTPSetting,
+  saveTencentCosSetting,
+  sendTestEmail
+} from '@/api/aries/sys'
 
 export default {
   name: 'setting',
@@ -218,7 +239,7 @@ export default {
         content: ''
       },
       storageForm: {
-        storageType: 'sm.ms'
+        storage_type: 'sm.ms'
       },
       smmsForm: {
         sys_id: null,
@@ -235,6 +256,9 @@ export default {
         secret_key: '',
         folder_path: '',
         img_process: ''
+      },
+      commentForm: {
+
       },
       siteRules: {
         site_name: [
@@ -306,12 +330,12 @@ export default {
       } else if (tab.label === '网站设置') {
         this.getSysSetItem(tab.label, 'siteForm')
       } else if (tab.label === '图床设置') {
-        this.getSysSetItem(tab.label, 'picBedForm')
+        this.initPicBedSetting()
       }
     },
     // 获取设置条目
-    getSysSetItem (name, form) {
-      getSysSettingItem(name)
+    async getSysSetItem (name, form) {
+      await getSysSettingItem(name)
         .then(res => {
           if (Object.keys(res.data).length > 0) {
             this[form] = res.data
@@ -319,6 +343,22 @@ export default {
         })
         .catch(() => {
         })
+    },
+    // 初始化图床配置
+    async initPicBedSetting () {
+      await this.getSysSetItem('图床设置', 'storageForm')
+      await this.storageTypeSelectChange()
+    },
+    // 图床类型切换
+    async storageTypeSelectChange () {
+      switch (this.storageForm.storage_type) {
+        case 'sm.ms':
+          await this.getSysSetItem('sm.ms', 'smmsForm')
+          break
+        case 'cos':
+          await this.getSysSetItem('cos', 'tencentCosForm')
+          break
+      }
     },
     // 保存网站设置
     saveSiteForm () {
@@ -397,7 +437,7 @@ export default {
         if (valid) {
           this.btn.bedSaveLoading = true
           setTimeout(() => {
-            this.saveTencentCosForm(this.tencentCosForm)
+            saveTencentCosSetting(this.tencentCosForm)
               .then(res => {
                 this.$message.success(res.msg)
                 this.getSysSetItem('cos', 'tencentCosForm')

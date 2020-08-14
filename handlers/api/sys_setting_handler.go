@@ -5,13 +5,14 @@ import (
 	"aries/forms"
 	"aries/models"
 	"aries/utils"
+	"net/http"
+	"reflect"
+	"strconv"
+
 	"github.com/gin-gonic/gin"
 	"github.com/go-gomail/gomail"
 	"github.com/jinzhu/gorm"
 	log "github.com/sirupsen/logrus"
-	"net/http"
-	"reflect"
-	"strconv"
 )
 
 type SysSettingHandler struct {
@@ -80,7 +81,7 @@ func (s *SysSettingHandler) SaveSiteSetting(ctx *gin.Context) {
 		}
 		itemList = append(itemList, item)
 	}
-	err := models.SysSettingItem{}.MultiCreateOrUpdate(sysSetting.ID, itemList)
+	err := models.SysSettingItem{}.MultiCreateOrUpdate(itemList)
 	if err != nil {
 		log.Error("error: ", err.Error())
 		ctx.JSON(http.StatusOK, utils.Result{
@@ -145,7 +146,7 @@ func (s *SysSettingHandler) SaveSMTPSetting(ctx *gin.Context) {
 		}
 		itemList = append(itemList, item)
 	}
-	err := models.SysSettingItem{}.MultiCreateOrUpdate(sysSetting.ID, itemList)
+	err := models.SysSettingItem{}.MultiCreateOrUpdate(itemList)
 	if err != nil {
 		log.Error("error: ", err.Error())
 		ctx.JSON(http.StatusOK, utils.Result{
@@ -229,7 +230,7 @@ func (s *SysSettingHandler) SaveSmmsSetting(ctx *gin.Context) {
 		}
 		itemList = append(itemList, item)
 	}
-	err := models.SysSettingItem{}.MultiCreateOrUpdate(picBedSetting.ID, itemList)
+	err := models.SysSettingItem{}.MultiCreateOrUpdate(itemList)
 	if err != nil {
 		log.Error("error: ", err.Error())
 		ctx.JSON(http.StatusOK, utils.Result{
@@ -251,7 +252,7 @@ func (s *SysSettingHandler) SaveSmmsSetting(ctx *gin.Context) {
 		}
 		itemList = append(itemList, item)
 	}
-	err = models.SysSettingItem{}.MultiCreateOrUpdate(smmsSetting.ID, itemList)
+	err = models.SysSettingItem{}.MultiCreateOrUpdate(itemList)
 	if err != nil {
 		log.Error("error: ", err.Error())
 		ctx.JSON(http.StatusOK, utils.Result{
@@ -335,7 +336,7 @@ func (s *SysSettingHandler) SaveTencentCosSetting(ctx *gin.Context) {
 		}
 		itemList = append(itemList, item)
 	}
-	err := models.SysSettingItem{}.MultiCreateOrUpdate(picBedSetting.ID, itemList)
+	err := models.SysSettingItem{}.MultiCreateOrUpdate(itemList)
 	if err != nil {
 		log.Error("error: ", err.Error())
 		ctx.JSON(http.StatusOK, utils.Result{
@@ -357,7 +358,7 @@ func (s *SysSettingHandler) SaveTencentCosSetting(ctx *gin.Context) {
 		}
 		itemList = append(itemList, item)
 	}
-	err = models.SysSettingItem{}.MultiCreateOrUpdate(cosSetting.ID, itemList)
+	err = models.SysSettingItem{}.MultiCreateOrUpdate(itemList)
 	if err != nil {
 		log.Error("error: ", err.Error())
 		ctx.JSON(http.StatusOK, utils.Result{

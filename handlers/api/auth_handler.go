@@ -5,12 +5,13 @@ import (
 	"aries/forms"
 	"aries/models"
 	"aries/utils"
+	"net/http"
+	"time"
+
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 	"github.com/go-gomail/gomail"
 	log "github.com/sirupsen/logrus"
-	"net/http"
-	"time"
 )
 
 type AuthHandler struct {
@@ -76,7 +77,7 @@ func (a *AuthHandler) Register(ctx *gin.Context) {
 		Val:   regForm.SiteName,
 	}
 	itemList := []models.SysSettingItem{typeItem, siteNameItem, siteUrlItem}
-	err := models.SysSettingItem{}.MultiCreateOrUpdate(sysSetting.ID, itemList)
+	err := models.SysSettingItem{}.MultiCreateOrUpdate(itemList)
 	if err != nil {
 		log.Errorln("error: ", err.Error())
 		result.Code = utils.ServerError

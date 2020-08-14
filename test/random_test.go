@@ -1,11 +1,11 @@
 package test
 
 import (
-	"log"
+	"aries/utils"
+	"fmt"
 	"testing"
 )
 
-func TestRandomDigit(t *testing.T) {
-	s := utils.CreateRandom(6)
-	log.Println("s: ", s)
+func TestGetRandom(t *testing.T) {
+	fmt.Println("random: ", utils.CreateRandomCode(4))
 }

@@ -1,10 +1,11 @@
 package test
 
 import (
-	log "github.com/sirupsen/logrus"
 	"strconv"
 	"testing"
 	"time"
+
+	log "github.com/sirupsen/logrus"
 )
 
 func TestGetNowTime(t *testing.T) {
