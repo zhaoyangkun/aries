@@ -1,6 +1,6 @@
 <template>
   <d2-container>
-    <template slot="header">用户 / 友链 / 分类</template>
+    <template slot="header">文章 / 分类</template>
     <d2-crud
       ref="d2Crud"
       :loading="loading"
@@ -51,16 +51,17 @@
 
 <script>
 import {
-  addLinkCategory,
+  addArticleCategory,
   deleteCategory,
+  getAllParentCategories,
   getCategoriesByPage,
   multiDelCategories,
-  updateLinkCategory
+  updateArticleCategory
 } from '@/api/aries/category'
 import childCategory from '@/components/aries/category/childCategory'
 
 export default {
-  name: 'category',
+  name: 'postCategory',
   components: {
     // eslint-disable-next-line vue/no-unused-components
     childCategory
@@ -72,6 +73,17 @@ export default {
           title: '分类名称',
           key: 'name',
           width: '180'
+        },
+        {
+          title: '访问 URL',
+          key: 'url',
+          width: '180'
+        },
+        {
+          title: '子级分类',
+          component: {
+            name: childCategory
+          }
         }
       ],
       data: [],
@@ -81,6 +93,7 @@ export default {
         total: 0, // 总条数
         key: '' // 搜索关键词
       },
+      parentCategories: [], // 父级分类列表
       selection: [], // 选中条目
       options: {
         border: true
@@ -102,19 +115,45 @@ export default {
         name: {
           title: '分类名称',
           value: ''
+        },
+        url: {
+          title: 'URL',
+          value: ''
+        },
+        parent_id: {
+          title: '父级分类',
+          value: 0,
+          component: {
+            name: 'el-select',
+            options: []
+          }
         }
       },
       addRules: {
-        name: [{ required: true, message: '请输入分类名称', trigger: 'blur' }]
+        name: [{ required: true, message: '请输入分类名称', trigger: 'blur' }],
+        url: [{ required: true, message: '请输入 URL', trigger: 'blur' }]
       },
       editTemplate: {
         name: {
           title: '分类名称',
           value: ''
+        },
+        url: {
+          title: 'URL',
+          value: ''
+        },
+        parent_id: {
+          title: '父级分类',
+          value: 0,
+          component: {
+            name: 'el-select',
+            options: []
+          }
         }
       },
       editRules: {
-        name: [{ required: true, message: '请输入分类名称', trigger: 'blur' }]
+        name: [{ required: true, message: '请输入分类名称', trigger: 'blur' }],
+        url: [{ required: true, message: '请输入 URL', trigger: 'blur' }]
       },
       formOptions: {
         labelWidth: '80px',
@@ -125,22 +164,23 @@ export default {
     }
   },
   created () {
-    this.fetchPageData()
+    this.fetchData()
+    this.fetchParentCategories()
   },
   methods: {
     // 分页
     paginationCurrentChange (currentPage) {
       this.pagination.currentPage = currentPage
-      this.fetchPageData()
+      this.fetchData()
     },
     // 获取分页数据
-    fetchPageData () {
+    fetchData () {
       this.loading = true
       setTimeout(() => {
         getCategoriesByPage({
           page: this.pagination.currentPage,
           size: this.pagination.pageSize,
-          category_type: 1,
+          category_type: 0,
           key: this.pagination.key
         })
           .then(res => {
@@ -155,7 +195,7 @@ export default {
     // 搜索
     search () {
       this.pagination.currentPage = 1
-      this.fetchPageData()
+      this.fetchData()
     },
     // 重置
     reset () {
@@ -165,7 +205,25 @@ export default {
         total: 0, // 总条数
         key: '' // 搜索关键词
       }
-      this.fetchPageData()
+      this.fetchData()
+    },
+    // 获取父级分类
+    fetchParentCategories () {
+      this.parentCategories = [{ value: 0, label: '请选择父级分类' }]
+      getAllParentCategories(0)
+        .then(res => {
+          const _this = this
+          res.data.forEach(function (val) {
+            _this.parentCategories.push({
+              value: val.ID,
+              label: val.name
+            })
+          })
+          this.addTemplate.parent_id.component.options = this.parentCategories
+          this.editTemplate.parent_id.component.options = this.parentCategories
+        })
+        .catch(() => {
+        })
     },
     // 添加数据弹窗
     addRow () {
@@ -175,14 +233,14 @@ export default {
     },
     // 添加数据
     handleRowAdd (row, done) {
-      row.type = 1
       this.formOptions.saveLoading = true
       setTimeout(() => {
-        addLinkCategory(row)
+        addArticleCategory(row)
           .then(res => {
             this.$message.success(res.msg)
             done()
-            this.fetchPageData()
+            this.fetchData()
+            this.fetchParentCategories()
           })
           .catch(() => {
           })
@@ -190,15 +248,15 @@ export default {
       }, 300)
     },
     handleRowEdit (row, done) {
-      row.type = 1
       this.formOptions.saveLoading = true
       const data = row.row
       setTimeout(() => {
-        updateLinkCategory(data)
+        updateArticleCategory(data)
           .then(res => {
             this.$message.success(res.msg)
             done()
-            this.fetchPageData()
+            this.fetchData()
+            this.fetchParentCategories()
           })
           .catch(() => {
           })
@@ -221,7 +279,8 @@ export default {
           .then(res => {
             this.$message.success(res.msg)
             done()
-            this.fetchPageData()
+            this.fetchData()
+            this.fetchParentCategories()
           })
           .catch(() => {
           })
@@ -246,7 +305,8 @@ export default {
             multiDelCategories(ids)
               .then(res => {
                 this.$message.success(res.msg)
-                this.fetchPageData()
+                this.fetchData()
+                this.fetchParentCategories()
               })
               .catch(() => {
               })

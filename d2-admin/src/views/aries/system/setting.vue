@@ -165,11 +165,9 @@
       </el-tab-pane>
 
       <el-tab-pane label="评论设置" style="width: 500px">
-        <el-form :model="tencentCosForm" ref="tencentCosForm" label-width="130px"
-                 v-show="storageForm.storage_type==='cos'">
-          <el-form-item label="存储桶地址" prop="host">
-            <el-input size="small" v-model="tencentCosForm.host" type="text" autocomplete="off"
-                      placeholder="存储桶地址"></el-input>
+        <el-form ref="tencentCosForm" label-width="130px">
+          <el-form-item label="开启评论" prop="is_open">
+            <el-input size="small" type="text" autocomplete="off" placeholder="开启评论"></el-input>
           </el-form-item>
           <el-form-item>
             <el-button size="small" type="primary" :loading="btn.bedSaveLoading">保存

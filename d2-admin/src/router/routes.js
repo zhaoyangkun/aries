@@ -24,13 +24,13 @@ const frameIn = [
       },
       // 演示页面
       {
-        path: 'category',
-        name: 'category',
+        path: 'post/category',
+        name: 'postCategory',
         meta: {
           title: '文章分类',
           auth: true
         },
-        component: _import('aries/category/category')
+        component: _import('aries/category/postCategory')
       },
       {
         path: 'tag',
@@ -93,7 +93,7 @@ const frameIn = [
           title: '友链分类',
           auth: true
         },
-        component: _import('aries/link/category')
+        component: _import('aries/category/linkCategory')
       },
       {
         path: 'nav',
@@ -103,6 +103,15 @@ const frameIn = [
           auth: true
         },
         component: _import('aries/nav/navs')
+      },
+      {
+        path: 'attach',
+        name: 'attach',
+        meta: {
+          title: '附件',
+          auth: true
+        },
+        component: _import('aries/system/attach')
       },
       {
         path: 'doc',
