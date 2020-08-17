@@ -1,7 +1,7 @@
 import axios from 'axios'
 import Adapter from 'axios-mock-adapter'
 import { get } from 'lodash'
-import { errorLog, errorCreate } from './tools'
+import { errorCreate, errorLog } from './tools'
 import router from '@/router'
 import Vue from 'vue'
 
@@ -41,7 +41,8 @@ function createService () {
           case 101:
             router.replace({
               path: `${dataAxios.data.url}`
-            }).then(r => {})
+            }).then(r => {
+            })
             break
           // code === 102 表示禁止访问
           case 102:
@@ -50,7 +51,8 @@ function createService () {
             // 跳转到登录页面
             router.replace({
               path: '/login'
-            }).then(r => {})
+            }).then(r => {
+            })
             break
           // code === 103 或 104 代表有错误发生
           default:
@@ -121,7 +123,7 @@ function createRequestFunction (service) {
         // 返回数据类型
         Accept: 'application/json'
       },
-      timeout: 5000,
+      timeout: 10000,
       baseURL: process.env.VUE_APP_API,
       data: {}
     }

@@ -29,7 +29,7 @@ var doc = `{
     "basePath": "{{.BasePath}}",
     "paths": {
         "/api/articles/up": {
-            "post": {
+            "patch": {
                 "consumes": [
                     "application/json"
                 ],
@@ -370,7 +370,7 @@ var doc = `{
             }
         },
         "/api/v1/articles/down": {
-            "post": {
+            "patch": {
                 "consumes": [
                     "application/json"
                 ],
@@ -1459,6 +1459,41 @@ var doc = `{
                 }
             }
         },
+        "/api/v1/sys_setting/comment": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "系统设置"
+                ],
+                "summary": "保存评论配置信息",
+                "parameters": [
+                    {
+                        "description": "评论配置表单",
+                        "name": "settingForm",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/forms.CommentSettingForm"
+                        }
+                    }
+                ],
+                "responses": {
+                    "100": {
+                        "description": "Continue",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Result"
+                        }
+                    },
+                    "104": {
+                        "schema": {
+                            "$ref": "#/definitions/utils.Result"
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/sys_setting/email/test": {
             "post": {
                 "consumes": [
@@ -1468,6 +1503,30 @@ var doc = `{
                     "系统设置"
                 ],
                 "summary": "发送测试邮件",
+                "responses": {
+                    "100": {
+                        "description": "Continue",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Result"
+                        }
+                    },
+                    "104": {
+                        "schema": {
+                            "$ref": "#/definitions/utils.Result"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/sys_setting/img/upload": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "系统设置"
+                ],
+                "summary": "上传图片",
                 "responses": {
                     "100": {
                         "description": "Continue",
@@ -1539,6 +1598,41 @@ var doc = `{
                 }
             }
         },
+        "/api/v1/sys_setting/pic_bed/imgbb": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "系统设置"
+                ],
+                "summary": "保存 imgbb 配置信息",
+                "parameters": [
+                    {
+                        "description": "imgbb 配置表单",
+                        "name": "imgbbForm",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/forms.ImgbbForm"
+                        }
+                    }
+                ],
+                "responses": {
+                    "100": {
+                        "description": "Continue",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Result"
+                        }
+                    },
+                    "104": {
+                        "schema": {
+                            "$ref": "#/definitions/utils.Result"
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/sys_setting/pic_bed/smms": {
             "post": {
                 "consumes": [
@@ -1551,7 +1645,7 @@ var doc = `{
                 "parameters": [
                     {
                         "description": "sm.ms 配置表单",
-                        "name": "settingForm",
+                        "name": "smmsForm",
                         "in": "body",
                         "required": true,
                         "schema": {
@@ -2300,6 +2394,27 @@ var doc = `{
                 }
             }
         },
+        "forms.CommentSettingForm": {
+            "type": "object",
+            "required": [
+                "is_on",
+                "is_review_on"
+            ],
+            "properties": {
+                "is_on": {
+                    "type": "string"
+                },
+                "is_review_on": {
+                    "type": "string"
+                },
+                "sys_id": {
+                    "type": "string"
+                },
+                "type_name": {
+                    "type": "string"
+                }
+            }
+        },
         "forms.EmailSettingForm": {
             "type": "object",
             "required": [
@@ -2341,6 +2456,24 @@ var doc = `{
             ],
             "properties": {
                 "email": {
+                    "type": "string"
+                }
+            }
+        },
+        "forms.ImgbbForm": {
+            "type": "object",
+            "required": [
+                "storage_type",
+                "token"
+            ],
+            "properties": {
+                "storage_type": {
+                    "type": "string"
+                },
+                "sys_id": {
+                    "type": "string"
+                },
+                "token": {
                     "type": "string"
                 }
             }

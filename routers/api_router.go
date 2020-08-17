@@ -47,8 +47,8 @@ func (a *ApiRouter) InitApiRouter(rootPath string, router *gin.Engine) {
 		ArticleApiRouter.DELETE("/articles/:id", articleHandler.DeleteArticle)
 		ArticleApiRouter.DELETE("/articles", articleHandler.MultiDelArticles)
 		ArticleApiRouter.POST("/articles/files", articleHandler.ImportArticlesFromFiles)
-		ArticleApiRouter.POST("/articles/up", articleHandler.MoveArticleUp)
-		ArticleApiRouter.POST("/articles/down", articleHandler.MoveArticleDown)
+		ArticleApiRouter.PATCH("/articles/up", articleHandler.MoveArticleUp)
+		ArticleApiRouter.PATCH("/articles/down", articleHandler.MoveArticleDown)
 	}
 
 	categoryApiRouter := router.Group(rootPath, middlewares.JWTAuthMiddleWare())
@@ -98,12 +98,15 @@ func (a *ApiRouter) InitApiRouter(rootPath string, router *gin.Engine) {
 	sysSettingApiRouter := router.Group(rootPath, middlewares.JWTAuthMiddleWare())
 	{
 		sysSettingApiRouter.GET("/sys_setting/items", sysSettingHandler.GetSysSettingItem)
+		sysSettingApiRouter.GET("/sys_setting/index_info", sysSettingHandler.GetAdminIndexData)
 		sysSettingApiRouter.POST("/sys_setting/site", sysSettingHandler.SaveSiteSetting)
 		sysSettingApiRouter.POST("/sys_setting/smtp", sysSettingHandler.SaveSMTPSetting)
-		sysSettingApiRouter.POST("/sys_setting/pic_bed/smms", sysSettingHandler.SaveSmmsSetting)
-		sysSettingApiRouter.POST("/sys_setting/pic_bed/tencent_cos", sysSettingHandler.SaveTencentCosSetting)
 		sysSettingApiRouter.POST("/sys_setting/email/test", sysSettingHandler.SendTestEmail)
-		sysSettingApiRouter.GET("/sys_setting/index_info", sysSettingHandler.GetAdminIndexData)
+		sysSettingApiRouter.POST("/sys_setting/pic_bed/smms", sysSettingHandler.SaveSmmsSetting)
+		sysSettingApiRouter.POST("/sys_setting/pic_bed/imgbb", sysSettingHandler.SaveImgbbSetting)
+		sysSettingApiRouter.POST("/sys_setting/pic_bed/tencent_cos", sysSettingHandler.SaveTencentCosSetting)
+		sysSettingApiRouter.POST("/sys_setting/img/upload", sysSettingHandler.UploadImg)
+		sysSettingApiRouter.POST("/sys_setting/comment", sysSettingHandler.SaveCommentSetting)
 	}
 
 	tagApiRouter := router.Group(rootPath, middlewares.JWTAuthMiddleWare())

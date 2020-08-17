@@ -22,7 +22,6 @@ const frameIn = [
         },
         component: _import('aries/system/index')
       },
-      // 演示页面
       {
         path: 'post/category',
         name: 'postCategory',
@@ -79,7 +78,7 @@ const frameIn = [
       },
       {
         path: 'link',
-        name: 'link',
+        name: 'links',
         meta: {
           title: '友链',
           auth: true
@@ -97,7 +96,7 @@ const frameIn = [
       },
       {
         path: 'nav',
-        name: 'nav',
+        name: 'navs',
         meta: {
           title: '菜单',
           auth: true
@@ -105,13 +104,13 @@ const frameIn = [
         component: _import('aries/nav/navs')
       },
       {
-        path: 'attach',
-        name: 'attach',
+        path: 'attachment',
+        name: 'attachment',
         meta: {
           title: '附件',
           auth: true
         },
-        component: _import('aries/system/attach')
+        component: _import('aries/system/attachment')
       },
       {
         path: 'doc',

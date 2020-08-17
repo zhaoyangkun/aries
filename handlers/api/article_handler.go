@@ -355,7 +355,7 @@ func (a *ArticleHandler) ImportArticlesFromFiles(ctx *gin.Context) {
 // @Param oderForm body forms.ArticleOrderForm true "文章排序表单"
 // @Success 100 object utils.Result 成功
 // @Failure 103/104 object utils.Result 失败
-// @Router /api/articles/up [post]
+// @Router /api/articles/up [patch]
 func (a *ArticleHandler) MoveArticleUp(ctx *gin.Context) {
 	orderForm := forms.ArticleOrderForm{}
 	if err := ctx.ShouldBindJSON(&orderForm); err != nil {
@@ -400,7 +400,7 @@ func (a *ArticleHandler) MoveArticleUp(ctx *gin.Context) {
 // @Param oderForm body forms.ArticleOrderForm true "文章排序表单"
 // @Success 100 object utils.Result 成功
 // @Failure 103/104 object utils.Result 失败
-// @Router /api/v1/articles/down [post]
+// @Router /api/v1/articles/down [patch]
 func (a *ArticleHandler) MoveArticleDown(ctx *gin.Context) {
 	orderForm := forms.ArticleOrderForm{}
 	if err := ctx.ShouldBindJSON(&orderForm); err != nil {

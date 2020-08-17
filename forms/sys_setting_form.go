@@ -5,12 +5,12 @@ type SiteSettingForm struct {
 	SysId         string `json:"sys_id" label:"设置 ID"`
 	TypeName      string `json:"type_name" binding:"required,max=50" label:"设置类型名称"`
 	SiteName      string `json:"site_name" binding:"required,max=50" label:"网站名称"`
-	SiteDesc      string `json:"site_desc" label:"网站描述"`
-	SiteUrl       string `json:"site_url" binding:"required,max=255" label:"网站地址"`
-	SiteLogo      string `json:"site_logo" label:"Logo"`
-	SeoKeyWords   string `json:"seo_key_words" label:"SEO 关键词"`
-	HeadContent   string `json:"head_content" label:"全局 head"`
-	FooterContent string `json:"footer_content" label:"全局 footer"`
+	SiteDesc      string `json:"site_desc" binding:"max=255" label:"网站描述"`
+	SiteUrl       string `json:"site_url" binding:"required,max=255,url" label:"网站地址"`
+	SiteLogo      string `json:"site_logo" binding:"max=255" label:"Logo"`
+	SeoKeyWords   string `json:"seo_key_words" binding:"max=255" label:"SEO 关键词"`
+	HeadContent   string `json:"head_content" binding:"max=1000" label:"全局 head"`
+	FooterContent string `json:"footer_content" binding:"max=1000" label:"全局 footer"`
 }
 
 // SMTP 配置表单
@@ -29,7 +29,7 @@ type EmailSendForm struct {
 	Sender       string `json:"sender" binding:"required,max=30" label:"发送人"`
 	ReceiveEmail string `json:"receive_email" binding:"required,max=30,email" label:"接收邮箱"`
 	Title        string `json:"title" binding:"required,max=100" label:"邮箱标题"`
-	Content      string `json:"content" binding:"required,max=1200" label:"邮件内容"`
+	Content      string `json:"content" binding:"required,max=1000" label:"邮件内容"`
 }
 
 // 图床设置表单
@@ -40,6 +40,13 @@ type PicBedSettingForm struct {
 
 // sm.ms 表单
 type SmmsForm struct {
+	SysId       string `json:"sys_id" label:"设置 ID"`
+	StorageType string `json:"storage_type" binding:"required,max=20" label:"设置类型名称"`
+	Token       string `json:"token" binding:"required,max=100"`
+}
+
+// imgbb 表单
+type ImgbbForm struct {
 	SysId       string `json:"sys_id" label:"设置 ID"`
 	StorageType string `json:"storage_type" binding:"required,max=20" label:"设置类型名称"`
 	Token       string `json:"token" binding:"required,max=100"`
@@ -56,4 +63,12 @@ type TencentCosForm struct {
 	SecretKey   string `json:"secret_key" binding:"required,max=255" label:"secret_key"`
 	FolderPath  string `json:"folder_path" binding:"required,max=255" label:"上传目录"`
 	ImgProcess  string `json:"img_process" binding:"max=255" label:"图片处理"`
+}
+
+// 评论设置表单
+type CommentSettingForm struct {
+	SysId      string `json:"sys_id" label:"设置 ID"`
+	TypeName   string `json:"type_name" label:"设置类型名称"`
+	IsOn       string `json:"is_on" binding:"required" label:"是否开启评论"`
+	IsReviewOn string `json:"is_review_on" binding:"required" label:"是否开启评论审核"`
 }

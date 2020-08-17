@@ -167,7 +167,7 @@ func (s *SysSettingHandler) SaveSMTPSetting(ctx *gin.Context) {
 // @Tags 系统设置
 // @version 1.0
 // @Accept application/json
-// @Param settingForm body forms.SmmsForm true "sm.ms 配置表单"
+// @Param smmsForm body forms.SmmsForm true "sm.ms 配置表单"
 // @Success 100 object utils.Result 成功
 // @Failure 103/104 object utils.Result 失败
 // @Router /api/v1/sys_setting/pic_bed/smms [post]
@@ -247,6 +247,112 @@ func (s *SysSettingHandler) SaveSmmsSetting(ctx *gin.Context) {
 	for i := 0; i < t.NumField(); i++ {
 		item := models.SysSettingItem{
 			SysId: smmsSetting.ID,
+			Key:   t.Field(i).Tag.Get("json"),
+			Val:   v.Field(i).Interface().(string),
+		}
+		itemList = append(itemList, item)
+	}
+	err = models.SysSettingItem{}.MultiCreateOrUpdate(itemList)
+	if err != nil {
+		log.Error("error: ", err.Error())
+		ctx.JSON(http.StatusOK, utils.Result{
+			Code: utils.ServerError,
+			Msg:  "服务器端错误",
+			Data: nil,
+		})
+		return
+	}
+	ctx.JSON(http.StatusOK, utils.Result{
+		Code: utils.Success,
+		Msg:  "保存成功",
+		Data: nil,
+	})
+}
+
+// @Summary 保存 imgbb 配置信息
+// @Tags 系统设置
+// @version 1.0
+// @Accept application/json
+// @Param imgbbForm body forms.ImgbbForm true "imgbb 配置表单"
+// @Success 100 object utils.Result 成功
+// @Failure 103/104 object utils.Result 失败
+// @Router /api/v1/sys_setting/pic_bed/imgbb [post]
+func (s *SysSettingHandler) SaveImgbbSetting(ctx *gin.Context) {
+	imgbbForm := forms.ImgbbForm{}
+	if err := ctx.ShouldBindJSON(&imgbbForm); err != nil {
+		ctx.JSON(http.StatusOK, utils.Result{
+			Code: utils.RequestError,
+			Msg:  utils.GetFormError(err),
+			Data: nil,
+		})
+		return
+	}
+	sysId, _ := strconv.ParseUint(imgbbForm.SysId, 10, 0)
+	imgbbSetting := models.SysSetting{
+		Model: gorm.Model{ID: uint(sysId)},
+		Name:  imgbbForm.StorageType,
+	}
+	picBedSetting := models.SysSetting{
+		Name: "图床设置",
+	}
+	picBedSettingItems, _ := models.SysSettingItem{}.GetBySysSettingName("图床设置")
+	if len(picBedSettingItems) == 0 {
+		if err := picBedSetting.Create(); err != nil {
+			log.Errorln("error: ", err.Error())
+			ctx.JSON(http.StatusOK, utils.Result{
+				Code: utils.ServerError,
+				Msg:  "服务器端错误",
+				Data: nil,
+			})
+			return
+		}
+	} else {
+		sysId, _ := strconv.Atoi(picBedSettingItems["sys_id"])
+		picBedSetting.ID = uint(sysId)
+	}
+	if sysId == 0 {
+		if err := imgbbSetting.Create(); err != nil {
+			log.Errorln("error: ", err.Error())
+			ctx.JSON(http.StatusOK, utils.Result{
+				Code: utils.ServerError,
+				Msg:  "服务器端错误",
+				Data: nil,
+			})
+			return
+		}
+	}
+	picBedForm := forms.PicBedSettingForm{
+		SysId:       strconv.Itoa(int(picBedSetting.ID)),
+		StorageType: "imgbb",
+	}
+	t := reflect.TypeOf(picBedForm)
+	v := reflect.ValueOf(picBedForm)
+	var itemList []models.SysSettingItem
+	for i := 0; i < t.NumField(); i++ {
+		item := models.SysSettingItem{
+			SysId: picBedSetting.ID,
+			Key:   t.Field(i).Tag.Get("json"),
+			Val:   v.Field(i).Interface().(string),
+		}
+		itemList = append(itemList, item)
+	}
+	err := models.SysSettingItem{}.MultiCreateOrUpdate(itemList)
+	if err != nil {
+		log.Error("error: ", err.Error())
+		ctx.JSON(http.StatusOK, utils.Result{
+			Code: utils.ServerError,
+			Msg:  "服务器端错误",
+			Data: nil,
+		})
+		return
+	}
+	imgbbForm.SysId = strconv.Itoa(int(imgbbSetting.ID))
+	t = reflect.TypeOf(imgbbForm)
+	v = reflect.ValueOf(imgbbForm)
+	itemList = []models.SysSettingItem{}
+	for i := 0; i < t.NumField(); i++ {
+		item := models.SysSettingItem{
+			SysId: imgbbSetting.ID,
 			Key:   t.Field(i).Tag.Get("json"),
 			Val:   v.Field(i).Interface().(string),
 		}
@@ -499,5 +605,140 @@ func (s *SysSettingHandler) GetAdminIndexData(ctx *gin.Context) {
 			"latest_articles": latestArticles,
 			"latest_comments": latestComments,
 		},
+	})
+}
+
+// @Summary 保存评论配置信息
+// @Tags 系统设置
+// @version 1.0
+// @Accept application/json
+// @Param settingForm body forms.CommentSettingForm true "评论配置表单"
+// @Success 100 object utils.Result 成功
+// @Failure 103/104 object utils.Result 失败
+// @Router /api/v1/sys_setting/comment [post]
+func (s *SysSettingHandler) SaveCommentSetting(ctx *gin.Context) {
+	settingForm := forms.CommentSettingForm{}
+	if err := ctx.ShouldBindJSON(&settingForm); err != nil {
+		ctx.JSON(http.StatusOK, utils.Result{
+			Code: utils.RequestError,
+			Msg:  utils.GetFormError(err),
+			Data: nil,
+		})
+		return
+	}
+	sysId, _ := strconv.ParseUint(settingForm.SysId, 10, 0)
+	sysSetting := models.SysSetting{
+		Model: gorm.Model{ID: uint(sysId)},
+		Name:  settingForm.TypeName,
+	}
+	if sysId == 0 {
+		if err := sysSetting.Create(); err != nil {
+			log.Errorln("error: ", err.Error())
+			ctx.JSON(http.StatusOK, utils.Result{
+				Code: utils.ServerError,
+				Msg:  "服务器端错误",
+				Data: nil,
+			})
+			return
+		}
+	}
+	t := reflect.TypeOf(settingForm)
+	v := reflect.ValueOf(settingForm)
+	var itemList []models.SysSettingItem
+	for i := 0; i < t.NumField(); i++ {
+		item := models.SysSettingItem{
+			SysId: sysSetting.ID,
+			Key:   t.Field(i).Tag.Get("json"),
+			Val:   v.Field(i).Interface().(string),
+		}
+		itemList = append(itemList, item)
+	}
+	err := models.SysSettingItem{}.MultiCreateOrUpdate(itemList)
+	if err != nil {
+		log.Error("error: ", err.Error())
+		ctx.JSON(http.StatusOK, utils.Result{
+			Code: utils.ServerError,
+			Msg:  "服务器端错误",
+			Data: nil,
+		})
+		return
+	}
+	ctx.JSON(http.StatusOK, utils.Result{
+		Code: utils.Success,
+		Msg:  "保存成功",
+		Data: nil,
+	})
+}
+
+// @Summary 上传图片
+// @Tags 系统设置
+// @version 1.0
+// @Accept application/json
+// @Success 100 object utils.Result 成功
+// @Failure 103/104 object utils.Result 失败
+// @Router /api/v1/sys_setting/img/upload [post]
+func (s *SysSettingHandler) UploadImg(ctx *gin.Context) {
+	multiForm, _ := ctx.MultipartForm()
+	files := multiForm.File["file[]"]
+	for _, file := range files {
+		if !utils.IsImageFile(file.Filename) {
+			ctx.JSON(http.StatusOK, utils.Result{
+				Code: utils.RequestError,
+				Msg:  "只支持上传jpeg, jpg, png, gif, bmp 格式的图片",
+				Data: nil,
+			})
+			return
+		}
+	}
+	picBedSetting, err := models.SysSettingItem{}.GetBySysSettingName("图床设置")
+	if err != nil {
+		log.Errorln("err: ", err.Error())
+		ctx.JSON(http.StatusOK, utils.Result{
+			Code: utils.ServerError,
+			Msg:  "服务器端错误",
+			Data: nil,
+		})
+		return
+	}
+	if len(picBedSetting) == 0 {
+		ctx.JSON(http.StatusOK, utils.Result{
+			Code: utils.RequestError,
+			Msg:  "请先配置图床",
+			Data: nil,
+		})
+		return
+	}
+	imgSetting, err := models.SysSettingItem{}.GetBySysSettingName(picBedSetting["storage_type"])
+	if err != nil {
+		log.Errorln("err: ", err.Error())
+		ctx.JSON(http.StatusOK, utils.Result{
+			Code: utils.ServerError,
+			Msg:  "服务器端错误",
+			Data: nil,
+		})
+		return
+	}
+	for _, file := range files {
+		switch picBedSetting["storage_type"] {
+		case "sm.ms":
+			err = utils.UploadToSmms(file, imgSetting["token"])
+		case "imgbb":
+			err = utils.UploadToImgbb(file, imgSetting["token"])
+		case "cos":
+			break
+		}
+		if err != nil {
+			ctx.JSON(http.StatusOK, utils.Result{
+				Code: utils.ServerError,
+				Msg:  "服务器端错误",
+				Data: nil,
+			})
+			return
+		}
+	}
+	ctx.JSON(http.StatusOK, utils.Result{
+		Code: utils.Success,
+		Msg:  "上传成功",
+		Data: nil,
 	})
 }

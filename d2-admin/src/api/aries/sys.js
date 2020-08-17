@@ -35,10 +35,28 @@ export function saveSmmsSetting (data) {
   })
 }
 
+// 保存 imgbb 配置
+export function saveImgbbSetting (data) {
+  return request({
+    url: '/sys_setting/pic_bed/imgbb',
+    method: 'post',
+    data: data
+  })
+}
+
 // 保存腾讯云 COS 配置
 export function saveTencentCosSetting (data) {
   return request({
     url: '/sys_setting/pic_bed/tencent_cos',
+    method: 'post',
+    data: data
+  })
+}
+
+// 保存评论配置
+export function saveCommentSetting (data) {
+  return request({
+    url: '/sys_setting/comment',
     method: 'post',
     data: data
   })
@@ -58,5 +76,19 @@ export function getAdminIndexData () {
   return request({
     url: '/sys_setting/index_info',
     method: 'get'
+  })
+}
+
+// 上传图片
+export function uploadImgToPicBed (data) {
+  return request({
+    url: '/sys_setting/img/upload',
+    method: 'post',
+    data: data,
+    headers: {
+      token: localStorage.getItem('token'),
+      'Content-Type': 'multipart/form-data',
+      Accept: 'application/json'
+    }
   })
 }

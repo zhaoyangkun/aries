@@ -64,7 +64,7 @@ const menu = [
     icon: 'gears',
     children: [
       { path: '/setting', title: '设置', icon: 'cog' },
-      { path: '/attach', title: '附件', icon: 'save' },
+      { path: '/attachment', title: '附件', icon: 'save' },
       { path: '/doc', title: 'API 文档', icon: 'book' }
       // { path: '/about', title: '关于', icon: 'paper-plane' }
     ]

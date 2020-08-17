@@ -108,6 +108,7 @@
             </el-select>
           </el-form-item>
         </el-form>
+
         <el-form :model="smmsForm" :rules="smmsFormRules" ref="smmsForm" label-width="130px"
                  v-show="storageForm.storage_type==='sm.ms'">
           <el-form-item label="Token" prop="token">
@@ -118,7 +119,19 @@
             <el-button size="small" type="primary" :loading="btn.bedSaveLoading" @click="saveSmmsForm">保存</el-button>
           </el-form-item>
         </el-form>
-        <el-form :model="tencentCosForm" ref="tencentCosForm" label-width="130px"
+
+        <el-form :model="imgbbForm" :rules="imgbbFormRules" ref="imgbbForm" label-width="130px"
+                 v-show="storageForm.storage_type==='imgbb'">
+          <el-form-item label="Token" prop="token">
+            <el-input size="small" v-model="imgbbForm.token" type="text" autocomplete="off"
+                      placeholder="Token"></el-input>
+          </el-form-item>
+          <el-form-item>
+            <el-button size="small" type="primary" :loading="btn.bedSaveLoading" @click="saveImgbbForm">保存</el-button>
+          </el-form-item>
+        </el-form>
+
+        <el-form :model="tencentCosForm" ref="tencentCosForm" :rules="tencentCosFormRules" label-width="130px"
                  v-show="storageForm.storage_type==='cos'">
           <el-form-item label="存储桶地址" prop="host">
             <el-input size="small" v-model="tencentCosForm.host" type="text" autocomplete="off"
@@ -165,12 +178,16 @@
       </el-tab-pane>
 
       <el-tab-pane label="评论设置" style="width: 500px">
-        <el-form ref="tencentCosForm" label-width="130px">
-          <el-form-item label="开启评论" prop="is_open">
-            <el-input size="small" type="text" autocomplete="off" placeholder="开启评论"></el-input>
+        <el-form ref="commentForm" :model="commentForm" :rules="commentFormRules" label-width="130px">
+          <el-form-item label="评论功能" prop="is_on">
+            <el-switch active-value="1" inactive-value="0" v-model="commentForm.is_on"></el-switch>
+          </el-form-item>
+          <el-form-item label="评论审核" prop="is_review_on">
+            <el-switch active-value="1" inactive-value="0" v-model="commentForm.is_review_on"></el-switch>
           </el-form-item>
           <el-form-item>
-            <el-button size="small" type="primary" :loading="btn.bedSaveLoading">保存
+            <el-button size="small" type="primary" :loading="btn.commentSaveLoading"
+                       @click="saveCommentForm">保存
             </el-button>
           </el-form-item>
         </el-form>
@@ -182,6 +199,7 @@
 <script>
 import {
   getSysSettingItem,
+  saveCommentSetting, saveImgbbSetting,
   saveSiteSetting,
   saveSmmsSetting,
   saveSMTPSetting,
@@ -196,6 +214,7 @@ export default {
       tabPosition: 'top',
       storageTypes: [
         { value: 'sm.ms', name: 'sm.ms' },
+        { value: 'imgbb', name: 'imgbb' },
         { value: 'cos', name: '腾讯云' }
       ],
       cosRegions: [
@@ -244,6 +263,11 @@ export default {
         storage_type: 'sm.ms',
         token: ''
       },
+      imgbbForm: {
+        sys_id: null,
+        storage_type: 'imgbb',
+        token: ''
+      },
       tencentCosForm: {
         sys_id: null,
         storage_type: 'cos',
@@ -256,45 +280,76 @@ export default {
         img_process: ''
       },
       commentForm: {
-
+        sys_id: '',
+        type_name: '评论设置',
+        is_on: '1',
+        is_review_on: '1'
       },
       siteRules: {
         site_name: [
-          { required: true, message: '请输入网站名称', trigger: 'blur' }
+          { required: true, message: '请输入网站名称', trigger: 'blur' },
+          { max: 50, message: '网站名称长度不能超过 50', trigger: 'blur' }
         ],
         site_url: [
-          { required: true, message: '请输入网站地址', trigger: 'blur' }
+          { required: true, message: '请输入网站地址', trigger: 'blur' },
+          { max: 255, message: '网站地址长度不能超过 255', trigger: 'blur' },
+          { type: 'url', message: '请输入正确的 URL', trigger: 'blur' }
+        ],
+        site_desc: [
+          { max: 255, message: '网站描述长度不能超过 255', trigger: 'blur' }
+        ],
+        site_logo: [
+          { max: 255, message: '网站 logo 长度不能超过 255', trigger: 'blur' }
+        ],
+        seo_key_words: [
+          { max: 255, message: 'SEO 关键词长度不能超过 255', trigger: 'blur' }
+        ],
+        head_content: [
+          { max: 1000, message: '全局 head 脚本长度不能超过 1000', trigger: 'blur' }
+        ],
+        footer_content: [
+          { max: 1000, message: '全局 footer 脚本长度不能超过 1000', trigger: 'blur' }
         ]
       },
       emailRules: {
         address: [
-          { required: true, message: '请输入SMTP 地址', trigger: 'blur' }
+          { required: true, message: '请输入SMTP 地址', trigger: 'blur' },
+          { max: 50, message: 'SMTP 地址长度不能超过 50', trigger: 'blur' }
         ],
         port: [
-          { required: true, message: '请输入端口', trigger: 'blur' }
+          { required: true, message: '请输入端口', trigger: 'blur' },
+          { max: 3, message: '端口长度不能超过 3', trigger: 'blur' }
         ],
         account: [
-          { required: true, message: '请输入邮箱帐号', trigger: 'blur' }
+          { required: true, message: '请输入邮箱帐号', trigger: 'blur' },
+          { max: 30, message: '邮箱帐号长度不能超过 30', trigger: 'blur' }
         ],
         pwd: [
-          { required: true, message: '请输入密码', trigger: 'blur' }
+          { required: true, message: '请输入密码', trigger: 'blur' },
+          { max: 30, message: '密码长度不能超过 30', trigger: 'blur' }
         ],
         sender: [
-          { required: true, message: '请输入发件人', trigger: 'blur' }
+          { required: true, message: '请输入发件人', trigger: 'blur' },
+          { max: 30, message: '发件人长度不能超过 30', trigger: 'blur' }
         ]
       },
       emailSendRules: {
         sender: [
-          { required: true, message: '请输入发送人', trigger: 'blur' }
+          { required: true, message: '请输入发送人', trigger: 'blur' },
+          { max: 30, message: '发送人长度不能超过 30', trigger: 'blur' }
         ],
         receive_email: [
-          { required: true, message: '请输入接收邮箱', trigger: 'blur' }
+          { required: true, message: '请输入接收邮箱', trigger: 'blur' },
+          { max: 30, message: '邮箱长度不能超过 30', trigger: 'blur' },
+          { type: 'email', message: '请输入正确的邮箱帐号', trigger: 'blur' }
         ],
         title: [
-          { required: true, message: '请输入邮件标题', trigger: 'blur' }
+          { required: true, message: '请输入邮件标题', trigger: 'blur' },
+          { max: 100, message: '邮件标题长度不能超过 100', trigger: 'blur' }
         ],
         content: [
-          { required: true, message: '请输入邮件内容', trigger: 'blur' }
+          { required: true, message: '请输入邮件内容', trigger: 'blur' },
+          { max: 1000, message: '邮件内容长度不能超过 1000', trigger: 'blur' }
         ]
       },
       storageFormRules: {
@@ -304,15 +359,56 @@ export default {
       },
       smmsFormRules: {
         token: [
-          { required: true, message: '请输入 Token', trigger: 'blur' }
+          { required: true, message: '请输入 Token', trigger: 'blur' },
+          { max: 100, message: 'Token 长度不能超过 100', trigger: 'blur' }
         ]
       },
-      tencentCosFormRules: {},
+      imgbbFormRules: {
+        token: [
+          { required: true, message: '请输入 Token', trigger: 'blur' },
+          { max: 100, message: 'Token 长度不能超过 100', trigger: 'blur' }
+        ]
+      },
+      tencentCosFormRules: {
+        host: [
+          { required: true, message: '请输入存储桶地址', trigger: 'blur' },
+          { max: 255, message: '存储桶地址长度不能超过 255 ', trigger: 'blur' }
+        ],
+        scheme: [
+          { required: true, message: '请选择传输协议', trigger: 'blur' },
+          { max: 5, message: '传输协议只能为 http 或者 https', trigger: 'blur' }
+        ],
+        region: [
+          { required: true, message: '请选择区域', trigger: 'blur' },
+          { max: 20, message: '区域长度不能超过 20 ', trigger: 'blur' }
+        ],
+        secret_id: [
+          { required: true, message: '请输入 secret_id', trigger: 'blur' },
+          { max: 255, message: 'secret_id 长度不能超过 255 ', trigger: 'blur' }
+        ],
+        secret_key: [
+          { required: true, message: '请输入 secret_key', trigger: 'blur' },
+          { max: 255, message: 'secret_key 长度不能超过 255 ', trigger: 'blur' }
+        ],
+        folder_path: [
+          { required: true, message: '请输入上传目录', trigger: 'blur' },
+          { max: 255, message: '上传目录长度不能超过 255 ', trigger: 'blur' }
+        ]
+      },
+      commentFormRules: {
+        is_on: [
+          { required: true, message: '请选择是否开启评论功能', trigger: 'blur' }
+        ],
+        is_review_on: [
+          { required: true, message: '请选择是否开启评论审核功能', trigger: 'blur' }
+        ]
+      },
       btn: {
         siteSaveLoading: false,
         smtpSaveLoading: false,
         emailSendLoading: false,
-        bedSaveLoading: false
+        bedSaveLoading: false,
+        commentSaveLoading: false
       },
       is_public: true
     }
@@ -329,6 +425,8 @@ export default {
         this.getSysSetItem(tab.label, 'siteForm')
       } else if (tab.label === '图床设置') {
         this.initPicBedSetting()
+      } else if (tab.label === '评论设置') {
+        this.getSysSetItem(tab.label, 'commentForm')
       }
     },
     // 获取设置条目
@@ -352,6 +450,9 @@ export default {
       switch (this.storageForm.storage_type) {
         case 'sm.ms':
           await this.getSysSetItem('sm.ms', 'smmsForm')
+          break
+        case 'imgbb':
+          await this.getSysSetItem('imgbb', 'imgbbForm')
           break
         case 'cos':
           await this.getSysSetItem('cos', 'tencentCosForm')
@@ -429,6 +530,24 @@ export default {
         }
       })
     },
+    // 保存 imgbb 设置
+    saveImgbbForm () {
+      this.$refs.imgbbForm.validate(valid => {
+        if (valid) {
+          this.btn.bedSaveLoading = true
+          setTimeout(() => {
+            saveImgbbSetting(this.imgbbForm)
+              .then(res => {
+                this.$message.success(res.msg)
+                this.getSysSetItem('imgbb', 'imgbbForm')
+              })
+              .catch(() => {
+              })
+            this.btn.bedSaveLoading = false
+          }, 300)
+        }
+      })
+    },
     // 保存腾讯云 COS 设置
     saveTencentCosForm () {
       this.$refs.tencentCosForm.validate(valid => {
@@ -443,6 +562,24 @@ export default {
               .catch(() => {
               })
             this.btn.bedSaveLoading = false
+          }, 300)
+        }
+      })
+    },
+    // 保存评论设置
+    saveCommentForm () {
+      this.$refs.commentForm.validate(valid => {
+        if (valid) {
+          this.btn.commentSaveLoading = true
+          setTimeout(() => {
+            saveCommentSetting(this.commentForm)
+              .then(res => {
+                this.$message.success(res.msg)
+                this.getSysSetItem('评论设置', 'commentForm')
+              })
+              .catch(() => {
+              })
+            this.btn.commentSaveLoading = false
           }, 300)
         }
       })

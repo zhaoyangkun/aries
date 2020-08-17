@@ -69,7 +69,7 @@ export function multiDelPosts (ids) {
 export function movePostUp (data) {
   return request({
     url: '/articles/up',
-    method: 'post',
+    method: 'patch',
     data: data
   })
 }
@@ -78,7 +78,7 @@ export function movePostUp (data) {
 export function movePostDown (data) {
   return request({
     url: '/articles/down',
-    method: 'post',
+    method: 'patch',
     data: data
   })
 }

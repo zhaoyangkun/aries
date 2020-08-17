@@ -81,7 +81,6 @@ export default {
     fetchAdminIndexData () {
       getAdminIndexData()
         .then(res => {
-          console.log(res)
           this.indexData = res.data
         })
         .catch(() => {
