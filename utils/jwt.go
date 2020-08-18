@@ -1,7 +1,6 @@
 package utils
 
 import (
-	"aries/config/setting"
 	"errors"
 	"time"
 
@@ -80,7 +79,7 @@ func (j *JWT) ParseToken(tokenString string) (*CustomClaims, error) {
 }
 
 // 更新 Token
-func (j *JWT) RefreshToken(tokenString string) (string, error) {
+func (j *JWT) RefreshToken(tokenString string, tokenExpireTime int) (string, error) {
 	jwt.TimeFunc = func() time.Time {
 		return time.Unix(0, 0)
 	}
@@ -94,7 +93,7 @@ func (j *JWT) RefreshToken(tokenString string) (string, error) {
 	if claims, ok := token.Claims.(*CustomClaims); ok && token.Valid {
 		jwt.TimeFunc = time.Now
 		claims.StandardClaims.ExpiresAt = time.Now().Add(time.Second * time.
-			Duration(setting.Config.Server.TokenExpireTime)).Unix()
+			Duration(tokenExpireTime)).Unix()
 		return j.CreateToken(*claims)
 	}
 	return "", ErrTokenInvalid

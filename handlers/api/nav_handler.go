@@ -2,13 +2,13 @@ package api
 
 import (
 	"aries/forms"
+	"aries/log"
 	"aries/models"
 	"aries/utils"
 	"net/http"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
-	log "github.com/sirupsen/logrus"
 )
 
 type NavHandler struct {
@@ -24,7 +24,7 @@ type NavHandler struct {
 func (n *NavHandler) GetAllNavs(ctx *gin.Context) {
 	list, err := models.Nav{}.GetAll()
 	if err != nil {
-		log.Error("error: ", err.Error())
+		log.Logger.Sugar().Error("error: ", err.Error())
 		ctx.JSON(http.StatusOK, utils.Result{
 			Code: utils.ServerError,
 			Msg:  "服务器端错误",
@@ -68,7 +68,7 @@ func (n *NavHandler) CreateNav(ctx *gin.Context) {
 		return
 	}
 	if err := nav.Create(); err != nil {
-		log.Error("error: ", err.Error())
+		log.Logger.Sugar().Error("error: ", err.Error())
 		ctx.JSON(http.StatusOK, utils.Result{
 			Code: utils.ServerError,
 			Msg:  "服务器端错误",
@@ -111,7 +111,7 @@ func (n *NavHandler) UpdateNav(ctx *gin.Context) {
 	}
 	nav := editForm.BindToModel()
 	if err := nav.Update(); err != nil {
-		log.Error("error: ", err.Error())
+		log.Logger.Sugar().Error("error: ", err.Error())
 		ctx.JSON(http.StatusOK, utils.Result{
 			Code: utils.ServerError,
 			Msg:  "服务器端错误",
@@ -149,7 +149,7 @@ func (n *NavHandler) MoveNavUp(ctx *gin.Context) {
 	}
 	currNav, err := models.Nav{}.GetByOrderId(uint(orderId))
 	if err != nil {
-		log.Error("error: ", err.Error())
+		log.Logger.Sugar().Error("error: ", err.Error())
 		ctx.JSON(http.StatusOK, utils.Result{
 			Code: utils.ServerError,
 			Msg:  "服务器端错误",
@@ -168,7 +168,7 @@ func (n *NavHandler) MoveNavUp(ctx *gin.Context) {
 	}
 	err = currNav.MoveUp(preNav)
 	if err != nil {
-		log.Error("error: ", err.Error())
+		log.Logger.Sugar().Error("error: ", err.Error())
 		ctx.JSON(http.StatusOK, utils.Result{
 			Code: utils.ServerError,
 			Msg:  "服务器端错误",
@@ -206,7 +206,7 @@ func (n *NavHandler) MoveNavDown(ctx *gin.Context) {
 	}
 	currNav, err := models.Nav{}.GetByOrderId(uint(orderId))
 	if err != nil {
-		log.Error("error: ", err.Error())
+		log.Logger.Sugar().Error("error: ", err.Error())
 		ctx.JSON(http.StatusOK, utils.Result{
 			Code: utils.ServerError,
 			Msg:  "服务器端错误",
@@ -225,7 +225,7 @@ func (n *NavHandler) MoveNavDown(ctx *gin.Context) {
 	}
 	err = currNav.MoveDown(nextNav)
 	if err != nil {
-		log.Error("error: ", err.Error())
+		log.Logger.Sugar().Error("error: ", err.Error())
 		ctx.JSON(http.StatusOK, utils.Result{
 			Code: utils.ServerError,
 			Msg:  "服务器端错误",
@@ -252,7 +252,7 @@ func (n *NavHandler) DeleteNav(ctx *gin.Context) {
 	id := ctx.Param("id")
 	err := models.Nav{}.DeleteById(id)
 	if err != nil {
-		log.Error("error: ", err.Error())
+		log.Logger.Sugar().Error("error: ", err.Error())
 		ctx.JSON(http.StatusOK, utils.Result{
 			Code: utils.ServerError,
 			Msg:  "服务器端错误",
@@ -287,7 +287,7 @@ func (n *NavHandler) MultiDelNavs(ctx *gin.Context) {
 	}
 	err := models.Nav{}.MultiDelByIds(ids)
 	if err != nil {
-		log.Error("error: ", err.Error())
+		log.Logger.Sugar().Error("error: ", err.Error())
 		ctx.JSON(http.StatusOK, utils.Result{
 			Code: utils.ServerError,
 			Msg:  "服务器端错误",

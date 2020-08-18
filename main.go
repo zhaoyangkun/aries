@@ -4,8 +4,7 @@ import (
 	"aries/config/app"
 	"aries/config/setting"
 	_ "aries/docs"
-
-	log "github.com/sirupsen/logrus"
+	"aries/log"
 )
 
 // @title Gin Swagger
@@ -20,6 +19,6 @@ func main() {
 	engine := app.InitApp()                             // 初始化
 	err := engine.Run(":" + setting.Config.Server.Port) // 监听端口并运行
 	if err != nil {
-		log.Panicln("项目启动失败: ", err.Error())
+		log.Logger.Sugar().Panic("项目启动失败: ", err.Error())
 	}
 }

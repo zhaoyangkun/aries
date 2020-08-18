@@ -2,13 +2,13 @@ package api
 
 import (
 	"aries/forms"
+	"aries/log"
 	"aries/models"
 	"aries/utils"
 	"net/http"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
-	log "github.com/sirupsen/logrus"
 )
 
 type CategoryHandler struct {
@@ -36,7 +36,7 @@ func (c *CategoryHandler) GetAllCategories(ctx *gin.Context) {
 	category := models.Category{}                           // 建立 model 对象
 	categoryList, err := category.GetAllByType(uint(cType)) // 调用 model 对应方法，从数据库中获取所有分类
 	if err != nil {                                         // 异常处理
-		log.Error("error: ", err.Error())
+		log.Logger.Sugar().Error("error: ", err.Error())
 		ctx.JSON(http.StatusOK, utils.Result{
 			Code: utils.ServerError,
 			Msg:  "服务器端错误",
@@ -73,7 +73,7 @@ func (c *CategoryHandler) GetAllParentCategories(ctx *gin.Context) {
 	category := models.Category{}
 	categoryList, err := category.GetAllParents(uint(cType))
 	if err != nil {
-		log.Error("error: ", err.Error())
+		log.Logger.Sugar().Error("error: ", err.Error())
 		ctx.JSON(http.StatusOK, utils.Result{
 			Code: utils.ServerError,
 			Msg:  "服务器端错误",
@@ -114,7 +114,7 @@ func (c *CategoryHandler) GetCategoriesByPage(ctx *gin.Context) {
 	categoryList, totalNum, err := category.GetByPage(&pageForm.Pagination, pageForm.Key,
 		*pageForm.CategoryType)
 	if err != nil {
-		log.Error("error: ", err.Error())
+		log.Logger.Sugar().Error("error: ", err.Error())
 		ctx.JSON(http.StatusOK, utils.Result{
 			Code: utils.ServerError,
 			Msg:  "服务器端错误",
@@ -169,7 +169,7 @@ func (c *CategoryHandler) AddArticleCategory(ctx *gin.Context) {
 	}
 	category := addForm.BindToModel()
 	if err := category.Create(); err != nil {
-		log.Error("error: ", err.Error())
+		log.Logger.Sugar().Error("error: ", err.Error())
 		ctx.JSON(http.StatusOK, utils.Result{
 			Code: utils.ServerError,
 			Msg:  "服务器端错误",
@@ -224,7 +224,7 @@ func (c *CategoryHandler) UpdateArticleCategory(ctx *gin.Context) {
 	}
 	category := editForm.BindToModel()
 	if err := category.Update(); err != nil {
-		log.Error("error: ", err.Error())
+		log.Logger.Sugar().Error("error: ", err.Error())
 		ctx.JSON(http.StatusOK, utils.Result{
 			Code: utils.ServerError,
 			Msg:  "服务器端错误",
@@ -269,7 +269,7 @@ func (c *CategoryHandler) AddLinkCategory(ctx *gin.Context) {
 	}
 	category := addForm.BindToModel()
 	if err := category.Create(); err != nil {
-		log.Error("error: ", err.Error())
+		log.Logger.Sugar().Error("error: ", err.Error())
 		ctx.JSON(http.StatusOK, utils.Result{
 			Code: utils.ServerError,
 			Msg:  "服务器端错误",
@@ -314,7 +314,7 @@ func (c *CategoryHandler) UpdateLinkCategory(ctx *gin.Context) {
 	}
 	category := editForm.BindToModel()
 	if err := category.Update(); err != nil {
-		log.Error("error: ", err.Error())
+		log.Logger.Sugar().Error("error: ", err.Error())
 		ctx.JSON(http.StatusOK, utils.Result{
 			Code: utils.ServerError,
 			Msg:  "服务器端错误",
@@ -349,7 +349,7 @@ func (c *CategoryHandler) DeleteCategory(ctx *gin.Context) {
 	}
 	category := models.Category{}
 	if err := category.DeleteById(uint(id)); err != nil { //删除分类，捕捉异常
-		log.Error("error: ", err.Error())
+		log.Logger.Sugar().Error("error: ", err.Error())
 		ctx.JSON(http.StatusOK, utils.Result{
 			Code: utils.ServerError,
 			Msg:  "服务器端错误",
@@ -384,7 +384,7 @@ func (c *CategoryHandler) MultiDelCategories(ctx *gin.Context) {
 	}
 	category := models.Category{}
 	if err := category.MultiDelByIds(ids); err != nil {
-		log.Error("error: ", err.Error())
+		log.Logger.Sugar().Error("error: ", err.Error())
 		ctx.JSON(http.StatusOK, utils.Result{
 			Code: utils.ServerError,
 			Msg:  "服务器端错误",

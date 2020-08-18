@@ -2,12 +2,12 @@ package api
 
 import (
 	"aries/forms"
+	"aries/log"
 	"aries/models"
 	"aries/utils"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	log "github.com/sirupsen/logrus"
 )
 
 type TagHandler struct {
@@ -23,7 +23,7 @@ type TagHandler struct {
 func (t *TagHandler) GetAllTags(ctx *gin.Context) {
 	list, err := models.Tag{}.GetAll()
 	if err != nil {
-		log.Errorln("Error: ", err.Error())
+		log.Logger.Sugar().Error("Error: ", err.Error())
 		ctx.JSON(http.StatusOK, utils.Result{
 			Code: utils.ServerError,
 			Msg:  "服务器端错误",
@@ -53,7 +53,7 @@ func (t *TagHandler) GetTagsByPage(ctx *gin.Context) {
 	_ = ctx.ShouldBindQuery(&pageForm)
 	list, totalNum, err := models.Tag{}.GetByPage(&pageForm.Pagination, pageForm.Key)
 	if err != nil {
-		log.Errorln("Error: ", err.Error())
+		log.Logger.Sugar().Error("Error: ", err.Error())
 		ctx.JSON(http.StatusOK, utils.Result{
 			Code: utils.ServerError,
 			Msg:  "服务器端错误",
@@ -80,7 +80,7 @@ func (t *TagHandler) GetTagById(ctx *gin.Context) {
 	id := ctx.Param("id")
 	tag, err := models.Tag{}.GetById(id)
 	if err != nil {
-		log.Errorln("Error: ", err.Error())
+		log.Logger.Sugar().Error("Error: ", err.Error())
 		ctx.JSON(http.StatusOK, utils.Result{
 			Code: utils.ServerError,
 			Msg:  "服务器端错误",
@@ -126,7 +126,7 @@ func (t *TagHandler) AddTag(ctx *gin.Context) {
 	}
 	tag := addForm.BindToModel()
 	if err := tag.Create(); err != nil {
-		log.Errorln("Error: ", err.Error())
+		log.Logger.Sugar().Error("Error: ", err.Error())
 		ctx.JSON(http.StatusOK, utils.Result{
 			Code: utils.ServerError,
 			Msg:  "服务器端错误",
@@ -172,7 +172,7 @@ func (t *TagHandler) UpdateTag(ctx *gin.Context) {
 	}
 	tag := editForm.BindToModel()
 	if err := tag.Update(); err != nil {
-		log.Errorln("Error: ", err.Error())
+		log.Logger.Sugar().Error("Error: ", err.Error())
 		ctx.JSON(http.StatusOK, utils.Result{
 			Code: utils.ServerError,
 			Msg:  "服务器端错误",
@@ -199,7 +199,7 @@ func (t *TagHandler) DeleteTag(ctx *gin.Context) {
 	id := ctx.Param("id")
 	err := models.Tag{}.DeleteById(id)
 	if err != nil {
-		log.Errorln("Error: ", err.Error())
+		log.Logger.Sugar().Error("Error: ", err.Error())
 		ctx.JSON(http.StatusOK, utils.Result{
 			Code: utils.ServerError,
 			Msg:  "服务器端错误",
@@ -234,7 +234,7 @@ func (t *TagHandler) MultiDelTags(ctx *gin.Context) {
 	}
 	err := models.Tag{}.MultiDelByIds(ids)
 	if err != nil {
-		log.Errorln("Error: ", err.Error())
+		log.Logger.Sugar().Error("Error: ", err.Error())
 		ctx.JSON(http.StatusOK, utils.Result{
 			Code: utils.ServerError,
 			Msg:  "服务器端错误",

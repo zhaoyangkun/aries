@@ -4,15 +4,14 @@ import (
 	"aries/config/db"
 	"aries/config/migrate"
 	"aries/config/setting"
+	logger "aries/log"
 	"aries/middlewares"
 	"aries/models"
 	"aries/routers"
 	"fmt"
+	"log"
 	"reflect"
-	"time"
 
-	"github.com/88250/lute"
-	"github.com/gin-contrib/cache/persistence"
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
 	"github.com/go-playground/locales/zh"
@@ -24,17 +23,28 @@ import (
 // 初始化 gin
 func InitApp() *gin.Engine {
 	// 加载配置
-	setting.InitSetting()
+	s := setting.Setting{}
+	s.InitSetting()
+	s.InitLute()
+	s.InitCache()
 	db.InitDb()
 	migrate.Migrate()
-	setting.LuteEngine = lute.New()
-	setting.Cache = persistence.NewInMemoryStore(time.Hour * 1)
 	gin.SetMode(setting.Config.Server.Mode)
 
 	// 加载中间件
 	router := gin.New()
-	middlewares.InitLogger()
-	router.Use(middlewares.LoggerMiddleWare(), gin.Recovery())
+	err := logger.InitLogger(
+		setting.Config.Logger.FileName,
+		setting.Config.Logger.Level,
+		setting.Config.Logger.Format,
+		setting.Config.Logger.MaxSize,
+		setting.Config.Logger.MaxBackups,
+		setting.Config.Logger.MaxAge,
+	)
+	if err != nil {
+		log.Panicln("初始化日志失败：", err.Error())
+	}
+	router.Use(middlewares.Logger(logger.Logger), middlewares.Recover(logger.Logger, true))
 
 	// 配置表单校验
 	uni := ut.New(zh.New())

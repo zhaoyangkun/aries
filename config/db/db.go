@@ -3,12 +3,12 @@ package db
 import (
 	"aries/config/setting"
 	"fmt"
+	"log"
 
 	"github.com/gin-gonic/gin"
 	_ "github.com/go-sql-driver/mysql" // mysql驱动
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql" // gorm mysql
-	log "github.com/sirupsen/logrus"
 )
 
 // 数据库对象

@@ -2,12 +2,12 @@ package api
 
 import (
 	"aries/forms"
+	"aries/log"
 	"aries/models"
 	"aries/utils"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	log "github.com/sirupsen/logrus"
 )
 
 type LinkHandler struct {
@@ -23,7 +23,7 @@ type LinkHandler struct {
 func (l *LinkHandler) GetAllLinks(ctx *gin.Context) {
 	list, err := models.Link{}.GetAll()
 	if err != nil {
-		log.Error("error: ", err.Error())
+		log.Logger.Sugar().Error("error: ", err.Error())
 		ctx.JSON(http.StatusOK, utils.Result{
 			Code: utils.ServerError,
 			Msg:  "服务器端错误",
@@ -51,7 +51,7 @@ func (l *LinkHandler) GetLinksByPage(ctx *gin.Context) {
 	_ = ctx.ShouldBindQuery(&pageForm)
 	list, total, err := models.Link{}.GetByPage(&pageForm.Pagination, pageForm.Key, pageForm.CategoryId)
 	if err != nil {
-		log.Error("error: ", err.Error())
+		log.Logger.Sugar().Error("error: ", err.Error())
 		ctx.JSON(http.StatusOK, utils.Result{
 			Code: utils.ServerError,
 			Msg:  "服务器端错误",
@@ -86,7 +86,7 @@ func (l *LinkHandler) CreateLink(ctx *gin.Context) {
 	}
 	link := addForm.BindToModel()
 	if err := link.Create(); err != nil {
-		log.Error("error: ", err.Error())
+		log.Logger.Sugar().Error("error: ", err.Error())
 		ctx.JSON(http.StatusOK, utils.Result{
 			Code: utils.ServerError,
 			Msg:  "服务器端错误",
@@ -121,7 +121,7 @@ func (l *LinkHandler) UpdateLink(ctx *gin.Context) {
 	}
 	link := editForm.BindToModel()
 	if err := link.Update(); err != nil {
-		log.Error("error: ", err.Error())
+		log.Logger.Sugar().Error("error: ", err.Error())
 		ctx.JSON(http.StatusOK, utils.Result{
 			Code: utils.ServerError,
 			Msg:  "服务器端错误",
@@ -148,7 +148,7 @@ func (l *LinkHandler) DeleteLink(ctx *gin.Context) {
 	id := ctx.Param("id")
 	err := models.Link{}.DeleteById(id)
 	if err != nil {
-		log.Error("error: ", err.Error())
+		log.Logger.Sugar().Error("error: ", err.Error())
 		ctx.JSON(http.StatusOK, utils.Result{
 			Code: utils.ServerError,
 			Msg:  "服务器端错误",
@@ -183,7 +183,7 @@ func (l *LinkHandler) MultiDelLinks(ctx *gin.Context) {
 	}
 	err := models.Link{}.MultiDelByIds(ids)
 	if err != nil {
-		log.Errorln("Error: ", err.Error())
+		log.Logger.Sugar().Error("Error: ", err.Error())
 		ctx.JSON(http.StatusOK, utils.Result{
 			Code: utils.ServerError,
 			Msg:  "服务器端错误",

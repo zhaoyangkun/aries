@@ -2,14 +2,15 @@ package setting
 
 import (
 	"io/ioutil"
+	"log"
 	"os"
 	"path/filepath"
 	"strings"
+	"time"
 
 	"github.com/88250/lute"
 	"github.com/gin-contrib/cache/persistence"
 	ut "github.com/go-playground/universal-translator"
-	log "github.com/sirupsen/logrus"
 	"gopkg.in/yaml.v2"
 )
 
@@ -24,9 +25,6 @@ var LuteEngine = &lute.Lute{}
 
 // Cache
 var Cache = &persistence.InMemoryStore{}
-
-// Logger
-var Logger = &log.Logger{}
 
 // 博客全局变量
 type BlogVariable struct {
@@ -72,11 +70,12 @@ type database struct {
 }
 
 type logger struct {
-	LogDir    string `yaml:"log_dir"`
-	LogName   string `yaml:"log_name"`
-	MaxAge    int    `yaml:"max_age"`
-	Level     string `yaml:"level"`
-	Formatter string `yaml:"formatter"`
+	FileName   string `yaml:"file_name"`
+	MaxSize    int    `yaml:"max_size"`
+	MaxAge     int    `yaml:"max_age"`
+	MaxBackups int    `yam:"max_backups"`
+	Level      string `yaml:"level"`
+	Format     string `yaml:"format"`
 }
 
 // 忘记密码 smtp 信息
@@ -88,14 +87,14 @@ type smtp struct {
 }
 
 // 读取 yaml 配置文件
-func InitSetting() {
+func (s *Setting) InitSetting() {
 	// 获取当前项目根目录
 	rootPath, _ := os.Getwd()
 	// 解决 GoLand 默认单元测试环境下，读取配置文件失败的问题
 	rootPath = strings.Replace(rootPath, "test", "", -1)
 	// 拼接配置文件访问路径
 	yamlPath := filepath.Join(rootPath, "config", "develop.yaml")
-	log.Println("yamlPath: ", yamlPath)
+	log.Println("配置文件路径：", yamlPath)
 	// 读取配置文件
 	yamlFile, err := ioutil.ReadFile(yamlPath)
 	if err != nil {
@@ -106,6 +105,14 @@ func InitSetting() {
 	if err != nil {
 		log.Panicln("配置参数转换失败：", err.Error())
 	}
+}
+
+func (s *Setting) InitLute() {
+	LuteEngine = lute.New()
+}
+
+func (s *Setting) InitCache() {
+	Cache = persistence.NewInMemoryStore(time.Hour * 1)
 }
 
 // 配置博客全局变量
@@ -138,13 +145,4 @@ func (b *BlogVariable) InitBlogVars(siteSetting map[string]string) {
 	} else {
 		b.ContextPath = "http://localhost:8088"
 	}
-}
-
-// 初始化 log
-func init() {
-	log.SetFormatter(&log.TextFormatter{
-		DisableColors:   false,
-		TimestampFormat: "2006-01-02 15:04:05",
-	})
-	log.SetLevel(log.InfoLevel)
 }

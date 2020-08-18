@@ -1518,7 +1518,7 @@ var doc = `{
                 }
             }
         },
-        "/api/v1/sys_setting/img/upload": {
+        "/api/v1/img/attachment/upload": {
             "post": {
                 "consumes": [
                     "application/json"

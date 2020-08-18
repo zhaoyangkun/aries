@@ -1512,7 +1512,7 @@ paths:
       summary: 发送测试邮件
       tags:
       - 系统设置
-  /api/v1/sys_setting/img/upload:
+  /api/v1/img/attachment/upload:
     post:
       consumes:
       - application/json

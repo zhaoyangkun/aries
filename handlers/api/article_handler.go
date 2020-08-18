@@ -2,14 +2,15 @@ package api
 
 import (
 	"aries/forms"
+	"aries/log"
 	"aries/models"
 	"aries/utils"
 	"io/ioutil"
+
 	"net/http"
 	"path"
 
 	"github.com/gin-gonic/gin"
-	log "github.com/sirupsen/logrus"
 )
 
 type ArticleHandler struct {
@@ -25,7 +26,7 @@ type ArticleHandler struct {
 func (a *ArticleHandler) GetAllArticles(ctx *gin.Context) {
 	list, err := models.Article{}.GetAll()
 	if err != nil {
-		log.Errorln("error: ", err.Error())
+		log.Logger.Sugar().Error("error: ", err.Error())
 		ctx.JSON(http.StatusOK, utils.Result{
 			Code: utils.ServerError,
 			Msg:  "服务器端错误",
@@ -58,7 +59,7 @@ func (a *ArticleHandler) GetArticlesByPage(ctx *gin.Context) {
 	list, totalNum, err := models.Article{}.GetByPage(&pageForm.Pagination, pageForm.Key,
 		pageForm.State, pageForm.CategoryId)
 	if err != nil {
-		log.Errorln("error: ", err.Error())
+		log.Logger.Sugar().Error("error: ", err.Error())
 		ctx.JSON(http.StatusOK, utils.Result{
 			Code: utils.ServerError,
 			Msg:  "服务器端错误",
@@ -85,7 +86,7 @@ func (a *ArticleHandler) GetArticleById(ctx *gin.Context) {
 	id := ctx.Param("id")
 	article, err := models.Article{}.GetById(id)
 	if err != nil {
-		log.Errorln("error: ", err.Error())
+		log.Logger.Sugar().Error("error: ", err.Error())
 		ctx.JSON(http.StatusOK, utils.Result{
 			Code: utils.ServerError,
 			Msg:  "服务器端错误",
@@ -131,7 +132,7 @@ func (a *ArticleHandler) AddArticle(ctx *gin.Context) {
 	article := addForm.BindToModel()
 	err = article.Create(addForm.TagIds)
 	if err != nil {
-		log.Errorln("error: ", err.Error())
+		log.Logger.Sugar().Error("error: ", err.Error())
 		ctx.JSON(http.StatusOK, utils.Result{
 			Code: utils.ServerError,
 			Msg:  "服务器端错误",
@@ -158,7 +159,7 @@ func (a *ArticleHandler) UpdateArticle(ctx *gin.Context) {
 	editForm := forms.ArticleEditForm{}
 	err := ctx.ShouldBindJSON(&editForm)
 	if err != nil {
-		log.Error("err: ", err.Error())
+		log.Logger.Sugar().Error("err: ", err.Error())
 		ctx.JSON(http.StatusOK, utils.Result{
 			Code: utils.RequestError,
 			Msg:  utils.GetFormError(err),
@@ -178,7 +179,7 @@ func (a *ArticleHandler) UpdateArticle(ctx *gin.Context) {
 	article := editForm.BindToModel()
 	err = article.Update(editForm.TagIds)
 	if err != nil {
-		log.Errorln("error: ", err.Error())
+		log.Logger.Sugar().Error("error: ", err.Error())
 		ctx.JSON(http.StatusOK, utils.Result{
 			Code: utils.ServerError,
 			Msg:  "服务器端错误",
@@ -205,7 +206,7 @@ func (a *ArticleHandler) DeleteArticle(ctx *gin.Context) {
 	id := ctx.Param("id")
 	err := models.Article{}.DeleteById(id)
 	if err != nil {
-		log.Errorln("error: ", err.Error())
+		log.Logger.Sugar().Error("error: ", err.Error())
 		ctx.JSON(http.StatusOK, utils.Result{
 			Code: utils.ServerError,
 			Msg:  "服务器端错误",
@@ -240,7 +241,7 @@ func (a *ArticleHandler) MultiDelArticles(ctx *gin.Context) {
 	}
 	article := models.Article{}
 	if err := article.MultiDelByIds(ids); err != nil {
-		log.Errorln("error: ", err.Error())
+		log.Logger.Sugar().Error("error: ", err.Error())
 		ctx.JSON(http.StatusOK, utils.Result{
 			Code: utils.ServerError,
 			Msg:  "服务器端错误",
@@ -305,7 +306,7 @@ func (a *ArticleHandler) ImportArticlesFromFiles(ctx *gin.Context) {
 		// 打开文件
 		src, err := file.Open()
 		if err != nil {
-			log.Errorln("error: ", err.Error())
+			log.Logger.Sugar().Error("error: ", err.Error())
 			ctx.JSON(http.StatusOK, utils.Result{
 				Code: utils.ServerError,
 				Msg:  "读取文件内容失败",
@@ -318,7 +319,7 @@ func (a *ArticleHandler) ImportArticlesFromFiles(ctx *gin.Context) {
 		// 读取文件
 		bytes, err := ioutil.ReadAll(src)
 		if err != nil {
-			log.Errorln("error: ", err.Error())
+			log.Logger.Sugar().Error("error: ", err.Error())
 			ctx.JSON(http.StatusOK, utils.Result{
 				Code: utils.ServerError,
 				Msg:  "服务器端错误",
@@ -332,7 +333,7 @@ func (a *ArticleHandler) ImportArticlesFromFiles(ctx *gin.Context) {
 		}
 		err = article.SaveFromFile()
 		if err != nil {
-			log.Errorln("error: ", err.Error())
+			log.Logger.Sugar().Error("error: ", err.Error())
 			ctx.JSON(http.StatusOK, utils.Result{
 				Code: utils.ServerError,
 				Msg:  "服务器端错误",
@@ -378,7 +379,7 @@ func (a *ArticleHandler) MoveArticleUp(ctx *gin.Context) {
 	}
 	err := models.Article{}.MoveUp(currArticle.ID, preArticle.ID, currArticle.OrderId, preArticle.OrderId)
 	if err != nil {
-		log.Errorln("error: ", err.Error())
+		log.Logger.Sugar().Error("error: ", err.Error())
 		ctx.JSON(http.StatusOK, utils.Result{
 			Code: utils.ServerError,
 			Msg:  "服务器端错误",
@@ -423,7 +424,7 @@ func (a *ArticleHandler) MoveArticleDown(ctx *gin.Context) {
 	}
 	err := models.Article{}.MoveDown(currArticle.ID, nextArticle.ID, currArticle.OrderId, nextArticle.OrderId)
 	if err != nil {
-		log.Errorln("error: ", err.Error())
+		log.Logger.Sugar().Error("error: ", err.Error())
 		ctx.JSON(http.StatusOK, utils.Result{
 			Code: utils.ServerError,
 			Msg:  "服务器端错误",

@@ -20,7 +20,7 @@ func (a *ApiRouter) InitApiRouter(rootPath string, router *gin.Engine) {
 	sysSettingHandler := api.SysSettingHandler{}
 	tagHandler := api.TagHandler{}
 	userHandler := api.UserHandler{}
-
+	pictureHandler := api.PictureHandler{}
 	authApiRouter := router.Group(rootPath)
 	{
 		authApiRouter.POST("/auth/login", authHandler.Login)
@@ -37,7 +37,7 @@ func (a *ApiRouter) InitApiRouter(rootPath string, router *gin.Engine) {
 		userApiRouter.PUT("/users/pwd", userHandler.UpdateUserPwd)
 	}
 
-	ArticleApiRouter := router.Group(rootPath, middlewares.JWTAuthMiddleWare())
+	ArticleApiRouter := router.Group(rootPath, middlewares.JWTAuth())
 	{
 		ArticleApiRouter.GET("/all_articles", articleHandler.GetAllArticles)
 		ArticleApiRouter.GET("/articles/:id", articleHandler.GetArticleById)
@@ -51,7 +51,7 @@ func (a *ApiRouter) InitApiRouter(rootPath string, router *gin.Engine) {
 		ArticleApiRouter.PATCH("/articles/down", articleHandler.MoveArticleDown)
 	}
 
-	categoryApiRouter := router.Group(rootPath, middlewares.JWTAuthMiddleWare())
+	categoryApiRouter := router.Group(rootPath, middlewares.JWTAuth())
 	{
 		categoryApiRouter.GET("/all_categories", categoryHandler.GetAllCategories)
 		categoryApiRouter.GET("/parent_categories", categoryHandler.GetAllParentCategories)
@@ -64,7 +64,7 @@ func (a *ApiRouter) InitApiRouter(rootPath string, router *gin.Engine) {
 		categoryApiRouter.DELETE("/categories", categoryHandler.MultiDelCategories)
 	}
 
-	commentRouter := router.Group(rootPath, middlewares.JWTAuthMiddleWare())
+	commentRouter := router.Group(rootPath, middlewares.JWTAuth())
 	{
 		commentRouter.GET("/all_comments", commentHandler.GetAllComments)
 		commentRouter.GET("/comments", commentHandler.GetCommentsByPage)
@@ -74,7 +74,7 @@ func (a *ApiRouter) InitApiRouter(rootPath string, router *gin.Engine) {
 		commentRouter.DELETE("/comments", commentHandler.MultiDelComments)
 	}
 
-	linkApiRouter := router.Group(rootPath, middlewares.JWTAuthMiddleWare())
+	linkApiRouter := router.Group(rootPath, middlewares.JWTAuth())
 	{
 		linkApiRouter.GET("/all_links", linkHandler.GetAllLinks)
 		linkApiRouter.GET("/links", linkHandler.GetLinksByPage)
@@ -84,7 +84,7 @@ func (a *ApiRouter) InitApiRouter(rootPath string, router *gin.Engine) {
 		linkApiRouter.DELETE("/links", linkHandler.MultiDelLinks)
 	}
 
-	navApiRouter := router.Group(rootPath, middlewares.JWTAuthMiddleWare())
+	navApiRouter := router.Group(rootPath, middlewares.JWTAuth())
 	{
 		navApiRouter.GET("/navs", navHandler.GetAllNavs)
 		navApiRouter.POST("/navs", navHandler.CreateNav)
@@ -95,7 +95,7 @@ func (a *ApiRouter) InitApiRouter(rootPath string, router *gin.Engine) {
 		navApiRouter.DELETE("/navs", navHandler.MultiDelNavs)
 	}
 
-	sysSettingApiRouter := router.Group(rootPath, middlewares.JWTAuthMiddleWare())
+	sysSettingApiRouter := router.Group(rootPath, middlewares.JWTAuth())
 	{
 		sysSettingApiRouter.GET("/sys_setting/items", sysSettingHandler.GetSysSettingItem)
 		sysSettingApiRouter.GET("/sys_setting/index_info", sysSettingHandler.GetAdminIndexData)
@@ -105,11 +105,15 @@ func (a *ApiRouter) InitApiRouter(rootPath string, router *gin.Engine) {
 		sysSettingApiRouter.POST("/sys_setting/pic_bed/smms", sysSettingHandler.SaveSmmsSetting)
 		sysSettingApiRouter.POST("/sys_setting/pic_bed/imgbb", sysSettingHandler.SaveImgbbSetting)
 		sysSettingApiRouter.POST("/sys_setting/pic_bed/tencent_cos", sysSettingHandler.SaveTencentCosSetting)
-		sysSettingApiRouter.POST("/sys_setting/img/upload", sysSettingHandler.UploadImg)
 		sysSettingApiRouter.POST("/sys_setting/comment", sysSettingHandler.SaveCommentSetting)
 	}
 
-	tagApiRouter := router.Group(rootPath, middlewares.JWTAuthMiddleWare())
+	imgApiRouter := router.Group(rootPath, middlewares.JWTAuth())
+	{
+		imgApiRouter.POST("/img/attachment/upload", pictureHandler.UploadImgToAttachment)
+	}
+
+	tagApiRouter := router.Group(rootPath, middlewares.JWTAuth())
 	{
 		tagApiRouter.GET("/all_tags", tagHandler.GetAllTags)
 		tagApiRouter.GET("/tags", tagHandler.GetTagsByPage)

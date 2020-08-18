@@ -8,7 +8,7 @@ import (
 )
 
 //  JWT 权限校验中间件
-func JWTAuthMiddleWare() gin.HandlerFunc {
+func JWTAuth() gin.HandlerFunc {
 	return func(context *gin.Context) {
 		token := context.Request.Header.Get("token") // 从请求体头部获取 token
 		result := utils.Result{                      // 封装返回体内容

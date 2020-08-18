@@ -2,12 +2,12 @@ package api
 
 import (
 	"aries/forms"
+	"aries/log"
 	"aries/models"
 	"aries/utils"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	log "github.com/sirupsen/logrus"
 )
 
 type CommentHandler struct {
@@ -23,7 +23,7 @@ type CommentHandler struct {
 func (c *CommentHandler) GetAllComments(ctx *gin.Context) {
 	list, err := models.Comment{}.GetAll()
 	if err != nil {
-		log.Error("error: ", err.Error())
+		log.Logger.Sugar().Error("error: ", err.Error())
 		ctx.JSON(http.StatusOK, utils.Result{
 			Code: utils.ServerError,
 			Msg:  "服务器端错误",
@@ -55,7 +55,7 @@ func (c *CommentHandler) GetCommentsByPage(ctx *gin.Context) {
 	_ = ctx.ShouldBindQuery(&pageForm)
 	list, total, err := models.Comment{}.GetByPage(&pageForm.Pagination, pageForm.Key, pageForm.Type, pageForm.State)
 	if err != nil {
-		log.Error("error: ", err.Error())
+		log.Logger.Sugar().Error("error: ", err.Error())
 		ctx.JSON(http.StatusOK, utils.Result{
 			Code: utils.ServerError,
 			Msg:  "服务器端错误",
@@ -91,7 +91,7 @@ func (c *CommentHandler) AddComment(ctx *gin.Context) {
 	}
 	comment := addForm.BindToModel()
 	if err := comment.Create(); err != nil {
-		log.Error("error: ", err.Error())
+		log.Logger.Sugar().Error("error: ", err.Error())
 		ctx.JSON(http.StatusOK, utils.Result{
 			Code: utils.ServerError,
 			Msg:  "服务器端错误",
@@ -126,7 +126,7 @@ func (c *CommentHandler) UpdateComment(ctx *gin.Context) {
 	}
 	comment := editForm.BindToModel()
 	if err := comment.Update(); err != nil {
-		log.Error("error: ", err.Error())
+		log.Logger.Sugar().Error("error: ", err.Error())
 		ctx.JSON(http.StatusOK, utils.Result{
 			Code: utils.ServerError,
 			Msg:  "服务器端错误",
@@ -152,7 +152,7 @@ func (c *CommentHandler) DeleteComment(ctx *gin.Context) {
 	id := ctx.Param("id")
 	err := models.Comment{}.DeleteById(id)
 	if err != nil {
-		log.Error("error: ", err.Error())
+		log.Logger.Sugar().Error("error: ", err.Error())
 		ctx.JSON(http.StatusOK, utils.Result{
 			Code: utils.ServerError,
 			Msg:  "服务器端错误",
@@ -186,7 +186,7 @@ func (c *CommentHandler) MultiDelComments(ctx *gin.Context) {
 	}
 	err := models.Comment{}.MultiDelByIds(ids)
 	if err != nil {
-		log.Error("error: ", err.Error())
+		log.Logger.Sugar().Error("error: ", err.Error())
 		ctx.JSON(http.StatusOK, utils.Result{
 			Code: utils.ServerError,
 			Msg:  "服务器端错误",

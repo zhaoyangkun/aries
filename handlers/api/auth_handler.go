@@ -3,6 +3,7 @@ package api
 import (
 	"aries/config/setting"
 	"aries/forms"
+	"aries/log"
 	"aries/models"
 	"aries/utils"
 	"net/http"
@@ -11,7 +12,6 @@ import (
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 	"github.com/go-gomail/gomail"
-	log "github.com/sirupsen/logrus"
 )
 
 type AuthHandler struct {
@@ -47,7 +47,7 @@ func (a *AuthHandler) Register(ctx *gin.Context) {
 		return
 	}
 	if err := user.Create(); err != nil { // 创建用户 + 异常处理
-		log.Errorln("error: ", err.Error())
+		log.Logger.Sugar().Error("error: ", err.Error())
 		result.Code = utils.ServerError
 		result.Msg = "服务器端错误"
 		ctx.JSON(http.StatusOK, result) // 返回 json
@@ -55,7 +55,7 @@ func (a *AuthHandler) Register(ctx *gin.Context) {
 	}
 	sysSetting := models.SysSetting{Name: "网站设置"}
 	if err := sysSetting.Create(); err != nil {
-		log.Errorln("error: ", err.Error())
+		log.Logger.Sugar().Error("error: ", err.Error())
 		result.Code = utils.ServerError
 		result.Msg = "服务器端错误"
 		ctx.JSON(http.StatusOK, result)
@@ -79,7 +79,7 @@ func (a *AuthHandler) Register(ctx *gin.Context) {
 	itemList := []models.SysSettingItem{typeItem, siteNameItem, siteUrlItem}
 	err := models.SysSettingItem{}.MultiCreateOrUpdate(itemList)
 	if err != nil {
-		log.Errorln("error: ", err.Error())
+		log.Logger.Sugar().Error("error: ", err.Error())
 		result.Code = utils.ServerError
 		result.Msg = "服务器端错误"
 		ctx.JSON(http.StatusOK, result)
@@ -144,7 +144,7 @@ func (a *AuthHandler) Login(ctx *gin.Context) {
 		},
 	})
 	if err != nil { // 异常处理
-		log.Errorln("error: ", err.Error())
+		log.Logger.Sugar().Error("error: ", err.Error())
 		result.Code = utils.ServerError
 		result.Msg = "服务器端错误"
 		ctx.JSON(http.StatusOK, result) // 返回 json
@@ -235,7 +235,7 @@ func (a *AuthHandler) ForgetPwd(ctx *gin.Context) {
 	// 发送
 	err := d.DialAndSend(msg)
 	if err != nil {
-		log.Error("验证码发送失败：", err.Error())
+		log.Logger.Sugar().Error("验证码发送失败：", err.Error())
 		ctx.JSON(http.StatusOK, utils.Result{
 			Code: utils.ServerError,
 			Msg:  "验证码发送失败，请检查 smtp 配置",
@@ -281,7 +281,7 @@ func (a *AuthHandler) ResetPwd(ctx *gin.Context) {
 	user := resetPwdForm.BindToModel()
 	err := user.UpdatePwd()
 	if err != nil {
-		log.Error("error: ", err.Error())
+		log.Logger.Sugar().Error("error: ", err.Error())
 		ctx.JSON(http.StatusOK, utils.Result{
 			Code: utils.ServerError,
 			Msg:  "服务器端错误",

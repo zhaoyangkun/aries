@@ -82,7 +82,7 @@ export function getAdminIndexData () {
 // 上传图片
 export function uploadImgToPicBed (data) {
   return request({
-    url: '/sys_setting/img/upload',
+    url: '/img/attachment/upload',
     method: 'post',
     data: data,
     headers: {

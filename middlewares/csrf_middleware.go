@@ -14,7 +14,7 @@ import (
 var allowedMethods = []string{"GET", "HEAD", "OPTIONS", "TRACE"}
 
 // csrf 校验中间件
-func CsrfMiddleWare() gin.HandlerFunc {
+func Csrf() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		if verifyCsrfToken(ctx) {
 			ctx.Next()

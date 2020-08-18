@@ -2,12 +2,12 @@ package api
 
 import (
 	"aries/forms"
+	"aries/log"
 	"aries/models"
 	"aries/utils"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	log "github.com/sirupsen/logrus"
 )
 
 type UserHandler struct {
@@ -23,7 +23,7 @@ type UserHandler struct {
 func (u *UserHandler) GetAllUsers(ctx *gin.Context) {
 	list, err := models.User{}.GetAll()
 	if err != nil {
-		log.Error("error: ", err.Error())
+		log.Logger.Sugar().Error("error: ", err.Error())
 		ctx.JSON(http.StatusOK, utils.Result{
 			Code: utils.ServerError,
 			Msg:  "服务器端错误",
@@ -58,7 +58,7 @@ func (u *UserHandler) UpdateUser(ctx *gin.Context) {
 	}
 	user := userForm.BindToModel()
 	if err := user.Update(); err != nil {
-		log.Error("error: ", err.Error())
+		log.Logger.Sugar().Error("error: ", err.Error())
 		ctx.JSON(http.StatusOK, utils.Result{
 			Code: utils.ServerError,
 			Msg:  "服务器端错误",
@@ -93,7 +93,7 @@ func (u *UserHandler) UpdateUserPwd(ctx *gin.Context) {
 	}
 	oldUser, err := models.User{Username: pwdForm.Username}.GetByUsername()
 	if err != nil {
-		log.Error("error: ", err.Error())
+		log.Logger.Sugar().Error("error: ", err.Error())
 		ctx.JSON(http.StatusOK, utils.Result{
 			Code: utils.ServerError,
 			Msg:  "服务器端错误",
@@ -112,7 +112,7 @@ func (u *UserHandler) UpdateUserPwd(ctx *gin.Context) {
 	oldUser.Pwd = pwdForm.NewPwd
 	err = oldUser.UpdatePwd()
 	if err != nil {
-		log.Error("error: ", err.Error())
+		log.Logger.Sugar().Error("error: ", err.Error())
 		ctx.JSON(http.StatusOK, utils.Result{
 			Code: utils.ServerError,
 			Msg:  "服务器端错误",

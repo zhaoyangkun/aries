@@ -2,9 +2,8 @@ package test
 
 import (
 	"aries/utils"
+	"log"
 	"testing"
-
-	log "github.com/sirupsen/logrus"
 )
 
 func TestRegHTML(t *testing.T) {
