@@ -30,6 +30,7 @@ type User struct {
 func (user User) GetAll() ([]User, error) {
 	var users []User
 	err := db.Db.Find(&users).Error
+
 	return users, err
 }
 
@@ -38,6 +39,7 @@ func (user User) GetByUsername() (User, error) {
 	var u User
 	err := db.Db.Where("`username` = ? or `email` = ?", user.Username, user.Username).
 		First(&u).Error
+
 	return u, err
 }
 
@@ -45,6 +47,7 @@ func (user User) GetByUsername() (User, error) {
 func (user User) GetByEmail() (User, error) {
 	u := User{}
 	err := db.Db.Where("`email` = ?", user.Email).First(&u).Error
+
 	return u, err
 }
 
@@ -54,7 +57,9 @@ func (user User) Create() error {
 	if err != nil {
 		return err
 	}
+
 	user.Pwd = hashedPwd
+
 	return db.Db.Create(&user).Error
 }
 
@@ -69,6 +74,7 @@ func (user User) UpdatePwd() error {
 	if err != nil {
 		return err
 	}
+
 	return db.Db.Model(&User{}).Where("`email` = ?", user.Email).
 		Update("pwd", hashedPwd).Error
 }

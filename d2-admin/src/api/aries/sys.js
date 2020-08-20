@@ -78,17 +78,3 @@ export function getAdminIndexData () {
     method: 'get'
   })
 }
-
-// 上传图片
-export function uploadImgToPicBed (data) {
-  return request({
-    url: '/img/attachment/upload',
-    method: 'post',
-    data: data,
-    headers: {
-      token: localStorage.getItem('token'),
-      'Content-Type': 'multipart/form-data',
-      Accept: 'application/json'
-    }
-  })
-}

@@ -6,5 +6,6 @@ import "regexp"
 func GetHtmlContent(html string) (content string) {
 	reg := regexp.MustCompile(`(<[\S\s]+?>)|([\s]+?)`)
 	content = reg.ReplaceAllString(html, "")
+
 	return
 }

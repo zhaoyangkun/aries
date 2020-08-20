@@ -32,6 +32,7 @@ func (n *NavHandler) GetAllNavs(ctx *gin.Context) {
 		})
 		return
 	}
+
 	ctx.JSON(http.StatusOK, utils.Result{
 		Code: utils.Success,
 		Msg:  "查询成功",
@@ -57,6 +58,7 @@ func (n *NavHandler) CreateNav(ctx *gin.Context) {
 		})
 		return
 	}
+
 	nav := addForm.BindToModel()
 	oldNav, _ := nav.GetByName(nav.Name)
 	if oldNav.Name != "" {
@@ -67,6 +69,7 @@ func (n *NavHandler) CreateNav(ctx *gin.Context) {
 		})
 		return
 	}
+
 	if err := nav.Create(); err != nil {
 		log.Logger.Sugar().Error("error: ", err.Error())
 		ctx.JSON(http.StatusOK, utils.Result{
@@ -76,6 +79,7 @@ func (n *NavHandler) CreateNav(ctx *gin.Context) {
 		})
 		return
 	}
+
 	ctx.JSON(http.StatusOK, utils.Result{
 		Code: utils.Success,
 		Msg:  "添加成功",
@@ -101,6 +105,7 @@ func (n *NavHandler) UpdateNav(ctx *gin.Context) {
 		})
 		return
 	}
+
 	if editForm.ParentNavId == editForm.ID {
 		ctx.JSON(http.StatusOK, utils.Result{
 			Code: utils.RequestError,
@@ -109,6 +114,7 @@ func (n *NavHandler) UpdateNav(ctx *gin.Context) {
 		})
 		return
 	}
+
 	nav := editForm.BindToModel()
 	if err := nav.Update(); err != nil {
 		log.Logger.Sugar().Error("error: ", err.Error())
@@ -119,6 +125,7 @@ func (n *NavHandler) UpdateNav(ctx *gin.Context) {
 		})
 		return
 	}
+
 	ctx.JSON(http.StatusOK, utils.Result{
 		Code: utils.Success,
 		Msg:  "修改成功",
@@ -138,6 +145,7 @@ func (n *NavHandler) UpdateNav(ctx *gin.Context) {
 func (n *NavHandler) MoveNavUp(ctx *gin.Context) {
 	navType := ctx.Param("type")
 	orderIdStr := ctx.Param("order_id")
+
 	orderId, err := strconv.Atoi(orderIdStr)
 	if (navType != "parent" && navType != "child") || err != nil {
 		ctx.JSON(http.StatusOK, utils.Result{
@@ -147,6 +155,7 @@ func (n *NavHandler) MoveNavUp(ctx *gin.Context) {
 		})
 		return
 	}
+
 	currNav, err := models.Nav{}.GetByOrderId(uint(orderId))
 	if err != nil {
 		log.Logger.Sugar().Error("error: ", err.Error())
@@ -157,6 +166,7 @@ func (n *NavHandler) MoveNavUp(ctx *gin.Context) {
 		})
 		return
 	}
+
 	preNav, _ := currNav.GetPre(navType)
 	if preNav.Name == "" {
 		ctx.JSON(http.StatusOK, utils.Result{
@@ -166,6 +176,7 @@ func (n *NavHandler) MoveNavUp(ctx *gin.Context) {
 		})
 		return
 	}
+
 	err = currNav.MoveUp(preNav)
 	if err != nil {
 		log.Logger.Sugar().Error("error: ", err.Error())
@@ -176,6 +187,7 @@ func (n *NavHandler) MoveNavUp(ctx *gin.Context) {
 		})
 		return
 	}
+
 	ctx.JSON(http.StatusOK, utils.Result{
 		Code: utils.Success,
 		Msg:  "向上移动成功",
@@ -195,6 +207,7 @@ func (n *NavHandler) MoveNavUp(ctx *gin.Context) {
 func (n *NavHandler) MoveNavDown(ctx *gin.Context) {
 	navType := ctx.Param("type")
 	orderIdStr := ctx.Param("order_id")
+
 	orderId, err := strconv.Atoi(orderIdStr)
 	if (navType != "parent" && navType != "child") || err != nil {
 		ctx.JSON(http.StatusOK, utils.Result{
@@ -204,6 +217,7 @@ func (n *NavHandler) MoveNavDown(ctx *gin.Context) {
 		})
 		return
 	}
+
 	currNav, err := models.Nav{}.GetByOrderId(uint(orderId))
 	if err != nil {
 		log.Logger.Sugar().Error("error: ", err.Error())
@@ -214,6 +228,7 @@ func (n *NavHandler) MoveNavDown(ctx *gin.Context) {
 		})
 		return
 	}
+
 	nextNav, _ := currNav.GetNext(navType)
 	if nextNav.Name == "" {
 		ctx.JSON(http.StatusOK, utils.Result{
@@ -223,6 +238,7 @@ func (n *NavHandler) MoveNavDown(ctx *gin.Context) {
 		})
 		return
 	}
+
 	err = currNav.MoveDown(nextNav)
 	if err != nil {
 		log.Logger.Sugar().Error("error: ", err.Error())
@@ -233,6 +249,7 @@ func (n *NavHandler) MoveNavDown(ctx *gin.Context) {
 		})
 		return
 	}
+
 	ctx.JSON(http.StatusOK, utils.Result{
 		Code: utils.Success,
 		Msg:  "向下移动成功",
@@ -250,6 +267,7 @@ func (n *NavHandler) MoveNavDown(ctx *gin.Context) {
 // @Router /api/v1/navs/{id} [delete]
 func (n *NavHandler) DeleteNav(ctx *gin.Context) {
 	id := ctx.Param("id")
+
 	err := models.Nav{}.DeleteById(id)
 	if err != nil {
 		log.Logger.Sugar().Error("error: ", err.Error())
@@ -260,6 +278,7 @@ func (n *NavHandler) DeleteNav(ctx *gin.Context) {
 		})
 		return
 	}
+
 	ctx.JSON(http.StatusOK, utils.Result{
 		Code: utils.Success,
 		Msg:  "删除成功",
@@ -285,6 +304,7 @@ func (n *NavHandler) MultiDelNavs(ctx *gin.Context) {
 		})
 		return
 	}
+
 	err := models.Nav{}.MultiDelByIds(ids)
 	if err != nil {
 		log.Logger.Sugar().Error("error: ", err.Error())
@@ -295,6 +315,7 @@ func (n *NavHandler) MultiDelNavs(ctx *gin.Context) {
 		})
 		return
 	}
+
 	ctx.JSON(http.StatusOK, utils.Result{
 		Code: utils.Success,
 		Msg:  "删除成功",

@@ -8,6 +8,8 @@ func GetSessionStr(session sessions.Session, key string) string {
 	if value == nil {
 		value = ""
 	}
+
 	valueStr := value.(string) //将interface{}转为string
+
 	return valueStr
 }

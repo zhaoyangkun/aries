@@ -92,11 +92,14 @@ func (Article) GetNext(orderId uint, isTop bool) (article Article, err error) {
 func (Article) GetByPage(page *utils.Pagination, key string, state uint,
 	categoryId uint) ([]Article, uint, error) {
 	var list []Article
+
 	query := db.Db.Preload("Category").Preload("TagList").
 		Model(&Article{}).Order("is_top desc,order_id asc,created_at desc", true)
+
 	if key != "" {
 		query = query.Where("title like concat('%',?,'%')", key)
 	}
+
 	if state > 0 {
 		switch state {
 		// 已发布
@@ -115,10 +118,13 @@ func (Article) GetByPage(page *utils.Pagination, key string, state uint,
 			break
 		}
 	}
+
 	if categoryId > 0 {
 		query = query.Where("category_id = ?", categoryId)
 	}
+
 	total, err := utils.ToPage(page, query, &list)
+
 	return list, total, err
 }
 
@@ -139,14 +145,17 @@ func (article Article) Create(tagIds string) error {
 			article.Summary = string(content[:100])
 		}
 	}
+
 	// 若图片为空，设置默认图片
 	if article.Img == "" {
 		article.Img = "https://s1.ax1x.com/2020/06/29/NWtFJA.jpg"
 	}
+
 	// 若 URL 为空，设置默认 URL
 	if article.URL == "" {
 		article.URL = strconv.FormatInt(time.Now().UnixNano()/1e6, 10)
 	}
+
 	// 若为密码不为空，加密密码
 	if article.Pwd != "" {
 		var err error
@@ -155,6 +164,7 @@ func (article Article) Create(tagIds string) error {
 			return err
 		}
 	}
+
 	var maxOrderId *uint
 	err := db.Db.Raw("select MAX(`order_id`) `maxOrderId` from `articles`").
 		Row().Scan(&maxOrderId)
@@ -166,6 +176,7 @@ func (article Article) Create(tagIds string) error {
 	} else {
 		article.OrderId = *maxOrderId + 1
 	}
+
 	// 开始事务
 	tx := db.Db.Begin()
 	defer func() {
@@ -176,18 +187,21 @@ func (article Article) Create(tagIds string) error {
 	if err := tx.Error; err != nil {
 		return err
 	}
+
 	// 添加文章
 	err = tx.Save(&article).Error
 	if err != nil {
 		tx.Rollback()
 		return err
 	}
+
 	// 根据标题获取文章
 	err = tx.Where("title = ?", article.Title).First(&article).Error
 	if err != nil {
 		tx.Rollback()
 		return err
 	}
+
 	// 创建文章和标签关联
 	if tagIds != "" {
 		tagIdList := strings.Split(tagIds, ",") // 根据 , 分割成字符串数组
@@ -200,6 +214,7 @@ func (article Article) Create(tagIds string) error {
 			}
 		}
 	}
+
 	return tx.Commit().Error
 }
 
@@ -214,14 +229,17 @@ func (article Article) Update(tagIds string) error {
 			article.Summary = string(content[:100])
 		}
 	}
+
 	// 若图片为空，设置默认图片
 	if article.Img == "" {
 		article.Img = "https://s1.ax1x.com/2020/06/29/NWtFJA.jpg"
 	}
+
 	// 若 URL 为空，设置默认 URL
 	if article.URL == "" {
 		article.URL = strconv.FormatInt(time.Now().UnixNano()/1e6, 10)
 	}
+
 	// 开始事务
 	tx := db.Db.Begin()
 	defer func() {
@@ -232,6 +250,7 @@ func (article Article) Update(tagIds string) error {
 	if err := tx.Error; err != nil {
 		return err
 	}
+
 	// 使用 map 来更新，避免 gorm 默认不更新值为 nil, false, 0 的字段
 	err := tx.Model(&Article{}).Where("`id` = ?", article.ID).
 		Updates(map[string]interface{}{
@@ -253,6 +272,7 @@ func (article Article) Update(tagIds string) error {
 		tx.Rollback()
 		return err
 	}
+
 	// 获取原文章记录
 	a := Article{}
 	err = tx.Where("`id` = ?", article.ID).First(&a).Error
@@ -260,6 +280,7 @@ func (article Article) Update(tagIds string) error {
 		tx.Rollback()
 		return err
 	}
+
 	// 密码发生变化，更新密码
 	if a.Pwd != article.Pwd {
 		// 密码不为空，加密密码
@@ -270,6 +291,7 @@ func (article Article) Update(tagIds string) error {
 				return err
 			}
 		}
+
 		err = tx.Model(&Article{}).Where("`id` = ?", article.ID).
 			Updates(map[string]interface{}{
 				"pwd": article.Pwd,
@@ -279,12 +301,14 @@ func (article Article) Update(tagIds string) error {
 			return err
 		}
 	}
+
 	// 删除标签文章表中关联记录
 	err = tx.Exec("delete from tag_article where article_id = ?", article.ID).Error
 	if err != nil {
 		tx.Rollback()
 		return err
 	}
+
 	// 在标签文章表中添加关联记录
 	if tagIds != "" {
 		tagIdList := strings.Split(tagIds, ",") // 根据 , 分割成字符串数组
@@ -297,6 +321,7 @@ func (article Article) Update(tagIds string) error {
 			}
 		}
 	}
+
 	return tx.Commit().Error
 }
 
@@ -319,11 +344,13 @@ func (article Article) MoveUp(currId, preId, currOrderId, preOrderId uint) error
 		if err != nil {
 			return err
 		}
+
 		err = db.Db.Model(&Article{}).Where("`id` = ?", preId).
 			Update("order_id", currOrderId).Error
 		if err != nil {
 			return err
 		}
+
 		return nil
 	})
 }
@@ -338,11 +365,13 @@ func (article Article) MoveDown(currId, nextId, currOrderId, nextOrderId uint) e
 		if err != nil {
 			return err
 		}
+
 		err = db.Db.Model(&Article{}).Where("`id` = ?", nextId).
 			Update("order_id", currOrderId).Error
 		if err != nil {
 			return err
 		}
+
 		return nil
 	})
 }
@@ -354,6 +383,7 @@ func (Article) DeleteById(id string) error {
 	if err != nil {
 		return err
 	}
+
 	// 删除文章表中的记录
 	return db.Db.Where("`id` = ?", id).Unscoped().Delete(&Article{}).Error
 }
@@ -370,6 +400,7 @@ func (Article) MultiDelByIds(ids string) error {
 	if err := tx.Error; err != nil {
 		return err
 	}
+
 	// 删除标签文章表中的记录
 	idList := strings.Split(ids, ",")
 	err := tx.Exec("delete from tag_article where article_id in (?)", idList).Error
@@ -377,12 +408,14 @@ func (Article) MultiDelByIds(ids string) error {
 		tx.Rollback()
 		return err
 	}
+
 	// 删除文章表中的记录
 	err = tx.Where("`id` in (?)", idList).Unscoped().Delete(&Article{}).Error
 	if err != nil {
 		tx.Rollback()
 		return err
 	}
+
 	return tx.Commit().Error
 }
 
@@ -393,8 +426,10 @@ func (article Article) SaveFromFile() (err error) {
 	if err != nil {
 		return
 	}
+
 	article.UserId = user.ID
 	article.MDContent = setting.LuteEngine.MarkdownStr("", article.Content)
 	err = article.Create("")
+
 	return
 }

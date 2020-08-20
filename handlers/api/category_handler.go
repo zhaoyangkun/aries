@@ -24,6 +24,7 @@ type CategoryHandler struct {
 // @Router /api/v1/all_categories [get]
 func (c *CategoryHandler) GetAllCategories(ctx *gin.Context) {
 	categoryType := ctx.Query("category_type")
+
 	cType, err := strconv.Atoi(categoryType)
 	if err != nil {
 		ctx.JSON(http.StatusOK, utils.Result{
@@ -33,6 +34,7 @@ func (c *CategoryHandler) GetAllCategories(ctx *gin.Context) {
 		})
 		return
 	}
+
 	category := models.Category{}                           // 建立 model 对象
 	categoryList, err := category.GetAllByType(uint(cType)) // 调用 model 对应方法，从数据库中获取所有分类
 	if err != nil {                                         // 异常处理
@@ -44,6 +46,7 @@ func (c *CategoryHandler) GetAllCategories(ctx *gin.Context) {
 		}) // 返回 json
 		return
 	}
+
 	ctx.JSON(http.StatusOK, utils.Result{
 		Code: utils.Success,
 		Msg:  "查询成功",
@@ -61,6 +64,7 @@ func (c *CategoryHandler) GetAllCategories(ctx *gin.Context) {
 // @Router /api/v1/parent_categories [get]
 func (c *CategoryHandler) GetAllParentCategories(ctx *gin.Context) {
 	categoryType := ctx.Query("category_type")
+
 	cType, err := strconv.Atoi(categoryType)
 	if err != nil {
 		ctx.JSON(http.StatusOK, utils.Result{
@@ -70,6 +74,7 @@ func (c *CategoryHandler) GetAllParentCategories(ctx *gin.Context) {
 		})
 		return
 	}
+
 	category := models.Category{}
 	categoryList, err := category.GetAllParents(uint(cType))
 	if err != nil {
@@ -81,6 +86,7 @@ func (c *CategoryHandler) GetAllParentCategories(ctx *gin.Context) {
 		})
 		return
 	}
+
 	ctx.JSON(http.StatusOK, utils.Result{
 		Code: utils.Success,
 		Msg:  "查询成功",
@@ -101,8 +107,7 @@ func (c *CategoryHandler) GetAllParentCategories(ctx *gin.Context) {
 // @Router /api/v1/categories [get]
 func (c *CategoryHandler) GetCategoriesByPage(ctx *gin.Context) {
 	pageForm := forms.CategoryPageForm{}
-	err := ctx.ShouldBindQuery(&pageForm)
-	if err != nil {
+	if err := ctx.ShouldBindQuery(&pageForm); err != nil {
 		ctx.JSON(http.StatusOK, utils.Result{
 			Code: utils.RequestError,
 			Msg:  utils.GetFormError(err),
@@ -110,6 +115,7 @@ func (c *CategoryHandler) GetCategoriesByPage(ctx *gin.Context) {
 		})
 		return
 	}
+
 	category := models.Category{}
 	categoryList, totalNum, err := category.GetByPage(&pageForm.Pagination, pageForm.Key,
 		*pageForm.CategoryType)
@@ -122,6 +128,7 @@ func (c *CategoryHandler) GetCategoriesByPage(ctx *gin.Context) {
 		})
 		return
 	}
+
 	ctx.JSON(http.StatusOK, utils.Result{
 		Code: utils.Success,
 		Msg:  "查询成功",
@@ -147,6 +154,7 @@ func (c *CategoryHandler) AddArticleCategory(ctx *gin.Context) {
 		})
 		return
 	}
+
 	// 校验分类名称唯一性
 	existCategory, _ := models.Category{}.GetByName(addForm.Name)
 	if existCategory.Name != "" {
@@ -157,6 +165,7 @@ func (c *CategoryHandler) AddArticleCategory(ctx *gin.Context) {
 		})
 		return
 	}
+
 	// 校验分类 Url 唯一性
 	existCategory, _ = models.Category{}.GetByUrl(addForm.Url)
 	if existCategory.Url != "" {
@@ -167,6 +176,7 @@ func (c *CategoryHandler) AddArticleCategory(ctx *gin.Context) {
 		})
 		return
 	}
+
 	category := addForm.BindToModel()
 	if err := category.Create(); err != nil {
 		log.Logger.Sugar().Error("error: ", err.Error())
@@ -177,6 +187,7 @@ func (c *CategoryHandler) AddArticleCategory(ctx *gin.Context) {
 		})
 		return
 	}
+
 	ctx.JSON(http.StatusOK, utils.Result{
 		Code: utils.Success,
 		Msg:  "创建成功",
@@ -202,6 +213,7 @@ func (c *CategoryHandler) UpdateArticleCategory(ctx *gin.Context) {
 		})
 		return
 	}
+
 	// 校验分类名称唯一性
 	existCategory, _ := models.Category{}.GetByName(editForm.Name)
 	if existCategory.ID > 0 && existCategory.ID != editForm.ID {
@@ -212,6 +224,7 @@ func (c *CategoryHandler) UpdateArticleCategory(ctx *gin.Context) {
 		})
 		return
 	}
+
 	// 校验分类 Url 唯一性
 	existCategory, _ = models.Category{}.GetByUrl(editForm.Url)
 	if existCategory.ID > 0 && existCategory.ID != editForm.ID {
@@ -222,6 +235,7 @@ func (c *CategoryHandler) UpdateArticleCategory(ctx *gin.Context) {
 		})
 		return
 	}
+
 	category := editForm.BindToModel()
 	if err := category.Update(); err != nil {
 		log.Logger.Sugar().Error("error: ", err.Error())
@@ -232,6 +246,7 @@ func (c *CategoryHandler) UpdateArticleCategory(ctx *gin.Context) {
 		})
 		return
 	}
+
 	ctx.JSON(http.StatusOK, utils.Result{
 		Code: utils.Success,
 		Msg:  "修改成功",
@@ -257,6 +272,7 @@ func (c *CategoryHandler) AddLinkCategory(ctx *gin.Context) {
 		})
 		return
 	}
+
 	// 校验分类名称唯一性
 	existCategory, _ := models.Category{}.GetByName(addForm.Name)
 	if existCategory.Name != "" {
@@ -267,6 +283,7 @@ func (c *CategoryHandler) AddLinkCategory(ctx *gin.Context) {
 		})
 		return
 	}
+
 	category := addForm.BindToModel()
 	if err := category.Create(); err != nil {
 		log.Logger.Sugar().Error("error: ", err.Error())
@@ -277,6 +294,7 @@ func (c *CategoryHandler) AddLinkCategory(ctx *gin.Context) {
 		})
 		return
 	}
+
 	ctx.JSON(http.StatusOK, utils.Result{
 		Code: utils.Success,
 		Msg:  "创建成功",
@@ -302,6 +320,7 @@ func (c *CategoryHandler) UpdateLinkCategory(ctx *gin.Context) {
 		})
 		return
 	}
+
 	// 校验分类名称唯一性
 	existCategory, _ := models.Category{}.GetByName(editForm.Name)
 	if existCategory.ID > 0 && existCategory.ID != editForm.ID {
@@ -312,6 +331,7 @@ func (c *CategoryHandler) UpdateLinkCategory(ctx *gin.Context) {
 		})
 		return
 	}
+
 	category := editForm.BindToModel()
 	if err := category.Update(); err != nil {
 		log.Logger.Sugar().Error("error: ", err.Error())
@@ -322,6 +342,7 @@ func (c *CategoryHandler) UpdateLinkCategory(ctx *gin.Context) {
 		})
 		return
 	}
+
 	ctx.JSON(http.StatusOK, utils.Result{
 		Code: utils.Success,
 		Msg:  "修改成功",
@@ -339,7 +360,8 @@ func (c *CategoryHandler) UpdateLinkCategory(ctx *gin.Context) {
 // @Router /api/v1/categories/{id} [delete]
 func (c *CategoryHandler) DeleteCategory(ctx *gin.Context) {
 	id, err := strconv.Atoi(ctx.Param("id")) // 将 string 转换为 int
-	if err != nil {                          // 类型转换失败
+
+	if err != nil { // 类型转换失败
 		ctx.JSON(http.StatusOK, utils.Result{
 			Code: utils.RequestError,
 			Msg:  "请求参数有误",
@@ -347,6 +369,7 @@ func (c *CategoryHandler) DeleteCategory(ctx *gin.Context) {
 		})
 		return
 	}
+
 	category := models.Category{}
 	if err := category.DeleteById(uint(id)); err != nil { //删除分类，捕捉异常
 		log.Logger.Sugar().Error("error: ", err.Error())
@@ -357,6 +380,7 @@ func (c *CategoryHandler) DeleteCategory(ctx *gin.Context) {
 		})
 		return
 	}
+
 	ctx.JSON(http.StatusOK, utils.Result{ // 删除成功
 		Code: utils.Success,
 		Msg:  "删除成功",
@@ -374,6 +398,7 @@ func (c *CategoryHandler) DeleteCategory(ctx *gin.Context) {
 // @Router /api/v1/categories [delete]
 func (c *CategoryHandler) MultiDelCategories(ctx *gin.Context) {
 	ids := ctx.DefaultQuery("ids", "") // 获取 ids
+
 	if ids == "" {
 		ctx.JSON(http.StatusOK, utils.Result{
 			Code: utils.RequestError,
@@ -382,6 +407,7 @@ func (c *CategoryHandler) MultiDelCategories(ctx *gin.Context) {
 		})
 		return
 	}
+
 	category := models.Category{}
 	if err := category.MultiDelByIds(ids); err != nil {
 		log.Logger.Sugar().Error("error: ", err.Error())
@@ -392,6 +418,7 @@ func (c *CategoryHandler) MultiDelCategories(ctx *gin.Context) {
 		})
 		return
 	}
+
 	ctx.JSON(http.StatusOK, utils.Result{
 		Code: utils.Success,
 		Msg:  "删除成功",

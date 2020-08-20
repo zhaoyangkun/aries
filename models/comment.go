@@ -58,9 +58,11 @@ func (Comment) GetByPage(page *utils.Pagination, key string, commentType uint, s
 	total uint, err error) {
 	query := db.Db.Preload("Article").
 		Order("created_at desc", true).Find(&list)
+
 	if key != "" {
 		query = query.Where("content like concat('%',?,'%')", key)
 	}
+
 	if commentType > 0 {
 		switch commentType {
 		case 1:
@@ -71,6 +73,7 @@ func (Comment) GetByPage(page *utils.Pagination, key string, commentType uint, s
 			break
 		}
 	}
+
 	if state > 0 {
 		switch state {
 		case 1:
@@ -83,7 +86,9 @@ func (Comment) GetByPage(page *utils.Pagination, key string, commentType uint, s
 			break
 		}
 	}
+
 	total, err = utils.ToPage(page, query, &list)
+
 	return
 }
 

@@ -45,6 +45,7 @@ func getEncoder(format string) zapcore.Encoder {
 	encoderConfig.EncodeLevel = zapcore.CapitalLevelEncoder
 	encoderConfig.EncodeDuration = zapcore.SecondsDurationEncoder
 	encoderConfig.EncodeCaller = zapcore.ShortCallerEncoder
+
 	switch format {
 	case "json":
 		return zapcore.NewJSONEncoder(encoderConfig)

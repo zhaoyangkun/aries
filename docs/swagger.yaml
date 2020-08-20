@@ -1240,6 +1240,53 @@ paths:
       summary: 删除评论
       tags:
       - 评论
+  /api/v1/images:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: 页码
+        in: query
+        name: page
+        type: integer
+      - description: 每页条数
+        in: query
+        name: size
+        type: integer
+      - description: 关键词
+        in: query
+        name: key
+        type: string
+      - description: 存储类型
+        in: query
+        name: storage_name
+        type: string
+      responses:
+        "100":
+          description: Continue
+          schema:
+            $ref: '#/definitions/utils.Result'
+        "104":
+          schema:
+            $ref: '#/definitions/utils.Result'
+      summary: 分页获取图片
+      tags:
+      - 图床
+  /api/v1/images/attachment/upload:
+    post:
+      consumes:
+      - application/json
+      responses:
+        "100":
+          description: Continue
+          schema:
+            $ref: '#/definitions/utils.Result'
+        "104":
+          schema:
+            $ref: '#/definitions/utils.Result'
+      summary: 上传图片到附件
+      tags:
+      - 图床
   /api/v1/links:
     delete:
       consumes:
@@ -1510,21 +1557,6 @@ paths:
           schema:
             $ref: '#/definitions/utils.Result'
       summary: 发送测试邮件
-      tags:
-      - 系统设置
-  /api/v1/img/attachment/upload:
-    post:
-      consumes:
-      - application/json
-      responses:
-        "100":
-          description: Continue
-          schema:
-            $ref: '#/definitions/utils.Result'
-        "104":
-          schema:
-            $ref: '#/definitions/utils.Result'
-      summary: 上传图片
       tags:
       - 系统设置
   /api/v1/sys_setting/index_info:

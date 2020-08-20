@@ -21,6 +21,7 @@ func (a *ApiRouter) InitApiRouter(rootPath string, router *gin.Engine) {
 	tagHandler := api.TagHandler{}
 	userHandler := api.UserHandler{}
 	pictureHandler := api.PictureHandler{}
+
 	authApiRouter := router.Group(rootPath)
 	{
 		authApiRouter.POST("/auth/login", authHandler.Login)
@@ -110,7 +111,8 @@ func (a *ApiRouter) InitApiRouter(rootPath string, router *gin.Engine) {
 
 	imgApiRouter := router.Group(rootPath, middlewares.JWTAuth())
 	{
-		imgApiRouter.POST("/img/attachment/upload", pictureHandler.UploadImgToAttachment)
+		imgApiRouter.GET("/images", pictureHandler.GetPicturesByPage)
+		imgApiRouter.POST("/images/attachment/upload", pictureHandler.UploadImgToAttachment)
 	}
 
 	tagApiRouter := router.Group(rootPath, middlewares.JWTAuth())

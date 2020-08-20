@@ -47,6 +47,7 @@ func GenerateCaptcha(captcha *CaptchaConfig) (string, error) {
 	if err != nil {
 		return "", err
 	}
+
 	return b64s, nil
 }
 

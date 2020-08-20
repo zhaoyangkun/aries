@@ -14,6 +14,7 @@ type TmplRouter struct {
 func (t *TmplRouter) InitTemplateRouter(rootPath string, router *gin.Engine) {
 	tmplHandler := handlers.TmplHandler{}
 	tmplRouter := router.Group(rootPath)
+
 	url := ginSwagger.URL("/swagger/doc.json")
 	{
 		tmplRouter.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, url))

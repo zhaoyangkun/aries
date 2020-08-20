@@ -95,11 +95,13 @@ func (s *Setting) InitSetting() {
 	// 拼接配置文件访问路径
 	yamlPath := filepath.Join(rootPath, "config", "develop.yaml")
 	log.Println("配置文件路径：", yamlPath)
+
 	// 读取配置文件
 	yamlFile, err := ioutil.ReadFile(yamlPath)
 	if err != nil {
 		log.Panicln("读取配置文件失败：", err.Error())
 	}
+
 	// 转换配置文件参数
 	err = yaml.Unmarshal(yamlFile, Config)
 	if err != nil {

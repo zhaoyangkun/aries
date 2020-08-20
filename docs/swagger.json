@@ -1075,6 +1075,80 @@
                 }
             }
         },
+        "/api/v1/images": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "图床"
+                ],
+                "summary": "分页获取图片",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "页码",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "每页条数",
+                        "name": "size",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "关键词",
+                        "name": "key",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "存储类型",
+                        "name": "storage_name",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "100": {
+                        "description": "Continue",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Result"
+                        }
+                    },
+                    "104": {
+                        "schema": {
+                            "$ref": "#/definitions/utils.Result"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/images/attachment/upload": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "图床"
+                ],
+                "summary": "上传图片到附件",
+                "responses": {
+                    "100": {
+                        "description": "Continue",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Result"
+                        }
+                    },
+                    "104": {
+                        "schema": {
+                            "$ref": "#/definitions/utils.Result"
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/links": {
             "get": {
                 "consumes": [
@@ -1487,30 +1561,6 @@
                     "系统设置"
                 ],
                 "summary": "发送测试邮件",
-                "responses": {
-                    "100": {
-                        "description": "Continue",
-                        "schema": {
-                            "$ref": "#/definitions/utils.Result"
-                        }
-                    },
-                    "104": {
-                        "schema": {
-                            "$ref": "#/definitions/utils.Result"
-                        }
-                    }
-                }
-            }
-        },
-        "/api/v1/img/attachment/upload": {
-            "post": {
-                "consumes": [
-                    "application/json"
-                ],
-                "tags": [
-                    "系统设置"
-                ],
-                "summary": "上传图片",
                 "responses": {
                     "100": {
                         "description": "Continue",

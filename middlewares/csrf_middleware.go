@@ -24,6 +24,7 @@ func Csrf() gin.HandlerFunc {
 				Msg:  "Csrf Forbidden",
 				Data: nil,
 			}
+
 			ctx.JSON(result.Code, result)
 			ctx.Abort()
 		}

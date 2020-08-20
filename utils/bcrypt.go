@@ -10,6 +10,7 @@ func EncryptPwd(pwd string) (string, error) {
 	if err != nil {
 		return "", err
 	}
+
 	return string(hash), err
 }
 
@@ -18,5 +19,6 @@ func VerifyPwd(hashedPwd string, plainPwd string) bool {
 	byteHash := []byte(hashedPwd)
 	bytePlain := []byte(plainPwd)
 	err := bcrypt.CompareHashAndPassword(byteHash, bytePlain)
+
 	return err == nil
 }

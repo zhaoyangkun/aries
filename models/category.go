@@ -23,17 +23,20 @@ type Category struct {
 func (category Category) GetAllByType(categoryType uint) ([]Category, error) {
 	var categories []Category
 	var children []Category
+
 	// 查询子分类
 	err := db.Db.Where("`parent_id` > 0").Find(&children).Error
 	if err != nil {
 		return categories, err
 	}
+
 	// 根据类别查询分类，若 categoryType >= 2，表示查询所有分类
 	if categoryType < 2 {
 		err = db.Db.Where("`type` = ?", categoryType).Find(&categories).Error
 	} else {
 		err = db.Db.Find(&categories).Error
 	}
+
 	// 将子分类并入父分类
 	for i := range categories {
 		if categories[i].ParentId == 0 {
@@ -44,6 +47,7 @@ func (category Category) GetAllByType(categoryType uint) ([]Category, error) {
 			}
 		}
 	}
+
 	return categories, err
 }
 
@@ -51,20 +55,25 @@ func (category Category) GetAllByType(categoryType uint) ([]Category, error) {
 func (category Category) GetByPage(page *utils.Pagination, key string, categoryType uint) ([]Category, uint, error) {
 	var list []Category // 保存结果集
 	var children []Category
+
 	// 查询子分类
 	err := db.Db.Where("`parent_id` > 0").Find(&children).Error
 	if err != nil {
 		return list, 0, err
 	}
+
 	// 创建语句
 	query := db.Db.Model(&Category{}).Where("`type` = ?", categoryType).
 		Order("created_at desc", true)
+
 	// 拼接搜索语句
 	if key != "" {
 		query = query.Where("`name` like concat('%',?,'%')", key)
 	}
+
 	// 分页
 	total, err := utils.ToPage(page, query, &list)
+
 	// 将子类并入父类
 	for i := range list {
 		if list[i].ParentId == 0 {
@@ -75,6 +84,7 @@ func (category Category) GetByPage(page *utils.Pagination, key string, categoryT
 			}
 		}
 	}
+
 	// 返回分页数据
 	return list, total, err
 }
@@ -125,22 +135,26 @@ func (category Category) DeleteById(id uint) error {
 	if err := tx.Error; err != nil {
 		return err
 	}
+
 	//  更新关联文章
 	err := tx.Model(&Article{}).Where("`category_id` = ?", id).Update("category_id", nil).Error
 	if err != nil {
 		tx.Rollback()
 		return err
 	}
+
 	err = tx.Exec("update `categories` set `parent_id` = 0 where `parent_id` = ?", id).Error
 	if err != nil {
 		tx.Rollback()
 		return err
 	}
+
 	err = tx.Where("`id` = ?", id).Unscoped().Delete(&category).Error
 	if err != nil {
 		tx.Rollback()
 		return err
 	}
+
 	return tx.Commit().Error
 }
 
@@ -155,6 +169,7 @@ func (category Category) MultiDelByIds(ids string) error {
 	if err := tx.Error; err != nil {
 		return err
 	}
+
 	idList := strings.Split(ids, ",") // 根据 , 分割成字符串数组
 	// 更新关联文章
 	err := tx.Model(&Article{}).Where("`category_id` in (?)", idList).
@@ -163,15 +178,18 @@ func (category Category) MultiDelByIds(ids string) error {
 		tx.Rollback()
 		return err
 	}
+
 	err = tx.Exec("update `categories` set `parent_id` = 0 where `parent_id` in (?)", idList).Error
 	if err != nil {
 		tx.Rollback()
 		return err
 	}
+
 	err = tx.Where("`id` in (?)", idList).Unscoped().Delete(&category).Error
 	if err != nil {
 		tx.Rollback()
 		return err
 	}
+
 	return tx.Commit().Error
 }

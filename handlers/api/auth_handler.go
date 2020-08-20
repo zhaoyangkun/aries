@@ -32,12 +32,14 @@ func (a *AuthHandler) Register(ctx *gin.Context) {
 		Msg:  "注册成功",
 		Data: nil,
 	}
+
 	if err := ctx.ShouldBindJSON(&regForm); err != nil { // 表单校验失败
 		result.Code = utils.RequestError     // 请求数据有误
 		result.Msg = utils.GetFormError(err) // 获取表单错误信息
 		ctx.JSON(http.StatusOK, result)      // 返回 json
 		return
 	}
+
 	user := regForm.BindToModel() // 绑定表单数据到用户
 	u, _ := user.GetByUsername()  // 根据用户名获取用户
 	if u.Username != "" {         // 账号已被注册
@@ -46,6 +48,7 @@ func (a *AuthHandler) Register(ctx *gin.Context) {
 		ctx.JSON(http.StatusOK, result) // 返回 json
 		return
 	}
+
 	if err := user.Create(); err != nil { // 创建用户 + 异常处理
 		log.Logger.Sugar().Error("error: ", err.Error())
 		result.Code = utils.ServerError
@@ -53,6 +56,7 @@ func (a *AuthHandler) Register(ctx *gin.Context) {
 		ctx.JSON(http.StatusOK, result) // 返回 json
 		return
 	}
+
 	sysSetting := models.SysSetting{Name: "网站设置"}
 	if err := sysSetting.Create(); err != nil {
 		log.Logger.Sugar().Error("error: ", err.Error())
@@ -61,6 +65,7 @@ func (a *AuthHandler) Register(ctx *gin.Context) {
 		ctx.JSON(http.StatusOK, result)
 		return
 	}
+
 	typeItem := models.SysSettingItem{
 		SysId: sysSetting.ID,
 		Key:   "type_name",
@@ -76,6 +81,7 @@ func (a *AuthHandler) Register(ctx *gin.Context) {
 		Key:   "site_name",
 		Val:   regForm.SiteName,
 	}
+
 	itemList := []models.SysSettingItem{typeItem, siteNameItem, siteUrlItem}
 	err := models.SysSettingItem{}.MultiCreateOrUpdate(itemList)
 	if err != nil {
@@ -85,6 +91,7 @@ func (a *AuthHandler) Register(ctx *gin.Context) {
 		ctx.JSON(http.StatusOK, result)
 		return
 	}
+
 	ctx.JSON(http.StatusOK, result)
 }
 
@@ -103,12 +110,14 @@ func (a *AuthHandler) Login(ctx *gin.Context) {
 		Msg:  "登录成功",
 		Data: nil,
 	}
+
 	if err := ctx.ShouldBindJSON(&loginForm); err != nil { // 表单校验失败
 		result.Code = utils.RequestError     // 请求数据有误
 		result.Msg = utils.GetFormError(err) // 获取表单错误信息
 		ctx.JSON(http.StatusOK, result)      // 返回 json
 		return
 	}
+
 	captchaConfig := &utils.CaptchaConfig{
 		Id:          loginForm.CaptchaId,
 		VerifyValue: loginForm.CaptchaVal,
@@ -119,6 +128,7 @@ func (a *AuthHandler) Login(ctx *gin.Context) {
 		ctx.JSON(http.StatusOK, result) // 返回 json
 		return
 	}
+
 	user := loginForm.BindToModel() // 绑定表单数据到实体类
 	u, _ := user.GetByUsername()    // 根据用户名获取用户
 	if u.Username == "" {           // 用户不存在
@@ -133,6 +143,7 @@ func (a *AuthHandler) Login(ctx *gin.Context) {
 		ctx.JSON(http.StatusOK, result) // 返回 json
 		return
 	}
+
 	j := utils.NewJWT()                             // 创建 JWT 实例
 	token, err := j.CreateToken(utils.CustomClaims{ // 生成 JWT token
 		Username: u.Username,
@@ -150,12 +161,14 @@ func (a *AuthHandler) Login(ctx *gin.Context) {
 		ctx.JSON(http.StatusOK, result) // 返回 json
 		return
 	}
+
 	result.Data = utils.Token{ // 封装 Token 信息
 		Token:    token,
 		UserId:   u.ID,
 		Username: u.Username,
 		UserImg:  u.UserImg,
 	}
+
 	ctx.JSON(http.StatusOK, result) // 返回 json
 }
 
@@ -173,6 +186,7 @@ func (a *AuthHandler) CreateCaptcha(ctx *gin.Context) {
 		Msg:  "验证码创建成功",
 		Data: nil,
 	}
+
 	base64, err := utils.GenerateCaptcha(&captcha) // 创建验证码
 	if err != nil {                                // 异常处理
 		result.Code = utils.ServerError
@@ -180,10 +194,12 @@ func (a *AuthHandler) CreateCaptcha(ctx *gin.Context) {
 		ctx.JSON(http.StatusOK, result)
 		return
 	}
+
 	result.Data = gin.H{ // 封装 data
 		"captcha_id":  captcha.Id,
 		"captcha_url": base64,
 	}
+
 	ctx.JSON(http.StatusOK, result) // 返回 json 数据
 }
 
@@ -205,6 +221,7 @@ func (a *AuthHandler) ForgetPwd(ctx *gin.Context) {
 		})
 		return
 	}
+
 	user, _ := models.User{Email: forgetPwdForm.Email}.GetByEmail()
 	if user.Username == "" {
 		ctx.JSON(http.StatusOK, utils.Result{
@@ -214,12 +231,14 @@ func (a *AuthHandler) ForgetPwd(ctx *gin.Context) {
 		})
 		return
 	}
+
 	verifyCode := ""
 	_ = setting.Cache.Get(forgetPwdForm.Email, &verifyCode)
 	if verifyCode == "" {
 		verifyCode = utils.CreateRandomCode(6)
 		_ = setting.Cache.Set(forgetPwdForm.Email, verifyCode, time.Minute*15)
 	}
+
 	msg := gomail.NewMessage()
 	// 设置收件人
 	msg.SetHeader("To", forgetPwdForm.Email)
@@ -232,6 +251,7 @@ func (a *AuthHandler) ForgetPwd(ctx *gin.Context) {
 	// 设置 SMTP 参数
 	d := gomail.NewDialer(setting.Config.SMTP.Address, setting.Config.SMTP.Port,
 		setting.Config.SMTP.Account, setting.Config.SMTP.Password)
+
 	// 发送
 	err := d.DialAndSend(msg)
 	if err != nil {
@@ -243,6 +263,7 @@ func (a *AuthHandler) ForgetPwd(ctx *gin.Context) {
 		})
 		return
 	}
+
 	ctx.JSON(http.StatusOK, utils.Result{
 		Code: utils.Success,
 		Msg:  "验证码发送成功，请前往邮箱查看",
@@ -268,6 +289,7 @@ func (a *AuthHandler) ResetPwd(ctx *gin.Context) {
 		})
 		return
 	}
+
 	verifyCode := ""
 	_ = setting.Cache.Get(resetPwdForm.Email, &verifyCode)
 	if verifyCode != resetPwdForm.VerifyCode {
@@ -278,6 +300,7 @@ func (a *AuthHandler) ResetPwd(ctx *gin.Context) {
 		})
 		return
 	}
+
 	user := resetPwdForm.BindToModel()
 	err := user.UpdatePwd()
 	if err != nil {
@@ -289,6 +312,7 @@ func (a *AuthHandler) ResetPwd(ctx *gin.Context) {
 		})
 		return
 	}
+
 	ctx.JSON(http.StatusOK, utils.Result{
 		Code: utils.Success,
 		Msg:  "重置密码成功",

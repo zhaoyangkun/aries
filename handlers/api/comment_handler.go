@@ -31,6 +31,7 @@ func (c *CommentHandler) GetAllComments(ctx *gin.Context) {
 		})
 		return
 	}
+
 	ctx.JSON(http.StatusOK, utils.Result{
 		Code: utils.Success,
 		Msg:  "查询成功",
@@ -53,6 +54,7 @@ func (c *CommentHandler) GetAllComments(ctx *gin.Context) {
 func (c *CommentHandler) GetCommentsByPage(ctx *gin.Context) {
 	pageForm := forms.CommentPageForm{}
 	_ = ctx.ShouldBindQuery(&pageForm)
+
 	list, total, err := models.Comment{}.GetByPage(&pageForm.Pagination, pageForm.Key, pageForm.Type, pageForm.State)
 	if err != nil {
 		log.Logger.Sugar().Error("error: ", err.Error())
@@ -63,6 +65,7 @@ func (c *CommentHandler) GetCommentsByPage(ctx *gin.Context) {
 		})
 		return
 	}
+
 	ctx.JSON(http.StatusOK, utils.Result{
 		Code: utils.Success,
 		Msg:  "查询成功",
@@ -80,8 +83,7 @@ func (c *CommentHandler) GetCommentsByPage(ctx *gin.Context) {
 // @Router /api/v1/comments [post]
 func (c *CommentHandler) AddComment(ctx *gin.Context) {
 	addForm := forms.CommentAddForm{}
-	err := ctx.ShouldBindJSON(&addForm)
-	if err != nil {
+	if err := ctx.ShouldBindJSON(&addForm); err != nil {
 		ctx.JSON(http.StatusOK, utils.Result{
 			Code: utils.RequestError,
 			Msg:  utils.GetFormError(err),
@@ -89,6 +91,7 @@ func (c *CommentHandler) AddComment(ctx *gin.Context) {
 		})
 		return
 	}
+
 	comment := addForm.BindToModel()
 	if err := comment.Create(); err != nil {
 		log.Logger.Sugar().Error("error: ", err.Error())
@@ -99,6 +102,7 @@ func (c *CommentHandler) AddComment(ctx *gin.Context) {
 		})
 		return
 	}
+
 	ctx.JSON(http.StatusOK, utils.Result{
 		Code: utils.Success,
 		Msg:  "发表评论成功",
@@ -124,6 +128,7 @@ func (c *CommentHandler) UpdateComment(ctx *gin.Context) {
 		})
 		return
 	}
+
 	comment := editForm.BindToModel()
 	if err := comment.Update(); err != nil {
 		log.Logger.Sugar().Error("error: ", err.Error())
@@ -150,6 +155,7 @@ func (c *CommentHandler) UpdateComment(ctx *gin.Context) {
 // @Router /api/v1/comments/{id} [delete]
 func (c *CommentHandler) DeleteComment(ctx *gin.Context) {
 	id := ctx.Param("id")
+
 	err := models.Comment{}.DeleteById(id)
 	if err != nil {
 		log.Logger.Sugar().Error("error: ", err.Error())
@@ -159,6 +165,7 @@ func (c *CommentHandler) DeleteComment(ctx *gin.Context) {
 			Data: nil,
 		})
 	}
+
 	ctx.JSON(http.StatusOK, utils.Result{
 		Code: utils.Success,
 		Msg:  "删除成功",
@@ -176,6 +183,7 @@ func (c *CommentHandler) DeleteComment(ctx *gin.Context) {
 // @Router /api/v1/comments [delete]
 func (c *CommentHandler) MultiDelComments(ctx *gin.Context) {
 	ids := ctx.Query("ids")
+
 	if ids == "" {
 		ctx.JSON(http.StatusOK, utils.Result{
 			Code: utils.RequestError,
@@ -184,6 +192,7 @@ func (c *CommentHandler) MultiDelComments(ctx *gin.Context) {
 		})
 		return
 	}
+
 	err := models.Comment{}.MultiDelByIds(ids)
 	if err != nil {
 		log.Logger.Sugar().Error("error: ", err.Error())
@@ -194,6 +203,7 @@ func (c *CommentHandler) MultiDelComments(ctx *gin.Context) {
 		})
 		return
 	}
+
 	ctx.JSON(http.StatusOK, utils.Result{
 		Code: utils.Success,
 		Msg:  "删除成功",

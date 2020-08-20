@@ -28,14 +28,19 @@ func (Link) GetAll() (list []Link, err error) {
 // 分页获取友链
 func (Link) GetByPage(page *utils.Pagination, key string, categoryId uint) ([]Link, uint, error) {
 	var list []Link
+
 	query := db.Db.Model(&Link{}).Preload("Category")
+
 	if key != "" {
 		query = query.Where("`name` like concat('%',?,'%')", key)
 	}
+
 	if categoryId > 0 {
 		query = query.Where("`category_id` = ?", categoryId)
 	}
+
 	total, err := utils.ToPage(page, query, &list)
+
 	return list, total, err
 }
 

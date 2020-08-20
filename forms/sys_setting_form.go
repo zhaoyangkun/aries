@@ -56,7 +56,7 @@ type ImgbbForm struct {
 type TencentCosForm struct {
 	SysId       string `json:"sys_id" label:"设置 ID"`
 	StorageType string `json:"storage_type" binding:"required,max=20" label:"设置类型名称"`
-	Host        string `json:"host" binding:"required,max=255" label:"存储桶地址"`
+	Host        string `json:"host" binding:"required,max=255" label:"存储桶域名"`
 	Scheme      string `json:"scheme" binding:"required,max=5" label:"传输协议"`
 	Region      string `json:"region" binding:"required,max=20" label:"区域"`
 	SecretId    string `json:"secret_id" binding:"required,max=255" label:"secret_id"`

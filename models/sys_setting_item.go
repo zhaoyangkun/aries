@@ -21,6 +21,7 @@ func (SysSettingItem) GetBySysSettingName(settingName string) (map[string]string
 	var itemList []SysSettingItem
 	var err error
 	result := map[string]string{}
+
 	if settingName != "" {
 		err = db.Db.Where("`name` = ?", settingName).First(&sysSetting).Error
 		if err != nil {
@@ -36,12 +37,15 @@ func (SysSettingItem) GetBySysSettingName(settingName string) (map[string]string
 			return result, err
 		}
 	}
+
 	for _, item := range itemList {
 		result[item.Key] = item.Val
 	}
+
 	if len(itemList) > 0 {
 		result["sys_id"] = strconv.Itoa(int(sysSetting.ID))
 	}
+
 	return result, err
 }
 
@@ -57,6 +61,7 @@ func (SysSettingItem) MultiCreateOrUpdate(itemList []SysSettingItem) error {
 	if err := tx.Error; err != nil {
 		return err
 	}
+
 	count := 0
 	for i := range itemList {
 		count = 0
@@ -66,16 +71,19 @@ func (SysSettingItem) MultiCreateOrUpdate(itemList []SysSettingItem) error {
 			tx.Rollback()
 			return err
 		}
+
 		if count == 0 {
 			err = tx.Create(&itemList[i]).Error
 		} else {
 			err = tx.Model(&SysSettingItem{}).Where("`sys_id` = ? and `key` = ?", itemList[i].SysId, itemList[i].Key).
 				Update("val", itemList[i].Val).Error
 		}
+
 		if err != nil {
 			tx.Rollback()
 			return err
 		}
 	}
+
 	return tx.Commit().Error
 }
