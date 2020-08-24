@@ -179,6 +179,40 @@ func (p *PictureHandler) UploadImgToAttachment(ctx *gin.Context) {
 	})
 }
 
+// @Summary 批量删除图片
+// @Tags 图床
+// @version 1.0
+// @Accept application/json
+// @Param ids query string true "ids"
+// @Success 100 object utils.Result 成功
+// @Failure 103/104 object utils.Result 失败
+// @Router /api/v1/images [delete]
+func (p *PictureHandler) MultiDelPictures(ctx *gin.Context) {
+	ids := ctx.Query("ids")
+	if ids == "" {
+		ctx.JSON(http.StatusOK, utils.Result{
+			Code: utils.RequestError,
+			Msg:  "请选择要删除的图片",
+			Data: nil,
+		})
+		return
+	}
+	err := models.Picture{}.MultiDelByIds(ids)
+	if err != nil {
+		ctx.JSON(http.StatusOK, utils.Result{
+			Code: utils.ServerError,
+			Msg:  "服务器内部错误",
+			Data: nil,
+		})
+		return
+	}
+	ctx.JSON(http.StatusOK, utils.Result{
+		Code: utils.Success,
+		Msg:  "删除成功",
+		Data: nil,
+	})
+}
+
 // 上传图片到 sm.ms
 func uploadToSmms(file *multipart.FileHeader, token string) (string, error) {
 	// 读取文件

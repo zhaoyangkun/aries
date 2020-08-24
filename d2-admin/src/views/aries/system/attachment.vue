@@ -3,18 +3,18 @@
     <template slot="header">系统 / 附件</template>
     <div class="operation-box">
       <el-form :inline="true" class="demo-form-inline" slot="header">
-        <el-form-item v-if="!isMultiVisible">
+        <el-form-item v-show="!isMultiVisible">
           <el-button size="small" @click="isMultiVisible=true">
             <i class="el-icon-edit-outline"></i> 批量操作
           </el-button>
         </el-form-item>
-        <el-form-item v-if="isMultiVisible">
-          <el-button size="small" type="danger">
+        <el-form-item v-show="isMultiVisible">
+          <el-button size="small" type="danger" @click="handleMultiDelImages">
             <i class="el-icon-delete"></i> 删除
           </el-button>
         </el-form-item>
-        <el-form-item v-if="isMultiVisible">
-          <el-button size="small" @click="isMultiVisible=false">
+        <el-form-item v-show="isMultiVisible">
+          <el-button size="small" @click="handleMultiCancel">
             <i class="el-icon-close-tip"></i> 取消
           </el-button>
         </el-form-item>
@@ -47,16 +47,19 @@
     </div>
 
     <el-row v-loading="loading">
-      <el-col :span="24" v-if="data.length === 0" style="background-color: white;margin: 0 auto 15px auto">
+      <el-col :span="24" v-if="data.length === 0" style="margin: 0 auto 15px auto">
         <h4 style="width: 50%;margin: 10px auto;color: #909399;text-align: center">暂无数据</h4>
       </el-col>
-      <el-col :span="4" v-for="item in data" :key="item.ID"
-              style="height: 120px;margin: 0 3.32% 2% 0;padding: 0;background-color: white;">
-        <span class="demonstration">{{ item.file_name }}</span>
-        <el-image @click="handleOpenImageDialog(item)" style="width: 100%;height: 90px;left: 0;top: 0" :src="item.url"
-                  lazy></el-image>
+      <el-col style="margin: 0 3.32% 2% 0;" :span="4" v-for="item in data" :key="item.ID">
+        <div class="image-container" :class="imgIsChecked(item.checked)">
+          <span class="demonstration">{{ item.file_name }}</span>
+          <el-checkbox style="position: absolute;" v-show="isMultiVisible" v-model="item.checked"
+                       @change="checked=>handleCheckBoxChange(checked,item)"></el-checkbox>
+          <el-image class="attach-image" @click="handleClickImg(item)" :src="item.url" lazy/>
+        </div>
       </el-col>
 
+      <!--分页-->
       <el-col :span="24">
         <div class="page-box">
           <el-pagination
@@ -162,8 +165,7 @@
 </template>
 
 <script>
-
-import { getImagesByPage, uploadImgToAttachment } from '@api/aries/picture'
+import { getImagesByPage, multiDelImages, uploadImgToAttachment } from '@api/aries/picture'
 
 export default {
   name: 'attachment',
@@ -187,6 +189,7 @@ export default {
       },
       data: [],
       fileList: [],
+      selectImages: [],
       previewData: {
         url: '',
         file_name: '',
@@ -215,6 +218,9 @@ export default {
           storage_name: this.pagination.storage_name
         })
           .then(res => {
+            res.data.data.map(item => {
+              this.$set(item, 'checked', false)
+            })
             this.data = res.data.data
             this.pagination.total_num = res.data.total_num
             this.pagination.total_pages = res.data.total_pages
@@ -232,7 +238,6 @@ export default {
     // 重置
     reset () {
       this.pagination.page = 1
-      this.pagination.size = 18
       this.pagination.key = ''
       this.pagination.storage_name = null
       this.fetchPageData()
@@ -251,6 +256,7 @@ export default {
     handleOpenUploadDialog () {
       this.uploadDialogVisible = true
     },
+    // 关闭上传弹窗
     handleCloseUploadDialog () {
       this.fetchPageData()
       this.fileList = []
@@ -280,7 +286,7 @@ export default {
       }
     },
     // 上传图片
-    uploadImg: function (file) {
+    uploadImg (file) {
       const formData = new FormData()
       formData.append('file[]', file.file)
       const config = {
@@ -296,10 +302,23 @@ export default {
         .catch(() => {
         })
     },
-    // 图片预览
-    handleOpenImageDialog (file) {
-      this.previewData = file
-      this.previewDialogVisible = true
+    // 点击图片
+    handleClickImg (item) {
+      if (this.isMultiVisible) {
+        // 选中/取消
+        if (item.checked) {
+          const i = this.selectImages.indexOf(item.ID)
+          if (i >= 0) {
+            this.selectImages.splice(i, 1)
+          }
+        } else {
+          this.selectImages.push(item.ID)
+        }
+        item.checked = !item.checked
+      } else {
+        this.previewData = item
+        this.previewDialogVisible = true
+      }
     },
     // 获取文件类型
     getFileType (fileName) {
@@ -332,6 +351,59 @@ export default {
         type: 'error',
         message: h('i', { style: 'color: teal' }, '复制失败')
       })
+    },
+    // 图片 class 绑定
+    imgIsChecked (checked) {
+      if (checked) {
+        return 'img_checked'
+      }
+      return 'img_not_checked'
+    },
+    // 勾选图片
+    handleCheckBoxChange (checked, item) {
+      if (checked) {
+        this.selectImages.push(item.ID)
+      } else {
+        const i = this.selectImages.indexOf(item.ID)
+        if (i >= 0) {
+          this.selectImages.splice(i, 1)
+        }
+      }
+    },
+    // 取消批量操作
+    handleMultiCancel () {
+      this.isMultiVisible = false
+      this.selectImages = []
+      const data = this.data
+      data.map(item => {
+        item.checked = false
+        return item
+      })
+      this.data = data
+    },
+    // 批量删除图片
+    handleMultiDelImages () {
+      if (this.selectImages.length === 0) {
+        this.$message.error('请选择要删除的图片')
+        return
+      }
+      this.$confirm('确定要删除吗?', '删除', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'error'
+      })
+        .then(() => {
+          const ids = this.selectImages.join(',')
+          multiDelImages(ids)
+            .then(res => {
+              this.$message.success(res.msg)
+              this.fetchPageData()
+            })
+            .catch(() => {
+            })
+        })
+        .catch(() => {
+        })
     }
   }
 }
@@ -371,6 +443,7 @@ export default {
   font-size: 13px;
   display: block;
   color: grey;
+  background-color: white;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -382,9 +455,31 @@ export default {
 
 .pre-tip {
   margin: 12px 0;
-  height: 20px;
   line-height: 20px;
   font-weight: normal;
   color: grey;
+}
+
+.image-container {
+  height: 126px;
+  padding: 0;
+  margin: 0;
+}
+
+.attach-image {
+  width: 100%;
+  height: 96px;
+  margin: 0;
+  padding: 0;
+  display: inline-block;
+  overflow: hidden;
+}
+
+.img_not_checked {
+  border: 2px rgba(200, 200, 200, 0.18) solid;
+}
+
+.img_checked {
+  border: #409EFF solid 2px;
 }
 </style>

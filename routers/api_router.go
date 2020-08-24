@@ -114,6 +114,7 @@ func (a *ApiRouter) InitApiRouter(rootPath string, router *gin.Engine) {
 	{
 		imgApiRouter.GET("/images", pictureHandler.GetPicturesByPage)
 		imgApiRouter.POST("/images/attachment/upload", pictureHandler.UploadImgToAttachment)
+		imgApiRouter.DELETE("/images", pictureHandler.MultiDelPictures)
 	}
 
 	tagApiRouter := router.Group(rootPath, middlewares.JWTAuth())

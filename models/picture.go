@@ -3,6 +3,7 @@ package models
 import (
 	"aries/config/db"
 	"aries/utils"
+	"strings"
 
 	"github.com/jinzhu/gorm"
 )
@@ -38,4 +39,10 @@ func (Picture) GetByPage(page *utils.Pagination, key string, storageType string)
 // 创建图片
 func (p *Picture) Create() error {
 	return db.Db.Create(&p).Error
+}
+
+// 批量删除图片
+func (Picture) MultiDelByIds(ids string) error {
+	idList := strings.Split(ids, ",")
+	return db.Db.Where("`id` in (?)", idList).Unscoped().Delete(&Picture{}).Error
 }

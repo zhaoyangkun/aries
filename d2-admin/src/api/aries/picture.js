@@ -23,3 +23,11 @@ export function uploadImgToAttachment (data, config = {}) {
     ...config
   })
 }
+
+// 批量删除图片
+export function multiDelImages (ids) {
+  return request({
+    url: `/images?ids=${ids}`,
+    method: 'delete'
+  })
+}

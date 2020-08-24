@@ -189,7 +189,14 @@ func (article Article) Create(tagIds string) error {
 	}
 
 	// 添加文章
-	err = tx.Save(&article).Error
+	err = tx.Exec("INSERT INTO `articles` (`user_id`, `category_id`, `order_id`, `is_top`, `is_recycled`,"+
+		" `is_published`, `is_allow_commented`, `pwd`, `url`, `title`,"+
+		" `summary`, `img`, `content`, `md_content`, `keywords`)"+
+		" VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+		article.UserId, article.CategoryId, article.OrderId, article.IsTop, article.IsRecycled,
+		article.IsPublished, article.IsAllowCommented, article.Pwd, article.URL, article.Title,
+		article.Summary, article.Img, article.Content, article.MDContent, article.Keywords,
+	).Error
 	if err != nil {
 		tx.Rollback()
 		return err
