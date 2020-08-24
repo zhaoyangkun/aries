@@ -8,6 +8,14 @@ export function getSysSettingItem (name) {
   })
 }
 
+// 获取后台首页数据
+export function getAdminIndexData () {
+  return request({
+    url: '/sys_setting/index_info',
+    method: 'get'
+  })
+}
+
 // 保存网站配置
 export function saveSiteSetting (data) {
   return request({
@@ -21,6 +29,15 @@ export function saveSiteSetting (data) {
 export function saveSMTPSetting (data) {
   return request({
     url: '/sys_setting/smtp',
+    method: 'post',
+    data: data
+  })
+}
+
+// 测试发送邮件
+export function sendTestEmail (data) {
+  return request({
+    url: '/sys_setting/email/test',
     method: 'post',
     data: data
   })
@@ -62,19 +79,11 @@ export function saveCommentSetting (data) {
   })
 }
 
-// 测试发送邮件
-export function sendTestEmail (data) {
+// 保存参数配置
+export function saveParamSetting (data) {
   return request({
-    url: '/sys_setting/email/test',
+    url: '/sys_setting/param',
     method: 'post',
     data: data
-  })
-}
-
-// 获取后台首页数据
-export function getAdminIndexData () {
-  return request({
-    url: '/sys_setting/index_info',
-    method: 'get'
   })
 }

@@ -17,13 +17,13 @@ type Article struct {
 	User             User     `gorm:"ForeignKey:UserId;not null;" json:"user"`             // 用户
 	UserId           uint     `json:"user_id"`                                             // 用户 ID
 	Category         Category `gorm:"ForeignKey:CategoryId" json:"category"`               // 分类
-	CategoryId       *uint    `json:"category_id"`                                         // 分类 ID
+	CategoryId       uint     `json:"category_id"`                                         // 分类 ID
 	OrderId          uint     `gorm:"type:int;default:0;" json:"order_id"`                 // 排序 ID
 	TagList          []Tag    `gorm:"many2many:tag_article" json:"tag_list"`               // 标签列表
-	IsTop            *bool    `gorm:"type:bool;default:false;" json:"is_top"`              // 是否置顶
-	IsRecycled       *bool    `gorm:"type:bool;default:false;" json:"is_recycled"`         // 是否回收
-	IsPublished      *bool    `gorm:"type:bool;default:true;" json:"is_published"`         // 是否发布
-	IsAllowCommented *bool    `gorm:"type:bool;default:true;" json:"is_allow_commented"`   // 是否允许评论
+	IsTop            bool     `gorm:"type:bool;default:false;" json:"is_top"`              // 是否置顶
+	IsRecycled       bool     `gorm:"type:bool;default:false;" json:"is_recycled"`         // 是否回收
+	IsPublished      bool     `gorm:"type:bool;default:true;" json:"is_published"`         // 是否发布
+	IsAllowCommented bool     `gorm:"type:bool;default:true;" json:"is_allow_commented"`   // 是否允许评论
 	Pwd              string   `gorm:"type:varchar(100);" json:"pwd"`                       // 访问密码
 	URL              string   `gorm:"type:varchar(255);not null;unique_index;" json:"url"` // 访问 URL
 	Title            string   `gorm:"type:varchar(255);not null;" json:"title"`            // 标题
@@ -329,7 +329,7 @@ func (article Article) Update(tagIds string) error {
 func (article Article) RecycleOrRecover() (err error) {
 	err = db.Db.Model(&Article{}).Where("`id` = ?", article.ID).
 		Updates(map[string]interface{}{
-			"is_recycled": !*article.IsRecycled,
+			"is_recycled": !article.IsRecycled,
 		}).Error
 	return
 }

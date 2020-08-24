@@ -67,12 +67,12 @@ type ArticleOrderForm struct {
 func (form ArticleAddForm) BindToModel() models.Article {
 	return models.Article{
 		UserId:           form.UserId,
-		CategoryId:       &form.CategoryId,
+		CategoryId:       form.CategoryId,
 		OrderId:          form.OrderId,
-		IsTop:            &form.IsTop,
-		IsRecycled:       &form.IsRecycled,
-		IsPublished:      &form.IsPublished,
-		IsAllowCommented: &form.IsAllowCommented,
+		IsTop:            form.IsTop,
+		IsRecycled:       form.IsRecycled,
+		IsPublished:      form.IsPublished,
+		IsAllowCommented: form.IsAllowCommented,
 		Pwd:              form.Pwd,
 		URL:              form.URL,
 		Title:            form.Title,
@@ -89,12 +89,12 @@ func (form ArticleEditForm) BindToModel() models.Article {
 	return models.Article{
 		Model:            gorm.Model{ID: form.ID},
 		UserId:           form.UserId,
-		CategoryId:       &form.CategoryId,
+		CategoryId:       form.CategoryId,
 		OrderId:          form.OrderId,
-		IsTop:            &form.IsTop,
-		IsRecycled:       &form.IsRecycled,
-		IsPublished:      &form.IsPublished,
-		IsAllowCommented: &form.IsAllowCommented,
+		IsTop:            form.IsTop,
+		IsRecycled:       form.IsRecycled,
+		IsPublished:      form.IsPublished,
+		IsAllowCommented: form.IsAllowCommented,
 		Pwd:              form.Pwd,
 		URL:              form.URL,
 		Title:            form.Title,
@@ -111,6 +111,6 @@ func (form ArticleOrderForm) BindToModel() models.Article {
 	return models.Article{
 		Model:   gorm.Model{ID: form.ID},
 		OrderId: form.OrderId,
-		IsTop:   &form.IsTop,
+		IsTop:   form.IsTop,
 	}
 }

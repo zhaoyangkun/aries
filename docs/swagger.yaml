@@ -258,7 +258,11 @@ definitions:
     properties:
       is_on:
         type: string
+      is_reply_on:
+        type: string
       is_review_on:
+        type: string
+      page_size:
         type: string
       sys_id:
         type: string
@@ -390,6 +394,19 @@ definitions:
     - id
     - name
     - url
+    type: object
+  forms.ParamSettingForm:
+    properties:
+      archive_page_size:
+        type: string
+      index_page_size:
+        type: string
+      site_map_page_size:
+        type: string
+      sys_id:
+        type: string
+      type_name:
+        type: string
     type: object
   forms.PwdForm:
     properties:
@@ -1592,6 +1609,28 @@ paths:
           schema:
             $ref: '#/definitions/utils.Result'
       summary: 获取设置条目
+      tags:
+      - 系统设置
+  /api/v1/sys_setting/param:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 参数配置表单
+        in: body
+        name: settingForm
+        required: true
+        schema:
+          $ref: '#/definitions/forms.ParamSettingForm'
+      responses:
+        "100":
+          description: Continue
+          schema:
+            $ref: '#/definitions/utils.Result'
+        "104":
+          schema:
+            $ref: '#/definitions/utils.Result'
+      summary: 保存参数配置
       tags:
       - 系统设置
   /api/v1/sys_setting/pic_bed/imgbb:

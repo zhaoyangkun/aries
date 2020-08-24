@@ -1648,6 +1648,41 @@ var doc = `{
                 }
             }
         },
+        "/api/v1/sys_setting/param": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "系统设置"
+                ],
+                "summary": "保存参数配置",
+                "parameters": [
+                    {
+                        "description": "参数配置表单",
+                        "name": "settingForm",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/forms.ParamSettingForm"
+                        }
+                    }
+                ],
+                "responses": {
+                    "100": {
+                        "description": "Continue",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Result"
+                        }
+                    },
+                    "104": {
+                        "schema": {
+                            "$ref": "#/definitions/utils.Result"
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/sys_setting/pic_bed/imgbb": {
             "post": {
                 "consumes": [
@@ -2454,7 +2489,13 @@ var doc = `{
                 "is_on": {
                     "type": "string"
                 },
+                "is_reply_on": {
+                    "type": "string"
+                },
                 "is_review_on": {
+                    "type": "string"
+                },
+                "page_size": {
                     "type": "string"
                 },
                 "sys_id": {
@@ -2639,6 +2680,26 @@ var doc = `{
                     "type": "integer"
                 },
                 "url": {
+                    "type": "string"
+                }
+            }
+        },
+        "forms.ParamSettingForm": {
+            "type": "object",
+            "properties": {
+                "archive_page_size": {
+                    "type": "string"
+                },
+                "index_page_size": {
+                    "type": "string"
+                },
+                "site_map_page_size": {
+                    "type": "string"
+                },
+                "sys_id": {
+                    "type": "string"
+                },
+                "type_name": {
                     "type": "string"
                 }
             }

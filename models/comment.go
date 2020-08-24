@@ -28,8 +28,8 @@ type Comment struct {
 	NickName        string   `gorm:"varchar(50);not null;" json:"nick_name"`           // 昵称
 	Content         string   `gorm:"type:Text;not null;" json:"content"`               // 评论内容
 	MDContent       string   `gorm:"type:MediumText;not null;" json:"md_content"`      // markdown 渲染后评论内容
-	IsRecycled      *bool    `gorm:"type:bool;default:false;" json:"is_recycled"`      // 是否加入回收站
-	IsChecked       *bool    `gorm:"type:bool;default:false" json:"is_checked"`        // 是否通过审核
+	IsRecycled      bool     `gorm:"type:bool;default:false;" json:"is_recycled"`      // 是否加入回收站
+	IsChecked       bool     `gorm:"type:bool;default:false" json:"is_checked"`        // 是否通过审核
 }
 
 // 获取评论数量
@@ -101,7 +101,13 @@ func (comment Comment) Create() error {
 // 更新评论
 func (comment Comment) Update() error {
 	comment.MDContent = setting.LuteEngine.MarkdownStr("", comment.Content)
-	return db.Db.Model(&Comment{}).Updates(&comment).Error
+	return db.Db.Model(&Comment{}).Where("`id` = ?", comment.ID).
+		Updates(map[string]interface{}{
+			"content":     comment.Content,
+			"md_content":  comment.MDContent,
+			"is_recycled": comment.IsRecycled,
+			"is_checked":  comment.IsChecked,
+		}).Error
 }
 
 // 删除评论

@@ -8,7 +8,9 @@ import (
 	"aries/middlewares"
 	"aries/models"
 	"aries/routers"
+	"aries/utils"
 	"fmt"
+	"html/template"
 	"log"
 	"reflect"
 
@@ -61,6 +63,12 @@ func InitApp() *gin.Engine {
 	blogSetting, _ := models.SysSettingItem{}.GetBySysSettingName("网站设置")
 	setting.BlogVars.InitBlogVars(blogSetting)
 
+	// 加载自定义模板函数
+	router.SetFuncMap(template.FuncMap{
+		"safe":     utils.SafeHtml,
+		"add":      utils.AddUpTwoNum,
+		"subtract": utils.SubtractTwoNum,
+	})
 	// 加载静态资源和模板
 	router.Static("/static", fmt.Sprintf("themes/%s/static", setting.BlogVars.Theme))
 	router.LoadHTMLGlob(fmt.Sprintf("themes/%s/templates/**", setting.BlogVars.Theme))

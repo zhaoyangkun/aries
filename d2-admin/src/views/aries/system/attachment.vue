@@ -107,20 +107,20 @@
       width="50%">
       <el-image style="width: 100%" :src="previewData.url" fit="cover" @click="openImgUrl(previewData.url)"></el-image>
       <el-row style="border-bottom: 1px solid #eaeefb">
-        <el-col :span="5"><h4 class="pre-tip">图片名称：</h4></el-col>
-        <el-col :span="19"><h4 class="pre-tip">{{ previewData.file_name }}</h4></el-col>
-      </el-row>
-      <el-row style="border-bottom: 1px solid #eaeefb">
-        <el-col :span="5"><h4 class="pre-tip">图片大小：</h4></el-col>
-        <el-col :span="19"><h4 class="pre-tip">{{ previewData.size }} KB</h4></el-col>
-      </el-row>
-      <el-row style="border-bottom: 1px solid #eaeefb">
         <el-col :span="5"><h4 class="pre-tip">图床类型：</h4></el-col>
         <el-col :span="19">
           <h4 class="pre-tip" v-if="previewData.storage_type==='sm.ms'">sm.ms</h4>
           <h4 class="pre-tip" v-if="previewData.storage_type==='imgbb'">imgbb</h4>
           <h4 class="pre-tip" v-if="previewData.storage_type==='cos'">腾讯云 COS</h4>
         </el-col>
+      </el-row>
+      <el-row style="border-bottom: 1px solid #eaeefb">
+        <el-col :span="5"><h4 class="pre-tip">图片名称：</h4></el-col>
+        <el-col :span="19"><h4 class="pre-tip">{{ previewData.file_name }}</h4></el-col>
+      </el-row>
+      <el-row style="border-bottom: 1px solid #eaeefb">
+        <el-col :span="5"><h4 class="pre-tip">图片大小：</h4></el-col>
+        <el-col :span="19"><h4 class="pre-tip">{{ previewData.size }} KB</h4></el-col>
       </el-row>
       <el-row style="border-bottom: 1px solid #eaeefb">
         <el-col :span="5"><h4 class="pre-tip">图片地址：</h4></el-col>
@@ -301,12 +301,6 @@ export default {
       this.previewData = file
       this.previewDialogVisible = true
     },
-    // 复制内容到剪贴板
-    doCopy (val) {
-      this.$copyText(val).then(e => {
-      }, e => {
-      })
-    },
     // 获取文件类型
     getFileType (fileName) {
       return fileName.substring(fileName.lastIndexOf('.') + 1)
@@ -314,6 +308,12 @@ export default {
     // 打开图片链接
     openImgUrl (url) {
       window.open(url)
+    },
+    // 复制内容到剪贴板
+    doCopy (val) {
+      this.$copyText(val).then(e => {
+      }, e => {
+      })
     },
     // 复制成功
     onCopySuccess () {

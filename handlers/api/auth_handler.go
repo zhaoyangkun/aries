@@ -235,7 +235,16 @@ func (a *AuthHandler) ForgetPwd(ctx *gin.Context) {
 	verifyCode := ""
 	_ = setting.Cache.Get(forgetPwdForm.Email, &verifyCode)
 	if verifyCode == "" {
-		verifyCode = utils.CreateRandomCode(6)
+		verifyCode, err := utils.CreateRandomCode(6)
+		if err != nil {
+			log.Logger.Sugar().Error("创建验证码失败：", err.Error())
+			ctx.JSON(http.StatusOK, utils.Result{
+				Code: utils.ServerError,
+				Msg:  "创建验证码失败",
+				Data: nil,
+			})
+			return
+		}
 		_ = setting.Cache.Set(forgetPwdForm.Email, verifyCode, time.Minute*15)
 	}
 

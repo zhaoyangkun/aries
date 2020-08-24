@@ -1,25 +1,38 @@
-{{define "head"}}
+{{ define "head" }}
     <head>
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
         <meta name="keywords" content="{{ .blogVars.SiteKeywords }}">
         <meta name="description" content="{{ .blogVars.SiteDesc }}">
-        <link rel="shortcut icon" type="images/x-icon" href="{{ .blogVars.SiteLogo }}">
+        <link rel="shortcut icon" href="{{ .blogVars.SiteLogo }}">
         <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
         <title>{{ .blogVars.SiteName }}</title>
-
         <script language=javascript>
-            <!--
             window.onerror = function () {
                 return true;
             }
-            // -->
         </script>
+
+        <link rel="stylesheet" href="{{ .blogVars.ContextPath }}/static/css/tailwind.min.css">
+        <link rel="stylesheet" href="{{ .blogVars.ContextPath }}/static/css/viewer.min.css">
+        <link rel="stylesheet" href="{{ .blogVars.ContextPath }}/static/css/lightgallery.min.css">
+        <link rel="stylesheet" href="{{ .blogVars.ContextPath }}/static/css/justifiedGallery.min.css">
+        <link rel="stylesheet" href="{{ .blogVars.ContextPath }}/static/css/github-gist.min.css">
+        <link rel="stylesheet" href="{{ .blogVars.ContextPath }}/static/css/katex.min.css"
+              integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X"
+              crossorigin="anonymous">
+        <link rel="stylesheet" href="{{ .blogVars.ContextPath }}/static/css/APlayer.min.css">
+        <link rel="stylesheet" href="{{ .blogVars.ContextPath }}/static/css/jqcloud.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="{{ .blogVars.ContextPath }}/static/css/share.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="{{ .blogVars.ContextPath }}/static/css/style.min.css">
+        <link rel="stylesheet" href="{{ .blogVars.ContextPath }}/static/css/nprogress.min.css">
 
         <style type="text/css">
             :root {
                 --header-bg-color: #fff;
+                --header-sub-bg-color: #f0f5f9;
+                --header-sub-hover-bg-color: #c9d6de;
                 --header-link-color: #504b4d;
                 --base-color: #4facfe;
                 --base-hover-color: #4facfe;
@@ -46,32 +59,17 @@
                 --monospace: "Lucida Console", Consolas, "Courier", monospace;
             }
 
-
             @media only screen and (min-width: 861px) {
                 .home-page .bg-cover {
                     height: 100vh !important;
                 }
             }
-
         </style>
-        <link rel="stylesheet" href="{{ .blogVars.ContextPath }}/static/css/tailwind.min.css">
-        <link rel="stylesheet" href="{{ .blogVars.ContextPath }}/static/css/viewer.min.css">
-        <!-- 相册 -->
-        <link rel="stylesheet" href="{{ .blogVars.ContextPath }}/static/css/lightgallery.min.css">
-        <link rel="stylesheet" href="{{ .blogVars.ContextPath }}/static/css/justifiedGallery.min.css">
-        <link rel="stylesheet" href="{{ .blogVars.ContextPath }}/static/css/github-gist.min.css">
 
-        <link rel="stylesheet" href="{{ .blogVars.ContextPath }}/static/css/katex.min.css">
-        <link rel="stylesheet" href="{{ .blogVars.ContextPath }}/static/css/APlayer.min.css">
-        <link rel="stylesheet" href="{{ .blogVars.ContextPath }}/static/css/nprogress.min.css">
-
-        <link rel="stylesheet" href="{{ .blogVars.ContextPath }}/static/css/style.min.css">
         <script type="application/javascript">
-            <!--
             window.onerror = function () {
                 return true;
             }
-            // -->
         </script>
     </head>
-{{end}}
+{{ end }}

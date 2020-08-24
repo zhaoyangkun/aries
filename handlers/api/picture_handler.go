@@ -286,6 +286,7 @@ func uploadToImgbb(file *multipart.FileHeader, token string) (string, error) {
 		return "", errFileUpload
 	}
 
+	//log.Logger.Sugar().Info("resultMap: ", resultMap)
 	data := resultMap["data"].(map[string]interface{})
 	picture := models.Picture{
 		StorageType: "imgbb",
@@ -327,7 +328,7 @@ func uploadToTencentCOS(filePath, fileName string, size int64, cosSetting map[st
 
 		// 保存图片
 		picture := models.Picture{
-			StorageType: "imgbb",
+			StorageType: "cos",
 			Hash:        "",
 			FileName:    fileName,
 			URL:         cosSetting["scheme"] + "://" + result.Location + cosSetting["img_process"],
