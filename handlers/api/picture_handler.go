@@ -11,6 +11,9 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+
+	"github.com/gin-gonic/gin"
+	"github.com/tencentyun/cos-go-sdk-v5"
 	"io"
 	"io/ioutil"
 	"mime/multipart"
@@ -18,11 +21,9 @@ import (
 	"net/url"
 	"os"
 	"path/filepath"
+
 	"strconv"
 	"time"
-
-	"github.com/gin-gonic/gin"
-	"github.com/tencentyun/cos-go-sdk-v5"
 )
 
 const (
