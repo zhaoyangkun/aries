@@ -1,5 +1,13 @@
 import { request } from '@/api/service'
 
+// 获取博客全局变量
+export function getBlogVars () {
+  return request({
+    url: '/sys_setting/blog_vars',
+    method: 'get'
+  })
+}
+
 // 获取配置条目
 export function getSysSettingItem (name) {
   return request({

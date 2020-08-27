@@ -15,6 +15,7 @@
         </el-form-item>
       </el-form>
     </div>
+
     <el-table
       v-loading="loading"
       :data="tableData"
@@ -203,11 +204,13 @@ export default {
     this.fetchTableData()
   },
   methods: {
+    // 重置表单
     resetForm (formName) {
       if (this.$refs[formName] !== undefined) {
         this.$refs[formName].resetFields()
       }
     },
+    // 清空表单校验
     clearValidate (formName) {
       if (this.$refs[formName] !== undefined) {
         this.$refs[formName].clearValidate()
@@ -236,7 +239,7 @@ export default {
       if (row.parent_nav_id === 0) {
         row.parent_nav_id = null
       }
-      this.editForm = row
+      this.editForm = { ...row }
       this.dialogOptions.editVisible = true
     },
     // 添加菜单

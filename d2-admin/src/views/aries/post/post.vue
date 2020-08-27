@@ -636,7 +636,7 @@ export default {
       row.tag_list.forEach((tag) => {
         tagIds.push(tag.ID)
       })
-      this.editForm = row
+      this.editForm = { ...row }
       this.editForm.category_id = this.editForm.category_id === 0 ? null : this.editForm.category_id
       this.$set(this.editForm, 'selectTagIds', tagIds)
     },

@@ -1,5 +1,6 @@
 <template>
   <d2-container>
+    <template slot="header">系统 / 设置</template>
     <el-tabs :tab-position="tabPosition" @tab-click="handleTabClick" type="border-card">
       <el-tab-pane label="网站设置" style="width: 500px">
         <el-form :model="siteForm" ref="siteForm" :rules="siteRules" label-width="130px">

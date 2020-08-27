@@ -229,7 +229,7 @@ func uploadToSmms(file *multipart.FileHeader, token string) (string, error) {
 	bodyWriter := multipart.NewWriter(bodyBuf)
 	formFile, _ := bodyWriter.CreateFormFile("smfile", file.Filename)
 	_, _ = io.Copy(formFile, src)
-	bodyWriter.Close() // 发送之前必须调用 Close() 以写入结尾行
+	_ = bodyWriter.Close() // 发送之前必须调用 Close() 以写入结尾行
 
 	req, err := http.NewRequest("POST", smmsUploadURL, bodyBuf)
 	if err != nil {

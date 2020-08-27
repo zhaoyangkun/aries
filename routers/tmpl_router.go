@@ -20,7 +20,7 @@ func (t *TmplRouter) InitTemplateRouter(rootPath string, router *gin.Engine) {
 		tmplRouter.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, url))
 		tmplRouter.GET("", tmplHandler.IndexTmpl)
 		tmplRouter.GET("/page/:page", tmplHandler.IndexTmpl)
-		tmplRouter.GET("/article/:url", tmplHandler.ArticleTmpl)
+		tmplRouter.GET("/articles/:url", tmplHandler.ArticleTmpl)
 		tmplRouter.GET("/error/403", tmplHandler.Error403Tmpl)
 		tmplRouter.GET("/error/404", tmplHandler.Error404Tmpl)
 		tmplRouter.GET("/error/500", tmplHandler.Error500Tmpl)

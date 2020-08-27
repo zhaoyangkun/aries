@@ -18,6 +18,21 @@ import (
 type SysSettingHandler struct {
 }
 
+// @Summary 获取博客全局变量
+// @Tags 系统设置
+// @version 1.0
+// @Accept application/json
+// @Success 100 object utils.Result 成功
+// @Failure 103/104 object utils.Result 失败
+// @Router /api/v1/sys_setting/blog_vars [get]
+func (s *SysSettingHandler) GetBlogVars(ctx *gin.Context) {
+	ctx.JSON(http.StatusOK, utils.Result{
+		Code: utils.Success,
+		Msg:  "查询成功",
+		Data: setting.BlogVars,
+	})
+}
+
 // @Summary 获取设置条目
 // @Tags 系统设置
 // @version 1.0

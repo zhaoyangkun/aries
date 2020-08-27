@@ -345,7 +345,7 @@ export default {
     // 打开友链编辑框
     openEditDialog (row) {
       this.dialogOptions.editVisible = true
-      this.editForm = row
+      this.editForm = { ...row }
     },
     // 添加友链
     handleRowAdd () {

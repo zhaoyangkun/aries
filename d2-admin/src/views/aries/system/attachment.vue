@@ -47,8 +47,8 @@
     </div>
 
     <el-row v-loading="loading">
-      <el-col :span="24" v-if="data.length === 0" style="margin: 0 auto 15px auto">
-        <h4 style="width: 50%;margin: 10px auto;color: #909399;text-align: center">暂无数据</h4>
+      <el-col :span="24" v-if="data.length === 0" style="margin: 0 auto 15px auto;height: 50px;background-color: white">
+        <h4 style="width: 50%;line-height: 50px;margin: auto;color: #909399;text-align: center;font-weight: normal">暂无数据</h4>
       </el-col>
       <el-col style="margin: 0 3.32% 2% 0;" :span="4" v-for="item in data" :key="item.ID">
         <div class="image-container" :class="imgIsChecked(item.checked)">

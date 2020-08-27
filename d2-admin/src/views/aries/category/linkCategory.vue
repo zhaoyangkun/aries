@@ -192,7 +192,7 @@ export default {
     handleRowEdit (row, done) {
       row.type = 1
       this.formOptions.saveLoading = true
-      const data = row.row
+      const data = { ...row.row }
       setTimeout(() => {
         updateLinkCategory(data)
           .then(res => {

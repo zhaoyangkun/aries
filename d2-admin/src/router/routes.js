@@ -59,6 +59,33 @@ const frameIn = [
         component: _import('aries/comment/comment')
       },
       {
+        path: 'page',
+        name: 'page',
+        meta: {
+          title: '页面',
+          auth: true
+        },
+        component: _import('aries/page/page')
+      },
+      {
+        path: 'page/journal',
+        name: 'journal',
+        meta: {
+          title: '日志',
+          auth: true
+        },
+        component: _import('aries/page/journal')
+      },
+      {
+        path: 'page/gallery',
+        name: 'gallery',
+        meta: {
+          title: '图库',
+          auth: true
+        },
+        component: _import('aries/page/gallery')
+      },
+      {
         path: 'user',
         name: 'user',
         meta: {

@@ -97,7 +97,7 @@ func (Article) GetByPage(page *utils.Pagination, key string, state uint,
 		Model(&Article{}).Order("is_top desc,order_id asc,created_at desc", true)
 
 	if key != "" {
-		query = query.Where("title like concat('%',?,'%')", key)
+		query = query.Where("title like concat('%',?,'%') or md_content like concat('%',?,'%')", key, key)
 	}
 
 	if state > 0 {

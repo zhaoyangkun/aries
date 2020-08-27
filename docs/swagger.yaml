@@ -315,6 +315,27 @@ definitions:
     - storage_type
     - token
     type: object
+  forms.JournalAddForm:
+    properties:
+      content:
+        type: string
+      is_secret:
+        type: boolean
+    required:
+    - content
+    type: object
+  forms.JournalEditForm:
+    properties:
+      content:
+        type: string
+      id:
+        type: integer
+      is_secret:
+        type: boolean
+    required:
+    - content
+    - id
+    type: object
   forms.LinkCategoryAddForm:
     properties:
       name:
@@ -656,6 +677,21 @@ paths:
       summary: 获取所有评论
       tags:
       - 评论
+  /api/v1/all_journals:
+    get:
+      consumes:
+      - application/json
+      responses:
+        "100":
+          description: Continue
+          schema:
+            $ref: '#/definitions/utils.Result'
+        "104":
+          schema:
+            $ref: '#/definitions/utils.Result'
+      summary: 获取所有日志
+      tags:
+      - 日志
   /api/v1/all_links:
     get:
       consumes:
@@ -1324,6 +1360,76 @@ paths:
       summary: 上传图片到附件
       tags:
       - 图床
+  /api/v1/journals:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: 页码
+        in: query
+        name: page
+        type: integer
+      - description: 每页条数
+        in: query
+        name: size
+        type: integer
+      - description: 关键词
+        in: query
+        name: key
+        type: string
+      responses:
+        "100":
+          description: Continue
+          schema:
+            $ref: '#/definitions/utils.Result'
+        "104":
+          schema:
+            $ref: '#/definitions/utils.Result'
+      summary: 分页获取日志
+      tags:
+      - 日志
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 创建日志表单
+        in: body
+        name: addForm
+        required: true
+        schema:
+          $ref: '#/definitions/forms.JournalAddForm'
+      responses:
+        "100":
+          description: Continue
+          schema:
+            $ref: '#/definitions/utils.Result'
+        "104":
+          schema:
+            $ref: '#/definitions/utils.Result'
+      summary: 创建日志
+      tags:
+      - 日志
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: 更新日志表单
+        in: body
+        name: editForm
+        required: true
+        schema:
+          $ref: '#/definitions/forms.JournalEditForm'
+      responses:
+        "100":
+          description: Continue
+          schema:
+            $ref: '#/definitions/utils.Result'
+        "104":
+          schema:
+            $ref: '#/definitions/utils.Result'
+      summary: 更新日志
+      tags:
+      - 日志
   /api/v1/links:
     delete:
       consumes:
@@ -1559,6 +1665,21 @@ paths:
       summary: 获取所有父级分类
       tags:
       - 分类
+  /api/v1/sys_setting/blog_vars:
+    get:
+      consumes:
+      - application/json
+      responses:
+        "100":
+          description: Continue
+          schema:
+            $ref: '#/definitions/utils.Result'
+        "104":
+          schema:
+            $ref: '#/definitions/utils.Result'
+      summary: 获取博客全局变量
+      tags:
+      - 系统设置
   /api/v1/sys_setting/comment:
     post:
       consumes:
