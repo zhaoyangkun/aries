@@ -17,7 +17,7 @@ type Journal struct {
 
 // 获取所有日志
 func (Journal) GetAll() (list []Journal, err error) {
-	err = db.Db.Find(&list).Error
+	err = db.Db.Order("created_at desc", true).Find(&list).Error
 
 	return
 }
@@ -31,7 +31,7 @@ func (Journal) GetById(id uint) (journal Journal, err error) {
 
 // 分页获取日志
 func (Journal) GetByPage(page *utils.Pagination, key string) (list []Journal, total uint, err error) {
-	query := db.Db.Find(&list)
+	query := db.Db.Order("created_at desc", true).Find(&list)
 
 	if key != "" {
 		query = query.Where("`content` like concat('%',?,'%')", key)

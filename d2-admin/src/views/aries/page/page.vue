@@ -81,13 +81,15 @@ export default {
       await this.fetchBlogVars()
       await this.fetchIndependentPageData()
     },
+    // 获取自定义页面数据
+    fetchCustomPageData () {
+    },
     // 标签页切换
     handleTabClick (tab) {
       console.log(tab)
     },
     // 页面管理
     handleManagePage (title) {
-      console.log('title:　', title)
       if (title === '日志页面') {
         this.$router.replace('/page/journal')
       } else if (title === '图库页面') {

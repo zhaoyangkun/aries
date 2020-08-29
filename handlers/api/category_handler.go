@@ -156,7 +156,7 @@ func (c *CategoryHandler) AddArticleCategory(ctx *gin.Context) {
 	}
 
 	// 校验分类名称唯一性
-	existCategory, _ := models.Category{}.GetByName(addForm.Name)
+	existCategory, _ := models.Category{}.GetByName(addForm.Name, addForm.Type)
 	if existCategory.Name != "" {
 		ctx.JSON(http.StatusOK, utils.Result{
 			Code: utils.RequestError,
@@ -215,7 +215,7 @@ func (c *CategoryHandler) UpdateArticleCategory(ctx *gin.Context) {
 	}
 
 	// 校验分类名称唯一性
-	existCategory, _ := models.Category{}.GetByName(editForm.Name)
+	existCategory, _ := models.Category{}.GetByName(editForm.Name, editForm.Type)
 	if existCategory.ID > 0 && existCategory.ID != editForm.ID {
 		ctx.JSON(http.StatusOK, utils.Result{
 			Code: utils.RequestError,
@@ -274,7 +274,7 @@ func (c *CategoryHandler) AddLinkCategory(ctx *gin.Context) {
 	}
 
 	// 校验分类名称唯一性
-	existCategory, _ := models.Category{}.GetByName(addForm.Name)
+	existCategory, _ := models.Category{}.GetByName(addForm.Name, addForm.Type)
 	if existCategory.Name != "" {
 		ctx.JSON(http.StatusOK, utils.Result{
 			Code: utils.RequestError,
@@ -322,7 +322,103 @@ func (c *CategoryHandler) UpdateLinkCategory(ctx *gin.Context) {
 	}
 
 	// 校验分类名称唯一性
-	existCategory, _ := models.Category{}.GetByName(editForm.Name)
+	existCategory, _ := models.Category{}.GetByName(editForm.Name, editForm.Type)
+	if existCategory.ID > 0 && existCategory.ID != editForm.ID {
+		ctx.JSON(http.StatusOK, utils.Result{
+			Code: utils.RequestError,
+			Msg:  "分类名不能重复",
+			Data: nil,
+		})
+		return
+	}
+
+	category := editForm.BindToModel()
+	if err := category.Update(); err != nil {
+		log.Logger.Sugar().Error("error: ", err.Error())
+		ctx.JSON(http.StatusOK, utils.Result{
+			Code: utils.ServerError,
+			Msg:  "服务器端错误",
+			Data: nil,
+		})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, utils.Result{
+		Code: utils.Success,
+		Msg:  "修改成功",
+		Data: category,
+	})
+}
+
+// @Summary 添加图库分类
+// @Tags 分类
+// @version 1.0
+// @Accept application/json
+// @Param addForm body forms.GalleryCategoryAddForm true "添加图库分类表单"
+// @Success 100 object utils.Result 成功
+// @Failure 103/104 object utils.Result 失败
+// @Router /api/v1/categories/gallery [post]
+func (c *CategoryHandler) AddGalleryCategory(ctx *gin.Context) {
+	addForm := forms.GalleryCategoryAddForm{}
+	if err := ctx.ShouldBindJSON(&addForm); err != nil {
+		ctx.JSON(http.StatusOK, utils.Result{
+			Code: utils.RequestError,
+			Msg:  utils.GetFormError(err),
+			Data: nil,
+		})
+		return
+	}
+
+	// 校验分类名称唯一性
+	existCategory, _ := models.Category{}.GetByName(addForm.Name, addForm.Type)
+	if existCategory.Name != "" {
+		ctx.JSON(http.StatusOK, utils.Result{
+			Code: utils.RequestError,
+			Msg:  "分类名不能重复",
+			Data: nil,
+		})
+		return
+	}
+
+	category := addForm.BindToModel()
+	if err := category.Create(); err != nil {
+		log.Logger.Sugar().Error("error: ", err.Error())
+		ctx.JSON(http.StatusOK, utils.Result{
+			Code: utils.ServerError,
+			Msg:  "服务器端错误",
+			Data: nil,
+		})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, utils.Result{
+		Code: utils.Success,
+		Msg:  "创建成功",
+		Data: category,
+	})
+}
+
+// @Summary 修改图库分类
+// @Tags 分类
+// @version 1.0
+// @Accept application/json
+// @Param editForm body forms.GalleryCategoryEditForm true "修改图库分类表单"
+// @Success 100 object utils.Result 成功
+// @Failure 103/104 object utils.Result 失败
+// @Router /api/v1/categories/gallery [put]
+func (c *CategoryHandler) UpdateGalleryCategory(ctx *gin.Context) {
+	editForm := forms.GalleryCategoryEditForm{}
+	if err := ctx.ShouldBindJSON(&editForm); err != nil {
+		ctx.JSON(http.StatusOK, utils.Result{
+			Code: utils.RequestError,
+			Msg:  utils.GetFormError(err),
+			Data: nil,
+		})
+		return
+	}
+
+	// 校验分类名称唯一性
+	existCategory, _ := models.Category{}.GetByName(editForm.Name, editForm.Type)
 	if existCategory.ID > 0 && existCategory.ID != editForm.ID {
 		ctx.JSON(http.StatusOK, utils.Result{
 			Code: utils.RequestError,

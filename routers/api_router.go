@@ -62,6 +62,8 @@ func (a *ApiRouter) InitApiRouter(rootPath string, router *gin.Engine) {
 		categoryApiRouter.PUT("/categories/article", categoryHandler.UpdateArticleCategory)
 		categoryApiRouter.POST("/categories/link", categoryHandler.AddLinkCategory)
 		categoryApiRouter.PUT("/categories/link", categoryHandler.UpdateLinkCategory)
+		categoryApiRouter.POST("/categories/gallery", categoryHandler.AddGalleryCategory)
+		categoryApiRouter.PUT("/categories/gallery", categoryHandler.UpdateGalleryCategory)
 		categoryApiRouter.DELETE("/categories/:id", categoryHandler.DeleteCategory)
 		categoryApiRouter.DELETE("/categories", categoryHandler.MultiDelCategories)
 	}

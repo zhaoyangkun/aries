@@ -21,7 +21,7 @@ type Gallery struct {
 
 // 获取所有图库
 func (Gallery) GetAll() (list []Gallery, err error) {
-	err = db.Db.Preload("Category").Find(&list).Error
+	err = db.Db.Preload("Category").Order("created_at desc", true).Find(&list).Error
 
 	return
 }
@@ -34,7 +34,7 @@ func (Gallery) GetById(id uint) (gallery Gallery, err error) {
 
 // 分页获取图库
 func (g Gallery) GetByPage(page *utils.Pagination, categoryId uint, key string) (list []Gallery, total uint, err error) {
-	query := db.Db.Preload("Category").Find(&list)
+	query := db.Db.Preload("Category").Order("created_at desc", true).Find(&list)
 
 	if categoryId > 0 {
 		query = query.Where("`category_id` = ?", categoryId)

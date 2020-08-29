@@ -290,7 +290,6 @@
         </el-form-item>
       </el-form>
     </el-drawer>
-
   </d2-container>
 </template>
 
@@ -871,7 +870,7 @@ export default {
     // 标签改变事件
     selectTrigger (formName) {
       const nameList = []
-      this.parentCategories.forEach((category) => {
+      this.parentCategories.forEach(category => {
         nameList.push(category.name)
       })
       this[`${formName}`].selectTagIds.forEach((id, i) => {

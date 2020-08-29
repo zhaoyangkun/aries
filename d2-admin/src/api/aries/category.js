@@ -61,6 +61,24 @@ export function updateLinkCategory (data) {
   })
 }
 
+// 添加图库分类
+export function addGalleryCategory (data) {
+  return request({
+    url: '/categories/gallery',
+    method: 'post',
+    data: data
+  })
+}
+
+// 修改图库分类
+export function updateGalleryCategory (data) {
+  return request({
+    url: '/categories/gallery',
+    method: 'put',
+    data: data
+  })
+}
+
 // 删除分类
 export function deleteCategory (id) {
   return request({

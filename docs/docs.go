@@ -144,6 +144,30 @@ var doc = `{
                 }
             }
         },
+        "/api/v1/all_galleries": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "图库"
+                ],
+                "summary": "获取所有图库",
+                "responses": {
+                    "100": {
+                        "description": "Continue",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Result"
+                        }
+                    },
+                    "104": {
+                        "schema": {
+                            "$ref": "#/definitions/utils.Result"
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/all_journals": {
             "get": {
                 "consumes": [
@@ -830,6 +854,74 @@ var doc = `{
                 }
             }
         },
+        "/api/v1/categories/gallery": {
+            "put": {
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "分类"
+                ],
+                "summary": "修改图库分类",
+                "parameters": [
+                    {
+                        "description": "修改图库分类表单",
+                        "name": "editForm",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/forms.GalleryCategoryEditForm"
+                        }
+                    }
+                ],
+                "responses": {
+                    "100": {
+                        "description": "Continue",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Result"
+                        }
+                    },
+                    "104": {
+                        "schema": {
+                            "$ref": "#/definitions/utils.Result"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "分类"
+                ],
+                "summary": "添加图库分类",
+                "parameters": [
+                    {
+                        "description": "添加图库分类表单",
+                        "name": "addForm",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/forms.GalleryCategoryAddForm"
+                        }
+                    }
+                ],
+                "responses": {
+                    "100": {
+                        "description": "Continue",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Result"
+                        }
+                    },
+                    "104": {
+                        "schema": {
+                            "$ref": "#/definitions/utils.Result"
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/categories/link": {
             "put": {
                 "consumes": [
@@ -1115,6 +1207,184 @@ var doc = `{
                 }
             }
         },
+        "/api/v1/galleries": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "图库"
+                ],
+                "summary": "分页获取图库",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "页码",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "每页条数",
+                        "name": "size",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "分类 ID",
+                        "name": "category_id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "关键词",
+                        "name": "key",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "100": {
+                        "description": "Continue",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Result"
+                        }
+                    },
+                    "104": {
+                        "schema": {
+                            "$ref": "#/definitions/utils.Result"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "图库"
+                ],
+                "summary": "修改图库",
+                "parameters": [
+                    {
+                        "description": "修改图库表单",
+                        "name": "editForm",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/forms.EditGalleryForm"
+                        }
+                    }
+                ],
+                "responses": {
+                    "100": {
+                        "description": "Continue",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Result"
+                        }
+                    },
+                    "104": {
+                        "schema": {
+                            "$ref": "#/definitions/utils.Result"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "图库"
+                ],
+                "summary": "创建图库",
+                "parameters": [
+                    {
+                        "description": "创建图库表单",
+                        "name": "addForm",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/forms.AddGalleryForm"
+                        }
+                    }
+                ],
+                "responses": {
+                    "100": {
+                        "description": "Continue",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Result"
+                        }
+                    },
+                    "104": {
+                        "schema": {
+                            "$ref": "#/definitions/utils.Result"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "图库"
+                ],
+                "summary": "批量删除图库",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ids",
+                        "name": "ids",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "100": {
+                        "description": "Continue",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Result"
+                        }
+                    },
+                    "104": {
+                        "schema": {
+                            "$ref": "#/definitions/utils.Result"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/galleries/{id}": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "图库"
+                ],
+                "summary": "根据 ID 获取图库",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "100": {
+                        "description": "Continue",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Result"
+                        }
+                    },
+                    "104": {
+                        "schema": {
+                            "$ref": "#/definitions/utils.Result"
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/images": {
             "get": {
                 "consumes": [
@@ -1313,6 +1583,70 @@ var doc = `{
                         "schema": {
                             "$ref": "#/definitions/forms.JournalAddForm"
                         }
+                    }
+                ],
+                "responses": {
+                    "100": {
+                        "description": "Continue",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Result"
+                        }
+                    },
+                    "104": {
+                        "schema": {
+                            "$ref": "#/definitions/utils.Result"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "日志"
+                ],
+                "summary": "批量删除日志",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ids",
+                        "name": "ids",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "100": {
+                        "description": "Continue",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Result"
+                        }
+                    },
+                    "104": {
+                        "schema": {
+                            "$ref": "#/definitions/utils.Result"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/journals/{id}": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "日志"
+                ],
+                "summary": "根据 ID 获取日志",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -2324,6 +2658,30 @@ var doc = `{
         }
     },
     "definitions": {
+        "forms.AddGalleryForm": {
+            "type": "object",
+            "required": [
+                "name",
+                "url"
+            ],
+            "properties": {
+                "category_id": {
+                    "type": "integer"
+                },
+                "desc": {
+                    "type": "string"
+                },
+                "location": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "url": {
+                    "type": "string"
+                }
+            }
+        },
         "forms.ArticleAddForm": {
             "type": "object",
             "required": [
@@ -2415,7 +2773,7 @@ var doc = `{
                     "type": "integer"
                 },
                 "type": {
-                    "description": "分类类型，默认值为 0 表文章；1 表友链",
+                    "description": "分类类型，默认值为 0 表文章；1 表友链; 2 表示图库",
                     "type": "integer"
                 },
                 "url": {
@@ -2444,7 +2802,7 @@ var doc = `{
                     "type": "integer"
                 },
                 "type": {
-                    "description": "分类类型，默认值为 0 表文章；1 表友链",
+                    "description": "分类类型，默认值为 0 表文章；1 表友链; 2 表示图库",
                     "type": "integer"
                 },
                 "url": {
@@ -2695,6 +3053,34 @@ var doc = `{
                 }
             }
         },
+        "forms.EditGalleryForm": {
+            "type": "object",
+            "required": [
+                "id",
+                "name",
+                "url"
+            ],
+            "properties": {
+                "category_id": {
+                    "type": "integer"
+                },
+                "desc": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "location": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "url": {
+                    "type": "string"
+                }
+            }
+        },
         "forms.EmailSettingForm": {
             "type": "object",
             "required": [
@@ -2737,6 +3123,42 @@ var doc = `{
             "properties": {
                 "email": {
                     "type": "string"
+                }
+            }
+        },
+        "forms.GalleryCategoryAddForm": {
+            "type": "object",
+            "required": [
+                "name"
+            ],
+            "properties": {
+                "name": {
+                    "description": "分类名称",
+                    "type": "string"
+                },
+                "type": {
+                    "description": "分类类型，默认值为 0 表文章；1 表友链; 2 表示图库",
+                    "type": "integer"
+                }
+            }
+        },
+        "forms.GalleryCategoryEditForm": {
+            "type": "object",
+            "required": [
+                "ID",
+                "name"
+            ],
+            "properties": {
+                "ID": {
+                    "type": "integer"
+                },
+                "name": {
+                    "description": "分类名称",
+                    "type": "string"
+                },
+                "type": {
+                    "description": "分类类型，默认值为 0 表文章；1 表友链; 2 表示图库",
+                    "type": "integer"
                 }
             }
         },
@@ -2801,7 +3223,7 @@ var doc = `{
                     "type": "string"
                 },
                 "type": {
-                    "description": "分类类型，默认值为 0 表文章；1 表友链",
+                    "description": "分类类型，默认值为 0 表文章；1 表友链; 2 表示图库",
                     "type": "integer"
                 }
             }
@@ -2821,7 +3243,7 @@ var doc = `{
                     "type": "string"
                 },
                 "type": {
-                    "description": "分类类型，默认值为 0 表文章；1 表友链",
+                    "description": "分类类型，默认值为 0 表文章；1 表友链; 2 表示图库",
                     "type": "integer"
                 }
             }

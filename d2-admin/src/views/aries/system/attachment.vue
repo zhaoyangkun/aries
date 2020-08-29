@@ -93,12 +93,12 @@
         :limit="limit"
         :multiple="true"
         :http-request="uploadImg"
-        :on-remove="handleRemove"
         :before-upload="handleBeforeUpload"
+        :on-exceed="handleOnExceed"
         :file-list="fileList"
         list-type="picture">
         <el-button size="small" type="primary">点击上传</el-button>
-        <div slot="tip" class="el-upload__tip">只能上传 jpeg/jpg/png/gif/bmp 文件，且不超过 5 MB</div>
+        <div slot="tip" class="el-upload__tip">只能上传 jpeg/jpg/png/gif/bmp 文件，且不超过 5 MB，一次最多上传 10 个。</div>
       </el-upload>
     </el-dialog>
 
@@ -198,7 +198,7 @@ export default {
         createAt: null
       },
       imageTypes: ['jpeg', 'jpg', 'png', 'gif', 'bmp'],
-      limit: 5,
+      limit: 10,
       progressPercent: 0,
       uploadDialogVisible: false,
       previewDialogVisible: false,

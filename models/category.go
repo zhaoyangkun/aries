@@ -14,7 +14,7 @@ type Category struct {
 	gorm.Model
 	Children []*Category `gorm:"ForeignKey:ParentId" json:"children"`            // 子级分类列表
 	ParentId uint        `json:"parent_id"`                                      // 父类 ID：0 表父级分类，大于 0 表子级分类
-	Type     uint        `gorm:"type:tinyint(1);unsigned;default:0" json:"type"` // 分类类型，默认值为 0 表文章；1 表友链,2 表示日志
+	Type     uint        `gorm:"type:tinyint(1);unsigned;default:0" json:"type"` // 分类类型，默认值为 0 表文章；1 表友链,2 表示图库
 	Name     string      `gorm:"type:varchar(100);not null;" json:"name"`        // 分类名称
 	Url      string      `gorm:"type:varchar(100)" json:"url"`                   // 访问 URL
 }
@@ -30,8 +30,8 @@ func (category Category) GetAllByType(categoryType uint) ([]Category, error) {
 		return categories, err
 	}
 
-	// 根据类别查询分类，若 categoryType >= 2，表示查询所有分类
-	if categoryType < 2 {
+	// 根据类别查询分类，若 categoryType > 2，表示查询所有分类
+	if categoryType <= 2 {
 		err = db.Db.Where("`type` = ?", categoryType).Find(&categories).Error
 	} else {
 		err = db.Db.Find(&categories).Error
@@ -96,8 +96,8 @@ func (category Category) GetAllParents(categoryType uint) (list []Category, err 
 }
 
 // 根据分类名称获取分类
-func (Category) GetByName(name string) (category Category, err error) {
-	err = db.Db.Where("`name` = ?", name).First(&category).Error
+func (Category) GetByName(name string, categoryType uint) (category Category, err error) {
+	err = db.Db.Where("`name` = ? and `type` = ?", name, categoryType).First(&category).Error
 	return
 }
 

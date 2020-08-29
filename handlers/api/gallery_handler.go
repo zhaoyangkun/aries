@@ -15,7 +15,7 @@ type GalleryHandler struct {
 }
 
 // @Summary 获取所有图库
-// @Tags图库
+// @Tags 图库
 // @version 1.0
 // @Accept application/json
 // @Success 100 object utils.Result 成功

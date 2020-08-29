@@ -1,5 +1,4 @@
 import { request } from '@api/service'
-import id from 'element-ui/src/locale/lang/id'
 
 // 获取所有图库
 export function getAllGalleries () {
@@ -10,10 +9,11 @@ export function getAllGalleries () {
 }
 
 // 分页获取图库
-export function getGalleriesByPage () {
+export function getGalleriesByPage (params) {
   return request({
     url: '/galleries',
-    method: 'get'
+    method: 'get',
+    params: params
   })
 }
 
