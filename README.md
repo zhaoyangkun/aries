@@ -21,9 +21,9 @@ Aries 是基于 Gin + Vue + MySQL + H5 开发的现代化博客系统，博客�
    - 草稿和回收站
    - 从文件导入文章
 
-   ![image-20200829212743060](https://cangmang.coding.net/p/image/d/image/git/raw/master/article/2020/8/29/20200829212744.png)
+   ![37b31a381a9751ee.png](https://ftp.bmp.ovh/imgs/2020/08/37b31a381a9751ee.png)
 
-   ![image-20200829212710752](https://cangmang.coding.net/p/image/d/image/git/raw/master/article/2020/8/29/20200829212712.png)
+   ![9614b942037ca282.png](https://ftp.bmp.ovh/imgs/2020/08/9614b942037ca282.png)
 
 2. 外观
 
@@ -41,42 +41,42 @@ Aries 是基于 Gin + Vue + MySQL + H5 开发的现代化博客系统，博客�
    - 多图片上传
    - 图片管理
 
-   ![image-20200829212859552](https://cangmang.coding.net/p/image/d/image/git/raw/master/article/2020/8/29/20200829212901.png)
+   ![b4f25e1d52c50052.png](https://ftp.bmp.ovh/imgs/2020/08/b4f25e1d52c50052.png)
 
-   ![image-20200829212927706](https://cangmang.coding.net/p/image/d/image/git/raw/master/article/2020/8/29/20200829212930.png)
+   ![](https://ftp.bmp.ovh/imgs/2020/08/e6d838ea5a9759a8.png)
 
-   ![image-20200829213023301](https://cangmang.coding.net/p/image/d/image/git/raw/master/article/2020/8/29/20200829213025.png)
+   ![3142f8dd40ce6d30.png](https://ftp.bmp.ovh/imgs/2020/08/3142f8dd40ce6d30.png)
 
 5. 页面
 
    - 日志管理
    - 图库管理
 
-   ![image-20200829213324523](https://cangmang.coding.net/p/image/d/image/git/raw/master/article/2020/8/29/20200829213326.png)
+   ![b94d1484dfedbe5a.png](https://ftp.bmp.ovh/imgs/2020/08/b94d1484dfedbe5a.png)
 
-   ![image-20200829213357364](https://cangmang.coding.net/p/image/d/image/git/raw/master/article/2020/8/29/20200829213401.png)
+   ![d8ac1628e32f8017.png](https://ftp.bmp.ovh/imgs/2020/08/d8ac1628e32f8017.png)
 
 6. 友情链接
 
    - 添加、修改友链
    - 友链分类
 
-   ![image-20200829214729006](https://cangmang.coding.net/p/image/d/image/git/raw/master/article/2020/8/29/20200829214731.png)
+   ![1eae5804d99db93e.png](https://ftp.bmp.ovh/imgs/2020/08/1eae5804d99db93e.png)
 
 7. 用户
 
    - 修改用户信息
    - 修改密码
 
-   ![image-20200829214543769](https://cangmang.coding.net/p/image/d/image/git/raw/master/article/2020/8/29/20200829214545.png)
+   ![ce41bb14aa6d1fca.png](https://ftp.bmp.ovh/imgs/2020/08/ce41bb14aa6d1fca.png)
 
 8. 设置
 
    - 站点信息和 SEO 信息设置
 
-   ![image-20200829213119582](https://cangmang.coding.net/p/image/d/image/git/raw/master/article/2020/8/29/20200829213122.png)
+   ![763266bfba1b89a2.png](https://ftp.bmp.ovh/imgs/2020/08/763266bfba1b89a2.png)
 
-   ![image-20200829213504731](https://cangmang.coding.net/p/image/d/image/git/raw/master/article/2020/8/29/20200829213506.png)
+   ![dbiyiq.png](https://s1.ax1x.com/2020/08/30/dbiyiq.png)
 
 ## 如何在本地运行 Aries
 
