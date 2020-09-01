@@ -249,7 +249,7 @@ export default {
     },
     handleRowEdit (row, done) {
       this.formOptions.saveLoading = true
-      const data = row.row
+      const data = { ...row.row }
       setTimeout(() => {
         updateArticleCategory(data)
           .then(res => {

@@ -48,7 +48,7 @@ const menu = [
     children: [
       { path: '/user', title: '用户信息', icon: 'user-o' },
       { path: '/comment', title: '评论', icon: 'commenting-o' },
-      // { path: '/page', title: '页面', icon: 'columns' },
+      { path: '/page', title: '页面', icon: 'columns' },
       {
         title: '友链',
         icon: 'link',

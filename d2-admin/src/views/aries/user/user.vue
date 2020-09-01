@@ -1,5 +1,6 @@
 <template>
   <d2-container>
+    <template slot="header">用户 / 用户信息</template>
     <el-tabs :tab-position="tabPosition" type="border-card">
       <el-tab-pane label="个人信息" style="width: 500px">
         <el-form :model="userForm" ref="userForm" :rules="userRules" label-width="100px">

@@ -1,2 +1,289 @@
-{{define "script"}}
-{{end}}
+{{ define "script" }}
+    <script src="{{ .blogVars.ContextPath }}/static/js/jquery.min.js"></script>
+    <script src="{{ .blogVars.ContextPath }}/static/js/utils.js"></script>
+    <script src="{{ .blogVars.ContextPath }}/static/js/modal.js"></script>
+    <script src="{{ .blogVars.ContextPath }}/static/js/night-mode.js"></script>
+    <script src="{{ .blogVars.ContextPath }}/static/js/moon-menu.js"></script>
+    <script src="{{ .blogVars.ContextPath }}/static/js/gallery.js"></script>
+    <script src="{{ .blogVars.ContextPath }}/static/js/post.js"></script>
+    <script src="{{ .blogVars.ContextPath }}/static/js/header.js"></script>
+    <script src="{{ .blogVars.ContextPath }}/static/js/vue.min.js"></script>
+    <script src="{{ .blogVars.ContextPath }}/static/js/marked.min.js"></script>
+    <script src="{{ .blogVars.ContextPath }}/static/js/highlight.min.js"></script>
+    <script src="{{ .blogVars.ContextPath }}/static/js/highlight.lang.js"></script>
+    <script src="{{ .blogVars.ContextPath }}/static/js/highlightjs-line-numbers.min.js"></script>
+    <script data-pjax-viewer src="{{ .blogVars.ContextPath }}/static/js/viewer.min.js"></script>
+    <script src="{{ .blogVars.ContextPath }}/static/js/micromodal.min.js"></script>
+    <script src="{{ .blogVars.ContextPath }}/static/js/jquery.justifiedGallery.min.js"></script>
+    <script src="{{ .blogVars.ContextPath }}/static/js/simply-nav.js"></script>
+    <script src="{{ .blogVars.ContextPath }}/static/js/moon.js"></script>
+    <script src="{{ .blogVars.ContextPath }}/static/js/social-share.min.js"></script>
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <script src="{{ .blogVars.ContextPath }}/static/js/jqcloud-1.0.4.min.js"></script>
+    <script src="{{ .blogVars.ContextPath }}/static/js/tocbot.min.js"></script>
+    <script src="{{ .blogVars.ContextPath }}/static/js/APlayer.min.js"></script>
+    <script src="{{ .blogVars.ContextPath }}/static/js/Meting.min.js"></script>
+    <script defer src="{{ .blogVars.ContextPath }}/static/js/katex.min.js"
+            integrity="sha384-g7c+Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI+sEnkvrMWph2EDg4"
+            crossorigin="anonymous"></script>
+    <script type="text/javascript">
+        let katex_config = {
+            delimiters:
+                [
+                    {left: "$$", right: "$$", display: true},
+                    {left: "$", right: "$", display: false},
+                    {left: "\\(", right: "\\)", display: false},
+                    {left: "\\[", right: "\\]", display: true},
+                ]
+        };
+    </script>
+    <script defer src="{{ .blogVars.ContextPath }}/static/js/auto-render.min.js"
+            integrity="sha384-mll67QQFJfxn0IYznZYonOWZ644AWYC+Pt2cHqMaRhXVrursRwvLnLaebdGIlYNa" crossorigin="anonymous"
+            onload="if (document.getElementById('write'))
+            { renderMathInElement(document.getElementById('write'), katex_config)}
+            else if (document.getElementById('tree-hole'))
+            {renderMathInElement(document.getElementById('tree-hole'), katex_config)}"></script>
+    <script src="{{ .blogVars.ContextPath }}/static/js/pjax.js"></script>
+    <script src="{{ .blogVars.ContextPath }}/static/js/nprogress.min.js"></script>
+    <script type="text/javascript">
+        let autoNightModeOpen = true;
+
+        // 标签
+        let tagArray = [
+            {'text': 'windows', 'weight': '2', 'link': 'https://www.cangmangai.cn/tags/windows'},
+            {'text': 'ajax', 'weight': '1', 'link': 'https://www.cangmangai.cn/tags/ajax'},
+            {'text': '图床', 'weight': '1', 'link': 'https://www.cangmangai.cn/tags/图床'},
+            {'text': 'gin', 'weight': '3', 'link': 'https://www.cangmangai.cn/tags/gin'},
+            {'text': 'go', 'weight': '3', 'link': 'https://www.cangmangai.cn/tags/go'},
+            {'text': 'node.js', 'weight': '1', 'link': 'https://www.cangmangai.cn/tags/nodejs'},
+            {'text': '网络', 'weight': '3', 'link': 'https://www.cangmangai.cn/tags/网络'},
+            {'text': 'freemaker', 'weight': '1', 'link': 'https://www.cangmangai.cn/tags/freemaker'},
+            {'text': 'mybatis', 'weight': '2', 'link': 'https://www.cangmangai.cn/tags/mybatis'},
+            {'text': 'springboot', 'weight': '2', 'link': 'https://www.cangmangai.cn/tags/springboot'},
+            {'text': 'java ', 'weight': '3', 'link': 'https://www.cangmangai.cn/tags/java'},
+            {'text': 'leetcode', 'weight': '3', 'link': 'https://www.cangmangai.cn/tags/leetcode'},
+            {'text': '生活', 'weight': '1', 'link': 'https://www.cangmangai.cn/tags/生活'},
+            {'text': '数据结构', 'weight': '5', 'link': 'https://www.cangmangai.cn/tags/数据结构'},
+            {'text': 'python', 'weight': '12', 'link': 'https://www.cangmangai.cn/tags/python'},
+            {'text': 'linux', 'weight': '8', 'link': 'https://www.cangmangai.cn/tags/linux'},
+            {'text': 'docker', 'weight': '2', 'link': 'https://www.cangmangai.cn/tags/docker'},
+            {'text': 'django', 'weight': '9', 'link': 'https://www.cangmangai.cn/tags/django'},
+        ];
+
+        // 分类
+        let categoryArray = [
+            {'text': '面试', 'weight': '1', 'link': 'https://www.cangmangai.cn/categories/interview'},
+            {'text': '教程', 'weight': '18', 'link': 'https://www.cangmangai.cn/categories/course'},
+            {'text': '感悟', 'weight': '1', 'link': 'https://www.cangmangai.cn/categories/perception'},
+            {'text': '后端', 'weight': '11', 'link': 'https://www.cangmangai.cn/categories/backend'},
+            {'text': '算法', 'weight': '5', 'link': 'https://www.cangmangai.cn/categories/algorithm'},
+        ];
+
+        $(function () {
+            let tagCloud = $("#tagCloud");
+            if (tagCloud && tagCloud.children().length === 0) {
+                tagCloud.jQCloud(tagArray, {autoResize: true, delayedMode: true});
+            }
+
+            let categoryCloud = $("#categoryCloud");
+            if (categoryCloud && categoryCloud.children().length === 0) {
+                categoryCloud.jQCloud(categoryArray, {autoResize: true, delayedMode: true});
+            }
+        });
+
+        $('.arrow-down').on('click', function () {
+            let postHeight = $('#homeHeader').height();
+            window.scroll({top: postHeight - 50, behavior: 'smooth'});
+        })
+
+        // 禁用的分享站点, 现在已经不支持腾讯微博
+        let socialDisabled = 'google,twitter,facebook';
+    </script>
+    <script type="text/javascript">
+        // Pjax
+        let pjax = new Pjax({
+            elements: 'a[href]:not([href^="#"]):not([data-not-pjax]):not([target^="_blank"]), form', // default is "a[href], form[action]"
+            cacheBust: false,
+            debug: false,
+            selectors: [
+                'title',
+                '#container'
+            ]
+        });
+
+        //在Pjax请求开始后触发
+        document.addEventListener('pjax:send', function () {
+            NProgress.start();
+
+        });
+
+        //在Pjax请求完成后触发
+        document.addEventListener('pjax:complete', function (e) {
+            NProgress.done();
+            // 最开始就要隐藏
+            header.hideSubMenu();
+            // header
+            // header.hoverSubMenu();
+
+            // 加载相册
+            if ($("#container").find('.photos-page').length > 0) {
+                photo.loadGallery();
+                photo.showPhotos();
+            }
+
+            // 隐藏 search box 并清空 input
+            $('#searchBox').addClass('hidden');
+            $("#searchBoxInput").val("");
+
+            // 标签云
+            let tagCloud = $("#tagCloud");
+            if (tagCloud && tagCloud.children().length === 0) {
+                tagCloud.jQCloud(tagArray, {autoResize: true, delayedMode: true});
+            }
+
+            // 分类云
+            let categoryCloud = $("#categoryCloud");
+            if (categoryCloud && categoryCloud.children().length === 0) {
+                categoryCloud.jQCloud(categoryArray, {autoResize: true, delayedMode: true});
+            }
+
+            // 当前菜单菜单高亮
+            hanUtils.highlightMenu();
+
+            //重载
+            if (typeof _hmt !== 'undefined') {
+                // support 百度统计
+                _hmt.push(['_trackPageview', location.pathname + location.search]);
+            }
+            if (typeof ga !== 'undefined') {
+                // support google analytics
+                ga('send', 'pageview', location.pathname + location.search);
+            }
+
+            // 重新加载 评论
+            $('script[data-pjax-comment]').each(function () {
+                let commentParent = $(this).parent()
+                let comment = $(this).remove();
+                commentParent.append(comment);
+            });
+
+            $('.icon-toc').each(function () {
+                $(this).remove();
+            });
+
+            $('#moonToc').removeClass('mm-active');
+
+            if ($("#container").find('.article-content').length > 0) {
+
+                // 转换post内容为 Markdown
+                // post.formatContent();
+
+                // 小屏幕目录
+                $('#moonMenu').append('<span class="moon-menu-item pl-6 cst-icon icon-toc"></span>')
+
+                moonMenu.initMoonToc();
+
+                moonMenu.ckShowContent();
+
+                // 代码高亮
+                post.loadHighlight();
+
+                // 图片预览
+                post.initViewer();
+
+                // 目录事件
+                post.scrollTocFixed();
+
+                // 初始化toc
+                post.initToc()
+
+                // 删除文章最开始第一个 <ul>(如果有)
+                post.removeFirstUL()
+
+                // 分享按钮
+                post.shareIcon()
+
+                // 模态框
+                coffeeModal.toggleCoffeeModal();
+
+                // 初始展示二维码
+                coffeeModal.initShowCode();
+
+                // 切换支付二维码
+                coffeeModal.switchQrCode();
+
+                try {
+                    if (renderMathInElement && typeof renderMathInElement !== 'undefined') {
+                        renderMathInElement(document.getElementById('write'), katex_config);
+                    }
+
+                    // if (mermaid && typeof mermaid !== 'undefined') {
+                    //     mermaid.initialize();
+                    // }
+                } catch (e) {
+                    console.log("error");
+                }
+            }
+
+            // table 要加上 div 避免出现小屏幕下展示不全
+            hanUtils.tableAddNode();
+
+            // li 添加 span
+            hanUtils.liAddSpan();
+
+            // 自定义页面 viewer
+            hanUtils.sheetViewer();
+
+            // 相册页面 viewer
+            hanUtils.journalViewer();
+
+
+            if (renderMathInElement && typeof renderMathInElement !== 'undefined') {
+                if (document.getElementById('write')) {
+                    renderMathInElement(document.getElementById('write'), katex_config)
+                } else if (document.getElementById('tree-hole')) {
+                    renderMathInElement(document.getElementById('tree-hole'), katex_config)
+                }
+            }
+
+        });
+
+        document.addEventListener('pjax:end', function () {
+
+        });
+
+        //Pjax请求失败后触发，请求对象将作为一起传递event.options.request
+        document.addEventListener('pjax:error', function () {
+            NProgress.done();
+            bar('系统出现问题，请手动刷新一次', '3000');
+        });
+    </script>
+    <script type="text/javascript">
+        // 建站时间统计
+        function show_date_time() {
+            if ($("#span_dt_dt").length > 0) {
+                window.setTimeout("show_date_time()", 1000);
+                let BirthDay = new Date("08/01/2019 00:00:00");
+                let today = new Date();
+                let timeold = (today.getTime() - BirthDay.getTime());
+                let sectimeold = timeold / 1000;
+                let secondsold = Math.floor(sectimeold);
+                let msPerDay = 24 * 60 * 60 * 1000;
+                let e_daysold = timeold / msPerDay;
+                let daysold = Math.floor(e_daysold);
+                let e_hrsold = (e_daysold - daysold) * 24;
+                let hrsold = Math.floor(e_hrsold);
+                let e_minsold = (e_hrsold - hrsold) * 60;
+                let minsold = Math.floor((e_hrsold - hrsold) * 60);
+                let seconds = Math.floor((e_minsold - minsold) * 60);
+                span_dt_dt.innerHTML = daysold + "天" + hrsold + "小时" + minsold + "分" + seconds + "秒";
+            }
+        }
+
+        show_date_time();
+    </script>
+    <script type="text/javascript">
+        console.clear();
+        console.log("%c Github %c", "background:#24272A; color:#ffffff", "", "https://github.com/zhaoyangkun/aries");
+    </script>
+{{ end }}

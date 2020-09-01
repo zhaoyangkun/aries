@@ -1,9 +1,9 @@
 # 服务器配置
 server:
-  mode: "debug"                               # 运行模式，debug / release
-  port: "8088"                                # 端口
-  token_expire_time: 18000                     # JWT token 过期时间（单位：秒）
-  allowed_refers: ["localhost", "127.0.0.1"]  # 允许的 referer
+  mode: "debug"                                 # 运行模式，debug / release
+  port: "8088"                                  # 端口
+  token_expire_time: 18000                      # JWT token 过期时间（单位：秒）
+  allowed_refers: [ "localhost", "127.0.0.1" ]  # 允许的 referer
 # 数据库配置
 db:
   host: "127.0.0.1"       # 主机地址
@@ -16,14 +16,15 @@ db:
   max_open_conn: 20       # 最大打开连接数
 # 日志配置
 logger:
-  log_dir: "/home/zyk/projects/go/aries/logs" # 日志目录
-  log_name: "aries.log"                       # 日志名称
-  max_age: 1                                  # 保存时间（天）
-  level: "debug"                              # 日志级别（"debug", "info", "warning", "error", "fatal", "panic"）
-  formatter: "text"                           # 日志格式（"json", "text"）
+  file_name: "/home/zyk/projects/go/aries/log/logfile/aries.log"   # 日志文件
+  max_size: 10                                              # 最大存储空间（MB）
+  max_backups: 2                                            # 最大保存个数
+  max_age: 1                                                # 最大保存时间（天）
+  level: "debug"                                            # 日志级别（"debug", "info", "warn", "error","dpanic" ,"panic","fatal"）
+  format: "console"                                         # 日志格式（"json", "console"）
 # smtp 配置（仅用于重置密码）
 smtp:
   address: "smtp.qq.com"       # 协议地址
   port: 465                    # 端口
   account: "1040970792@qq.com" # 帐号
-  password: "" # 密码
+  password: ""                 # 密码

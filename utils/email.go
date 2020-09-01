@@ -143,15 +143,18 @@ func GetForgetPwdEmailHTML(userName string, code string) string {
 func GetFeedBackEmailHTML() {
 }
 
-func CreateRandomCode(num int) string {
+func CreateRandomCode(num int) (string, error) {
 	numBytes := []byte{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}
 	length := bytes.NewReader(numBytes).Len()
 	var sb strings.Builder
+
 	for i := 0; i < num; i++ {
 		random, err := rand.Int(rand.Reader, big.NewInt(int64(length)))
 		if err != nil {
+			return "", err
 		}
 		_, _ = fmt.Fprintf(&sb, "%d", numBytes[random.Int64()])
 	}
-	return sb.String()
+
+	return sb.String(), nil
 }

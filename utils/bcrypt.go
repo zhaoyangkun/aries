@@ -1,7 +1,6 @@
 package utils
 
 import (
-	log "github.com/sirupsen/logrus"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -9,9 +8,9 @@ import (
 func EncryptPwd(pwd string) (string, error) {
 	hash, err := bcrypt.GenerateFromPassword([]byte(pwd), bcrypt.MinCost)
 	if err != nil {
-		log.Println(err)
 		return "", err
 	}
+
 	return string(hash), err
 }
 
@@ -20,5 +19,6 @@ func VerifyPwd(hashedPwd string, plainPwd string) bool {
 	byteHash := []byte(hashedPwd)
 	bytePlain := []byte(plainPwd)
 	err := bcrypt.CompareHashAndPassword(byteHash, bytePlain)
+
 	return err == nil
 }

@@ -20,13 +20,16 @@ func transTagName(libTans, err interface{}) string {
 		}
 		errs[k] = v
 	}
+
 	var keyList []string    // 保存键值
 	for key := range errs { // 遍历 errMap
 		keyList = append(keyList, key) // 将 errMap 中的键值保存到 keyList 中
 	}
+
 	if len(keyList) > 0 {
 		return errs[keyList[0]] // 返回字典中第一个错误信息
 	}
+
 	return ""
 }
 
@@ -36,6 +39,7 @@ func GetFormError(err error) string {
 	if errs, ok := err.(validator.ValidationErrors); ok {
 		return transTagName(transMap, errs.Translate(setting.Trans))
 	}
+
 	return "数据类型转换错误"
 }
 
@@ -46,5 +50,6 @@ func IsContain(itemList []string, item string) bool {
 			return true
 		}
 	}
+
 	return false
 }

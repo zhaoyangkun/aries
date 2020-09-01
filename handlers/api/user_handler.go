@@ -2,12 +2,12 @@ package api
 
 import (
 	"aries/forms"
+	"aries/log"
 	"aries/models"
 	"aries/utils"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	log "github.com/sirupsen/logrus"
 )
 
 type UserHandler struct {
@@ -23,7 +23,7 @@ type UserHandler struct {
 func (u *UserHandler) GetAllUsers(ctx *gin.Context) {
 	list, err := models.User{}.GetAll()
 	if err != nil {
-		log.Error("error: ", err.Error())
+		log.Logger.Sugar().Error("error: ", err.Error())
 		ctx.JSON(http.StatusOK, utils.Result{
 			Code: utils.ServerError,
 			Msg:  "服务器端错误",
@@ -31,6 +31,7 @@ func (u *UserHandler) GetAllUsers(ctx *gin.Context) {
 		})
 		return
 	}
+
 	ctx.JSON(http.StatusOK, utils.Result{
 		Code: utils.Success,
 		Msg:  "查询成功",
@@ -56,9 +57,10 @@ func (u *UserHandler) UpdateUser(ctx *gin.Context) {
 		})
 		return
 	}
+
 	user := userForm.BindToModel()
 	if err := user.Update(); err != nil {
-		log.Error("error: ", err.Error())
+		log.Logger.Sugar().Error("error: ", err.Error())
 		ctx.JSON(http.StatusOK, utils.Result{
 			Code: utils.ServerError,
 			Msg:  "服务器端错误",
@@ -66,6 +68,7 @@ func (u *UserHandler) UpdateUser(ctx *gin.Context) {
 		})
 		return
 	}
+
 	ctx.JSON(http.StatusOK, utils.Result{
 		Code: utils.Success,
 		Msg:  "修改成功",
@@ -91,9 +94,10 @@ func (u *UserHandler) UpdateUserPwd(ctx *gin.Context) {
 		})
 		return
 	}
+
 	oldUser, err := models.User{Username: pwdForm.Username}.GetByUsername()
 	if err != nil {
-		log.Error("error: ", err.Error())
+		log.Logger.Sugar().Error("error: ", err.Error())
 		ctx.JSON(http.StatusOK, utils.Result{
 			Code: utils.ServerError,
 			Msg:  "服务器端错误",
@@ -101,6 +105,7 @@ func (u *UserHandler) UpdateUserPwd(ctx *gin.Context) {
 		})
 		return
 	}
+
 	if !utils.VerifyPwd(oldUser.Pwd, pwdForm.OldPwd) {
 		ctx.JSON(http.StatusOK, utils.Result{
 			Code: utils.RequestError,
@@ -109,10 +114,11 @@ func (u *UserHandler) UpdateUserPwd(ctx *gin.Context) {
 		})
 		return
 	}
+
 	oldUser.Pwd = pwdForm.NewPwd
 	err = oldUser.UpdatePwd()
 	if err != nil {
-		log.Error("error: ", err.Error())
+		log.Logger.Sugar().Error("error: ", err.Error())
 		ctx.JSON(http.StatusOK, utils.Result{
 			Code: utils.ServerError,
 			Msg:  "服务器端错误",
@@ -120,6 +126,7 @@ func (u *UserHandler) UpdateUserPwd(ctx *gin.Context) {
 		})
 		return
 	}
+
 	ctx.JSON(http.StatusOK, utils.Result{
 		Code: utils.Success,
 		Msg:  "修改密码成功，请重新登录",

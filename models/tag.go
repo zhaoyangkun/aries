@@ -19,6 +19,7 @@ type Tag struct {
 func (Tag) GetAll() ([]Tag, error) {
 	var list []Tag
 	err := db.Db.Preload("ArticleList").Find(&list).Error
+
 	return list, err
 }
 
@@ -26,6 +27,7 @@ func (Tag) GetAll() ([]Tag, error) {
 func (Tag) GetById(id string) (Tag, error) {
 	var t Tag
 	err := db.Db.Where("`id` = ?", id).First(&t).Error
+
 	return t, err
 }
 
@@ -38,12 +40,16 @@ func (Tag) GetByName(name string) (tag Tag, err error) {
 // 分页获取标签
 func (tag Tag) GetByPage(page *utils.Pagination, key string) ([]Tag, uint, error) {
 	var list []Tag
+
 	query := db.Db.Preload("ArticleList").Model(&Tag{}).
 		Order("created_at desc", true)
+
 	if key != "" {
 		query = query.Where("`name` like concat('%',?,'%')", key)
 	}
+
 	total, err := utils.ToPage(page, query, &list)
+
 	return list, total, err
 }
 
@@ -69,18 +75,21 @@ func (Tag) DeleteById(id string) error {
 	if err := tx.Error; err != nil {
 		return err
 	}
+
 	// 删除标签文章表中的记录
 	err := tx.Exec("delete from `tag_article` where `tag_id` = ?", id).Error
 	if err != nil {
 		tx.Rollback()
 		return err
 	}
+
 	// 删除标签表中的记录
 	err = tx.Where("`id` = ?", id).Unscoped().Delete(&Tag{}).Error
 	if err != nil {
 		tx.Rollback()
 		return err
 	}
+
 	return tx.Commit().Error
 }
 
@@ -96,6 +105,7 @@ func (Tag) MultiDelByIds(ids string) error {
 	if err := tx.Error; err != nil {
 		return err
 	}
+
 	idList := strings.Split(ids, ",") // 根据 , 分割成字符串数组
 	// 删除标签文章表中的记录
 	err := tx.Exec("delete from `tag_article` where `tag_id` in (?)", idList).Error
@@ -103,11 +113,13 @@ func (Tag) MultiDelByIds(ids string) error {
 		tx.Rollback()
 		return err
 	}
+
 	// 删除标签表中的记录
 	err = tx.Where("`id` in (?)", idList).Unscoped().Delete(&Tag{}).Error
 	if err != nil {
 		tx.Rollback()
 		return err
 	}
+
 	return tx.Commit().Error
 }

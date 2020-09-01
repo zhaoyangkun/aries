@@ -1,5 +1,6 @@
 <template>
   <d2-container>
+    <template slot="header">系统 / 设置</template>
     <el-tabs :tab-position="tabPosition" @tab-click="handleTabClick" type="border-card">
       <el-tab-pane label="网站设置" style="width: 500px">
         <el-form :model="siteForm" ref="siteForm" :rules="siteRules" label-width="130px">
@@ -180,14 +181,39 @@
       <el-tab-pane label="评论设置" style="width: 500px">
         <el-form ref="commentForm" :model="commentForm" :rules="commentFormRules" label-width="130px">
           <el-form-item label="评论功能" prop="is_on">
-            <el-switch active-value="1" inactive-value="0" v-model="commentForm.is_on"></el-switch>
+            <el-switch size="small" active-value="1" inactive-value="0" v-model="commentForm.is_on"></el-switch>
           </el-form-item>
           <el-form-item label="评论审核" prop="is_review_on">
-            <el-switch active-value="1" inactive-value="0" v-model="commentForm.is_review_on"></el-switch>
+            <el-switch size="small" active-value="1" inactive-value="0" v-model="commentForm.is_review_on"></el-switch>
+          </el-form-item>
+          <el-form-item label="回复后邮件通知" prop="is_reply_on">
+            <el-switch size="small" active-value="1" inactive-value="0" v-model="commentForm.is_reply_on"></el-switch>
+          </el-form-item>
+          <el-form-item label="每页评论个数" prop="page_size">
+            <el-input size="small" v-model="commentForm.page_size" type="number" autocomplete="off"></el-input>
           </el-form-item>
           <el-form-item>
             <el-button size="small" type="primary" :loading="btn.commentSaveLoading"
                        @click="saveCommentForm">保存
+            </el-button>
+          </el-form-item>
+        </el-form>
+      </el-tab-pane>
+
+      <el-tab-pane label="参数设置" style="width: 500px">
+        <el-form ref="paramForm" :model="paramForm" :rules="paramFormRules" label-width="130px">
+          <el-form-item label="首页每页条数" prop="index_page_size">
+            <el-input size="small" v-model="paramForm.index_page_size" type="number" autocomplete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="归档页每页条数" prop="archive_page_size">
+            <el-input size="small" v-model="paramForm.archive_page_size" type="number" autocomplete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="站点地图每页条数" prop="site_map_page_size">
+            <el-input size="small" v-model="paramForm.site_map_page_size" type="number" autocomplete="off"></el-input>
+          </el-form-item>
+          <el-form-item>
+            <el-button size="small" type="primary" :loading="btn.paramSaveLoading"
+                       @click="saveParamForm">保存
             </el-button>
           </el-form-item>
         </el-form>
@@ -199,7 +225,8 @@
 <script>
 import {
   getSysSettingItem,
-  saveCommentSetting, saveImgbbSetting,
+  saveCommentSetting,
+  saveImgbbSetting, saveParamSetting,
   saveSiteSetting,
   saveSmmsSetting,
   saveSMTPSetting,
@@ -283,7 +310,16 @@ export default {
         sys_id: '',
         type_name: '评论设置',
         is_on: '1',
-        is_review_on: '1'
+        is_review_on: '1',
+        is_reply_on: '1',
+        page_size: '10'
+      },
+      paramForm: {
+        sys_id: '',
+        type_name: '参数设置',
+        index_page_size: null,
+        archive_page_size: null,
+        site_map_page_size: null
       },
       siteRules: {
         site_name: [
@@ -403,12 +439,15 @@ export default {
           { required: true, message: '请选择是否开启评论审核功能', trigger: 'blur' }
         ]
       },
+      paramFormRules: {
+      },
       btn: {
         siteSaveLoading: false,
         smtpSaveLoading: false,
         emailSendLoading: false,
         bedSaveLoading: false,
-        commentSaveLoading: false
+        commentSaveLoading: false,
+        paramSaveLoading: false
       },
       is_public: true
     }
@@ -427,6 +466,8 @@ export default {
         this.initPicBedSetting()
       } else if (tab.label === '评论设置') {
         this.getSysSetItem(tab.label, 'commentForm')
+      } else if (tab.label === '参数设置') {
+        this.getSysSetItem(tab.label, 'paramForm')
       }
     },
     // 获取设置条目
@@ -580,6 +621,24 @@ export default {
               .catch(() => {
               })
             this.btn.commentSaveLoading = false
+          }, 300)
+        }
+      })
+    },
+    // 保存参数设置
+    saveParamForm () {
+      this.$refs.paramForm.validate(valid => {
+        if (valid) {
+          this.btn.paramSaveLoading = true
+          setTimeout(() => {
+            saveParamSetting(this.paramForm)
+              .then(res => {
+                this.$message.success(res.msg)
+                this.getSysSetItem('参数设置', 'paramForm')
+              })
+              .catch(() => {
+              })
+            this.btn.paramSaveLoading = false
           }, 300)
         }
       })

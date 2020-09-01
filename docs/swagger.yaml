@@ -1,4 +1,20 @@
 definitions:
+  forms.AddGalleryForm:
+    properties:
+      category_id:
+        type: integer
+      desc:
+        type: string
+      location:
+        type: string
+      name:
+        type: string
+      url:
+        type: string
+    required:
+    - name
+    - url
+    type: object
   forms.ArticleAddForm:
     properties:
       category_id:
@@ -64,7 +80,7 @@ definitions:
         description: 父级分类 ID
         type: integer
       type:
-        description: 分类类型，默认值为 0 表文章；1 表友链
+        description: 分类类型，默认值为 0 表文章；1 表友链; 2 表示图库
         type: integer
       url:
         description: 访问 URL
@@ -84,7 +100,7 @@ definitions:
         description: 父级分类 ID
         type: integer
       type:
-        description: 分类类型，默认值为 0 表文章；1 表友链
+        description: 分类类型，默认值为 0 表文章；1 表友链; 2 表示图库
         type: integer
       url:
         description: 访问 URL
@@ -258,7 +274,11 @@ definitions:
     properties:
       is_on:
         type: string
+      is_reply_on:
+        type: string
       is_review_on:
+        type: string
+      page_size:
         type: string
       sys_id:
         type: string
@@ -267,6 +287,25 @@ definitions:
     required:
     - is_on
     - is_review_on
+    type: object
+  forms.EditGalleryForm:
+    properties:
+      category_id:
+        type: integer
+      desc:
+        type: string
+      id:
+        type: integer
+      location:
+        type: string
+      name:
+        type: string
+      url:
+        type: string
+    required:
+    - id
+    - name
+    - url
     type: object
   forms.EmailSettingForm:
     properties:
@@ -299,6 +338,31 @@ definitions:
     required:
     - email
     type: object
+  forms.GalleryCategoryAddForm:
+    properties:
+      name:
+        description: 分类名称
+        type: string
+      type:
+        description: 分类类型，默认值为 0 表文章；1 表友链; 2 表示图库
+        type: integer
+    required:
+    - name
+    type: object
+  forms.GalleryCategoryEditForm:
+    properties:
+      ID:
+        type: integer
+      name:
+        description: 分类名称
+        type: string
+      type:
+        description: 分类类型，默认值为 0 表文章；1 表友链; 2 表示图库
+        type: integer
+    required:
+    - ID
+    - name
+    type: object
   forms.ImgbbForm:
     properties:
       storage_type:
@@ -311,13 +375,34 @@ definitions:
     - storage_type
     - token
     type: object
+  forms.JournalAddForm:
+    properties:
+      content:
+        type: string
+      is_secret:
+        type: boolean
+    required:
+    - content
+    type: object
+  forms.JournalEditForm:
+    properties:
+      content:
+        type: string
+      id:
+        type: integer
+      is_secret:
+        type: boolean
+    required:
+    - content
+    - id
+    type: object
   forms.LinkCategoryAddForm:
     properties:
       name:
         description: 分类名称
         type: string
       type:
-        description: 分类类型，默认值为 0 表文章；1 表友链
+        description: 分类类型，默认值为 0 表文章；1 表友链; 2 表示图库
         type: integer
     required:
     - name
@@ -330,7 +415,7 @@ definitions:
         description: 分类名称
         type: string
       type:
-        description: 分类类型，默认值为 0 表文章；1 表友链
+        description: 分类类型，默认值为 0 表文章；1 表友链; 2 表示图库
         type: integer
     required:
     - ID
@@ -390,6 +475,19 @@ definitions:
     - id
     - name
     - url
+    type: object
+  forms.ParamSettingForm:
+    properties:
+      archive_page_size:
+        type: string
+      index_page_size:
+        type: string
+      site_map_page_size:
+        type: string
+      sys_id:
+        type: string
+      type_name:
+        type: string
     type: object
   forms.PwdForm:
     properties:
@@ -639,6 +737,36 @@ paths:
       summary: 获取所有评论
       tags:
       - 评论
+  /api/v1/all_galleries:
+    get:
+      consumes:
+      - application/json
+      responses:
+        "100":
+          description: Continue
+          schema:
+            $ref: '#/definitions/utils.Result'
+        "104":
+          schema:
+            $ref: '#/definitions/utils.Result'
+      summary: 获取所有图库
+      tags:
+      - 图库
+  /api/v1/all_journals:
+    get:
+      consumes:
+      - application/json
+      responses:
+        "100":
+          description: Continue
+          schema:
+            $ref: '#/definitions/utils.Result'
+        "104":
+          schema:
+            $ref: '#/definitions/utils.Result'
+      summary: 获取所有日志
+      tags:
+      - 日志
   /api/v1/all_links:
     get:
       consumes:
@@ -1080,6 +1208,49 @@ paths:
       summary: 修改文章分类
       tags:
       - 分类
+  /api/v1/categories/gallery:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 添加图库分类表单
+        in: body
+        name: addForm
+        required: true
+        schema:
+          $ref: '#/definitions/forms.GalleryCategoryAddForm'
+      responses:
+        "100":
+          description: Continue
+          schema:
+            $ref: '#/definitions/utils.Result'
+        "104":
+          schema:
+            $ref: '#/definitions/utils.Result'
+      summary: 添加图库分类
+      tags:
+      - 分类
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: 修改图库分类表单
+        in: body
+        name: editForm
+        required: true
+        schema:
+          $ref: '#/definitions/forms.GalleryCategoryEditForm'
+      responses:
+        "100":
+          description: Continue
+          schema:
+            $ref: '#/definitions/utils.Result'
+        "104":
+          schema:
+            $ref: '#/definitions/utils.Result'
+      summary: 修改图库分类
+      tags:
+      - 分类
   /api/v1/categories/link:
     post:
       consumes:
@@ -1240,6 +1411,297 @@ paths:
       summary: 删除评论
       tags:
       - 评论
+  /api/v1/galleries:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: ids
+        in: query
+        name: ids
+        required: true
+        type: string
+      responses:
+        "100":
+          description: Continue
+          schema:
+            $ref: '#/definitions/utils.Result'
+        "104":
+          schema:
+            $ref: '#/definitions/utils.Result'
+      summary: 批量删除图库
+      tags:
+      - 图库
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: 页码
+        in: query
+        name: page
+        type: integer
+      - description: 每页条数
+        in: query
+        name: size
+        type: integer
+      - description: 分类 ID
+        in: query
+        name: category_id
+        type: integer
+      - description: 关键词
+        in: query
+        name: key
+        type: string
+      responses:
+        "100":
+          description: Continue
+          schema:
+            $ref: '#/definitions/utils.Result'
+        "104":
+          schema:
+            $ref: '#/definitions/utils.Result'
+      summary: 分页获取图库
+      tags:
+      - 图库
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 创建图库表单
+        in: body
+        name: addForm
+        schema:
+          $ref: '#/definitions/forms.AddGalleryForm'
+      responses:
+        "100":
+          description: Continue
+          schema:
+            $ref: '#/definitions/utils.Result'
+        "104":
+          schema:
+            $ref: '#/definitions/utils.Result'
+      summary: 创建图库
+      tags:
+      - 图库
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: 修改图库表单
+        in: body
+        name: editForm
+        schema:
+          $ref: '#/definitions/forms.EditGalleryForm'
+      responses:
+        "100":
+          description: Continue
+          schema:
+            $ref: '#/definitions/utils.Result'
+        "104":
+          schema:
+            $ref: '#/definitions/utils.Result'
+      summary: 修改图库
+      tags:
+      - 图库
+  /api/v1/galleries/{id}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "100":
+          description: Continue
+          schema:
+            $ref: '#/definitions/utils.Result'
+        "104":
+          schema:
+            $ref: '#/definitions/utils.Result'
+      summary: 根据 ID 获取图库
+      tags:
+      - 图库
+  /api/v1/images:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: ids
+        in: query
+        name: ids
+        required: true
+        type: string
+      responses:
+        "100":
+          description: Continue
+          schema:
+            $ref: '#/definitions/utils.Result'
+        "104":
+          schema:
+            $ref: '#/definitions/utils.Result'
+      summary: 批量删除图片
+      tags:
+      - 图床
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: 页码
+        in: query
+        name: page
+        type: integer
+      - description: 每页条数
+        in: query
+        name: size
+        type: integer
+      - description: 关键词
+        in: query
+        name: key
+        type: string
+      - description: 存储类型
+        in: query
+        name: storage_name
+        type: string
+      responses:
+        "100":
+          description: Continue
+          schema:
+            $ref: '#/definitions/utils.Result'
+        "104":
+          schema:
+            $ref: '#/definitions/utils.Result'
+      summary: 分页获取图片
+      tags:
+      - 图床
+  /api/v1/images/attachment/upload:
+    post:
+      consumes:
+      - application/json
+      responses:
+        "100":
+          description: Continue
+          schema:
+            $ref: '#/definitions/utils.Result'
+        "104":
+          schema:
+            $ref: '#/definitions/utils.Result'
+      summary: 上传图片到附件
+      tags:
+      - 图床
+  /api/v1/journals:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: ids
+        in: query
+        name: ids
+        required: true
+        type: string
+      responses:
+        "100":
+          description: Continue
+          schema:
+            $ref: '#/definitions/utils.Result'
+        "104":
+          schema:
+            $ref: '#/definitions/utils.Result'
+      summary: 批量删除日志
+      tags:
+      - 日志
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: 页码
+        in: query
+        name: page
+        type: integer
+      - description: 每页条数
+        in: query
+        name: size
+        type: integer
+      - description: 关键词
+        in: query
+        name: key
+        type: string
+      responses:
+        "100":
+          description: Continue
+          schema:
+            $ref: '#/definitions/utils.Result'
+        "104":
+          schema:
+            $ref: '#/definitions/utils.Result'
+      summary: 分页获取日志
+      tags:
+      - 日志
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 创建日志表单
+        in: body
+        name: addForm
+        required: true
+        schema:
+          $ref: '#/definitions/forms.JournalAddForm'
+      responses:
+        "100":
+          description: Continue
+          schema:
+            $ref: '#/definitions/utils.Result'
+        "104":
+          schema:
+            $ref: '#/definitions/utils.Result'
+      summary: 创建日志
+      tags:
+      - 日志
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: 更新日志表单
+        in: body
+        name: editForm
+        required: true
+        schema:
+          $ref: '#/definitions/forms.JournalEditForm'
+      responses:
+        "100":
+          description: Continue
+          schema:
+            $ref: '#/definitions/utils.Result'
+        "104":
+          schema:
+            $ref: '#/definitions/utils.Result'
+      summary: 更新日志
+      tags:
+      - 日志
+  /api/v1/journals/{id}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "100":
+          description: Continue
+          schema:
+            $ref: '#/definitions/utils.Result'
+        "104":
+          schema:
+            $ref: '#/definitions/utils.Result'
+      summary: 根据 ID 获取日志
+      tags:
+      - 日志
   /api/v1/links:
     delete:
       consumes:
@@ -1475,6 +1937,21 @@ paths:
       summary: 获取所有父级分类
       tags:
       - 分类
+  /api/v1/sys_setting/blog_vars:
+    get:
+      consumes:
+      - application/json
+      responses:
+        "100":
+          description: Continue
+          schema:
+            $ref: '#/definitions/utils.Result'
+        "104":
+          schema:
+            $ref: '#/definitions/utils.Result'
+      summary: 获取博客全局变量
+      tags:
+      - 系统设置
   /api/v1/sys_setting/comment:
     post:
       consumes:
@@ -1512,21 +1989,6 @@ paths:
       summary: 发送测试邮件
       tags:
       - 系统设置
-  /api/v1/sys_setting/img/upload:
-    post:
-      consumes:
-      - application/json
-      responses:
-        "100":
-          description: Continue
-          schema:
-            $ref: '#/definitions/utils.Result'
-        "104":
-          schema:
-            $ref: '#/definitions/utils.Result'
-      summary: 上传图片
-      tags:
-      - 系统设置
   /api/v1/sys_setting/index_info:
     get:
       consumes:
@@ -1560,6 +2022,28 @@ paths:
           schema:
             $ref: '#/definitions/utils.Result'
       summary: 获取设置条目
+      tags:
+      - 系统设置
+  /api/v1/sys_setting/param:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 参数配置表单
+        in: body
+        name: settingForm
+        required: true
+        schema:
+          $ref: '#/definitions/forms.ParamSettingForm'
+      responses:
+        "100":
+          description: Continue
+          schema:
+            $ref: '#/definitions/utils.Result'
+        "104":
+          schema:
+            $ref: '#/definitions/utils.Result'
+      summary: 保存参数配置
       tags:
       - 系统设置
   /api/v1/sys_setting/pic_bed/imgbb:

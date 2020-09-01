@@ -28,8 +28,8 @@ type Comment struct {
 	NickName        string   `gorm:"varchar(50);not null;" json:"nick_name"`           // 昵称
 	Content         string   `gorm:"type:Text;not null;" json:"content"`               // 评论内容
 	MDContent       string   `gorm:"type:MediumText;not null;" json:"md_content"`      // markdown 渲染后评论内容
-	IsRecycled      *bool    `gorm:"type:bool;default:false;" json:"is_recycled"`      // 是否加入回收站
-	IsChecked       *bool    `gorm:"type:bool;default:false" json:"is_checked"`        // 是否通过审核
+	IsRecycled      bool     `gorm:"type:bool;default:false;" json:"is_recycled"`      // 是否加入回收站
+	IsChecked       bool     `gorm:"type:bool;default:false" json:"is_checked"`        // 是否通过审核
 }
 
 // 获取评论数量
@@ -58,9 +58,11 @@ func (Comment) GetByPage(page *utils.Pagination, key string, commentType uint, s
 	total uint, err error) {
 	query := db.Db.Preload("Article").
 		Order("created_at desc", true).Find(&list)
+
 	if key != "" {
 		query = query.Where("content like concat('%',?,'%')", key)
 	}
+
 	if commentType > 0 {
 		switch commentType {
 		case 1:
@@ -71,6 +73,7 @@ func (Comment) GetByPage(page *utils.Pagination, key string, commentType uint, s
 			break
 		}
 	}
+
 	if state > 0 {
 		switch state {
 		case 1:
@@ -83,7 +86,9 @@ func (Comment) GetByPage(page *utils.Pagination, key string, commentType uint, s
 			break
 		}
 	}
+
 	total, err = utils.ToPage(page, query, &list)
+
 	return
 }
 
@@ -96,7 +101,13 @@ func (comment Comment) Create() error {
 // 更新评论
 func (comment Comment) Update() error {
 	comment.MDContent = setting.LuteEngine.MarkdownStr("", comment.Content)
-	return db.Db.Model(&Comment{}).Updates(&comment).Error
+	return db.Db.Model(&Comment{}).Where("`id` = ?", comment.ID).
+		Updates(map[string]interface{}{
+			"content":     comment.Content,
+			"md_content":  comment.MDContent,
+			"is_recycled": comment.IsRecycled,
+			"is_checked":  comment.IsChecked,
+		}).Error
 }
 
 // 删除评论

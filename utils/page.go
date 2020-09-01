@@ -44,6 +44,7 @@ func ToPage(p *Pagination, db *gorm.DB, list interface{}) (uint, error) {
 	if err != nil {
 		return 0, err
 	}
+
 	return total, err
 }
 

@@ -35,16 +35,19 @@ func (Nav) GetByName(name string) (nav Nav, err error) {
 func (Nav) GetAll() ([]Nav, error) {
 	var childNavs []Nav
 	var parentNavs []Nav
+
 	err := db.Db.Where("parent_nav_id > 0").Order("order_id ASC", true).
 		Find(&childNavs).Error
 	if err != nil {
 		return parentNavs, err
 	}
+
 	err = db.Db.Where("parent_nav_id = 0").Order("order_id ASC", true).
 		Find(&parentNavs).Error
 	if err != nil {
 		return parentNavs, err
 	}
+
 	for i := range parentNavs {
 		for j := range childNavs {
 			if childNavs[j].ParentNavId == parentNavs[i].ID {
@@ -52,6 +55,7 @@ func (Nav) GetAll() ([]Nav, error) {
 			}
 		}
 	}
+
 	return parentNavs, nil
 }
 
@@ -63,11 +67,13 @@ func (n *Nav) Create() error {
 	if err != nil {
 		return err
 	}
+
 	if maxOrderId == nil {
 		n.OrderId = 1
 	} else {
 		n.OrderId = *maxOrderId + 1
 	}
+
 	return db.Db.Create(&n).Error
 }
 
@@ -80,6 +86,7 @@ func (n *Nav) Update() error {
 func (n *Nav) GetPre(navType string) (Nav, error) {
 	preNav := Nav{}
 	var err error
+
 	if navType == "parent" {
 		err = db.Db.Where("`parent_nav_id` = 0 and `order_id` < ?", n.OrderId).
 			Order("order_id DESC", true).First(&preNav).Error
@@ -87,6 +94,7 @@ func (n *Nav) GetPre(navType string) (Nav, error) {
 		err = db.Db.Where("`parent_nav_id` > 0 and `order_id` < ?", n.OrderId).
 			Order("order_id DESC", true).First(&preNav).Error
 	}
+
 	return preNav, err
 }
 
@@ -94,6 +102,7 @@ func (n *Nav) GetPre(navType string) (Nav, error) {
 func (n *Nav) GetNext(navType string) (Nav, error) {
 	nextNav := Nav{}
 	var err error
+
 	if navType == "parent" {
 		err = db.Db.Where("`parent_nav_id` = 0 and `order_id` > ?", n.OrderId).
 			Order("order_id ASC", true).First(&nextNav).Error
@@ -101,6 +110,7 @@ func (n *Nav) GetNext(navType string) (Nav, error) {
 		err = db.Db.Where("`parent_nav_id` > 0 and `order_id` > ?", n.OrderId).
 			Order("order_id ASC", true).First(&nextNav).Error
 	}
+
 	return nextNav, err
 }
 
@@ -111,10 +121,12 @@ func (n *Nav) MoveUp(preNav Nav) error {
 		if err != nil {
 			return err
 		}
+
 		err = db.Db.Model(&Nav{}).Where("`id` = ?", preNav.ID).Update("order_id", n.OrderId).Error
 		if err != nil {
 			return err
 		}
+
 		return nil
 	})
 }
@@ -126,10 +138,12 @@ func (n *Nav) MoveDown(nextNav Nav) error {
 		if err != nil {
 			return err
 		}
+
 		err = db.Db.Model(&Nav{}).Where("`id` = ?", nextNav.ID).Update("order_id", n.OrderId).Error
 		if err != nil {
 			return err
 		}
+
 		return nil
 	})
 }
@@ -141,10 +155,12 @@ func (Nav) DeleteById(id string) error {
 		if err != nil {
 			return err
 		}
+
 		err = db.Db.Where("`parent_nav_id` = ?", id).Unscoped().Delete(&Nav{}).Error
 		if err != nil {
 			return err
 		}
+
 		return nil
 	})
 }
@@ -157,10 +173,12 @@ func (Nav) MultiDelByIds(ids string) error {
 		if err != nil {
 			return err
 		}
+
 		err = db.Db.Where("`parent_nav_id` in (?)", idList).Unscoped().Delete(&Nav{}).Error
 		if err != nil {
 			return err
 		}
+
 		return nil
 	})
 }

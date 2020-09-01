@@ -3,12 +3,12 @@ package db
 import (
 	"aries/config/setting"
 	"fmt"
+	"log"
 
 	"github.com/gin-gonic/gin"
 	_ "github.com/go-sql-driver/mysql" // mysql驱动
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql" // gorm mysql
-	log "github.com/sirupsen/logrus"
 )
 
 // 数据库对象
@@ -30,14 +30,17 @@ func getDataSource() string {
 // 初始化数据库连接
 func InitDb() {
 	var err error
+
 	//连接数据库
 	Db, err = gorm.Open("mysql", getDataSource())
 	if err != nil {
 		log.Panic("数据库连接错误：", err.Error())
 	}
+
 	// 设置连接池参数
 	Db.DB().SetMaxIdleConns(setting.Config.Database.MaxIdleConn)
 	Db.DB().SetMaxOpenConns(setting.Config.Database.MaxOpenConn)
+
 	// 开发环境下开启 sql 日志
 	if setting.Config.Server.Mode == gin.DebugMode {
 		Db.LogMode(true)

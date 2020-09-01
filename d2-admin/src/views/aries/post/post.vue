@@ -290,7 +290,6 @@
         </el-form-item>
       </el-form>
     </el-drawer>
-
   </d2-container>
 </template>
 
@@ -613,6 +612,7 @@ export default {
         this.$refs[formName].resetFields()
       }
     },
+    // 清空表单验证
     clearValidate (formName) {
       if (this.$refs[formName] !== undefined) {
         this.$refs[formName].clearValidate()
@@ -636,7 +636,7 @@ export default {
       row.tag_list.forEach((tag) => {
         tagIds.push(tag.ID)
       })
-      this.editForm = row
+      this.editForm = { ...row }
       this.editForm.category_id = this.editForm.category_id === 0 ? null : this.editForm.category_id
       this.$set(this.editForm, 'selectTagIds', tagIds)
     },
@@ -871,7 +871,7 @@ export default {
     // 标签改变事件
     selectTrigger (formName) {
       const nameList = []
-      this.parentCategories.forEach((category) => {
+      this.parentCategories.forEach(category => {
         nameList.push(category.name)
       })
       this[`${formName}`].selectTagIds.forEach((id, i) => {

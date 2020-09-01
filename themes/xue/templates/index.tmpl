@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh-cmn-Hans">
-{{template "head" .}}
+{{ template "head" .}}
 <body>
 
 <header class="nav-wrapper -sticky" id="navHeader">
@@ -12,34 +12,97 @@
         </button>
         <ul class="nav-list " role="navigation">
             <div class="list -left " id="menuLinks">
-                <li class="item">
-                    <a class="link md:text-base sm:text-sm " href="/"
+                <li class="item "
+                    index="0">
+                    <a class="link md:text-base sm:text-sm" href="/"
                        target="_self">首页</a>
+
                 </li>
-                <li class="item">
-                    <a class="link md:text-base sm:text-sm " href="/categories"
-                       target="_self">分类</a>
+
+                <li class="item  has-sub "
+                    index="1">
+                    <a href="javascript:void(0)" target="_self"
+                       class="void-link md:text-base sm:text-sm">分类</a>
+
+                    <div class="sub-menu-tree hidden sh-box-t" id="subMenu_1">
+                        <div class="sh-box-b">
+                            <ul class="sub-menu">
+                                <li>
+                                    <a href="/categories/backend" class="link md:text-base sm:text-sm"
+                                       target="_self">
+                                        后端
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/categories/algorithm" class="link md:text-base sm:text-sm"
+                                       target="_self">
+                                        算法
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/categories/course" class="link md:text-base sm:text-sm"
+                                       target="_self">
+                                        教程
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/categories/perception" class="link md:text-base sm:text-sm"
+                                       target="_self">
+                                        感悟
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/categories/interview" class="link md:text-base sm:text-sm"
+                                       target="_self">
+                                        面试
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
                 </li>
-                <li class="item">
-                    <a class="link md:text-base sm:text-sm " href="/tags"
+
+                <li class="item "
+                    index="2">
+                    <a class="link md:text-base sm:text-sm" href="/tags"
                        target="_self">标签</a>
+
                 </li>
-                <li class="item">
-                    <a class="link md:text-base sm:text-sm " href="/archives"
+
+                <li class="item " index="3">
+                    <a class="link md:text-base sm:text-sm" href="/archives"
                        target="_self">归档</a>
+
                 </li>
-                <li class="item">
-                    <a class="link md:text-base sm:text-sm " href="/links"
+
+                <li class="item "
+                    index="4">
+                    <a class="link md:text-base sm:text-sm" href="/journals"
+                       target="_self">日志</a>
+
+                </li>
+
+                <li class="item "
+                    index="5">
+                    <a class="link md:text-base sm:text-sm" href="/links"
                        target="_self">友链</a>
+
                 </li>
-                <li class="item">
-                    <a class="link md:text-base sm:text-sm " href="/s/message"
+
+                <li class="item "
+                    index="6">
+                    <a class="link md:text-base sm:text-sm" href="/s/message"
                        target="_self">留言板</a>
+
                 </li>
-                <li class="item">
-                    <a class="link md:text-base sm:text-sm " href="/s/about"
+
+                <li class="item "
+                    index="7">
+                    <a class="link md:text-base sm:text-sm" href="/s/about"
                        target="_self">关于我</a>
+
                 </li>
+
             </div>
             <div class="list -right">
                 <div class="overlay"></div>
@@ -51,17 +114,18 @@
         </div>
     </nav>
 </header>
+
 <main class="mx-auto home-page" id="container">
     <header class="bg-cover" id="homeHeader">
         <div class="cover-bg">
-            <img src="https://zyk-1300089264.cos.ap-shanghai.myqcloud.com/halo/43d728f77e3df78155ed81c95efc49f0ef34fd6a_1589960858052.jpg"
+            <img src="https://s1.ax1x.com/2020/06/29/NWtFJA.jpg"
                  alt="苍茫误此生博客">
         </div>
         <div class="cover-content flex justify-center">
             <!-- 封面内容 -->
             <div class="inner flex flex-col justify-center">
-                <h2 class="cover-title text-left md:text-4xl lg:text-4xl xl:text-5xl">苍茫误此生博客</h2>
-                <p class="slogan text-center">Once I never thought it would be like this,but in reality it is.</p>
+                <h2 class="cover-title text-left md:text-4xl lg:text-4xl xl:text-5xl">{{ .blogVars.SiteName }}</h2>
+                <p class="slogan text-center">{{ .blogVars.SiteDesc }}</p>
                 <a class="arrow-down" data-scroll id="arch">
                     <span class="screen-reader-text">Scroll Down</span>
                 </a>
@@ -70,532 +134,73 @@
     </header>
     <div class="container mx-auto px-4 content-container">
         <div class="posts grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-2 xs:grid-cols-1 lg:gap-6 md:gap-4 sm:gap-3 mt-4">
-            <div class="post-card m-auto mt-4">
-                <div class="post-top">
-                    <div>置顶</div>
-                </div>
-                <header class="card-header card-img">
-                    <a href="https://www.cangmangai.cn/archives/相遇在人海聚散在重逢之外"
-                       style=" background-image: url(https://zyk-1300089264.cos.ap-shanghai.myqcloud.com/halo/bing.lylares.com-2020-02-22-1080p_1589164782552.jpg);"
-                       class="img-cover img-cover-bg">
-                    </a>
-                </header>
-                <div class="card-body">
-                    <p class="text-center text-xl tracking-wider svg-f text-clamp-1">
-                        <a href="https://www.cangmangai.cn/archives/相遇在人海聚散在重逢之外"
-                           class="font-medium text-gray-700 post-title font-sans">
-                            相遇在人海，聚散在重逢之外
+            {{ range $article := .articles }}
+                <div class="post-card m-auto mt-4">
+                    {{ if $article.IsTop }}
+                        <div class="post-top">
+                            <div>置顶</div>
+                        </div>
+                    {{ end }}
+                    <header class="card-header card-img">
+
+                        <a href="https://www.cangmangai.cn/archives/gin-template"
+                           style="background-image: url({{ $article.Img }}"
+                           class="img-cover img-cover-bg">
                         </a>
-                    </p>
-                </div>
-                <footer class="card-footer svg-f">
-                    <span class="cst-icon icon-calendar lh-25 f-10" style="margin-right: 5px"></span>
-                    <span class="post-time lh-25 mr-auto">
-                                        <span class="published"
-                                              datetime="2020-04-15">2020-04-15</span>
-                                    </span>
-                    <div class="lh-25">
-                                    <span class="visitors-count">
-                                        <span>416</span>
-                                        <a href="javascript:void(0)">
-<svg t="1594484980504" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4612"
-     width="16" height="16"><path
-            d="M915.963425 511.867994c0 77.779458-166.5789 243.698325-403.961378 243.698325-231.343949 0-403.966495-163.188686-403.966495-243.698325 0-80.493266 173.36649-243.435335 403.966495-243.435335C751.251036 268.432659 916.019707 431.374728 915.963425 511.867994L915.963425 511.867994zM512.357134 312.887127c-107.514689 0-194.667631 89.151459-194.667631 199.116967s87.152942 199.116967 194.667631 199.116967c107.543342 0 194.70447-89.151459 194.70447-199.116967C707.057511 402.038586 619.900475 312.887127 512.357134 312.887127L512.357134 312.887127zM512.357134 312.887127"
-            p-id="4613" fill="#515151"></path><path
-            d="M512.002047 384.881834c-68.470441 0-123.972523 56.761772-123.972523 126.786615 0 70.019727 55.502082 126.793778 123.972523 126.793778 68.465325 0 123.947963-56.774051 123.947963-126.793778C635.95001 441.643606 580.467371 384.881834 512.002047 384.881834L512.002047 384.881834zM512.002047 384.881834"
-            p-id="4614" fill="#515151"></path></svg>                                        </a>
-                                    </span>
-                        <span class="visitors-comment">
-                                        <span>2</span> <svg t="1594485146011" class="icon" viewBox="0 0 1024 1024"
-                                                            version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1138"
-                                                            width="16" height="16"><path
-                                        d="M511.99693 63.791885c-247.551072 0-448.205045 174.769442-448.205045 390.368802 0 215.603453 200.650903 390.372895 448.205045 390.372895l0 115.674533c0 0 272.753057-190.648085 320.366472-233.04366 79.069847-70.344115 127.844713-166.768211 127.844713-273.008884C960.209138 238.561327 759.553119 63.791885 511.99693 63.791885L511.99693 63.791885zM733.541699 514.187829c-33.014928 0-59.781548-25.886577-59.778478-57.83829 0-31.891338 26.76355-57.777915 59.778478-57.777915 33.015951 0 59.744709 25.886577 59.744709 57.777915C793.286408 488.300228 766.558673 514.187829 733.541699 514.187829L733.541699 514.187829zM510.246053 514.187829c-33.011858 0-59.778478-25.886577-59.778478-57.83829 0-31.891338 26.76662-57.777915 59.778478-57.777915 33.015951 0 59.782571 25.886577 59.782571 57.777915C570.028625 488.300228 543.262004 514.187829 510.246053 514.187829L510.246053 514.187829zM285.20874 514.187829c-32.956599 0-59.719126-25.886577-59.719126-57.83829 0-31.891338 26.761504-57.777915 59.719126-57.777915 33.010835 0 59.773362 25.886577 59.773362 57.777915C344.982102 488.300228 318.219575 514.187829 285.20874 514.187829L285.20874 514.187829z"
-                                        p-id="1139" fill="#515151"></path></svg>
-                                    </span>
+                    </header>
+                    <div class="card-body">
+                        <p class="text-center text-xl tracking-wider svg-f text-clamp-1">
+                            <a href="{{ $.blogVars.ContextPath }}/articles/{{ $article.URL }}"
+                               class="font-medium text-gray-700 post-title">
+                                {{ $article.Title }}
+                            </a>
+                        </p>
                     </div>
-                </footer>
-            </div>
-            <div class="post-card m-auto mt-4">
-                <header class="card-header card-img">
-                    <a href="https://www.cangmangai.cn/archives/gin-router"
-                       style=" background-image: url(https://zyk-1300089264.cos.ap-shanghai.myqcloud.com/halo/code-wallpaper-6_1589961015459.png);"
-                       class="img-cover img-cover-bg">
-                    </a>
-                </header>
-                <div class="card-body">
-                    <p class="text-center text-xl tracking-wider svg-f text-clamp-1">
-                        <a href="https://www.cangmangai.cn/archives/gin-router"
-                           class="font-medium text-gray-700 post-title font-sans">
-                            Gin 系列（二）：路由
-                        </a>
-                    </p>
-                </div>
-                <footer class="card-footer svg-f">
-                    <span class="cst-icon icon-calendar lh-25 f-10" style="margin-right: 5px"></span>
-                    <span class="post-time lh-25 mr-auto">
+                    <footer class="card-footer svg-f">
+                        <span class="cst-icon icon-calendar lh-25 f-10" style="margin-right: 5px"></span>
+                        <span class="post-time lh-25 mr-auto">
                                         <span class="published"
-                                              datetime="2020-07-20">2020-07-20</span>
+                                              datetime="2020-08-03">{{ $article.CreatedAt.Format "2006-01-02" }}</span>
                                     </span>
-                    <div class="lh-25">
-                                    <span class="visitors-count">
-                                        <span>151</span>
-                                        <a href="javascript:void(0)">
-<svg t="1594484980504" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4612"
-     width="16" height="16"><path
-            d="M915.963425 511.867994c0 77.779458-166.5789 243.698325-403.961378 243.698325-231.343949 0-403.966495-163.188686-403.966495-243.698325 0-80.493266 173.36649-243.435335 403.966495-243.435335C751.251036 268.432659 916.019707 431.374728 915.963425 511.867994L915.963425 511.867994zM512.357134 312.887127c-107.514689 0-194.667631 89.151459-194.667631 199.116967s87.152942 199.116967 194.667631 199.116967c107.543342 0 194.70447-89.151459 194.70447-199.116967C707.057511 402.038586 619.900475 312.887127 512.357134 312.887127L512.357134 312.887127zM512.357134 312.887127"
-            p-id="4613" fill="#515151"></path><path
-            d="M512.002047 384.881834c-68.470441 0-123.972523 56.761772-123.972523 126.786615 0 70.019727 55.502082 126.793778 123.972523 126.793778 68.465325 0 123.947963-56.774051 123.947963-126.793778C635.95001 441.643606 580.467371 384.881834 512.002047 384.881834L512.002047 384.881834zM512.002047 384.881834"
-            p-id="4614" fill="#515151"></path></svg>                                        </a>
-                                    </span>
-                        <span class="visitors-comment">
-                                        <span>0</span> <svg t="1594485146011" class="icon" viewBox="0 0 1024 1024"
-                                                            version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1138"
-                                                            width="16" height="16"><path
-                                        d="M511.99693 63.791885c-247.551072 0-448.205045 174.769442-448.205045 390.368802 0 215.603453 200.650903 390.372895 448.205045 390.372895l0 115.674533c0 0 272.753057-190.648085 320.366472-233.04366 79.069847-70.344115 127.844713-166.768211 127.844713-273.008884C960.209138 238.561327 759.553119 63.791885 511.99693 63.791885L511.99693 63.791885zM733.541699 514.187829c-33.014928 0-59.781548-25.886577-59.778478-57.83829 0-31.891338 26.76355-57.777915 59.778478-57.777915 33.015951 0 59.744709 25.886577 59.744709 57.777915C793.286408 488.300228 766.558673 514.187829 733.541699 514.187829L733.541699 514.187829zM510.246053 514.187829c-33.011858 0-59.778478-25.886577-59.778478-57.83829 0-31.891338 26.76662-57.777915 59.778478-57.777915 33.015951 0 59.782571 25.886577 59.782571 57.777915C570.028625 488.300228 543.262004 514.187829 510.246053 514.187829L510.246053 514.187829zM285.20874 514.187829c-32.956599 0-59.719126-25.886577-59.719126-57.83829 0-31.891338 26.761504-57.777915 59.719126-57.777915 33.010835 0 59.773362 25.886577 59.773362 57.777915C344.982102 488.300228 318.219575 514.187829 285.20874 514.187829L285.20874 514.187829z"
-                                        p-id="1139" fill="#515151"></path></svg>
-                                    </span>
-                    </div>
-                </footer>
-            </div>
-            <div class="post-card m-auto mt-4">
-                <header class="card-header card-img">
-                    <a href="https://www.cangmangai.cn/archives/introduce-restful-api"
-                       style=" background-image: url(https://zyk-1300089264.cos.ap-shanghai.myqcloud.com/halo/bing.lylares.com-2016-08-21-1080p_1594172111776.jpg?imageMogr2/thumbnail/800x/interlace/0);"
-                       class="img-cover img-cover-bg">
-                    </a>
-                </header>
-                <div class="card-body">
-                    <p class="text-center text-xl tracking-wider svg-f text-clamp-1">
-                        <a href="https://www.cangmangai.cn/archives/introduce-restful-api"
-                           class="font-medium text-gray-700 post-title font-sans">
-                            RESTful API 介绍
-                        </a>
-                    </p>
+                        <div class="lh-25">
+                            <span class="visitors-count">
+                                <span>{{ $article.VisitCount }}</span>
+                                <a href="javascript:void(0)" class="eye-sight">
+                                            <span class="iconfont icon-Eyesight"> </span>
+                                </a>
+                            </span>
+                            <span class="visitors-comment">
+                                <span>{{ $article.CommentCount }}</span>
+                                <span class="iconfont icon-comment"> </span>
+                            </span>
+                        </div>
+                    </footer>
                 </div>
-                <footer class="card-footer svg-f">
-                    <span class="cst-icon icon-calendar lh-25 f-10" style="margin-right: 5px"></span>
-                    <span class="post-time lh-25 mr-auto">
-                                        <span class="published"
-                                              datetime="2020-07-08">2020-07-08</span>
-                                    </span>
-                    <div class="lh-25">
-                                    <span class="visitors-count">
-                                        <span>96</span>
-                                        <a href="javascript:void(0)">
-<svg t="1594484980504" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4612"
-     width="16" height="16"><path
-            d="M915.963425 511.867994c0 77.779458-166.5789 243.698325-403.961378 243.698325-231.343949 0-403.966495-163.188686-403.966495-243.698325 0-80.493266 173.36649-243.435335 403.966495-243.435335C751.251036 268.432659 916.019707 431.374728 915.963425 511.867994L915.963425 511.867994zM512.357134 312.887127c-107.514689 0-194.667631 89.151459-194.667631 199.116967s87.152942 199.116967 194.667631 199.116967c107.543342 0 194.70447-89.151459 194.70447-199.116967C707.057511 402.038586 619.900475 312.887127 512.357134 312.887127L512.357134 312.887127zM512.357134 312.887127"
-            p-id="4613" fill="#515151"></path><path
-            d="M512.002047 384.881834c-68.470441 0-123.972523 56.761772-123.972523 126.786615 0 70.019727 55.502082 126.793778 123.972523 126.793778 68.465325 0 123.947963-56.774051 123.947963-126.793778C635.95001 441.643606 580.467371 384.881834 512.002047 384.881834L512.002047 384.881834zM512.002047 384.881834"
-            p-id="4614" fill="#515151"></path></svg>                                        </a>
-                                    </span>
-                        <span class="visitors-comment">
-                                        <span>0</span> <svg t="1594485146011" class="icon" viewBox="0 0 1024 1024"
-                                                            version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1138"
-                                                            width="16" height="16"><path
-                                        d="M511.99693 63.791885c-247.551072 0-448.205045 174.769442-448.205045 390.368802 0 215.603453 200.650903 390.372895 448.205045 390.372895l0 115.674533c0 0 272.753057-190.648085 320.366472-233.04366 79.069847-70.344115 127.844713-166.768211 127.844713-273.008884C960.209138 238.561327 759.553119 63.791885 511.99693 63.791885L511.99693 63.791885zM733.541699 514.187829c-33.014928 0-59.781548-25.886577-59.778478-57.83829 0-31.891338 26.76355-57.777915 59.778478-57.777915 33.015951 0 59.744709 25.886577 59.744709 57.777915C793.286408 488.300228 766.558673 514.187829 733.541699 514.187829L733.541699 514.187829zM510.246053 514.187829c-33.011858 0-59.778478-25.886577-59.778478-57.83829 0-31.891338 26.76662-57.777915 59.778478-57.777915 33.015951 0 59.782571 25.886577 59.782571 57.777915C570.028625 488.300228 543.262004 514.187829 510.246053 514.187829L510.246053 514.187829zM285.20874 514.187829c-32.956599 0-59.719126-25.886577-59.719126-57.83829 0-31.891338 26.761504-57.777915 59.719126-57.777915 33.010835 0 59.773362 25.886577 59.773362 57.777915C344.982102 488.300228 318.219575 514.187829 285.20874 514.187829L285.20874 514.187829z"
-                                        p-id="1139" fill="#515151"></path></svg>
-                                    </span>
-                    </div>
-                </footer>
-            </div>
-            <div class="post-card m-auto mt-4">
-                <header class="card-header card-img">
-                    <a href="https://www.cangmangai.cn/archives/create-gin-project"
-                       style=" background-image: url(https://zyk-1300089264.cos.ap-shanghai.myqcloud.com/halo/code-wallpaper-6_1589961015459.png);"
-                       class="img-cover img-cover-bg">
-                    </a>
-                </header>
-                <div class="card-body">
-                    <p class="text-center text-xl tracking-wider svg-f text-clamp-1">
-                        <a href="https://www.cangmangai.cn/archives/create-gin-project"
-                           class="font-medium text-gray-700 post-title font-sans">
-                            Gin 系列（一）：创建 Gin 项目
-                        </a>
-                    </p>
-                </div>
-                <footer class="card-footer svg-f">
-                    <span class="cst-icon icon-calendar lh-25 f-10" style="margin-right: 5px"></span>
-                    <span class="post-time lh-25 mr-auto">
-                                        <span class="published"
-                                              datetime="2020-06-24">2020-06-24</span>
-                                    </span>
-                    <div class="lh-25">
-                                    <span class="visitors-count">
-                                        <span>143</span>
-                                        <a href="javascript:void(0)">
-<svg t="1594484980504" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4612"
-     width="16" height="16"><path
-            d="M915.963425 511.867994c0 77.779458-166.5789 243.698325-403.961378 243.698325-231.343949 0-403.966495-163.188686-403.966495-243.698325 0-80.493266 173.36649-243.435335 403.966495-243.435335C751.251036 268.432659 916.019707 431.374728 915.963425 511.867994L915.963425 511.867994zM512.357134 312.887127c-107.514689 0-194.667631 89.151459-194.667631 199.116967s87.152942 199.116967 194.667631 199.116967c107.543342 0 194.70447-89.151459 194.70447-199.116967C707.057511 402.038586 619.900475 312.887127 512.357134 312.887127L512.357134 312.887127zM512.357134 312.887127"
-            p-id="4613" fill="#515151"></path><path
-            d="M512.002047 384.881834c-68.470441 0-123.972523 56.761772-123.972523 126.786615 0 70.019727 55.502082 126.793778 123.972523 126.793778 68.465325 0 123.947963-56.774051 123.947963-126.793778C635.95001 441.643606 580.467371 384.881834 512.002047 384.881834L512.002047 384.881834zM512.002047 384.881834"
-            p-id="4614" fill="#515151"></path></svg>                                        </a>
-                                    </span>
-                        <span class="visitors-comment">
-                                        <span>0</span> <svg t="1594485146011" class="icon" viewBox="0 0 1024 1024"
-                                                            version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1138"
-                                                            width="16" height="16"><path
-                                        d="M511.99693 63.791885c-247.551072 0-448.205045 174.769442-448.205045 390.368802 0 215.603453 200.650903 390.372895 448.205045 390.372895l0 115.674533c0 0 272.753057-190.648085 320.366472-233.04366 79.069847-70.344115 127.844713-166.768211 127.844713-273.008884C960.209138 238.561327 759.553119 63.791885 511.99693 63.791885L511.99693 63.791885zM733.541699 514.187829c-33.014928 0-59.781548-25.886577-59.778478-57.83829 0-31.891338 26.76355-57.777915 59.778478-57.777915 33.015951 0 59.744709 25.886577 59.744709 57.777915C793.286408 488.300228 766.558673 514.187829 733.541699 514.187829L733.541699 514.187829zM510.246053 514.187829c-33.011858 0-59.778478-25.886577-59.778478-57.83829 0-31.891338 26.76662-57.777915 59.778478-57.777915 33.015951 0 59.782571 25.886577 59.782571 57.777915C570.028625 488.300228 543.262004 514.187829 510.246053 514.187829L510.246053 514.187829zM285.20874 514.187829c-32.956599 0-59.719126-25.886577-59.719126-57.83829 0-31.891338 26.761504-57.777915 59.719126-57.777915 33.010835 0 59.773362 25.886577 59.773362 57.777915C344.982102 488.300228 318.219575 514.187829 285.20874 514.187829L285.20874 514.187829z"
-                                        p-id="1139" fill="#515151"></path></svg>
-                                    </span>
-                    </div>
-                </footer>
-            </div>
-            <div class="post-card m-auto mt-4">
-                <header class="card-header card-img">
-                    <a href="https://www.cangmangai.cn/archives/springboot-integrate-mybatis-generator"
-                       style=" background-image: url(https://zyk-1300089264.cos.ap-shanghai.myqcloud.com/halo/code-wallpaper-15_1589961910304.jpg?imageMogr2/thumbnail/600x/interlace/0);"
-                       class="img-cover img-cover-bg">
-                    </a>
-                </header>
-                <div class="card-body">
-                    <p class="text-center text-xl tracking-wider svg-f text-clamp-1">
-                        <a href="https://www.cangmangai.cn/archives/springboot-integrate-mybatis-generator"
-                           class="font-medium text-gray-700 post-title font-sans">
-                            SpringBoot整合Mybatis-Generator
-                        </a>
-                    </p>
-                </div>
-                <footer class="card-footer svg-f">
-                    <span class="cst-icon icon-calendar lh-25 f-10" style="margin-right: 5px"></span>
-                    <span class="post-time lh-25 mr-auto">
-                                        <span class="published"
-                                              datetime="2020-05-27">2020-05-27</span>
-                                    </span>
-                    <div class="lh-25">
-                                    <span class="visitors-count">
-                                        <span>201</span>
-                                        <a href="javascript:void(0)">
-<svg t="1594484980504" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4612"
-     width="16" height="16"><path
-            d="M915.963425 511.867994c0 77.779458-166.5789 243.698325-403.961378 243.698325-231.343949 0-403.966495-163.188686-403.966495-243.698325 0-80.493266 173.36649-243.435335 403.966495-243.435335C751.251036 268.432659 916.019707 431.374728 915.963425 511.867994L915.963425 511.867994zM512.357134 312.887127c-107.514689 0-194.667631 89.151459-194.667631 199.116967s87.152942 199.116967 194.667631 199.116967c107.543342 0 194.70447-89.151459 194.70447-199.116967C707.057511 402.038586 619.900475 312.887127 512.357134 312.887127L512.357134 312.887127zM512.357134 312.887127"
-            p-id="4613" fill="#515151"></path><path
-            d="M512.002047 384.881834c-68.470441 0-123.972523 56.761772-123.972523 126.786615 0 70.019727 55.502082 126.793778 123.972523 126.793778 68.465325 0 123.947963-56.774051 123.947963-126.793778C635.95001 441.643606 580.467371 384.881834 512.002047 384.881834L512.002047 384.881834zM512.002047 384.881834"
-            p-id="4614" fill="#515151"></path></svg>                                        </a>
-                                    </span>
-                        <span class="visitors-comment">
-                                        <span>0</span> <svg t="1594485146011" class="icon" viewBox="0 0 1024 1024"
-                                                            version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1138"
-                                                            width="16" height="16"><path
-                                        d="M511.99693 63.791885c-247.551072 0-448.205045 174.769442-448.205045 390.368802 0 215.603453 200.650903 390.372895 448.205045 390.372895l0 115.674533c0 0 272.753057-190.648085 320.366472-233.04366 79.069847-70.344115 127.844713-166.768211 127.844713-273.008884C960.209138 238.561327 759.553119 63.791885 511.99693 63.791885L511.99693 63.791885zM733.541699 514.187829c-33.014928 0-59.781548-25.886577-59.778478-57.83829 0-31.891338 26.76355-57.777915 59.778478-57.777915 33.015951 0 59.744709 25.886577 59.744709 57.777915C793.286408 488.300228 766.558673 514.187829 733.541699 514.187829L733.541699 514.187829zM510.246053 514.187829c-33.011858 0-59.778478-25.886577-59.778478-57.83829 0-31.891338 26.76662-57.777915 59.778478-57.777915 33.015951 0 59.782571 25.886577 59.782571 57.777915C570.028625 488.300228 543.262004 514.187829 510.246053 514.187829L510.246053 514.187829zM285.20874 514.187829c-32.956599 0-59.719126-25.886577-59.719126-57.83829 0-31.891338 26.761504-57.777915 59.719126-57.777915 33.010835 0 59.773362 25.886577 59.773362 57.777915C344.982102 488.300228 318.219575 514.187829 285.20874 514.187829L285.20874 514.187829z"
-                                        p-id="1139" fill="#515151"></path></svg>
-                                    </span>
-                    </div>
-                </footer>
-            </div>
-            <div class="post-card m-auto mt-4">
-                <header class="card-header card-img">
-                    <a href="https://www.cangmangai.cn/archives/usual-django-orm-api"
-                       style=" background-image: url(https://zyk-1300089264.cos.ap-shanghai.myqcloud.com/halo/ChMkJ1bKzzSIOgDcAAj_4khgui4AALJSwDm3zIACP_6935_1589164021158.jpg);"
-                       class="img-cover img-cover-bg">
-                    </a>
-                </header>
-                <div class="card-body">
-                    <p class="text-center text-xl tracking-wider svg-f text-clamp-1">
-                        <a href="https://www.cangmangai.cn/archives/usual-django-orm-api"
-                           class="font-medium text-gray-700 post-title font-sans">
-                            Django 常用 ORM 方法和查询集 API
-                        </a>
-                    </p>
-                </div>
-                <footer class="card-footer svg-f">
-                    <span class="cst-icon icon-calendar lh-25 f-10" style="margin-right: 5px"></span>
-                    <span class="post-time lh-25 mr-auto">
-                                        <span class="published"
-                                              datetime="2020-05-15">2020-05-15</span>
-                                    </span>
-                    <div class="lh-25">
-                                    <span class="visitors-count">
-                                        <span>234</span>
-                                        <a href="javascript:void(0)">
-<svg t="1594484980504" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4612"
-     width="16" height="16"><path
-            d="M915.963425 511.867994c0 77.779458-166.5789 243.698325-403.961378 243.698325-231.343949 0-403.966495-163.188686-403.966495-243.698325 0-80.493266 173.36649-243.435335 403.966495-243.435335C751.251036 268.432659 916.019707 431.374728 915.963425 511.867994L915.963425 511.867994zM512.357134 312.887127c-107.514689 0-194.667631 89.151459-194.667631 199.116967s87.152942 199.116967 194.667631 199.116967c107.543342 0 194.70447-89.151459 194.70447-199.116967C707.057511 402.038586 619.900475 312.887127 512.357134 312.887127L512.357134 312.887127zM512.357134 312.887127"
-            p-id="4613" fill="#515151"></path><path
-            d="M512.002047 384.881834c-68.470441 0-123.972523 56.761772-123.972523 126.786615 0 70.019727 55.502082 126.793778 123.972523 126.793778 68.465325 0 123.947963-56.774051 123.947963-126.793778C635.95001 441.643606 580.467371 384.881834 512.002047 384.881834L512.002047 384.881834zM512.002047 384.881834"
-            p-id="4614" fill="#515151"></path></svg>                                        </a>
-                                    </span>
-                        <span class="visitors-comment">
-                                        <span>2</span> <svg t="1594485146011" class="icon" viewBox="0 0 1024 1024"
-                                                            version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1138"
-                                                            width="16" height="16"><path
-                                        d="M511.99693 63.791885c-247.551072 0-448.205045 174.769442-448.205045 390.368802 0 215.603453 200.650903 390.372895 448.205045 390.372895l0 115.674533c0 0 272.753057-190.648085 320.366472-233.04366 79.069847-70.344115 127.844713-166.768211 127.844713-273.008884C960.209138 238.561327 759.553119 63.791885 511.99693 63.791885L511.99693 63.791885zM733.541699 514.187829c-33.014928 0-59.781548-25.886577-59.778478-57.83829 0-31.891338 26.76355-57.777915 59.778478-57.777915 33.015951 0 59.744709 25.886577 59.744709 57.777915C793.286408 488.300228 766.558673 514.187829 733.541699 514.187829L733.541699 514.187829zM510.246053 514.187829c-33.011858 0-59.778478-25.886577-59.778478-57.83829 0-31.891338 26.76662-57.777915 59.778478-57.777915 33.015951 0 59.782571 25.886577 59.782571 57.777915C570.028625 488.300228 543.262004 514.187829 510.246053 514.187829L510.246053 514.187829zM285.20874 514.187829c-32.956599 0-59.719126-25.886577-59.719126-57.83829 0-31.891338 26.761504-57.777915 59.719126-57.777915 33.010835 0 59.773362 25.886577 59.773362 57.777915C344.982102 488.300228 318.219575 514.187829 285.20874 514.187829L285.20874 514.187829z"
-                                        p-id="1139" fill="#515151"></path></svg>
-                                    </span>
-                    </div>
-                </footer>
-            </div>
-            <div class="post-card m-auto mt-4">
-                <header class="card-header card-img">
-                    <a href="https://www.cangmangai.cn/archives/linux-interview-summary"
-                       style=" background-image: url(https://zyk-1300089264.cos.ap-shanghai.myqcloud.com/halo/MatunuskaGlacier_ZH-CN11670641539_1920x1080_1589164958507.jpg);"
-                       class="img-cover img-cover-bg">
-                    </a>
-                </header>
-                <div class="card-body">
-                    <p class="text-center text-xl tracking-wider svg-f text-clamp-1">
-                        <a href="https://www.cangmangai.cn/archives/linux-interview-summary"
-                           class="font-medium text-gray-700 post-title font-sans">
-                            Linux面试资料简单总结
-                        </a>
-                    </p>
-                </div>
-                <footer class="card-footer svg-f">
-                    <span class="cst-icon icon-calendar lh-25 f-10" style="margin-right: 5px"></span>
-                    <span class="post-time lh-25 mr-auto">
-                                        <span class="published"
-                                              datetime="2020-05-06">2020-05-06</span>
-                                    </span>
-                    <div class="lh-25">
-                                    <span class="visitors-count">
-                                        <span>209</span>
-                                        <a href="javascript:void(0)">
-<svg t="1594484980504" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4612"
-     width="16" height="16"><path
-            d="M915.963425 511.867994c0 77.779458-166.5789 243.698325-403.961378 243.698325-231.343949 0-403.966495-163.188686-403.966495-243.698325 0-80.493266 173.36649-243.435335 403.966495-243.435335C751.251036 268.432659 916.019707 431.374728 915.963425 511.867994L915.963425 511.867994zM512.357134 312.887127c-107.514689 0-194.667631 89.151459-194.667631 199.116967s87.152942 199.116967 194.667631 199.116967c107.543342 0 194.70447-89.151459 194.70447-199.116967C707.057511 402.038586 619.900475 312.887127 512.357134 312.887127L512.357134 312.887127zM512.357134 312.887127"
-            p-id="4613" fill="#515151"></path><path
-            d="M512.002047 384.881834c-68.470441 0-123.972523 56.761772-123.972523 126.786615 0 70.019727 55.502082 126.793778 123.972523 126.793778 68.465325 0 123.947963-56.774051 123.947963-126.793778C635.95001 441.643606 580.467371 384.881834 512.002047 384.881834L512.002047 384.881834zM512.002047 384.881834"
-            p-id="4614" fill="#515151"></path></svg>                                        </a>
-                                    </span>
-                        <span class="visitors-comment">
-                                        <span>0</span> <svg t="1594485146011" class="icon" viewBox="0 0 1024 1024"
-                                                            version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1138"
-                                                            width="16" height="16"><path
-                                        d="M511.99693 63.791885c-247.551072 0-448.205045 174.769442-448.205045 390.368802 0 215.603453 200.650903 390.372895 448.205045 390.372895l0 115.674533c0 0 272.753057-190.648085 320.366472-233.04366 79.069847-70.344115 127.844713-166.768211 127.844713-273.008884C960.209138 238.561327 759.553119 63.791885 511.99693 63.791885L511.99693 63.791885zM733.541699 514.187829c-33.014928 0-59.781548-25.886577-59.778478-57.83829 0-31.891338 26.76355-57.777915 59.778478-57.777915 33.015951 0 59.744709 25.886577 59.744709 57.777915C793.286408 488.300228 766.558673 514.187829 733.541699 514.187829L733.541699 514.187829zM510.246053 514.187829c-33.011858 0-59.778478-25.886577-59.778478-57.83829 0-31.891338 26.76662-57.777915 59.778478-57.777915 33.015951 0 59.782571 25.886577 59.782571 57.777915C570.028625 488.300228 543.262004 514.187829 510.246053 514.187829L510.246053 514.187829zM285.20874 514.187829c-32.956599 0-59.719126-25.886577-59.719126-57.83829 0-31.891338 26.761504-57.777915 59.719126-57.777915 33.010835 0 59.773362 25.886577 59.773362 57.777915C344.982102 488.300228 318.219575 514.187829 285.20874 514.187829L285.20874 514.187829z"
-                                        p-id="1139" fill="#515151"></path></svg>
-                                    </span>
-                    </div>
-                </footer>
-            </div>
-            <div class="post-card m-auto mt-4">
-                <header class="card-header card-img">
-                    <a href="https://www.cangmangai.cn/archives/install-nodejs-on-linux"
-                       style=" background-image: url(https://zyk-1300089264.cos.ap-shanghai.myqcloud.com/halo/PingganVillage_ZH-CN10035092925_1920x1080_1589164966709.jpg);"
-                       class="img-cover img-cover-bg">
-                    </a>
-                </header>
-                <div class="card-body">
-                    <p class="text-center text-xl tracking-wider svg-f text-clamp-1">
-                        <a href="https://www.cangmangai.cn/archives/install-nodejs-on-linux"
-                           class="font-medium text-gray-700 post-title font-sans">
-                            Linux下安装解压版node.js
-                        </a>
-                    </p>
-                </div>
-                <footer class="card-footer svg-f">
-                    <span class="cst-icon icon-calendar lh-25 f-10" style="margin-right: 5px"></span>
-                    <span class="post-time lh-25 mr-auto">
-                                        <span class="published"
-                                              datetime="2020-05-03">2020-05-03</span>
-                                    </span>
-                    <div class="lh-25">
-                                    <span class="visitors-count">
-                                        <span>241</span>
-                                        <a href="javascript:void(0)">
-<svg t="1594484980504" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4612"
-     width="16" height="16"><path
-            d="M915.963425 511.867994c0 77.779458-166.5789 243.698325-403.961378 243.698325-231.343949 0-403.966495-163.188686-403.966495-243.698325 0-80.493266 173.36649-243.435335 403.966495-243.435335C751.251036 268.432659 916.019707 431.374728 915.963425 511.867994L915.963425 511.867994zM512.357134 312.887127c-107.514689 0-194.667631 89.151459-194.667631 199.116967s87.152942 199.116967 194.667631 199.116967c107.543342 0 194.70447-89.151459 194.70447-199.116967C707.057511 402.038586 619.900475 312.887127 512.357134 312.887127L512.357134 312.887127zM512.357134 312.887127"
-            p-id="4613" fill="#515151"></path><path
-            d="M512.002047 384.881834c-68.470441 0-123.972523 56.761772-123.972523 126.786615 0 70.019727 55.502082 126.793778 123.972523 126.793778 68.465325 0 123.947963-56.774051 123.947963-126.793778C635.95001 441.643606 580.467371 384.881834 512.002047 384.881834L512.002047 384.881834zM512.002047 384.881834"
-            p-id="4614" fill="#515151"></path></svg>                                        </a>
-                                    </span>
-                        <span class="visitors-comment">
-                                        <span>0</span> <svg t="1594485146011" class="icon" viewBox="0 0 1024 1024"
-                                                            version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1138"
-                                                            width="16" height="16"><path
-                                        d="M511.99693 63.791885c-247.551072 0-448.205045 174.769442-448.205045 390.368802 0 215.603453 200.650903 390.372895 448.205045 390.372895l0 115.674533c0 0 272.753057-190.648085 320.366472-233.04366 79.069847-70.344115 127.844713-166.768211 127.844713-273.008884C960.209138 238.561327 759.553119 63.791885 511.99693 63.791885L511.99693 63.791885zM733.541699 514.187829c-33.014928 0-59.781548-25.886577-59.778478-57.83829 0-31.891338 26.76355-57.777915 59.778478-57.777915 33.015951 0 59.744709 25.886577 59.744709 57.777915C793.286408 488.300228 766.558673 514.187829 733.541699 514.187829L733.541699 514.187829zM510.246053 514.187829c-33.011858 0-59.778478-25.886577-59.778478-57.83829 0-31.891338 26.76662-57.777915 59.778478-57.777915 33.015951 0 59.782571 25.886577 59.782571 57.777915C570.028625 488.300228 543.262004 514.187829 510.246053 514.187829L510.246053 514.187829zM285.20874 514.187829c-32.956599 0-59.719126-25.886577-59.719126-57.83829 0-31.891338 26.761504-57.777915 59.719126-57.777915 33.010835 0 59.773362 25.886577 59.773362 57.777915C344.982102 488.300228 318.219575 514.187829 285.20874 514.187829L285.20874 514.187829z"
-                                        p-id="1139" fill="#515151"></path></svg>
-                                    </span>
-                    </div>
-                </footer>
-            </div>
-            <div class="post-card m-auto mt-4">
-                <header class="card-header card-img">
-                    <a href="https://www.cangmangai.cn/archives/animal-shelter-lcci"
-                       style=" background-image: url(https://zyk-1300089264.cos.ap-shanghai.myqcloud.com/halo/LakePukaki_EN-AU9412206565_1920x1080_1589164959780.jpg);"
-                       class="img-cover img-cover-bg">
-                    </a>
-                </header>
-                <div class="card-body">
-                    <p class="text-center text-xl tracking-wider svg-f text-clamp-1">
-                        <a href="https://www.cangmangai.cn/archives/animal-shelter-lcci"
-                           class="font-medium text-gray-700 post-title font-sans">
-                            leetcode刷题-动物收容所
-                        </a>
-                    </p>
-                </div>
-                <footer class="card-footer svg-f">
-                    <span class="cst-icon icon-calendar lh-25 f-10" style="margin-right: 5px"></span>
-                    <span class="post-time lh-25 mr-auto">
-                                        <span class="published"
-                                              datetime="2020-05-01">2020-05-01</span>
-                                    </span>
-                    <div class="lh-25">
-                                    <span class="visitors-count">
-                                        <span>178</span>
-                                        <a href="javascript:void(0)">
-<svg t="1594484980504" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4612"
-     width="16" height="16"><path
-            d="M915.963425 511.867994c0 77.779458-166.5789 243.698325-403.961378 243.698325-231.343949 0-403.966495-163.188686-403.966495-243.698325 0-80.493266 173.36649-243.435335 403.966495-243.435335C751.251036 268.432659 916.019707 431.374728 915.963425 511.867994L915.963425 511.867994zM512.357134 312.887127c-107.514689 0-194.667631 89.151459-194.667631 199.116967s87.152942 199.116967 194.667631 199.116967c107.543342 0 194.70447-89.151459 194.70447-199.116967C707.057511 402.038586 619.900475 312.887127 512.357134 312.887127L512.357134 312.887127zM512.357134 312.887127"
-            p-id="4613" fill="#515151"></path><path
-            d="M512.002047 384.881834c-68.470441 0-123.972523 56.761772-123.972523 126.786615 0 70.019727 55.502082 126.793778 123.972523 126.793778 68.465325 0 123.947963-56.774051 123.947963-126.793778C635.95001 441.643606 580.467371 384.881834 512.002047 384.881834L512.002047 384.881834zM512.002047 384.881834"
-            p-id="4614" fill="#515151"></path></svg>                                        </a>
-                                    </span>
-                        <span class="visitors-comment">
-                                        <span>2</span> <svg t="1594485146011" class="icon" viewBox="0 0 1024 1024"
-                                                            version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1138"
-                                                            width="16" height="16"><path
-                                        d="M511.99693 63.791885c-247.551072 0-448.205045 174.769442-448.205045 390.368802 0 215.603453 200.650903 390.372895 448.205045 390.372895l0 115.674533c0 0 272.753057-190.648085 320.366472-233.04366 79.069847-70.344115 127.844713-166.768211 127.844713-273.008884C960.209138 238.561327 759.553119 63.791885 511.99693 63.791885L511.99693 63.791885zM733.541699 514.187829c-33.014928 0-59.781548-25.886577-59.778478-57.83829 0-31.891338 26.76355-57.777915 59.778478-57.777915 33.015951 0 59.744709 25.886577 59.744709 57.777915C793.286408 488.300228 766.558673 514.187829 733.541699 514.187829L733.541699 514.187829zM510.246053 514.187829c-33.011858 0-59.778478-25.886577-59.778478-57.83829 0-31.891338 26.76662-57.777915 59.778478-57.777915 33.015951 0 59.782571 25.886577 59.782571 57.777915C570.028625 488.300228 543.262004 514.187829 510.246053 514.187829L510.246053 514.187829zM285.20874 514.187829c-32.956599 0-59.719126-25.886577-59.719126-57.83829 0-31.891338 26.761504-57.777915 59.719126-57.777915 33.010835 0 59.773362 25.886577 59.773362 57.777915C344.982102 488.300228 318.219575 514.187829 285.20874 514.187829L285.20874 514.187829z"
-                                        p-id="1139" fill="#515151"></path></svg>
-                                    </span>
-                    </div>
-                </footer>
-            </div>
-            <div class="post-card m-auto mt-4">
-                <header class="card-header card-img">
-                    <a href="https://www.cangmangai.cn/archives/usual-http-status-code"
-                       style=" background-image: url(https://zyk-1300089264.cos.ap-shanghai.myqcloud.com/halo/BulgariaPerseids_EN-AU11585904087_1920x1080_1589164959482.jpg);"
-                       class="img-cover img-cover-bg">
-                    </a>
-                </header>
-                <div class="card-body">
-                    <p class="text-center text-xl tracking-wider svg-f text-clamp-1">
-                        <a href="https://www.cangmangai.cn/archives/usual-http-status-code"
-                           class="font-medium text-gray-700 post-title font-sans">
-                            常见http状态码
-                        </a>
-                    </p>
-                </div>
-                <footer class="card-footer svg-f">
-                    <span class="cst-icon icon-calendar lh-25 f-10" style="margin-right: 5px"></span>
-                    <span class="post-time lh-25 mr-auto">
-                                        <span class="published"
-                                              datetime="2020-04-30">2020-04-30</span>
-                                    </span>
-                    <div class="lh-25">
-                                    <span class="visitors-count">
-                                        <span>194</span>
-                                        <a href="javascript:void(0)">
-<svg t="1594484980504" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4612"
-     width="16" height="16"><path
-            d="M915.963425 511.867994c0 77.779458-166.5789 243.698325-403.961378 243.698325-231.343949 0-403.966495-163.188686-403.966495-243.698325 0-80.493266 173.36649-243.435335 403.966495-243.435335C751.251036 268.432659 916.019707 431.374728 915.963425 511.867994L915.963425 511.867994zM512.357134 312.887127c-107.514689 0-194.667631 89.151459-194.667631 199.116967s87.152942 199.116967 194.667631 199.116967c107.543342 0 194.70447-89.151459 194.70447-199.116967C707.057511 402.038586 619.900475 312.887127 512.357134 312.887127L512.357134 312.887127zM512.357134 312.887127"
-            p-id="4613" fill="#515151"></path><path
-            d="M512.002047 384.881834c-68.470441 0-123.972523 56.761772-123.972523 126.786615 0 70.019727 55.502082 126.793778 123.972523 126.793778 68.465325 0 123.947963-56.774051 123.947963-126.793778C635.95001 441.643606 580.467371 384.881834 512.002047 384.881834L512.002047 384.881834zM512.002047 384.881834"
-            p-id="4614" fill="#515151"></path></svg>                                        </a>
-                                    </span>
-                        <span class="visitors-comment">
-                                        <span>0</span> <svg t="1594485146011" class="icon" viewBox="0 0 1024 1024"
-                                                            version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1138"
-                                                            width="16" height="16"><path
-                                        d="M511.99693 63.791885c-247.551072 0-448.205045 174.769442-448.205045 390.368802 0 215.603453 200.650903 390.372895 448.205045 390.372895l0 115.674533c0 0 272.753057-190.648085 320.366472-233.04366 79.069847-70.344115 127.844713-166.768211 127.844713-273.008884C960.209138 238.561327 759.553119 63.791885 511.99693 63.791885L511.99693 63.791885zM733.541699 514.187829c-33.014928 0-59.781548-25.886577-59.778478-57.83829 0-31.891338 26.76355-57.777915 59.778478-57.777915 33.015951 0 59.744709 25.886577 59.744709 57.777915C793.286408 488.300228 766.558673 514.187829 733.541699 514.187829L733.541699 514.187829zM510.246053 514.187829c-33.011858 0-59.778478-25.886577-59.778478-57.83829 0-31.891338 26.76662-57.777915 59.778478-57.777915 33.015951 0 59.782571 25.886577 59.782571 57.777915C570.028625 488.300228 543.262004 514.187829 510.246053 514.187829L510.246053 514.187829zM285.20874 514.187829c-32.956599 0-59.719126-25.886577-59.719126-57.83829 0-31.891338 26.761504-57.777915 59.719126-57.777915 33.010835 0 59.773362 25.886577 59.773362 57.777915C344.982102 488.300228 318.219575 514.187829 285.20874 514.187829L285.20874 514.187829z"
-                                        p-id="1139" fill="#515151"></path></svg>
-                                    </span>
-                    </div>
-                </footer>
-            </div>
-            <div class="post-card m-auto mt-4">
-                <header class="card-header card-img">
-                    <a href="https://www.cangmangai.cn/archives/merge-k-sorted-lists"
-                       style=" background-image: url(https://zyk-1300089264.cos.ap-shanghai.myqcloud.com/halo/BarHarborCave_EN-AU8598700153_1920x1080_1589164951871.jpg);"
-                       class="img-cover img-cover-bg">
-                    </a>
-                </header>
-                <div class="card-body">
-                    <p class="text-center text-xl tracking-wider svg-f text-clamp-1">
-                        <a href="https://www.cangmangai.cn/archives/merge-k-sorted-lists"
-                           class="font-medium text-gray-700 post-title font-sans">
-                            leetcode刷题-合并k个有序链表
-                        </a>
-                    </p>
-                </div>
-                <footer class="card-footer svg-f">
-                    <span class="cst-icon icon-calendar lh-25 f-10" style="margin-right: 5px"></span>
-                    <span class="post-time lh-25 mr-auto">
-                                        <span class="published"
-                                              datetime="2020-04-29">2020-04-29</span>
-                                    </span>
-                    <div class="lh-25">
-                                    <span class="visitors-count">
-                                        <span>236</span>
-                                        <a href="javascript:void(0)">
-<svg t="1594484980504" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4612"
-     width="16" height="16"><path
-            d="M915.963425 511.867994c0 77.779458-166.5789 243.698325-403.961378 243.698325-231.343949 0-403.966495-163.188686-403.966495-243.698325 0-80.493266 173.36649-243.435335 403.966495-243.435335C751.251036 268.432659 916.019707 431.374728 915.963425 511.867994L915.963425 511.867994zM512.357134 312.887127c-107.514689 0-194.667631 89.151459-194.667631 199.116967s87.152942 199.116967 194.667631 199.116967c107.543342 0 194.70447-89.151459 194.70447-199.116967C707.057511 402.038586 619.900475 312.887127 512.357134 312.887127L512.357134 312.887127zM512.357134 312.887127"
-            p-id="4613" fill="#515151"></path><path
-            d="M512.002047 384.881834c-68.470441 0-123.972523 56.761772-123.972523 126.786615 0 70.019727 55.502082 126.793778 123.972523 126.793778 68.465325 0 123.947963-56.774051 123.947963-126.793778C635.95001 441.643606 580.467371 384.881834 512.002047 384.881834L512.002047 384.881834zM512.002047 384.881834"
-            p-id="4614" fill="#515151"></path></svg>                                        </a>
-                                    </span>
-                        <span class="visitors-comment">
-                                        <span>0</span> <svg t="1594485146011" class="icon" viewBox="0 0 1024 1024"
-                                                            version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1138"
-                                                            width="16" height="16"><path
-                                        d="M511.99693 63.791885c-247.551072 0-448.205045 174.769442-448.205045 390.368802 0 215.603453 200.650903 390.372895 448.205045 390.372895l0 115.674533c0 0 272.753057-190.648085 320.366472-233.04366 79.069847-70.344115 127.844713-166.768211 127.844713-273.008884C960.209138 238.561327 759.553119 63.791885 511.99693 63.791885L511.99693 63.791885zM733.541699 514.187829c-33.014928 0-59.781548-25.886577-59.778478-57.83829 0-31.891338 26.76355-57.777915 59.778478-57.777915 33.015951 0 59.744709 25.886577 59.744709 57.777915C793.286408 488.300228 766.558673 514.187829 733.541699 514.187829L733.541699 514.187829zM510.246053 514.187829c-33.011858 0-59.778478-25.886577-59.778478-57.83829 0-31.891338 26.76662-57.777915 59.778478-57.777915 33.015951 0 59.782571 25.886577 59.782571 57.777915C570.028625 488.300228 543.262004 514.187829 510.246053 514.187829L510.246053 514.187829zM285.20874 514.187829c-32.956599 0-59.719126-25.886577-59.719126-57.83829 0-31.891338 26.761504-57.777915 59.719126-57.777915 33.010835 0 59.773362 25.886577 59.773362 57.777915C344.982102 488.300228 318.219575 514.187829 285.20874 514.187829L285.20874 514.187829z"
-                                        p-id="1139" fill="#515151"></path></svg>
-                                    </span>
-                    </div>
-                </footer>
-            </div>
-            <div class="post-card m-auto mt-4">
-                <header class="card-header card-img">
-                    <a href="https://www.cangmangai.cn/archives/intellijidea搭建springbootfreemakermybatismaven项目"
-                       style=" background-image: url(https://cdn.cangmangai.cn/halo/image_1587087378206.png);"
-                       class="img-cover img-cover-bg">
-                    </a>
-                </header>
-                <div class="card-body">
-                    <p class="text-center text-xl tracking-wider svg-f text-clamp-1">
-                        <a href="https://www.cangmangai.cn/archives/intellijidea搭建springbootfreemakermybatismaven项目"
-                           class="font-medium text-gray-700 post-title font-sans">
-                            IntelliJ IDEA搭建Springboot+Freemaker+Mybatis+Maven项目
-                        </a>
-                    </p>
-                </div>
-                <footer class="card-footer svg-f">
-                    <span class="cst-icon icon-calendar lh-25 f-10" style="margin-right: 5px"></span>
-                    <span class="post-time lh-25 mr-auto">
-                                        <span class="published"
-                                              datetime="2020-04-17">2020-04-17</span>
-                                    </span>
-                    <div class="lh-25">
-                                    <span class="visitors-count">
-                                        <span>297</span>
-                                        <a href="javascript:void(0)">
-<svg t="1594484980504" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4612"
-     width="16" height="16"><path
-            d="M915.963425 511.867994c0 77.779458-166.5789 243.698325-403.961378 243.698325-231.343949 0-403.966495-163.188686-403.966495-243.698325 0-80.493266 173.36649-243.435335 403.966495-243.435335C751.251036 268.432659 916.019707 431.374728 915.963425 511.867994L915.963425 511.867994zM512.357134 312.887127c-107.514689 0-194.667631 89.151459-194.667631 199.116967s87.152942 199.116967 194.667631 199.116967c107.543342 0 194.70447-89.151459 194.70447-199.116967C707.057511 402.038586 619.900475 312.887127 512.357134 312.887127L512.357134 312.887127zM512.357134 312.887127"
-            p-id="4613" fill="#515151"></path><path
-            d="M512.002047 384.881834c-68.470441 0-123.972523 56.761772-123.972523 126.786615 0 70.019727 55.502082 126.793778 123.972523 126.793778 68.465325 0 123.947963-56.774051 123.947963-126.793778C635.95001 441.643606 580.467371 384.881834 512.002047 384.881834L512.002047 384.881834zM512.002047 384.881834"
-            p-id="4614" fill="#515151"></path></svg>                                        </a>
-                                    </span>
-                        <span class="visitors-comment">
-                                        <span>0</span> <svg t="1594485146011" class="icon" viewBox="0 0 1024 1024"
-                                                            version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1138"
-                                                            width="16" height="16"><path
-                                        d="M511.99693 63.791885c-247.551072 0-448.205045 174.769442-448.205045 390.368802 0 215.603453 200.650903 390.372895 448.205045 390.372895l0 115.674533c0 0 272.753057-190.648085 320.366472-233.04366 79.069847-70.344115 127.844713-166.768211 127.844713-273.008884C960.209138 238.561327 759.553119 63.791885 511.99693 63.791885L511.99693 63.791885zM733.541699 514.187829c-33.014928 0-59.781548-25.886577-59.778478-57.83829 0-31.891338 26.76355-57.777915 59.778478-57.777915 33.015951 0 59.744709 25.886577 59.744709 57.777915C793.286408 488.300228 766.558673 514.187829 733.541699 514.187829L733.541699 514.187829zM510.246053 514.187829c-33.011858 0-59.778478-25.886577-59.778478-57.83829 0-31.891338 26.76662-57.777915 59.778478-57.777915 33.015951 0 59.782571 25.886577 59.782571 57.777915C570.028625 488.300228 543.262004 514.187829 510.246053 514.187829L510.246053 514.187829zM285.20874 514.187829c-32.956599 0-59.719126-25.886577-59.719126-57.83829 0-31.891338 26.761504-57.777915 59.719126-57.777915 33.010835 0 59.773362 25.886577 59.773362 57.777915C344.982102 488.300228 318.219575 514.187829 285.20874 514.187829L285.20874 514.187829z"
-                                        p-id="1139" fill="#515151"></path></svg>
-                                    </span>
-                    </div>
-                </footer>
-            </div>
+            {{end}}
         </div>
         <nav class="pagination flex flex-row justify-center mt-8" role="navigation" aria-label="pagination">
             <ul class="pagination-list flex flex-row ">
-                <li class="pagination-previous is-invisible ">
-                    <a class="pagination-circle" href="https://www.cangmangai.cn/page/0">
-                        <span class="cst-icon icon-previous"> </span>
-                    </a>
-                </li>
-                <li>
-                    <a class="pagination-circle is-current" href="https://www.cangmangai.cn/page/1">1</a>
-                </li>
-                <li>
-                    <a class="pagination-circle" href="https://www.cangmangai.cn/page/2">2</a>
-                </li>
-                <li class="pagination-next">
-                    <a class="pagination-circle" href="https://www.cangmangai.cn/page/2">
-                        <span class="cst-icon icon-next"> </span>
-                    </a>
-                </li>
+                {{ if gt .currentPage 1 }}
+                    <li class="pagination-previous">
+                        <a class="pagination-circle" href="{{ .blogVars.ContextPath }}/page/{{ subtract .currentPage 1 }}">
+                            <span class="iconfont icon-left-fill"> </span>
+                        </a>
+                    </li>
+                {{ end }}
+                {{ range $page := .pages }}
+                    <li>
+                        <a class="pagination-circle {{ if eq $page $.currentPage }}is-current{{ end }}"
+                           href="{{ $.blogVars.ContextPath }}/page/{{ $page }}">{{ $page }}</a>
+                    </li>
+                {{ end }}
+                {{ $totalPage := len .pages }}
+                {{ if lt .currentPage $totalPage }}
+                    <li class="pagination-next">
+                        <a class="pagination-circle" href="{{ .blogVars.ContextPath }}/page/{{ add .currentPage 1 }}">
+                            <span class="iconfont icon-right-fill"> </span>
+                        </a>
+                    </li>
+                {{ end }}
             </ul>
         </nav>
     </div>
@@ -631,7 +236,7 @@
 <form method="get" action="/search">
     <div class="hidden search-box" id="searchBox">
         <div class="search-ipt ipt ipt-w">
-            <div class="ipt-ct ct-bg" id="searchInput">
+            <div class="ipt-ct ct-bg search-container" id="searchInput">
                 <label class="sh-lab">
                     <input class="sh-ipt" maxlength="30" name="keyword" id="searchBoxInput" spellcheck="false"
                            placeholder="Search" autocomplete="off">
@@ -669,13 +274,13 @@
             <!-- 请尊重作者，请务必保留版权 -->
             <div class="badges">
                 <div class="github-badge">
-                    <a style="color: #fff" rel="license" href="http://halo.run" target="_blank">
+                    <a style="color: #fff" rel="license" href="https://github.com/zhaoyangkun/aries" target="_blank">
                         <span class="badge-subject">Powered</span>
-                        <span class="badge-value bg-blue">Halo</span>
+                        <span class="badge-value bg-blue">Aries</span>
                     </a>
                 </div>
                 <div class="github-badge">
-                    <a style="color: #fff" rel="license" href="https://github.com/hshanx/halo-theme-xue.git"
+                    <a style="color: #fff" rel="license" href="https://github.com/zhaoyangkun/aries"
                        target="_blank">
                         <span class="badge-subject">Theme</span>
                         <span class="badge-value bg-red">Xue</span>
@@ -683,10 +288,23 @@
                 </div>
 
                 <div class="github-badge">
-                    <a style="color: #fff" rel="license" href="javascript:void(0)"
-                       target="_blank">
+                    <a style="color: #fff" rel="license" href="javascript:void(0)">
                         <span class="badge-subject">运行</span>
                         <span class="badge-value bg-orange" id="span_dt_dt"></span>
+                    </a>
+                </div>
+                <div class="github-badge">
+                    <a style="color: #fff" rel="license" href="javascript:void(0)">
+                        <span class="badge-subject">用户</span>
+                        <span id="busuanzi_container_site_uv"><span class="badge-value bg-brightgreen"
+                                                                    id="busuanzi_value_site_uv"></span></span>
+                    </a>
+                </div>
+                <div class="github-badge">
+                    <a style="color: #fff" rel="license" href="javascript:void(0)">
+                        <span class="badge-subject">访问</span>
+                        <span id="busuanzi_container_site_pv"><span class="badge-value bg-blueviolet"
+                                                                    id="busuanzi_value_site_pv"></span></span>
                     </a>
                 </div>
             </div>
@@ -701,55 +319,6 @@
         autoplay="true"
         id="5025401103">
 </meting-js>
-
-
-</body>
-<script src="{{ .ContextPath }}/static/js/jquery.min.js"></script>
-
-<script type="text/javascript">
-    let autoNightModeOpen = true;
-</script>
-<script src="{{ .ContextPath }}/static/js/common.js"></script>
-
-<script src="{{ .ContextPath }}/static/js/post.js"></script>
-<script src="{{ .ContextPath }}/static/js/vue.min.js"></script>
-<script src="{{ .ContextPath }}/static/js/highlight.min.js"></script>
-<script src="{{ .ContextPath }}/static/js/highlight.lang.js"></script>
-<script src="{{ .ContextPath }}/static/js/highlightjs-line-numbers.min.js"></script>
-<!--图片预览插件-->
-<script data-pjax-viewer src="{{ .ContextPath }}/static/js/viewer.min.js"></script>
-<script src="{{ .ContextPath }}/static/js/micromodal.min.js"></script>
-<script src="{{ .ContextPath }}/static/js/jquery.justifiedGallery.min.js"></script>
-
-<script src="{{ .ContextPath }}/static/js/simply-nav.js"></script>
-<script src="{{ .ContextPath }}/static/js/moon.js"></script>
-
-<script src="{{ .ContextPath }}/static/js/tocbot.min.js"></script>
-<script src="{{ .ContextPath }}/static/js/APlayer.min.js"></script>
-<script src="{{ .ContextPath }}/static/js/Meting.min.js"></script>
-<script type="text/javascript">
-    $('.arrow-down').on('click', function () {
-        let postHeight = $('#homeHeader').height();
-        window.scroll({top: postHeight - 50, behavior: 'smooth'});
-    })
-</script>
-<script type="text/javascript">
-    let katex_config = {
-        delimiters:
-            [
-                {left: "$$", right: "$$", display: true},
-                {left: "$", right: "$", display: false},
-                {left: "\\(", right: "\\)", display: false},
-                {left: "\\[", right: "\\]", display: true},
-            ]
-    };
-</script>
-<script defer src="{{ .ContextPath }}/static/js/katex.min.js"></script>
-<script defer src="{{ .ContextPath }}/static/js/auto-render.min.js"
-        onload="if (document.getElementById('write'))
-            { renderMathInElement(document.getElementById('write'), katex_config)}
-            else if (document.getElementById('tree-hole'))
-            {renderMathInElement(document.getElementById('tree-hole'), katex_config)}"></script>
 
 <div class="modal micromodal-slide" id="coffeeModal" aria-hidden="true" role="dialog">
     <div class="modal__overlay model_bg" tabindex="-1" data-micromodal-close="">
@@ -773,170 +342,6 @@
     </div>
 </div>
 
-<script src="{{ .ContextPath }}/static/js/pjax.js"></script>
-<script src="{{ .ContextPath }}/static/js/nprogress.min.js"></script>
-<script type="text/javascript">
-    let pjax = new Pjax({
-        elements: 'a[href]:not([href^="#"]):not([data-not-pjax]):not([target^="_blank"]), form', // default is "a[href], form[action]"
-        cacheBust: false,
-        debug: false,
-        selectors: [
-            'title',
-            '#container'
-        ]
-    });
-
-    //在Pjax请求开始后触发
-    document.addEventListener('pjax:send', function () {
-        NProgress.start();
-    });
-
-    //在Pjax请求完成后触发
-    document.addEventListener('pjax:complete', function (e) {
-        NProgress.done();
-
-        // 加载相册
-        if ($("#container").find('.photos-page').length > 0) {
-            photo.loadGallery();
-            photo.showPhotos();
-        }
-
-        // 隐藏 search box 并清空 input
-        $('#searchBox').addClass('hidden');
-        $("#searchBoxInput").val("");
-
-        // 当前菜单菜单高亮
-        hanUtils.highlightMenu();
-
-        // table 要加上 div 避免出现小屏幕下展示不全
-        hanUtils.tableAddNode();
-
-        // li 添加 span
-        hanUtils.liAddSpan();
-
-        //重载
-        if (typeof _hmt !== 'undefined') {
-            // support 百度统计
-            _hmt.push(['_trackPageview', location.pathname + location.search]);
-        }
-        if (typeof ga !== 'undefined') {
-            // support google analytics
-            ga('send', 'pageview', location.pathname + location.search);
-        }
-
-        // 重新加载 评论
-        $('script[data-pjax-comment]').each(function () {
-            let commentParent = $(this).parent()
-            let comment = $(this).remove();
-            commentParent.append(comment);
-        });
-
-        $('.icon-toc').each(function () {
-            $(this).remove();
-        });
-
-        $('#moonToc').removeClass('mm-active');
-
-        if ($("#container").find('.article-content').length > 0) {
-
-            // 小屏幕目录
-            $('#moonMenu').append('<span class="moon-menu-item pl-6 cst-icon icon-toc"></span>')
-
-            moonMenu.initMoonToc();
-
-            moonMenu.ckShowContent();
-
-            // 代码高亮
-            post.loadHighlight();
-
-            // 图片预览
-            post.initViewer();
-
-            // 目录事件
-            post.scrollTocFixed();
-
-            // 初始化toc
-            post.initToc()
-
-            // 删除文章最开始第一个 <ul>(如果有)
-            post.removeFirstUL()
-
-            // 模态框
-            coffeeModal.toggleCoffeeModal();
-
-            // 初始展示二维码
-            coffeeModal.initShowCode();
-
-            // 切换支付二维码
-            coffeeModal.switchQrCode();
-
-            try {
-                if (renderMathInElement && typeof renderMathInElement !== 'undefined') {
-                    renderMathInElement(document.getElementById('write'), katex_config);
-                }
-
-                // if (mermaid && typeof mermaid !== 'undefined') {
-                //     mermaid.initialize();
-                // }
-            } catch (e) {
-                console.log("error");
-            }
-        }
-
-        // 自定义页面 viewer
-        hanUtils.sheetViewer();
-
-        // 相册页面 viewer
-        hanUtils.journalViewer();
-
-        if (renderMathInElement && typeof renderMathInElement !== 'undefined') {
-            if (document.getElementById('write')) {
-                renderMathInElement(document.getElementById('write'), katex_config)
-            } else if (document.getElementById('tree-hole')) {
-                renderMathInElement(document.getElementById('tree-hole'), katex_config)
-            }
-        }
-
-    });
-
-    document.addEventListener('pjax:end', function () {
-
-    });
-
-    //Pjax请求失败后触发，请求对象将作为一起传递event.options.request
-    document.addEventListener('pjax:error', function () {
-        NProgress.done();
-        bar('系统出现问题，请手动刷新一次', '3000');
-    });
-</script>
-
-<script type="text/javascript">
-    // 建站时间统计
-    function show_date_time() {
-        if ($("#span_dt_dt").length > 0) {
-            window.setTimeout("show_date_time()", 1000);
-            BirthDay = new Date("08/01/2019 00:00:00");
-            today = new Date();
-            timeold = (today.getTime() - BirthDay.getTime());
-            sectimeold = timeold / 1000;
-            secondsold = Math.floor(sectimeold);
-            msPerDay = 24 * 60 * 60 * 1000;
-            e_daysold = timeold / msPerDay;
-            daysold = Math.floor(e_daysold);
-            e_hrsold = (e_daysold - daysold) * 24;
-            hrsold = Math.floor(e_hrsold);
-            e_minsold = (e_hrsold - hrsold) * 60;
-            minsold = Math.floor((e_hrsold - hrsold) * 60);
-            seconds = Math.floor((e_minsold - minsold) * 60);
-            span_dt_dt.innerHTML = daysold + "天" + hrsold + "小时" + minsold + "分" + seconds + "秒";
-        }
-    }
-
-    show_date_time();
-</script>
-<script type="text/javascript">
-    // console.clear();
-    console.log("%c 感谢使用 Aries 博客", "background:#24272A; color:#ffffff", "");
-    console.log("%c Github %c", "background:#24272A; color:#ffffff", "", "https://github.com/zhaoyangkun/aries");
-</script>
+{{ template "script" .}}
+</body>
 </html>

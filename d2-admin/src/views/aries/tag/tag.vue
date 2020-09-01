@@ -181,7 +181,7 @@ export default {
     // 修改事件
     handleRowEdit (row, done) {
       this.formOptions.saveLoading = true
-      const data = row.row
+      const data = { ...row.row }
       setTimeout(() => {
         updateTag(data)
           .then(res => {

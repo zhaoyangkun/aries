@@ -58,8 +58,8 @@ func (form CommentAddForm) BindToModel() models.Comment {
 		NickName:        form.NickName,
 		Content:         form.Content,
 		MDContent:       form.MDContent,
-		IsRecycled:      &form.IsRecycled,
-		IsChecked:       &form.IsChecked,
+		IsRecycled:      form.IsRecycled,
+		IsChecked:       form.IsChecked,
 	}
 }
 
@@ -76,7 +76,7 @@ func (form CommentEditForm) BindToModel() models.Comment {
 		NickName:        form.NickName,
 		Content:         form.Content,
 		MDContent:       form.MDContent,
-		IsRecycled:      &form.IsRecycled,
-		IsChecked:       &form.IsChecked,
+		IsRecycled:      form.IsRecycled,
+		IsChecked:       form.IsChecked,
 	}
 }

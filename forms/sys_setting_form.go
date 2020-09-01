@@ -56,7 +56,7 @@ type ImgbbForm struct {
 type TencentCosForm struct {
 	SysId       string `json:"sys_id" label:"设置 ID"`
 	StorageType string `json:"storage_type" binding:"required,max=20" label:"设置类型名称"`
-	Host        string `json:"host" binding:"required,max=255" label:"存储桶地址"`
+	Host        string `json:"host" binding:"required,max=255" label:"存储桶域名"`
 	Scheme      string `json:"scheme" binding:"required,max=5" label:"传输协议"`
 	Region      string `json:"region" binding:"required,max=20" label:"区域"`
 	SecretId    string `json:"secret_id" binding:"required,max=255" label:"secret_id"`
@@ -71,4 +71,15 @@ type CommentSettingForm struct {
 	TypeName   string `json:"type_name" label:"设置类型名称"`
 	IsOn       string `json:"is_on" binding:"required" label:"是否开启评论"`
 	IsReviewOn string `json:"is_review_on" binding:"required" label:"是否开启评论审核"`
+	IsReplyOn  string `json:"is_reply_on" label:"是否开启邮箱回复"`
+	PageSize   string `json:"page_size" label:"每页评论条数"`
+}
+
+// 参数设置表单
+type ParamSettingForm struct {
+	SysId           string `json:"sys_id" label:"设置 ID"`
+	TypeName        string `json:"type_name" label:"设置类型名称"`
+	IndexPageSize   string `json:"index_page_size" label:"首页每页条数"`
+	ArchivePageSize string `json:"archive_page_size" label:"归档页每页条数"`
+	SiteMapPageSize string `json:"site_map_page_size" label:"站点地图每页条数"`
 }

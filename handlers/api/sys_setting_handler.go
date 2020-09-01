@@ -3,6 +3,7 @@ package api
 import (
 	"aries/config/setting"
 	"aries/forms"
+	"aries/log"
 	"aries/models"
 	"aries/utils"
 	"net/http"
@@ -12,10 +13,24 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/go-gomail/gomail"
 	"github.com/jinzhu/gorm"
-	log "github.com/sirupsen/logrus"
 )
 
 type SysSettingHandler struct {
+}
+
+// @Summary 获取博客全局变量
+// @Tags 系统设置
+// @version 1.0
+// @Accept application/json
+// @Success 100 object utils.Result 成功
+// @Failure 103/104 object utils.Result 失败
+// @Router /api/v1/sys_setting/blog_vars [get]
+func (s *SysSettingHandler) GetBlogVars(ctx *gin.Context) {
+	ctx.JSON(http.StatusOK, utils.Result{
+		Code: utils.Success,
+		Msg:  "查询成功",
+		Data: setting.BlogVars,
+	})
 }
 
 // @Summary 获取设置条目
@@ -28,6 +43,7 @@ type SysSettingHandler struct {
 // @Router /api/v1/sys_setting/items [get]
 func (s *SysSettingHandler) GetSysSettingItem(ctx *gin.Context) {
 	name := ctx.Query("name")
+
 	result, _ := models.SysSettingItem{}.GetBySysSettingName(name)
 	ctx.JSON(http.StatusOK, utils.Result{
 		Code: utils.Success,
@@ -54,6 +70,7 @@ func (s *SysSettingHandler) SaveSiteSetting(ctx *gin.Context) {
 		})
 		return
 	}
+
 	sysId, _ := strconv.ParseUint(settingForm.SysId, 10, 0)
 	sysSetting := models.SysSetting{
 		Model: gorm.Model{ID: uint(sysId)},
@@ -61,7 +78,7 @@ func (s *SysSettingHandler) SaveSiteSetting(ctx *gin.Context) {
 	}
 	if sysId == 0 {
 		if err := sysSetting.Create(); err != nil {
-			log.Errorln("error: ", err.Error())
+			log.Logger.Sugar().Error("error: ", err.Error())
 			ctx.JSON(http.StatusOK, utils.Result{
 				Code: utils.ServerError,
 				Msg:  "服务器端错误",
@@ -70,6 +87,7 @@ func (s *SysSettingHandler) SaveSiteSetting(ctx *gin.Context) {
 			return
 		}
 	}
+
 	t := reflect.TypeOf(settingForm)
 	v := reflect.ValueOf(settingForm)
 	var itemList []models.SysSettingItem
@@ -81,9 +99,10 @@ func (s *SysSettingHandler) SaveSiteSetting(ctx *gin.Context) {
 		}
 		itemList = append(itemList, item)
 	}
+
 	err := models.SysSettingItem{}.MultiCreateOrUpdate(itemList)
 	if err != nil {
-		log.Error("error: ", err.Error())
+		log.Logger.Sugar().Error("error: ", err.Error())
 		ctx.JSON(http.StatusOK, utils.Result{
 			Code: utils.ServerError,
 			Msg:  "服务器端错误",
@@ -91,8 +110,10 @@ func (s *SysSettingHandler) SaveSiteSetting(ctx *gin.Context) {
 		})
 		return
 	}
+
 	blogSetting, _ := models.SysSettingItem{}.GetBySysSettingName("网站设置")
 	setting.BlogVars.InitBlogVars(blogSetting)
+
 	ctx.JSON(http.StatusOK, utils.Result{
 		Code: utils.Success,
 		Msg:  "保存成功",
@@ -118,6 +139,7 @@ func (s *SysSettingHandler) SaveSMTPSetting(ctx *gin.Context) {
 		})
 		return
 	}
+
 	sysId, _ := strconv.ParseUint(settingForm.SysId, 10, 0)
 	sysSetting := models.SysSetting{
 		Model: gorm.Model{ID: uint(sysId)},
@@ -125,7 +147,7 @@ func (s *SysSettingHandler) SaveSMTPSetting(ctx *gin.Context) {
 	}
 	if sysId == 0 {
 		if err := sysSetting.Create(); err != nil {
-			log.Errorln("error: ", err.Error())
+			log.Logger.Sugar().Error("error: ", err.Error())
 			ctx.JSON(http.StatusOK, utils.Result{
 				Code: utils.ServerError,
 				Msg:  "服务器端错误",
@@ -134,6 +156,7 @@ func (s *SysSettingHandler) SaveSMTPSetting(ctx *gin.Context) {
 			return
 		}
 	}
+
 	settingForm.SysId = strconv.Itoa(int(sysSetting.ID))
 	t := reflect.TypeOf(settingForm)
 	v := reflect.ValueOf(settingForm)
@@ -146,9 +169,10 @@ func (s *SysSettingHandler) SaveSMTPSetting(ctx *gin.Context) {
 		}
 		itemList = append(itemList, item)
 	}
+
 	err := models.SysSettingItem{}.MultiCreateOrUpdate(itemList)
 	if err != nil {
-		log.Error("error: ", err.Error())
+		log.Logger.Sugar().Error("error: ", err.Error())
 		ctx.JSON(http.StatusOK, utils.Result{
 			Code: utils.ServerError,
 			Msg:  "服务器端错误",
@@ -156,6 +180,7 @@ func (s *SysSettingHandler) SaveSMTPSetting(ctx *gin.Context) {
 		})
 		return
 	}
+
 	ctx.JSON(http.StatusOK, utils.Result{
 		Code: utils.Success,
 		Msg:  "保存成功",
@@ -181,6 +206,7 @@ func (s *SysSettingHandler) SaveSmmsSetting(ctx *gin.Context) {
 		})
 		return
 	}
+
 	sysId, _ := strconv.ParseUint(smmsForm.SysId, 10, 0)
 	smmsSetting := models.SysSetting{
 		Model: gorm.Model{ID: uint(sysId)},
@@ -189,10 +215,11 @@ func (s *SysSettingHandler) SaveSmmsSetting(ctx *gin.Context) {
 	picBedSetting := models.SysSetting{
 		Name: "图床设置",
 	}
+
 	picBedSettingItems, _ := models.SysSettingItem{}.GetBySysSettingName("图床设置")
 	if len(picBedSettingItems) == 0 {
 		if err := picBedSetting.Create(); err != nil {
-			log.Errorln("error: ", err.Error())
+			log.Logger.Sugar().Error("error: ", err.Error())
 			ctx.JSON(http.StatusOK, utils.Result{
 				Code: utils.ServerError,
 				Msg:  "服务器端错误",
@@ -204,9 +231,10 @@ func (s *SysSettingHandler) SaveSmmsSetting(ctx *gin.Context) {
 		sysId, _ := strconv.Atoi(picBedSettingItems["sys_id"])
 		picBedSetting.ID = uint(sysId)
 	}
+
 	if sysId == 0 {
 		if err := smmsSetting.Create(); err != nil {
-			log.Errorln("error: ", err.Error())
+			log.Logger.Sugar().Error("error: ", err.Error())
 			ctx.JSON(http.StatusOK, utils.Result{
 				Code: utils.ServerError,
 				Msg:  "服务器端错误",
@@ -215,10 +243,12 @@ func (s *SysSettingHandler) SaveSmmsSetting(ctx *gin.Context) {
 			return
 		}
 	}
+
 	picBedForm := forms.PicBedSettingForm{
 		SysId:       strconv.Itoa(int(picBedSetting.ID)),
 		StorageType: "sm.ms",
 	}
+
 	t := reflect.TypeOf(picBedForm)
 	v := reflect.ValueOf(picBedForm)
 	var itemList []models.SysSettingItem
@@ -230,9 +260,10 @@ func (s *SysSettingHandler) SaveSmmsSetting(ctx *gin.Context) {
 		}
 		itemList = append(itemList, item)
 	}
+
 	err := models.SysSettingItem{}.MultiCreateOrUpdate(itemList)
 	if err != nil {
-		log.Error("error: ", err.Error())
+		log.Logger.Sugar().Error("error: ", err.Error())
 		ctx.JSON(http.StatusOK, utils.Result{
 			Code: utils.ServerError,
 			Msg:  "服务器端错误",
@@ -240,6 +271,7 @@ func (s *SysSettingHandler) SaveSmmsSetting(ctx *gin.Context) {
 		})
 		return
 	}
+
 	smmsForm.SysId = strconv.Itoa(int(smmsSetting.ID))
 	t = reflect.TypeOf(smmsForm)
 	v = reflect.ValueOf(smmsForm)
@@ -252,9 +284,10 @@ func (s *SysSettingHandler) SaveSmmsSetting(ctx *gin.Context) {
 		}
 		itemList = append(itemList, item)
 	}
+
 	err = models.SysSettingItem{}.MultiCreateOrUpdate(itemList)
 	if err != nil {
-		log.Error("error: ", err.Error())
+		log.Logger.Sugar().Error("error: ", err.Error())
 		ctx.JSON(http.StatusOK, utils.Result{
 			Code: utils.ServerError,
 			Msg:  "服务器端错误",
@@ -262,6 +295,7 @@ func (s *SysSettingHandler) SaveSmmsSetting(ctx *gin.Context) {
 		})
 		return
 	}
+
 	ctx.JSON(http.StatusOK, utils.Result{
 		Code: utils.Success,
 		Msg:  "保存成功",
@@ -287,6 +321,7 @@ func (s *SysSettingHandler) SaveImgbbSetting(ctx *gin.Context) {
 		})
 		return
 	}
+
 	sysId, _ := strconv.ParseUint(imgbbForm.SysId, 10, 0)
 	imgbbSetting := models.SysSetting{
 		Model: gorm.Model{ID: uint(sysId)},
@@ -295,10 +330,11 @@ func (s *SysSettingHandler) SaveImgbbSetting(ctx *gin.Context) {
 	picBedSetting := models.SysSetting{
 		Name: "图床设置",
 	}
+
 	picBedSettingItems, _ := models.SysSettingItem{}.GetBySysSettingName("图床设置")
 	if len(picBedSettingItems) == 0 {
 		if err := picBedSetting.Create(); err != nil {
-			log.Errorln("error: ", err.Error())
+			log.Logger.Sugar().Error("error: ", err.Error())
 			ctx.JSON(http.StatusOK, utils.Result{
 				Code: utils.ServerError,
 				Msg:  "服务器端错误",
@@ -310,9 +346,10 @@ func (s *SysSettingHandler) SaveImgbbSetting(ctx *gin.Context) {
 		sysId, _ := strconv.Atoi(picBedSettingItems["sys_id"])
 		picBedSetting.ID = uint(sysId)
 	}
+
 	if sysId == 0 {
 		if err := imgbbSetting.Create(); err != nil {
-			log.Errorln("error: ", err.Error())
+			log.Logger.Sugar().Error("error: ", err.Error())
 			ctx.JSON(http.StatusOK, utils.Result{
 				Code: utils.ServerError,
 				Msg:  "服务器端错误",
@@ -336,9 +373,10 @@ func (s *SysSettingHandler) SaveImgbbSetting(ctx *gin.Context) {
 		}
 		itemList = append(itemList, item)
 	}
+
 	err := models.SysSettingItem{}.MultiCreateOrUpdate(itemList)
 	if err != nil {
-		log.Error("error: ", err.Error())
+		log.Logger.Sugar().Error("error: ", err.Error())
 		ctx.JSON(http.StatusOK, utils.Result{
 			Code: utils.ServerError,
 			Msg:  "服务器端错误",
@@ -346,6 +384,7 @@ func (s *SysSettingHandler) SaveImgbbSetting(ctx *gin.Context) {
 		})
 		return
 	}
+
 	imgbbForm.SysId = strconv.Itoa(int(imgbbSetting.ID))
 	t = reflect.TypeOf(imgbbForm)
 	v = reflect.ValueOf(imgbbForm)
@@ -358,9 +397,10 @@ func (s *SysSettingHandler) SaveImgbbSetting(ctx *gin.Context) {
 		}
 		itemList = append(itemList, item)
 	}
+
 	err = models.SysSettingItem{}.MultiCreateOrUpdate(itemList)
 	if err != nil {
-		log.Error("error: ", err.Error())
+		log.Logger.Sugar().Error("error: ", err.Error())
 		ctx.JSON(http.StatusOK, utils.Result{
 			Code: utils.ServerError,
 			Msg:  "服务器端错误",
@@ -368,6 +408,7 @@ func (s *SysSettingHandler) SaveImgbbSetting(ctx *gin.Context) {
 		})
 		return
 	}
+
 	ctx.JSON(http.StatusOK, utils.Result{
 		Code: utils.Success,
 		Msg:  "保存成功",
@@ -393,6 +434,7 @@ func (s *SysSettingHandler) SaveTencentCosSetting(ctx *gin.Context) {
 		})
 		return
 	}
+
 	sysId, _ := strconv.ParseUint(cosForm.SysId, 10, 0)
 	cosSetting := models.SysSetting{
 		Model: gorm.Model{ID: uint(sysId)},
@@ -401,10 +443,11 @@ func (s *SysSettingHandler) SaveTencentCosSetting(ctx *gin.Context) {
 	picBedSetting := models.SysSetting{
 		Name: "图床设置",
 	}
+
 	picBedSettingItems, _ := models.SysSettingItem{}.GetBySysSettingName("图床设置")
 	if len(picBedSettingItems) == 0 {
 		if err := picBedSetting.Create(); err != nil {
-			log.Errorln("error: ", err.Error())
+			log.Logger.Sugar().Error("error: ", err.Error())
 			ctx.JSON(http.StatusOK, utils.Result{
 				Code: utils.ServerError,
 				Msg:  "服务器端错误",
@@ -416,9 +459,10 @@ func (s *SysSettingHandler) SaveTencentCosSetting(ctx *gin.Context) {
 		sysId, _ := strconv.Atoi(picBedSettingItems["sys_id"])
 		picBedSetting.ID = uint(sysId)
 	}
+
 	if sysId == 0 {
 		if err := cosSetting.Create(); err != nil {
-			log.Errorln("error: ", err.Error())
+			log.Logger.Sugar().Error("error: ", err.Error())
 			ctx.JSON(http.StatusOK, utils.Result{
 				Code: utils.ServerError,
 				Msg:  "服务器端错误",
@@ -427,6 +471,7 @@ func (s *SysSettingHandler) SaveTencentCosSetting(ctx *gin.Context) {
 			return
 		}
 	}
+
 	picBedForm := forms.PicBedSettingForm{
 		SysId:       strconv.Itoa(int(picBedSetting.ID)),
 		StorageType: "cos",
@@ -442,9 +487,10 @@ func (s *SysSettingHandler) SaveTencentCosSetting(ctx *gin.Context) {
 		}
 		itemList = append(itemList, item)
 	}
+
 	err := models.SysSettingItem{}.MultiCreateOrUpdate(itemList)
 	if err != nil {
-		log.Error("error: ", err.Error())
+		log.Logger.Sugar().Error("error: ", err.Error())
 		ctx.JSON(http.StatusOK, utils.Result{
 			Code: utils.ServerError,
 			Msg:  "服务器端错误",
@@ -452,6 +498,7 @@ func (s *SysSettingHandler) SaveTencentCosSetting(ctx *gin.Context) {
 		})
 		return
 	}
+
 	cosForm.SysId = strconv.Itoa(int(cosSetting.ID))
 	t = reflect.TypeOf(cosForm)
 	v = reflect.ValueOf(cosForm)
@@ -464,9 +511,10 @@ func (s *SysSettingHandler) SaveTencentCosSetting(ctx *gin.Context) {
 		}
 		itemList = append(itemList, item)
 	}
+
 	err = models.SysSettingItem{}.MultiCreateOrUpdate(itemList)
 	if err != nil {
-		log.Error("error: ", err.Error())
+		log.Logger.Sugar().Error("error: ", err.Error())
 		ctx.JSON(http.StatusOK, utils.Result{
 			Code: utils.ServerError,
 			Msg:  "服务器端错误",
@@ -474,6 +522,7 @@ func (s *SysSettingHandler) SaveTencentCosSetting(ctx *gin.Context) {
 		})
 		return
 	}
+
 	ctx.JSON(http.StatusOK, utils.Result{
 		Code: utils.Success,
 		Msg:  "保存成功",
@@ -499,9 +548,10 @@ func (s *SysSettingHandler) SendTestEmail(ctx *gin.Context) {
 		})
 		return
 	}
+
 	emailSetting, err := models.SysSettingItem{}.GetBySysSettingName("邮件设置")
 	if err != nil {
-		log.Error("error: ", err.Error())
+		log.Logger.Sugar().Error("error: ", err.Error())
 		ctx.JSON(http.StatusOK, utils.Result{
 			Code: utils.ServerError,
 			Msg:  "服务器端错误",
@@ -509,6 +559,7 @@ func (s *SysSettingHandler) SendTestEmail(ctx *gin.Context) {
 		})
 		return
 	}
+
 	if len(emailSetting) == 0 {
 		ctx.JSON(http.StatusOK, utils.Result{
 			Code: utils.RequestError,
@@ -517,6 +568,7 @@ func (s *SysSettingHandler) SendTestEmail(ctx *gin.Context) {
 		})
 		return
 	}
+
 	msg := gomail.NewMessage()
 	// 设置收件人
 	msg.SetHeader("To", sendForm.ReceiveEmail)
@@ -530,10 +582,11 @@ func (s *SysSettingHandler) SendTestEmail(ctx *gin.Context) {
 	port, _ := strconv.Atoi(emailSetting["port"])
 	// 设置 SMTP 参数
 	d := gomail.NewDialer(emailSetting["address"], port, emailSetting["account"], emailSetting["pwd"])
+
 	// 发送
 	err = d.DialAndSend(msg)
 	if err != nil {
-		log.Error("邮件发送失败：", err.Error())
+		log.Logger.Sugar().Error("邮件发送失败：", err.Error())
 		ctx.JSON(http.StatusOK, utils.Result{
 			Code: utils.ServerError,
 			Msg:  "邮件发送失败",
@@ -541,6 +594,7 @@ func (s *SysSettingHandler) SendTestEmail(ctx *gin.Context) {
 		})
 		return
 	}
+
 	ctx.JSON(http.StatusOK, utils.Result{
 		Code: utils.Success,
 		Msg:  "发送成功",
@@ -558,7 +612,7 @@ func (s *SysSettingHandler) SendTestEmail(ctx *gin.Context) {
 func (s *SysSettingHandler) GetAdminIndexData(ctx *gin.Context) {
 	articleCount, err := models.Article{}.GetCount()
 	if err != nil {
-		log.Error("error: ", err.Error())
+		log.Logger.Sugar().Error("error: ", err.Error())
 		ctx.JSON(http.StatusOK, utils.Result{
 			Code: utils.ServerError,
 			Msg:  "服务器端错误",
@@ -566,9 +620,10 @@ func (s *SysSettingHandler) GetAdminIndexData(ctx *gin.Context) {
 		})
 		return
 	}
+
 	commentCount, err := models.Comment{}.GetCount()
 	if err != nil {
-		log.Error("error: ", err.Error())
+		log.Logger.Sugar().Error("error: ", err.Error())
 		ctx.JSON(http.StatusOK, utils.Result{
 			Code: utils.ServerError,
 			Msg:  "服务器端错误",
@@ -576,9 +631,10 @@ func (s *SysSettingHandler) GetAdminIndexData(ctx *gin.Context) {
 		})
 		return
 	}
+
 	latestArticles, err := models.Article{}.GetLatest(6)
 	if err != nil {
-		log.Error("error: ", err.Error())
+		log.Logger.Sugar().Error("error: ", err.Error())
 		ctx.JSON(http.StatusOK, utils.Result{
 			Code: utils.ServerError,
 			Msg:  "服务器端错误",
@@ -586,9 +642,10 @@ func (s *SysSettingHandler) GetAdminIndexData(ctx *gin.Context) {
 		})
 		return
 	}
+
 	latestComments, err := models.Comment{}.GetLatest(6)
 	if err != nil {
-		log.Error("error: ", err.Error())
+		log.Logger.Sugar().Error("error: ", err.Error())
 		ctx.JSON(http.StatusOK, utils.Result{
 			Code: utils.ServerError,
 			Msg:  "服务器端错误",
@@ -596,6 +653,7 @@ func (s *SysSettingHandler) GetAdminIndexData(ctx *gin.Context) {
 		})
 		return
 	}
+
 	ctx.JSON(http.StatusOK, utils.Result{
 		Code: utils.Success,
 		Msg:  "查询成功",
@@ -626,14 +684,16 @@ func (s *SysSettingHandler) SaveCommentSetting(ctx *gin.Context) {
 		})
 		return
 	}
+
 	sysId, _ := strconv.ParseUint(settingForm.SysId, 10, 0)
 	sysSetting := models.SysSetting{
 		Model: gorm.Model{ID: uint(sysId)},
 		Name:  settingForm.TypeName,
 	}
+
 	if sysId == 0 {
 		if err := sysSetting.Create(); err != nil {
-			log.Errorln("error: ", err.Error())
+			log.Logger.Sugar().Error("error: ", err.Error())
 			ctx.JSON(http.StatusOK, utils.Result{
 				Code: utils.ServerError,
 				Msg:  "服务器端错误",
@@ -653,9 +713,10 @@ func (s *SysSettingHandler) SaveCommentSetting(ctx *gin.Context) {
 		}
 		itemList = append(itemList, item)
 	}
+
 	err := models.SysSettingItem{}.MultiCreateOrUpdate(itemList)
 	if err != nil {
-		log.Error("error: ", err.Error())
+		log.Logger.Sugar().Error("error: ", err.Error())
 		ctx.JSON(http.StatusOK, utils.Result{
 			Code: utils.ServerError,
 			Msg:  "服务器端错误",
@@ -663,6 +724,7 @@ func (s *SysSettingHandler) SaveCommentSetting(ctx *gin.Context) {
 		})
 		return
 	}
+
 	ctx.JSON(http.StatusOK, utils.Result{
 		Code: utils.Success,
 		Msg:  "保存成功",
@@ -670,64 +732,34 @@ func (s *SysSettingHandler) SaveCommentSetting(ctx *gin.Context) {
 	})
 }
 
-// @Summary 上传图片
+// @Summary 保存参数配置
 // @Tags 系统设置
 // @version 1.0
 // @Accept application/json
+// @Param settingForm body forms.ParamSettingForm true "参数配置表单"
 // @Success 100 object utils.Result 成功
 // @Failure 103/104 object utils.Result 失败
-// @Router /api/v1/sys_setting/img/upload [post]
-func (s *SysSettingHandler) UploadImg(ctx *gin.Context) {
-	multiForm, _ := ctx.MultipartForm()
-	files := multiForm.File["file[]"]
-	for _, file := range files {
-		if !utils.IsImageFile(file.Filename) {
-			ctx.JSON(http.StatusOK, utils.Result{
-				Code: utils.RequestError,
-				Msg:  "只支持上传jpeg, jpg, png, gif, bmp 格式的图片",
-				Data: nil,
-			})
-			return
-		}
-	}
-	picBedSetting, err := models.SysSettingItem{}.GetBySysSettingName("图床设置")
-	if err != nil {
-		log.Errorln("err: ", err.Error())
-		ctx.JSON(http.StatusOK, utils.Result{
-			Code: utils.ServerError,
-			Msg:  "服务器端错误",
-			Data: nil,
-		})
-		return
-	}
-	if len(picBedSetting) == 0 {
+// @Router /api/v1/sys_setting/param [post]
+func (s *SysSettingHandler) SaveParamSetting(ctx *gin.Context) {
+	settingForm := forms.ParamSettingForm{}
+	if err := ctx.ShouldBindJSON(&settingForm); err != nil {
 		ctx.JSON(http.StatusOK, utils.Result{
 			Code: utils.RequestError,
-			Msg:  "请先配置图床",
+			Msg:  utils.GetFormError(err),
 			Data: nil,
 		})
 		return
 	}
-	imgSetting, err := models.SysSettingItem{}.GetBySysSettingName(picBedSetting["storage_type"])
-	if err != nil {
-		log.Errorln("err: ", err.Error())
-		ctx.JSON(http.StatusOK, utils.Result{
-			Code: utils.ServerError,
-			Msg:  "服务器端错误",
-			Data: nil,
-		})
-		return
+
+	sysId, _ := strconv.ParseUint(settingForm.SysId, 10, 0)
+	sysSetting := models.SysSetting{
+		Model: gorm.Model{ID: uint(sysId)},
+		Name:  settingForm.TypeName,
 	}
-	for _, file := range files {
-		switch picBedSetting["storage_type"] {
-		case "sm.ms":
-			err = utils.UploadToSmms(file, imgSetting["token"])
-		case "imgbb":
-			err = utils.UploadToImgbb(file, imgSetting["token"])
-		case "cos":
-			break
-		}
-		if err != nil {
+
+	if sysId == 0 {
+		if err := sysSetting.Create(); err != nil {
+			log.Logger.Sugar().Error("error: ", err.Error())
 			ctx.JSON(http.StatusOK, utils.Result{
 				Code: utils.ServerError,
 				Msg:  "服务器端错误",
@@ -736,9 +768,32 @@ func (s *SysSettingHandler) UploadImg(ctx *gin.Context) {
 			return
 		}
 	}
+	t := reflect.TypeOf(settingForm)
+	v := reflect.ValueOf(settingForm)
+	var itemList []models.SysSettingItem
+	for i := 0; i < t.NumField(); i++ {
+		item := models.SysSettingItem{
+			SysId: sysSetting.ID,
+			Key:   t.Field(i).Tag.Get("json"),
+			Val:   v.Field(i).Interface().(string),
+		}
+		itemList = append(itemList, item)
+	}
+
+	err := models.SysSettingItem{}.MultiCreateOrUpdate(itemList)
+	if err != nil {
+		log.Logger.Sugar().Error("error: ", err.Error())
+		ctx.JSON(http.StatusOK, utils.Result{
+			Code: utils.ServerError,
+			Msg:  "服务器端错误",
+			Data: nil,
+		})
+		return
+	}
+
 	ctx.JSON(http.StatusOK, utils.Result{
 		Code: utils.Success,
-		Msg:  "上传成功",
+		Msg:  "保存成功",
 		Data: nil,
 	})
 }
