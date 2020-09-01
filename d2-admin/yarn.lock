@@ -10469,10 +10469,10 @@ vary@~1.1.2:
   resolved "https://registry.yarnpkg.com/vary/-/vary-1.1.2.tgz#2299f02c6ded30d4a5961b0b9f74524a18f634fc"
   integrity sha1-IpnwLG3tMNSllhsLn3RSShj2NPw=
 
-vditor@^3.3.3:
-  version "3.4.1"
-  resolved "https://registry.yarnpkg.com/vditor/-/vditor-3.4.1.tgz#170cfac67dbc20b08179b25ce3792b87f7d6b311"
-  integrity sha512-zqsWrk6jXtvGUEJXz+2kbAeRZW0In6B2H16e9EWc9DLQE7ZXhAgy2MShgLro8soFejQ47k6HoZTZ8yY7k4cDYg==
+vditor@^3.4.6:
+  version "3.4.6"
+  resolved "https://registry.yarnpkg.com/vditor/-/vditor-3.4.6.tgz#b9a36f1004ef63cad3fe2ae811d5259e1e6c3874"
+  integrity sha512-SIAXtJzjB+cBKg/3Prw+YbIGnc0b1pnqgWd8weYNw9XgxE3bgxXgeig6r1XAu+heG8uXn0ea2/s3sZ176t31jA==
   dependencies:
     diff-match-patch "^1.0.5"
 
@@ -10803,9 +10803,9 @@ websocket-driver@>=0.5.1:
     websocket-extensions ">=0.1.1"
 
 websocket-extensions@>=0.1.1:
-  version "0.1.3"
-  resolved "https://registry.yarnpkg.com/websocket-extensions/-/websocket-extensions-0.1.3.tgz#5d2ff22977003ec687a4b87073dfbbac146ccf29"
-  integrity sha512-nqHUnMXmBzT0w570r2JpJxfiSD1IzoI+HGVdd3aZ0yNi3ngvQ4jv1dtHt5VGxfI2yj5yqImPhOK4vmIh2xMbGg==
+  version "0.1.4"
+  resolved "https://registry.yarnpkg.com/websocket-extensions/-/websocket-extensions-0.1.4.tgz#7f8473bc839dfd87608adb95d7eb075211578a42"
+  integrity sha512-OqedPIGOfsDlo31UNwYbCFMSaO9m9G/0faIHj5/dZFDMFqPTcx6UwqyOy3COEaEOg/9VsGIpdqn62W5KhoKSpg==
 
 whatwg-encoding@^1.0.1, whatwg-encoding@^1.0.3, whatwg-encoding@^1.0.5:
   version "1.0.5"
