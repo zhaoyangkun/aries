@@ -31,7 +31,7 @@ export default {
     }
   },
   methods: {
-    // 初始化vditor
+    // 初始化 vditor
     initEditor () {
       this.contentEditor = new Vditor('addEditor', {
         height: 380,

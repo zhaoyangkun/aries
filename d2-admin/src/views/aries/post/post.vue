@@ -612,6 +612,7 @@ export default {
         this.$refs[formName].resetFields()
       }
     },
+    // 清空表单验证
     clearValidate (formName) {
       if (this.$refs[formName] !== undefined) {
         this.$refs[formName].clearValidate()

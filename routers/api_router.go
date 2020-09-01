@@ -23,6 +23,8 @@ func (a *ApiRouter) InitApiRouter(rootPath string, router *gin.Engine) {
 	pictureHandler := api.PictureHandler{}
 	journalHandler := api.JournalHandler{}
 	galleryHandler := api.GalleryHandler{}
+	pageHandler := api.PageHandler{}
+
 	authApiRouter := router.Group(rootPath)
 	{
 		authApiRouter.POST("/auth/login", authHandler.Login)
@@ -150,5 +152,14 @@ func (a *ApiRouter) InitApiRouter(rootPath string, router *gin.Engine) {
 		galleryApiRouter.POST("/galleries", galleryHandler.CreateGallery)
 		galleryApiRouter.PUT("/galleries", galleryHandler.UpdateGallery)
 		galleryApiRouter.DELETE("/galleries", galleryHandler.MultiDelGalleries)
+	}
+
+	pageApiRouter := router.Group(rootPath, middlewares.JWTAuth())
+	{
+		pageApiRouter.GET("/all_pages", pageHandler.GetAllPages)
+		pageApiRouter.GET("/pages", pageHandler.GetPagesByPage)
+		pageApiRouter.POST("/pages", pageHandler.CreatePage)
+		pageApiRouter.PUT("/pages", pageHandler.UpdatePage)
+		pageApiRouter.DELETE("/pages", pageHandler.MultiDelPages)
 	}
 }
