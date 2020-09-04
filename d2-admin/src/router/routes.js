@@ -140,6 +140,15 @@ const frameIn = [
         component: _import('aries/system/attachment')
       },
       {
+        path: 'theme',
+        name: 'theme',
+        meta: {
+          title: '主题',
+          auth: true
+        },
+        component: _import('aries/theme/theme')
+      },
+      {
         path: 'doc',
         name: 'doc',
         meta: {

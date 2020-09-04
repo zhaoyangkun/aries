@@ -71,7 +71,7 @@ func InitApp() *gin.Engine {
 	})
 	// 加载静态资源和模板
 	router.Static("/static", fmt.Sprintf("themes/%s/static", setting.BlogVars.Theme))
-	router.LoadHTMLGlob(fmt.Sprintf("themes/%s/templates/**", setting.BlogVars.Theme))
+	router.LoadHTMLGlob(fmt.Sprintf("themes/%s/templates/**/*", setting.BlogVars.Theme))
 
 	// 加载路由
 	apiRouter := routers.ApiRouter{}

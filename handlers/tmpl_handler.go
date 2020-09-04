@@ -2,8 +2,10 @@ package handlers
 
 import (
 	"aries/config/setting"
+	"aries/log"
 	"aries/models"
 	"aries/utils"
+	"errors"
 	"net/http"
 	"strconv"
 
@@ -23,7 +25,7 @@ func (t *TmplHandler) IndexTmpl(ctx *gin.Context) {
 	if page != "" {
 		p, err := strconv.ParseUint(page, 10, 0)
 		if err != nil {
-			ctx.Redirect(http.StatusTemporaryRedirect, "/error/404")
+			_ = ctx.AbortWithError(http.StatusBadRequest, errors.New("请求参数错误"))
 			return
 		}
 		pagination.Page = uint(p)
@@ -33,7 +35,7 @@ func (t *TmplHandler) IndexTmpl(ctx *gin.Context) {
 	if size, ok := paramSetting["index_page_size"]; ok {
 		s, err := strconv.ParseUint(size, 10, 0)
 		if err != nil {
-			ctx.Redirect(http.StatusTemporaryRedirect, "/error/500")
+			_ = ctx.AbortWithError(http.StatusBadRequest, errors.New("请求参数错误"))
 			return
 		}
 		pagination.Size = uint(s)
@@ -63,26 +65,12 @@ func (t *TmplHandler) ArticleTmpl(ctx *gin.Context) {
 	url := ctx.Param("url")
 	article, _ := models.Article{}.GetByUrl(url)
 	if article.Title == "" {
-		ctx.Redirect(http.StatusTemporaryRedirect, "/error/404")
+		log.Logger.Debug("error 400")
+		ctx.JSON(http.StatusBadRequest, nil)
 		return
 	}
 	ctx.HTML(http.StatusOK, "article.tmpl", gin.H{
 		"blogVars": setting.BlogVars,
 		"article":  article,
 	})
-}
-
-// 403 错误页
-func (t *TmplHandler) Error403Tmpl(ctx *gin.Context) {
-	ctx.HTML(http.StatusOK, "403.tmpl", nil)
-}
-
-// 404 错误页
-func (t *TmplHandler) Error404Tmpl(ctx *gin.Context) {
-	ctx.HTML(http.StatusOK, "404.tmpl", nil)
-}
-
-// 500 错误页
-func (t *TmplHandler) Error500Tmpl(ctx *gin.Context) {
-	ctx.HTML(http.StatusOK, "500.tmpl", nil)
 }

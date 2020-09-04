@@ -9,9 +9,9 @@ import (
 
 //  JWT 权限校验中间件
 func JWTAuth() gin.HandlerFunc {
-	return func(context *gin.Context) {
-		token := context.Request.Header.Get("token") // 从请求体头部获取 token
-		result := utils.Result{                      // 封装返回体内容
+	return func(ctx *gin.Context) {
+		token := ctx.Request.Header.Get("token") // 从请求体头部获取 token
+		result := utils.Result{                  // 封装返回体内容
 			Code: utils.Forbidden, // 状态码
 			Msg:  "",              // 提示信息
 			Data: nil,             // 数据
@@ -19,8 +19,8 @@ func JWTAuth() gin.HandlerFunc {
 
 		if token == "" { // token 为空
 			result.Msg = "请求未携带 Token，无权访问"
-			context.JSON(http.StatusOK, result) // 返回 json
-			context.Abort()                     // 停止处理 handler
+			ctx.JSON(http.StatusOK, result) // 返回 json
+			ctx.Abort()                     // 停止处理 handler
 			return
 		}
 
@@ -28,12 +28,12 @@ func JWTAuth() gin.HandlerFunc {
 		claims, err := jwt.ParseToken(token) // 解析 Token
 		if err != nil {                      // 错误处理
 			result.Msg = err.Error()
-			context.JSON(http.StatusOK, result) // 返回 json
-			context.Abort()
+			ctx.JSON(http.StatusOK, result) // 返回 json
+			ctx.Abort()
 			return
 		}
 
 		// 继续交由下一个 handler 处理,并将解析出的信息传递下去
-		context.Set("claims", claims)
+		ctx.Set("claims", claims)
 	}
 }

@@ -124,6 +124,11 @@ func (b *BlogVariable) InitBlogVars(siteSetting map[string]string) {
 	} else {
 		b.Theme = "xue"
 	}
+	if contextPath, ok := siteSetting["site_url"]; ok {
+		b.ContextPath = contextPath
+	} else {
+		b.ContextPath = "http://localhost:8088"
+	}
 	if siteName, ok := siteSetting["site_name"]; ok {
 		b.SiteName = siteName
 	} else {
@@ -142,9 +147,10 @@ func (b *BlogVariable) InitBlogVars(siteSetting map[string]string) {
 	} else {
 		b.SiteLogo = "https://s1.ax1x.com/2020/08/07/aWuU41.png"
 	}
-	if contextPath, ok := siteSetting["site_url"]; ok {
-		b.ContextPath = contextPath
-	} else {
-		b.ContextPath = "http://localhost:8088"
+	if globalHeader, ok := siteSetting["head_content"]; ok {
+		b.GlobalHeader = globalHeader
+	}
+	if globalFooter, ok := siteSetting["footer_content"]; ok {
+		b.GlobalFooter = globalFooter
 	}
 }

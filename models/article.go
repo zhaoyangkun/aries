@@ -130,7 +130,7 @@ func (Article) GetByPage(page *utils.Pagination, key string, state uint,
 
 // 根据 Url 获取文章
 func (Article) GetByUrl(url string) (article Article, err error) {
-	err = db.Db.Where("`url` = ?", url).First(&article).Error
+	err = db.Db.Preload("Category").Preload("TagList").Where("`url` = ?", url).First(&article).Error
 	return
 }
 

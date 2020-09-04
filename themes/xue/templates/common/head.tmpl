@@ -8,14 +8,8 @@
         <link rel="shortcut icon" href="{{ .blogVars.SiteLogo }}">
         <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
         <title>{{ .blogVars.SiteName }}</title>
-        <script language=javascript>
-            window.onerror = function () {
-                return true;
-            }
-        </script>
-
         <link rel="stylesheet" href="{{ .blogVars.ContextPath }}/static/css/tailwind.min.css">
-        <link rel="stylesheet" href="{{ .blogVars.ContextPath }}/static/css/viewer.min.css">
+        <link rel="stylesheet" href="{{ .mblogVars.ContextPath }}/static/css/viewer.min.css">
         <link rel="stylesheet" href="{{ .blogVars.ContextPath }}/static/css/lightgallery.min.css">
         <link rel="stylesheet" href="{{ .blogVars.ContextPath }}/static/css/justifiedGallery.min.css">
         <link rel="stylesheet" href="{{ .blogVars.ContextPath }}/static/css/github-gist.min.css">
@@ -65,6 +59,14 @@
                 }
             }
         </style>
+
+        {{ safe .blogVars.GlobalHeader }}
+
+        <script language=javascript>
+            window.onerror = function () {
+                return true;
+            }
+        </script>
 
         <script type="application/javascript">
             window.onerror = function () {

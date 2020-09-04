@@ -1,6 +1,7 @@
 package middlewares
 
 import (
+	"aries/config/setting"
 	"net"
 	"net/http"
 	"net/http/httputil"
@@ -13,7 +14,7 @@ import (
 	"go.uber.org/zap"
 )
 
-// Logger 接收gin框架默认的日志
+// Logger 接收 gin 框架默认的日志
 func Logger(logger *zap.Logger) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		start := time.Now()
@@ -43,6 +44,36 @@ func Logger(logger *zap.Logger) gin.HandlerFunc {
 		//	zap.Duration("cost", cost),
 		//)
 		logger.Sugar().Infof("| %3d | %13v | %s | %s | %s%s |", status, cost, ip, method, path, query)
+
+		// 错误页面跳转
+		if !strings.Contains(path, "/api") && !strings.Contains(path, "/static") {
+			switch status {
+			case 400:
+				c.HTML(http.StatusOK, "error.tmpl", gin.H{
+					"blogVars": setting.BlogVars,
+					"code":     "400",
+					"msg":      "请求数据有误",
+				})
+			case 403:
+				c.HTML(http.StatusOK, "error.tmpl", gin.H{
+					"blogVars": setting.BlogVars,
+					"code":     "403",
+					"msg":      "您无权访问该页面",
+				})
+			case 404:
+				c.HTML(http.StatusOK, "error.tmpl", gin.H{
+					"blogVars": setting.BlogVars,
+					"code":     "404",
+					"msg":      "您访问的页面不存在",
+				})
+			case 500:
+				c.HTML(http.StatusOK, "error.tmpl", gin.H{
+					"blogVars": setting.BlogVars,
+					"code":     "500",
+					"msg":      "服务器内部发生了错误",
+				})
+			}
+		}
 	}
 }
 

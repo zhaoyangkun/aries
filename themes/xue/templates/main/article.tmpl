@@ -118,7 +118,8 @@
 <main class="mx-auto home-page" id="container">
     <header class="bg-cover post-cover" id="postHeader">
         <div class="cover-bg">
-            <img src="https://zyk-1300089264.cos.ap-shanghai.myqcloud.com/halo/bing.lylares.com-2020-02-22-1080p_1589164782552.jpg" class="z-auto" alt="相遇在人海，聚散在重逢之外">
+            <img src="https://zyk-1300089264.cos.ap-shanghai.myqcloud.com/halo/bing.lylares.com-2020-02-22-1080p_1589164782552.jpg"
+                 class="z-auto" alt="相遇在人海，聚散在重逢之外">
         </div>
         <div class="cover-content post-cover-content flex justify-center">
             <!-- 封面内容 -->
@@ -126,15 +127,18 @@
                 <p class="post-title cover-title text-base lg:text-4xl xl:text-5xl md:text-3xl">相遇在人海，聚散在重逢之外</p>
                 <div class="post-meta">
                     <div class="post-meta-wrap">
-                        <img class="author-avatar" srcset="//cn.gravatar.com/avatar/7b072beef3e42b99231f9ecb0a0856b9&amp;d=mm, //cn.gravatar.com/avatar/7b072beef3e42b99231f9ecb0a0856b9&amp;d=mm 2x" src="//cn.gravatar.com/avatar/7b072beef3e42b99231f9ecb0a0856b9&amp;d=mm" alt="">
+                        <img class="author-avatar"
+                             srcset="//cn.gravatar.com/avatar/7b072beef3e42b99231f9ecb0a0856b9&amp;d=mm, //cn.gravatar.com/avatar/7b072beef3e42b99231f9ecb0a0856b9&amp;d=mm 2x"
+                             src="//cn.gravatar.com/avatar/7b072beef3e42b99231f9ecb0a0856b9&amp;d=mm" alt="">
                         <span class="post-author">478 次访问</span>
                         <time class="published" datetime="2020-04-15">2020-04-15</time>
                     </div>
                     <div class="text-center post-categories">
                         <span class="iconfont icon-folder"> </span>
 
-                        <a href="https://www.cangmangai.cn/categories/perception" class="post-category" data-pjax-state="">
-                            · 感悟
+                        <a href="https://www.cangmangai.cn/categories/perception" class="post-category"
+                           data-pjax-state="">
+                            · {{ .article.Category.Name }}
                         </a>
                     </div>
                 </div>
@@ -142,7 +146,8 @@
         </div>
     </header>
     <div class="article-content content-container">
-        <div class="container mx-auto px-4 md-content mt-8 max-w-6xl tracking-wider md:leading-relaxed sm:leading-normal ct-container cn-pd" id="write">
+        <div class="container mx-auto px-4 md-content mt-8 max-w-6xl tracking-wider md:leading-relaxed sm:leading-normal ct-container cn-pd"
+             id="write">
             {{ safe .article.MDContent }}
         </div>
         <div id="tocFlag"></div>
@@ -157,12 +162,15 @@
             </button>
         </p>
         <p class="flex flex-row justify-start flex-wrap">
-            <a href="https://www.cangmangai.cn/tags/生活" class="post-tag mt-2 mb-2 mr-2" data-pjax-state="">
-                #&nbsp;生活
-            </a>
+            {{ range $tag := .article.TagList -}}
+                <a href="{{ $.blogVars.ContextPath }}/tags/{{ $tag.Name }}" class="post-tag mt-2 mb-2 mr-2"
+                   data-pjax-state="">
+                    #&nbsp;{{ $tag.Name }}
+                </a>
+            {{ end -}}
             <span class="share-btn">
-                        <span class="iconfont icon-share"> </span>
-                    </span>
+                <span class="iconfont icon-share"> </span>
+            </span>
         </p>
         <hr class="mt-4" style="background-color: rgba(96, 125, 139, .05); size: 2px;">
         <div id="socialShare" class="no-show mt-4 share-area">
@@ -179,7 +187,8 @@
             </a>
         </div>
         <div class="next-post pt-4 text-right">
-            <a href="https://www.cangmangai.cn/archives/compress-statics-in-django" class="nav-previous" data-pjax-state="">
+            <a href="https://www.cangmangai.cn/archives/compress-statics-in-django" class="nav-previous"
+               data-pjax-state="">
                 <div class="nav-inside">
                     <span class="nav-title">Django压缩静态文件</span>
                     <span class="nav-before"> <span class="cst-icon icon-next"> </span></span>

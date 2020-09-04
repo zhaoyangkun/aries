@@ -189,8 +189,13 @@
                 {{ end }}
                 {{ range $page := .pages }}
                     <li>
-                        <a class="pagination-circle {{ if eq $page $.currentPage }}is-current{{ end }}"
-                           href="{{ $.blogVars.ContextPath }}/page/{{ $page }}">{{ $page }}</a>
+                        {{ if eq $page $.currentPage }}
+                            <a class="pagination-circle is-current"
+                               href="javascript:void(0);">{{ $page }}</a>
+                        {{ else }}
+                            <a class="pagination-circle"
+                               href="{{ $.blogVars.ContextPath }}/page/{{ $page }}">{{ $page }}</a>
+                        {{ end }}
                     </li>
                 {{ end }}
                 {{ $totalPage := len .pages }}
@@ -268,9 +273,11 @@
         </div>
 
         <div class="site-info flex flex-col justify-center">
+
             <p><a href="https://www.cangmangai.cn/" target="_blank">苍茫误此生博客</a> © 2020</p>
 
-            <p><a href="http://beian.miit.gov.cn" target="_blank" class="text-xs">浙ICP备19028355号-2</a></p>
+            {{ safe .blogVars.GlobalFooter }}
+
             <!-- 请尊重作者，请务必保留版权 -->
             <div class="badges">
                 <div class="github-badge">
@@ -296,8 +303,9 @@
                 <div class="github-badge">
                     <a style="color: #fff" rel="license" href="javascript:void(0)">
                         <span class="badge-subject">用户</span>
-                        <span id="busuanzi_container_site_uv"><span class="badge-value bg-brightgreen"
-                                                                    id="busuanzi_value_site_uv"></span></span>
+                        <span id="busuanzi_container_site_uv">
+                            <span class="badge-value bg-brightgreen" id="busuanzi_value_site_uv"></span>
+                        </span>
                     </a>
                 </div>
                 <div class="github-badge">
@@ -316,7 +324,6 @@
         server="netease"
         type="playlist"
         fixed="true"
-        autoplay="true"
         id="5025401103">
 </meting-js>
 
