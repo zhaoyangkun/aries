@@ -66,37 +66,37 @@ Aries 是基于 Gin + GORM + MySQL + Vue + H5 开发的现代化博客系统，�
 
 - 后台管理端
 
-  ![初始化配置](https://e4dwm6.coding-pages.com/article/2020/9/10/20200910102026.png)
+  ![初始化配置](https://s1.ax1x.com/2020/09/10/wGcW80.png)
 
-  ![登录](https://e4dwm6.coding-pages.com/article/2020/9/10/20200910101720.png)
+  ![登录](https://s1.ax1x.com/2020/09/10/wGcob4.png)
 
-  ![写文章](https://e4dwm6.coding-pages.com/article/2020/9/10/20200910102450.png)
+  ![写文章](https://s1.ax1x.com/2020/09/10/wGcb5R.png)
 
-  ![设置](https://e4dwm6.coding-pages.com/article/2020/9/10/20200910102605.png)
+  ![设置](https://s1.ax1x.com/2020/09/10/wGcjxK.png)
 
-  ![文章列表](https://e4dwm6.coding-pages.com/article/2020/9/10/20200910111630.png)
+  ![文章列表](https://s1.ax1x.com/2020/09/10/wGczrD.png)
 
-  ![图片上传](https://e4dwm6.coding-pages.com/article/2020/9/10/20200910104827.png)
+  ![图片上传](https://s1.ax1x.com/2020/09/10/wGgCad.png)
 
-  ![附件列表](https://e4dwm6.coding-pages.com/article/2020/9/10/20200910111523.png)
+  ![附件列表](https://s1.ax1x.com/2020/09/10/wGgExf.png)
 
-  ![添加图库](https://e4dwm6.coding-pages.com/article/2020/9/10/20200910111730.png)
+  ![添加图库](https://s1.ax1x.com/2020/09/10/wGgZM8.png)
 
 - 博客展示端
 
-  ![首页](https://e4dwm6.coding-pages.com/article/2020/9/10/20200910105929.png)
+  ![首页](https://s1.ax1x.com/2020/09/10/wGglin.png)
 
-  ![文章详情](https://e4dwm6.coding-pages.com/article/2020/9/10/20200910110249.png)
+  ![文章详情](https://s1.ax1x.com/2020/09/10/wGgdo9.png)
 
-  ![分类列表](https://e4dwm6.coding-pages.com/article/2020/9/10/20200910110729.png)
+  ![分类列表](https://s1.ax1x.com/2020/09/10/wGgyQK.png)
 
-  ![标签列表](https://e4dwm6.coding-pages.com/article/2020/9/10/20200910110801.png)
+  ![标签列表](https://s1.ax1x.com/2020/09/10/wGg4JI.png)
 
-  ![归档](https://e4dwm6.coding-pages.com/article/2020/9/10/20200910110325.png)
+  ![归档](https://s1.ax1x.com/2020/09/10/wGg7y8.png)
 
-  ![友链](https://e4dwm6.coding-pages.com/article/2020/9/10/20200910110634.png)
+  ![友链](https://s1.ax1x.com/2020/09/10/wGgLwQ.png)
 
-  ![相册](https://e4dwm6.coding-pages.com/article/2020/9/10/20200910111228.png)
+  ![相册](https://s1.ax1x.com/2020/09/10/wGgOoj.png)
 
 ## 如何在本地运行 Aries
 
