@@ -66,37 +66,37 @@ Aries 是基于 Gin + GORM + MySQL + Vue + H5 开发的现代化博客系统，�
 
 - 后台管理端
 
-  ![初始化配置](https://cangmang.coding.net/p/image/d/image/git/raw/master/article/2020/9/10/20200910102026.png)
+  ![初始化配置](https://e4dwm6.coding-pages.com//article/2020/9/10/20200910102026.png)
 
-  ![登录](https://cangmang.coding.net/p/image/d/image/git/raw/master/article/2020/9/10/20200910101720.png)
+  ![登录](https://e4dwm6.coding-pages.com//article/2020/9/10/20200910101720.png)
 
-  ![写文章](https://cangmang.coding.net/p/image/d/image/git/raw/master/article/2020/9/10/20200910102450.png)
+  ![写文章](https://e4dwm6.coding-pages.com//article/2020/9/10/20200910102450.png)
 
-  ![设置](https://cangmang.coding.net/p/image/d/image/git/raw/master/article/2020/9/10/20200910102605.png)
+  ![设置](https://e4dwm6.coding-pages.com//article/2020/9/10/20200910102605.png)
 
-  ![文章列表](https://cangmang.coding.net/p/image/d/image/git/raw/master/article/2020/9/10/20200910111630.png)
+  ![文章列表](https://e4dwm6.coding-pages.com//article/2020/9/10/20200910111630.png)
 
-  ![图片上传](https://cangmang.coding.net/p/image/d/image/git/raw/master/article/2020/9/10/20200910104827.png)
+  ![图片上传](https://e4dwm6.coding-pages.com//article/2020/9/10/20200910104827.png)
 
-  ![附件列表](https://cangmang.coding.net/p/image/d/image/git/raw/master/article/2020/9/10/20200910111523.png)
+  ![附件列表](https://e4dwm6.coding-pages.com//article/2020/9/10/20200910111523.png)
 
-  ![添加图库](https://cangmang.coding.net/p/image/d/image/git/raw/master/article/2020/9/10/20200910111730.png)
+  ![添加图库](https://e4dwm6.coding-pages.com//article/2020/9/10/20200910111730.png)
 
 - 博客展示端
 
-  ![首页](https://cangmang.coding.net/p/image/d/image/git/raw/master/article/2020/9/10/20200910105929.png)
+  ![首页](https://e4dwm6.coding-pages.com//article/2020/9/10/20200910105929.png)
 
-  ![文章详情](https://cangmang.coding.net/p/image/d/image/git/raw/master/article/2020/9/10/20200910110249.png)
+  ![文章详情](https://e4dwm6.coding-pages.com//article/2020/9/10/20200910110249.png)
 
-  ![分类列表](https://cangmang.coding.net/p/image/d/image/git/raw/master/article/2020/9/10/20200910110729.png)
+  ![分类列表](https://e4dwm6.coding-pages.com//article/2020/9/10/20200910110729.png)
 
-  ![标签列表](https://cangmang.coding.net/p/image/d/image/git/raw/master/article/2020/9/10/20200910110801.png)
+  ![标签列表](https://e4dwm6.coding-pages.com//article/2020/9/10/20200910110801.png)
 
-  ![归档](https://cangmang.coding.net/p/image/d/image/git/raw/master/article/2020/9/10/20200910110325.png)
+  ![归档](https://e4dwm6.coding-pages.com//article/2020/9/10/20200910110325.png)
 
-  ![友链](https://cangmang.coding.net/p/image/d/image/git/raw/master/article/2020/9/10/20200910110634.png)
+  ![友链](https://e4dwm6.coding-pages.com//article/2020/9/10/20200910110634.png)
 
-  ![相册](https://cangmang.coding.net/p/image/d/image/git/raw/master/article/2020/9/10/20200910111228.png)
+  ![相册](https://e4dwm6.coding-pages.com//article/2020/9/10/20200910111228.png)
 
 ## 如何在本地运行 Aries
 
