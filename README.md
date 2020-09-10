@@ -72,8 +72,6 @@ Aries 是基于 Gin + GORM + MySQL + Vue + H5 开发的现代化博客系统，�
 
   ![写文章](https://cangmang.coding.net/p/image/d/image/git/raw/master/article/2020/9/10/20200910102450.png)
 
-  ![image-20200910111614889](C:\Users\22950\AppData\Roaming\Typora\typora-user-images\image-20200910111614889.png
-
   ![设置](https://cangmang.coding.net/p/image/d/image/git/raw/master/article/2020/9/10/20200910102605.png)
 
   ![文章列表](https://cangmang.coding.net/p/image/d/image/git/raw/master/article/2020/9/10/20200910111630.png)
