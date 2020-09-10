@@ -7,5 +7,6 @@ import (
 )
 
 func TestGetRandom(t *testing.T) {
-	fmt.Println("random: ", utils.CreateRandomCode(4))
+	s, _ := utils.CreateRandomCode(4)
+	fmt.Println("random: ", s)
 }

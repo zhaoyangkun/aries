@@ -2,6 +2,7 @@ package api
 
 import (
 	"aries/forms"
+	"aries/handlers"
 	"aries/log"
 	"aries/models"
 	"aries/utils"
@@ -80,6 +81,8 @@ func (n *NavHandler) CreateNav(ctx *gin.Context) {
 		return
 	}
 
+	handlers.InitTmplVars()
+
 	ctx.JSON(http.StatusOK, utils.Result{
 		Code: utils.Success,
 		Msg:  "添加成功",
@@ -125,6 +128,8 @@ func (n *NavHandler) UpdateNav(ctx *gin.Context) {
 		})
 		return
 	}
+
+	handlers.InitTmplVars()
 
 	ctx.JSON(http.StatusOK, utils.Result{
 		Code: utils.Success,
@@ -188,6 +193,8 @@ func (n *NavHandler) MoveNavUp(ctx *gin.Context) {
 		return
 	}
 
+	handlers.InitTmplVars()
+
 	ctx.JSON(http.StatusOK, utils.Result{
 		Code: utils.Success,
 		Msg:  "向上移动成功",
@@ -250,6 +257,8 @@ func (n *NavHandler) MoveNavDown(ctx *gin.Context) {
 		return
 	}
 
+	handlers.InitTmplVars()
+
 	ctx.JSON(http.StatusOK, utils.Result{
 		Code: utils.Success,
 		Msg:  "向下移动成功",
@@ -278,6 +287,8 @@ func (n *NavHandler) DeleteNav(ctx *gin.Context) {
 		})
 		return
 	}
+
+	handlers.InitTmplVars()
 
 	ctx.JSON(http.StatusOK, utils.Result{
 		Code: utils.Success,
@@ -315,6 +326,8 @@ func (n *NavHandler) MultiDelNavs(ctx *gin.Context) {
 		})
 		return
 	}
+
+	handlers.InitTmplVars()
 
 	ctx.JSON(http.StatusOK, utils.Result{
 		Code: utils.Success,

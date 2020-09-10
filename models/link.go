@@ -12,7 +12,7 @@ import (
 type Link struct {
 	gorm.Model
 	Category   Category `gorm:"ForeignKey:CategoryId" json:"category"` // 分类
-	CategoryId *uint    `json:"category_id"`                           // 分类 ID
+	CategoryId uint     `json:"category_id"`                           // 分类 ID
 	Name       string   `gorm:"varchar(100);not null;" json:"name"`    // 网站名称
 	Url        string   `gorm:"varchar(255);not null;" json:"url"`     // 网站地址
 	Desc       string   `gorm:"varchar(255);" json:"desc"`             // 网站描述
@@ -21,7 +21,7 @@ type Link struct {
 
 // 获取所有友链
 func (Link) GetAll() (list []Link, err error) {
-	err = db.Db.Preload("Category").Find(&list).Error
+	err = db.Db.Preload("Category").Order("category_id desc,created_at desc", true).Find(&list).Error
 	return
 }
 
@@ -29,7 +29,7 @@ func (Link) GetAll() (list []Link, err error) {
 func (Link) GetByPage(page *utils.Pagination, key string, categoryId uint) ([]Link, uint, error) {
 	var list []Link
 
-	query := db.Db.Model(&Link{}).Preload("Category")
+	query := db.Db.Model(&Link{}).Preload("Category").Order("category_id desc,created_at desc", true)
 
 	if key != "" {
 		query = query.Where("`name` like concat('%',?,'%')", key)

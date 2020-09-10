@@ -36,6 +36,12 @@ type Article struct {
 	VisitCount       uint     `gorm:"type:int;default:0;" json:"visit_count"`              // 浏览数
 }
 
+// 归档
+type Archive struct {
+	Year  int `json:"year"`
+	Month int `json:"month"`
+}
+
 // 获取文章总数
 func (Article) GetCount() (int, error) {
 	count := 0
@@ -61,6 +67,43 @@ func (Article) GetAll() (list []Article, err error) {
 func (Article) GetById(id string) (article Article, err error) {
 	err = db.Db.Preload("Category").Preload("TagList").
 		Where("`id` = ?", id).First(&article).Error
+	return
+}
+
+// 根据分类名获取文章
+func (Article) GetByCategoryUrl(page *utils.Pagination, url string) (list []Article, name string, total uint, err error) {
+	category, err := Category{}.GetByUrl(url)
+	if err != nil {
+		return
+	}
+
+	name = category.Name
+
+	query := db.Db.Model(&Article{}).Where("`category_id` = ?", category.ID)
+	total, err = utils.ToPage(page, query, &list)
+
+	return
+}
+
+// 根据标签名获取文章
+func (Article) GetByTagName(page *utils.Pagination, tagName string) (list []Article, total uint, err error) {
+	limit := page.Size
+	offset := (page.Page - 1) * page.Size
+
+	tag, err := Tag{}.GetByName(tagName)
+	if err != nil {
+		return
+	}
+
+	err = db.Db.Raw("select count(`id`) from `articles` where `id` in "+
+		"(select `article_id` from `tag_article` where `tag_id` = ?)", tag.ID).Row().Scan(&total)
+	if err != nil {
+		return
+	}
+
+	err = db.Db.Raw("select * from `articles` where `id` in "+
+		"(select `article_id` from `tag_article` where `tag_id` = ?) "+
+		"limit ? offset ?", tag.ID, limit, offset).Scan(&list).Error
 	return
 }
 
@@ -171,6 +214,7 @@ func (article Article) Create(tagIds string) error {
 	if err != nil {
 		return err
 	}
+
 	if maxOrderId == nil {
 		article.OrderId = 1
 	} else {
@@ -188,14 +232,16 @@ func (article Article) Create(tagIds string) error {
 		return err
 	}
 
+	article.CreatedAt = time.Now()
+
 	// 添加文章
 	err = tx.Exec("INSERT INTO `articles` (`user_id`, `category_id`, `order_id`, `is_top`, `is_recycled`,"+
 		" `is_published`, `is_allow_commented`, `pwd`, `url`, `title`,"+
-		" `summary`, `img`, `content`, `md_content`, `keywords`)"+
-		" VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+		" `summary`, `img`, `content`, `md_content`, `keywords`, `created_at`)"+
+		" VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
 		article.UserId, article.CategoryId, article.OrderId, article.IsTop, article.IsRecycled,
 		article.IsPublished, article.IsAllowCommented, article.Pwd, article.URL, article.Title,
-		article.Summary, article.Img, article.Content, article.MDContent, article.Keywords,
+		article.Summary, article.Img, article.Content, article.MDContent, article.Keywords, article.CreatedAt,
 	).Error
 	if err != nil {
 		tx.Rollback()
@@ -209,12 +255,25 @@ func (article Article) Create(tagIds string) error {
 		return err
 	}
 
-	// 创建文章和标签关联
+	// 更新分类对应文章数量
+	err = tx.Exec("update `categories` set `count` = `count` + 1 where `id` = ?", article.CategoryId).Error
+	if err != nil {
+		tx.Rollback()
+		return err
+	}
+
+	// 创建文章和标签关联，更新标签对应文章数量
 	if tagIds != "" {
 		tagIdList := strings.Split(tagIds, ",") // 根据 , 分割成字符串数组
 		for _, tagId := range tagIdList {
 			err = tx.Exec("insert into `tag_article` (`article_id`,`tag_id`) values (?,?)",
 				article.ID, tagId).Error
+			if err != nil {
+				tx.Rollback()
+				return err
+			}
+
+			err = tx.Exec("update `tags` set `count` = `count` + 1 where `id` = ?", tagId).Error
 			if err != nil {
 				tx.Rollback()
 				return err
@@ -258,8 +317,27 @@ func (article Article) Update(tagIds string) error {
 		return err
 	}
 
+	a := Article{}
+	err := tx.Where("`id` = ?", article.ID).First(&a).Error
+	if err != nil {
+		return err
+	}
+
+	// 密码发生变化，更新密码
+	if a.Pwd != article.Pwd {
+		// 密码不为空，加密密码
+		if article.Pwd != "" {
+			var err error
+
+			article.Pwd, err = utils.EncryptPwd(article.Pwd)
+			if err != nil {
+				return err
+			}
+		}
+	}
+
 	// 使用 map 来更新，避免 gorm 默认不更新值为 nil, false, 0 的字段
-	err := tx.Model(&Article{}).Where("`id` = ?", article.ID).
+	err = tx.Model(&Article{}).Where("`id` = ?", article.ID).
 		Updates(map[string]interface{}{
 			"category_id":        article.CategoryId,
 			"order_id":           article.OrderId,
@@ -271,6 +349,7 @@ func (article Article) Update(tagIds string) error {
 			"title":              article.Title,
 			"summary":            article.Summary,
 			"img":                article.Img,
+			"pwd":                article.Pwd,
 			"content":            article.Content,
 			"md_content":         article.MDContent,
 			"keywords":           article.Keywords,
@@ -280,37 +359,31 @@ func (article Article) Update(tagIds string) error {
 		return err
 	}
 
-	// 获取原文章记录
-	a := Article{}
-	err = tx.Where("`id` = ?", article.ID).First(&a).Error
-	if err != nil {
-		tx.Rollback()
-		return err
-	}
-
-	// 密码发生变化，更新密码
-	if a.Pwd != article.Pwd {
-		// 密码不为空，加密密码
-		if article.Pwd != "" {
-			var err error
-			article.Pwd, err = utils.EncryptPwd(article.Pwd)
-			if err != nil {
-				return err
-			}
+	// 分类改变，更新分类对应文章数量
+	if a.CategoryId != article.CategoryId {
+		err = tx.Exec("update `categories` set `count` = `count` - 1 where (`id` = ? and `count` > 0)", a.CategoryId).Error
+		if err != nil {
+			tx.Rollback()
+			return err
 		}
 
-		err = tx.Model(&Article{}).Where("`id` = ?", article.ID).
-			Updates(map[string]interface{}{
-				"pwd": article.Pwd,
-			}).Error
+		err = tx.Exec("update `categories` set `count` = `count` + 1 where `id` = ?", article.CategoryId).Error
 		if err != nil {
 			tx.Rollback()
 			return err
 		}
 	}
 
+	// 更新原标签对应文章数量
+	err = tx.Exec("update `tags` set `count` = `count` - 1 where (`id` in "+
+		"(select `tag_id` from `tag_article` where `article_id` = ?) and `count` > 0)", article.ID).Error
+	if err != nil {
+		tx.Rollback()
+		return err
+	}
+
 	// 删除标签文章表中关联记录
-	err = tx.Exec("delete from tag_article where article_id = ?", article.ID).Error
+	err = tx.Exec("delete from `tag_article` where `article_id` = ?", article.ID).Error
 	if err != nil {
 		tx.Rollback()
 		return err
@@ -318,14 +391,21 @@ func (article Article) Update(tagIds string) error {
 
 	// 在标签文章表中添加关联记录
 	if tagIds != "" {
-		tagIdList := strings.Split(tagIds, ",") // 根据 , 分割成字符串数组
+		tagIdList := strings.Split(tagIds, ",")
 		for _, tagId := range tagIdList {
-			err = tx.Exec("insert into tag_article (article_id,tag_id) values (?,?)",
+			err = tx.Exec("insert into `tag_article` (`article_id`,`tag_id`) values (?,?)",
 				article.ID, tagId).Error
 			if err != nil {
 				tx.Rollback()
 				return err
 			}
+		}
+
+		// 更新现标签对应文章数量
+		err = tx.Exec("update `tags` set `count` = `count` + 1 where `id` in (?)", tagIdList).Error
+		if err != nil {
+			tx.Rollback()
+			return err
 		}
 	}
 
@@ -385,14 +465,48 @@ func (article Article) MoveDown(currId, nextId, currOrderId, nextOrderId uint) e
 
 // 删除文章
 func (Article) DeleteById(id string) error {
-	// 删除标签文章表中的记录
-	err := db.Db.Exec("delete from tag_article where article_id = ?", id).Error
+	// 开始事务
+	tx := db.Db.Begin()
+	defer func() {
+		if err := recover(); err != nil {
+			tx.Rollback()
+		}
+	}()
+	if err := tx.Error; err != nil {
+		return err
+	}
+
+	// 更新分类对应文章数量
+	err := tx.Exec("update `categories` set `count` = `count` - 1 where (`id` in "+
+		"(select `category_id` from `articles` where `id` = ?) and `count` > 0)", id).Error
 	if err != nil {
+		tx.Rollback()
+		return err
+	}
+
+	// 更新标签对应文章数量
+	err = tx.Exec("update `tags` set `count` = `count` - 1 where (`id` in "+
+		"(select `tag_id` from `tag_article` where `article_id` = ?) and `count` > 0)", id).Error
+	if err != nil {
+		tx.Rollback()
+		return err
+	}
+
+	// 删除标签文章表中的记录
+	err = tx.Exec("delete from `tag_article` where `article_id` = ?", id).Error
+	if err != nil {
+		tx.Rollback()
 		return err
 	}
 
 	// 删除文章表中的记录
-	return db.Db.Where("`id` = ?", id).Unscoped().Delete(&Article{}).Error
+	err = tx.Where("`id` = ?", id).Unscoped().Delete(&Article{}).Error
+	if err != nil {
+		tx.Rollback()
+		return err
+	}
+
+	return tx.Commit().Error
 }
 
 // 批量删除文章
@@ -408,9 +522,26 @@ func (Article) MultiDelByIds(ids string) error {
 		return err
 	}
 
-	// 删除标签文章表中的记录
 	idList := strings.Split(ids, ",")
-	err := tx.Exec("delete from tag_article where article_id in (?)", idList).Error
+
+	// 更新分类对应文章数量
+	err := tx.Exec("update `categories` set `count` = `count` - 1 where (`id` in "+
+		"(select `category_id` from `articles` where `id` in (?)) and `count` > 0)", idList).Error
+	if err != nil {
+		tx.Rollback()
+		return err
+	}
+
+	// 更新标签对应文章数量
+	err = tx.Exec("update `tags` set `count` = `count` - 1 where (`id` in "+
+		"(select `tag_id` from `tag_article` where `article_id` in (?)) and `count` > 0)", idList).Error
+	if err != nil {
+		tx.Rollback()
+		return err
+	}
+
+	// 删除标签文章表中的记录
+	err = tx.Exec("delete from `tag_article` where `article_id` in (?)", idList).Error
 	if err != nil {
 		tx.Rollback()
 		return err
@@ -429,6 +560,7 @@ func (Article) MultiDelByIds(ids string) error {
 // 从文件导入文章
 func (article Article) SaveFromFile() (err error) {
 	user := User{}
+
 	err = db.Db.First(&user).Error
 	if err != nil {
 		return
@@ -436,7 +568,18 @@ func (article Article) SaveFromFile() (err error) {
 
 	article.UserId = user.ID
 	article.MDContent = setting.LuteEngine.MarkdownStr("", article.Content)
+
 	err = article.Create("")
+
+	return
+}
+
+// 归档
+func (Archive) GetAll() (list []Archive, err error) {
+	err = db.Db.Raw("select year(a.created_at) `year`, month(a.created_at) `month`" +
+		" from articles a" +
+		" group by `year`, `month`" +
+		" order by `year` desc, `month` desc").Scan(&list).Error
 
 	return
 }

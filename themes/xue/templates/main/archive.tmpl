@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+{{ template "head" . }}
+<body>
+
+{{ template "menu" . }}
+
+<main class="mx-auto home-page" id="container">
+    <header class="bg-cover post-cover" id="postHeader">
+        <div class="cover-bg">
+            <img src="https://s1.ax1x.com/2020/06/29/NWtFJA.jpg"
+                 class="z-auto" alt="相遇在人海，聚散在重逢之外">
+        </div>
+        <div class="cover-content post-cover-content flex justify-center">
+            <!-- 封面内容 -->
+            <div class="inner flex flex-col justify-center">
+                <p class="post-title cover-title text-base lg:text-4xl xl:text-5xl md:text-3xl">{{ .subTitle }}</p>
+            </div>
+        </div>
+    </header>
+
+    <div class="container mx-auto px-4 mt-16 max-w-6xl tracking-wider md:leading-relaxed sm:leading-normal ct-container cn-pd content-container">
+        <section class="arch-year">
+            {{ range $archive := .archives }}
+                <h1 class="year-title relative">{{ $archive.Year }}</h1>
+                <div class="relative pl-12">
+                    <header class="absolute mh-hd af-bg-fff mh-bg "> {{ $archive.Month }} 月</header>
+                    {{ range $article := $.articles }}
+                        {{ if eq (year $article.CreatedAt) $archive.Year }}
+                            {{ if eq (month $article.CreatedAt) $archive.Month }}
+                                <a class="ah-hf ah-hv"
+                                   href="{{ $.blogVars.ContextPath }}/articles/{{ $article.URL }}">
+                                    <span class="ah-dt">{{ $article.CreatedAt.Format "2006-01-02" }}</span>
+                                    <span class="ah-tt">{{ $article.Title }}</span>
+                                </a>
+                            {{ end }}
+                        {{ end }}
+                    {{ end }}
+                </div>
+            {{ end }}
+        </section>
+    </div>
+</main>
+
+{{ template "footer" . }}
+
+{{ template "script" . }}
+</body>
+</html>

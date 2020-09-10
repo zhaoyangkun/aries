@@ -17,6 +17,7 @@ type Category struct {
 	Type     uint        `gorm:"type:tinyint(1);unsigned;default:0" json:"type"` // 分类类型，默认值为 0 表文章；1 表友链,2 表示图库
 	Name     string      `gorm:"type:varchar(100);not null;" json:"name"`        // 分类名称
 	Url      string      `gorm:"type:varchar(100)" json:"url"`                   // 访问 URL
+	Count    uint        `gorm:"type:int;default:0;" json:"count"`               // 文章数量
 }
 
 // 根据类别获取所有分类
@@ -49,6 +50,13 @@ func (category Category) GetAllByType(categoryType uint) ([]Category, error) {
 	}
 
 	return categories, err
+}
+
+// 获取有图库的分类
+func (category Category) GetGalleryCategories() (list []Category, err error) {
+	err = db.Db.Where("`id` in (select `category_id` from `galleries` group by `category_id`)").Find(&list).Error
+
+	return
 }
 
 // 获取分类数据（分页 +　搜索）

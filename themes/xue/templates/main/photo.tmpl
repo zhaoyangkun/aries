@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+{{ template "head" . }}
+<body>
+
+{{ template "menu" . }}
+
+<main class="mx-auto home-page" id="container">
+    <header class="bg-cover post-cover" id="postHeader">
+        <div class="cover-bg">
+            <img src="https://s1.ax1x.com/2020/06/29/NWtFJA.jpg"
+                 class="z-auto" alt="相遇在人海，聚散在重逢之外">
+        </div>
+        <div class="cover-content post-cover-content flex justify-center">
+            <!-- 封面内容 -->
+            <div class="inner flex flex-col justify-center">
+                <p class="post-title cover-title text-base lg:text-4xl xl:text-5xl md:text-3xl">{{ .subTitle }}</p>
+            </div>
+        </div>
+    </header>
+
+    <div class="container mx-auto px-4 mt-16  tracking-wider md:leading-relaxed sm:leading-normal cn-pd photos-page content-container">
+        <div class="photos grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 xs:grid-cols-1 lg:gap-6 md:gap-4 sm:gap-3 mt-4"
+             id="galleryCards">
+            {{ range $i, $category := .photoCategories }}
+                <div class="gallery-cards" itemindex="{{ $i }}">
+                    <ul class="cards" id="cards_{{ $i }}">
+                        {{ range $k, $photo := $.photos }}
+                            {{ if eq $photo.CategoryId $category.ID }}
+                                <li class="card card-{{ add $k 1 }}">
+                                    <a class="gallery-item jg-entry entry-visible" href="javascript:void(0)"
+                                       data-pjax-state="external">
+                                        <img src="{{ $photo.URL }}" data-src="{{ $photo.URL }}" alt="{{ $photo.Name }}">
+                                        <div class="content">
+                                            <h1 class="gallery-card-title">{{ $photo.Category.Name }}</h1>
+                                        </div>
+                                    </a>
+                                </li>
+                            {{ end }}
+                        {{ end }}
+                    </ul>
+                </div>
+            {{ end }}
+        </div>
+    </div>
+</main>
+
+{{ template "footer" . }}
+
+{{ template "script" . }}
+</body>
+</html>

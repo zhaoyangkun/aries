@@ -1,19 +1,19 @@
-var tocId = '#toc';
-var flagId = '#tocFlag';
-var post = {
+let tocId = '#toc';
+let flagId = '#tocFlag';
+let post = {
     formatContent: function () {
-        var postContent = $('#write');
+        let postContent = $('#write');
         if (postContent) {
-            var originContent = postContent.html();
+            let originContent = postContent.html();
             postContent.empty();
             postContent.append(marked(originContent));
         }
     },
 
     loadHighlight: function() {
-        var codes = document.querySelectorAll('.md-content pre code');
-        for (var i = 0; i < codes.length; i++) {
-            var block = codes[i];
+        let codes = document.querySelectorAll('.md-content pre code');
+        for (let i = 0; i < codes.length; i++) {
+            let block = codes[i];
             hljs.highlightBlock(block);
             // 行号
             $('code.hljs').each(function(i, block) {
@@ -38,30 +38,30 @@ var post = {
     },
 
     tocScroll: function (event) {
-        var Obj = $(flagId);
+        let Obj = $(flagId);
 
         //判断元素是否存在
         if (Obj.length !== 1) {
             return false;
         }
 
-        var tocFixed = $(tocId);
-        var ObjTop = Obj.offset().top - $(window).height() * 0.5;
+        let tocFixed = $(tocId);
+        let ObjTop = Obj.offset().top - $(window).height() * 0.5;
 
         // 滚动条离页面顶端的距离
-        var scrollTop = post.getScrollTop();
-        var postHeaderHeight = $('#postHeader').height();
+        let scrollTop = post.getScrollTop();
+        let postHeaderHeight = $('#postHeader').height();
         if (scrollTop > postHeaderHeight) {
             tocFixed.show();
         } else {
             tocFixed.hide();
         }
 
-        var tocEle = document.querySelector(tocId);
+        let tocEle = document.querySelector(tocId);
         if (!tocEle || !tocEle.getBoundingClientRect()) {
             return;
         }
-        var tocHeight = tocEle.getBoundingClientRect().height;
+        let tocHeight = tocEle.getBoundingClientRect().height;
         if (scrollTop > ObjTop - tocHeight * 0.5) {
             tocFixed.addClass('toc-right-fixed');
         } else {
@@ -79,7 +79,7 @@ var post = {
     },
 
     initToc: function () {
-        var headerEl = 'h1,h2,h3,h4,h5,h6',  //headers
+        let headerEl = 'h1,h2,h3,h4,h5,h6',  //headers
             content = '.md-content';//文章容器
         tocbot.init({
             tocSelector: '#toc',
@@ -92,7 +92,7 @@ var post = {
         });
 
         $('.toc-link').each(function() {
-            var linkContent = $(this).html();
+            let linkContent = $(this).html();
             $(this).html('<span class="toc-link-dot"></span>'+ linkContent );
         });
         // 设置目录right
@@ -100,8 +100,8 @@ var post = {
     },
 
     tocEleRight: function () {
-        var screenWidth = document.body.clientWidth;
-        var tocEle = document.getElementById('toc');
+        let screenWidth = document.body.clientWidth;
+        let tocEle = document.getElementById('toc');
         if (tocEle) {
             tocEle.style.left = (screenWidth - 800) / 2 + 820 + "px";
         }
@@ -110,11 +110,11 @@ var post = {
     // 因为不使用后端渲染目录, 所以如果在发布文章的时候在文章开头加上 [TOC] 会在文章页面开头有一个ul 标签
     // 这里粗暴的去除
     removeFirstUL: function () {
-        var post_content = document.getElementById('write');
+        let post_content = document.getElementById('write');
         if (!post_content) {
             return;
         }
-        var firstNodeName = post_content.firstElementChild.nodeName;
+        let firstNodeName = post_content.firstElementChild.nodeName;
         if (firstNodeName === 'UL') {
             $(post_content.firstElementChild).remove();
         }
@@ -122,7 +122,7 @@ var post = {
 
     shareIcon: function() {
 
-        var $config = {
+        let $config = {
             sites               : ['google','twitter','facebook','weibo','qq','qzone','linkedin','wechat','douban'], // 启用的站点
             disabled            : socialDisabled.split(','), // 禁用的站点
             wechatQrcodeTitle   : '微信扫一扫：分享', // 微信二维码提示文字

@@ -1,2 +1,48 @@
 {{ define "menu" }}
+    <header class="nav-wrapper -sticky" id="navHeader">
+        <nav class="nav ">
+            <button class="toggle-nav">
+                <div class="burger -squeeze">
+                    <span class="burger-lines"></span>
+                </div>
+            </button>
+            <ul class="nav-list " role="navigation">
+                <div class="list -left " id="menuLinks">
+                    {{ range $i, $nav := .navs }}
+                        {{ if $nav.ChildNavs }}
+                            <li class="item has-sub" index="{{ $i }}">
+                                <a class="link md:text-base sm:text-sm" href="{{ $nav.Url }}"
+                                   target="_self">{{ $nav.Name }}</a>
+                                <div class="sub-menu-tree hidden sh-box-t" id="subMenu_1">
+                                    <div class="sh-box-b">
+                                        <ul class="sub-menu">
+                                            {{ range $childNav := $nav.ChildNavs }}
+                                                <li>
+                                                    <a href="{{ $childNav.Url }}" class="link md:text-base sm:text-sm"
+                                                       target="_self">{{ $childNav.Name }}
+                                                    </a>
+                                                </li>
+                                            {{ end }}
+                                        </ul>
+                                    </div>
+                                </div>
+                            </li>
+                        {{ else }}
+                            <li class="item" index="{{ $i }}">
+                                <a class="link md:text-base sm:text-sm" href="{{ $nav.Url }}"
+                                   target="_self">{{ $nav.Name }}</a>
+                            </li>
+                        {{ end }}
+                    {{ end }}
+                </div>
+                <div class="list -right">
+                    <div class="overlay"></div>
+                </div>
+            </ul>
+            <div class="day-night-mode">
+                <input id="switch_Word" type="checkbox" class="switch_Word">
+                <label for="switch_Word"><i></i></label>
+            </div>
+        </nav>
+    </header>
 {{ end }}

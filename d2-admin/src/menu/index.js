@@ -52,8 +52,8 @@ const menu = [
         title: '友链',
         icon: 'link',
         children: [
-          { path: '/link', title: '友链', icon: 'link' },
-          { path: '/link/category', title: '友链分类', icon: 'list-ul' }
+          { path: '/link/category', title: '友链分类', icon: 'list-ul' },
+          { path: '/link', title: '友链', icon: 'link' }
         ]
       }
     ]

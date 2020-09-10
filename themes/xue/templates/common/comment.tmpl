@@ -1,0 +1,13 @@
+{{ define "comment" }}
+    <div id="aries-comment-box"></div>
+
+    <script src="{{ .blogVars.ContextPath }}/static/js/vue.js"></script>
+    <script type="text/javascript">
+        const commentApp = new Vue({
+            el: '#aries-comment-box',
+            data: {
+            },
+            render
+        })
+    </script>
+{{ end }}

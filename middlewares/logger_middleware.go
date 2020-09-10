@@ -16,20 +16,20 @@ import (
 
 // Logger 接收 gin 框架默认的日志
 func Logger(logger *zap.Logger) gin.HandlerFunc {
-	return func(c *gin.Context) {
+	return func(ctx *gin.Context) {
 		start := time.Now()
-		status := c.Writer.Status()
-		method := c.Request.Method
-		path := c.Request.URL.Path
-		ip := c.ClientIP()
-		query := c.Request.URL.RawQuery
+		status := ctx.Writer.Status()
+		method := ctx.Request.Method
+		path := ctx.Request.URL.Path
+		ip := ctx.ClientIP()
+		query := ctx.Request.URL.RawQuery
 		if query != "" {
 			query = "?" + query
 		}
 		//userAgent := c.Request.UserAgent()
 		//errors := c.Errors.ByType(gin.ErrorTypePrivate).String()
 
-		c.Next()
+		ctx.Next()
 
 		end := time.Now()
 		cost := end.Sub(start)
@@ -49,25 +49,25 @@ func Logger(logger *zap.Logger) gin.HandlerFunc {
 		if !strings.Contains(path, "/api") && !strings.Contains(path, "/static") {
 			switch status {
 			case 400:
-				c.HTML(http.StatusOK, "error.tmpl", gin.H{
+				ctx.HTML(http.StatusOK, "error.tmpl", gin.H{
 					"blogVars": setting.BlogVars,
 					"code":     "400",
-					"msg":      "请求数据有误",
+					"msg":      "请求错误",
 				})
 			case 403:
-				c.HTML(http.StatusOK, "error.tmpl", gin.H{
+				ctx.HTML(http.StatusOK, "error.tmpl", gin.H{
 					"blogVars": setting.BlogVars,
 					"code":     "403",
 					"msg":      "您无权访问该页面",
 				})
 			case 404:
-				c.HTML(http.StatusOK, "error.tmpl", gin.H{
+				ctx.HTML(http.StatusOK, "error.tmpl", gin.H{
 					"blogVars": setting.BlogVars,
 					"code":     "404",
 					"msg":      "您访问的页面不存在",
 				})
 			case 500:
-				c.HTML(http.StatusOK, "error.tmpl", gin.H{
+				ctx.HTML(http.StatusOK, "error.tmpl", gin.H{
 					"blogVars": setting.BlogVars,
 					"code":     "500",
 					"msg":      "服务器内部发生了错误",

@@ -59,11 +59,11 @@
       <el-form ref="addForm" :model="addForm" :rules="addRules" label-width="80px">
         <el-form-item label="网站名称" prop="name">
           <el-input size="small" v-model="addForm.name" type="text" autocomplete="off"
-                    placeholder="网站名称"></el-input>
+                    placeholder="请输入网站名称"></el-input>
         </el-form-item>
         <el-form-item label="网站地址" prop="url">
           <el-input size="small" v-model="addForm.url" type="text" autocomplete="off"
-                    placeholder="网站名称"></el-input>
+                    placeholder="请输入网站地址"></el-input>
         </el-form-item>
         <el-form-item label="分类" prop="category_id">
           <el-select size="small" v-model="addForm.category_id" clearable
@@ -81,11 +81,11 @@
         </el-form-item>
         <el-form-item label="网站描述" prop="desc">
           <el-input size="small" v-model="addForm.desc" type="text" autocomplete="off"
-                    placeholder="网站描述"></el-input>
+                    placeholder="请输入网站描述"></el-input>
         </el-form-item>
         <el-form-item label="网站图标" prop="icon">
           <el-input size="small" v-model="addForm.icon" type="text" autocomplete="off"
-                    placeholder="网站名称"></el-input>
+                    placeholder="请输入网站图标"></el-input>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" :loading="btnOptions.addBtnLoading" @click="handleRowAdd">保存</el-button>
@@ -103,11 +103,11 @@
       <el-form ref="editForm" :model="editForm" :rules="editRules" label-width="80px">
         <el-form-item label="网站名称" prop="name">
           <el-input size="small" v-model="editForm.name" type="text" autocomplete="off"
-                    placeholder="网站名称"></el-input>
+                    placeholder="请输入网站名称"></el-input>
         </el-form-item>
         <el-form-item label="网站地址" prop="url">
           <el-input size="small" v-model="editForm.url" type="text" autocomplete="off"
-                    placeholder="网站名称"></el-input>
+                    placeholder="请输入网站地址"></el-input>
         </el-form-item>
         <el-form-item label="分类" prop="category_id">
           <el-select size="small" v-model="editForm.category_id" clearable placeholder="请选择分类"
@@ -122,11 +122,11 @@
         </el-form-item>
         <el-form-item label="网站描述" prop="desc">
           <el-input size="small" v-model="editForm.desc" type="text" autocomplete="off"
-                    placeholder="网站描述"></el-input>
+                    placeholder="请输入网站描述"></el-input>
         </el-form-item>
         <el-form-item label="网站图标" prop="icon">
           <el-input size="small" v-model="editForm.icon" type="text" autocomplete="off"
-                    placeholder="网站名称"></el-input>
+                    placeholder="请输入网站图标"></el-input>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" :loading="btnOptions.editBtnLoading" @click="handleRowEdit">保存</el-button>

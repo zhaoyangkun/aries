@@ -2,6 +2,7 @@ package api
 
 import (
 	"aries/forms"
+	"aries/handlers"
 	"aries/log"
 	"aries/models"
 	"aries/utils"
@@ -142,6 +143,8 @@ func (t *TagHandler) AddTag(ctx *gin.Context) {
 		return
 	}
 
+	handlers.InitTmplVars()
+
 	ctx.JSON(http.StatusOK, utils.Result{
 		Code: utils.Success,
 		Msg:  "添加成功",
@@ -191,6 +194,8 @@ func (t *TagHandler) UpdateTag(ctx *gin.Context) {
 		return
 	}
 
+	handlers.InitTmplVars()
+
 	ctx.JSON(http.StatusOK, utils.Result{
 		Code: utils.Success,
 		Msg:  "修改成功",
@@ -219,6 +224,8 @@ func (t *TagHandler) DeleteTag(ctx *gin.Context) {
 		})
 		return
 	}
+
+	handlers.InitTmplVars()
 
 	ctx.JSON(http.StatusOK, utils.Result{
 		Code: utils.Success,
@@ -256,6 +263,8 @@ func (t *TagHandler) MultiDelTags(ctx *gin.Context) {
 		})
 		return
 	}
+
+	handlers.InitTmplVars()
 
 	ctx.JSON(http.StatusOK, utils.Result{
 		Code: utils.Success,

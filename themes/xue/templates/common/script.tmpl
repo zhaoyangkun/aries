@@ -1,5 +1,5 @@
 {{ define "script" }}
-    <script src="{{ .blogVars.ContextPath }}/static/js/jquery.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js"></script>
     <script src="{{ .blogVars.ContextPath }}/static/js/utils.js"></script>
     <script src="{{ .blogVars.ContextPath }}/static/js/modal.js"></script>
     <script src="{{ .blogVars.ContextPath }}/static/js/night-mode.js"></script>
@@ -7,77 +7,43 @@
     <script src="{{ .blogVars.ContextPath }}/static/js/gallery.js"></script>
     <script src="{{ .blogVars.ContextPath }}/static/js/post.js"></script>
     <script src="{{ .blogVars.ContextPath }}/static/js/header.js"></script>
-    <script src="{{ .blogVars.ContextPath }}/static/js/vue.min.js"></script>
-    <script src="{{ .blogVars.ContextPath }}/static/js/marked.min.js"></script>
-    <script src="{{ .blogVars.ContextPath }}/static/js/highlight.min.js"></script>
-    <script src="{{ .blogVars.ContextPath }}/static/js/highlight.lang.js"></script>
-    <script src="{{ .blogVars.ContextPath }}/static/js/highlightjs-line-numbers.min.js"></script>
-    <script data-pjax-viewer src="{{ .blogVars.ContextPath }}/static/js/viewer.min.js"></script>
-    <script src="{{ .blogVars.ContextPath }}/static/js/micromodal.min.js"></script>
-    <script src="{{ .blogVars.ContextPath }}/static/js/jquery.justifiedGallery.min.js"></script>
-    <script src="{{ .blogVars.ContextPath }}/static/js/simply-nav.js"></script>
-    <script src="{{ .blogVars.ContextPath }}/static/js/moon.js"></script>
-    <script src="{{ .blogVars.ContextPath }}/static/js/social-share.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.0.0/build/highlight.min.js"></script>
+    <script src="//cdn.jsdelivr.net/gh/xzzai/static@master/js/highlight.lang.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/highlightjs-line-numbers.js@2.7.0/dist/highlightjs-line-numbers.min.js"></script>
+    <script data-pjax-viewer src="//cdn.jsdelivr.net/npm/viewerjs@1.5.0/dist/viewer.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/micromodal/dist/micromodal.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js"></script>
+    <script src="//cdn.jsdelivr.net/gh/xzzai/static@master/js/simply-nav.js"></script>
+    <script src="//cdn.jsdelivr.net/gh/xzzai/static@master/js/moon.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/js/social-share.min.js"></script>
     <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-    <script src="{{ .blogVars.ContextPath }}/static/js/jqcloud-1.0.4.min.js"></script>
-    <script src="{{ .blogVars.ContextPath }}/static/js/tocbot.min.js"></script>
-    <script src="{{ .blogVars.ContextPath }}/static/js/APlayer.min.js"></script>
-    <script src="{{ .blogVars.ContextPath }}/static/js/Meting.min.js"></script>
-    <script defer src="{{ .blogVars.ContextPath }}/static/js/katex.min.js"
-            integrity="sha384-g7c+Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI+sEnkvrMWph2EDg4"
-            crossorigin="anonymous"></script>
-    <script type="text/javascript">
-        let katex_config = {
-            delimiters:
-                [
-                    {left: "$$", right: "$$", display: true},
-                    {left: "$", right: "$", display: false},
-                    {left: "\\(", right: "\\)", display: false},
-                    {left: "\\[", right: "\\]", display: true},
-                ]
-        };
-    </script>
-    <script defer src="{{ .blogVars.ContextPath }}/static/js/auto-render.min.js"
-            integrity="sha384-mll67QQFJfxn0IYznZYonOWZ644AWYC+Pt2cHqMaRhXVrursRwvLnLaebdGIlYNa" crossorigin="anonymous"
-            onload="if (document.getElementById('write'))
-            { renderMathInElement(document.getElementById('write'), katex_config)}
-            else if (document.getElementById('tree-hole'))
-            {renderMathInElement(document.getElementById('tree-hole'), katex_config)}"></script>
-    <script src="{{ .blogVars.ContextPath }}/static/js/pjax.js"></script>
-    <script src="{{ .blogVars.ContextPath }}/static/js/nprogress.min.js"></script>
-    <script type="text/javascript">
+    <script src="//cdn.jsdelivr.net/gh/xzzai/static@master/js/jqcloud-1.0.4.min.js"></script>
+    <script type='text/javascript'>
         let autoNightModeOpen = true;
 
         // 标签
         let tagArray = [
-            {'text': 'windows', 'weight': '2', 'link': 'https://www.cangmangai.cn/tags/windows'},
-            {'text': 'ajax', 'weight': '1', 'link': 'https://www.cangmangai.cn/tags/ajax'},
-            {'text': '图床', 'weight': '1', 'link': 'https://www.cangmangai.cn/tags/图床'},
-            {'text': 'gin', 'weight': '3', 'link': 'https://www.cangmangai.cn/tags/gin'},
-            {'text': 'go', 'weight': '3', 'link': 'https://www.cangmangai.cn/tags/go'},
-            {'text': 'node.js', 'weight': '1', 'link': 'https://www.cangmangai.cn/tags/nodejs'},
-            {'text': '网络', 'weight': '3', 'link': 'https://www.cangmangai.cn/tags/网络'},
-            {'text': 'freemaker', 'weight': '1', 'link': 'https://www.cangmangai.cn/tags/freemaker'},
-            {'text': 'mybatis', 'weight': '2', 'link': 'https://www.cangmangai.cn/tags/mybatis'},
-            {'text': 'springboot', 'weight': '2', 'link': 'https://www.cangmangai.cn/tags/springboot'},
-            {'text': 'java ', 'weight': '3', 'link': 'https://www.cangmangai.cn/tags/java'},
-            {'text': 'leetcode', 'weight': '3', 'link': 'https://www.cangmangai.cn/tags/leetcode'},
-            {'text': '生活', 'weight': '1', 'link': 'https://www.cangmangai.cn/tags/生活'},
-            {'text': '数据结构', 'weight': '5', 'link': 'https://www.cangmangai.cn/tags/数据结构'},
-            {'text': 'python', 'weight': '12', 'link': 'https://www.cangmangai.cn/tags/python'},
-            {'text': 'linux', 'weight': '8', 'link': 'https://www.cangmangai.cn/tags/linux'},
-            {'text': 'docker', 'weight': '2', 'link': 'https://www.cangmangai.cn/tags/docker'},
-            {'text': 'django', 'weight': '9', 'link': 'https://www.cangmangai.cn/tags/django'},
+            {{ range $i, $tag := .tags }}
+            {
+                'text': '{{ $tag.Name }}',
+                'weight': '{{ add $i 1 }}',
+                'link': '{{ $.blogVars.ContextPath }}/tags/{{ $tag.Name }}'
+            },
+            {{ end }}
         ];
 
         // 分类
         let categoryArray = [
-            {'text': '面试', 'weight': '1', 'link': 'https://www.cangmangai.cn/categories/interview'},
-            {'text': '教程', 'weight': '18', 'link': 'https://www.cangmangai.cn/categories/course'},
-            {'text': '感悟', 'weight': '1', 'link': 'https://www.cangmangai.cn/categories/perception'},
-            {'text': '后端', 'weight': '11', 'link': 'https://www.cangmangai.cn/categories/backend'},
-            {'text': '算法', 'weight': '5', 'link': 'https://www.cangmangai.cn/categories/algorithm'},
+            {{ range $i, $category := .categories }}
+            {
+                'text': '{{ $category.Name }}',
+                'weight': '{{ add $i 1 }}',
+                'link': '{{ $.blogVars.ContextPath }}/categories/{{ $category.Url }}'
+            },
+            {{ end }}
         ];
+
 
         $(function () {
             let tagCloud = $("#tagCloud");
@@ -98,9 +64,35 @@
 
         // 禁用的分享站点, 现在已经不支持腾讯微博
         let socialDisabled = 'google,twitter,facebook';
+
+        let katex_config = {
+            delimiters:
+                [
+                    {left: "$$", right: "$$", display: true},
+                    {left: "$", right: "$", display: false},
+                    {left: "\\(", right: "\\)", display: false},
+                    {left: "\\[", right: "\\]", display: true},
+                ]
+        };
+        let openToc = false;
+        openToc = true;
     </script>
+    <script src="//cdn.jsdelivr.net/npm/tocbot@4.11.2/dist/tocbot.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/meting@2/dist/Meting.min.js"></script>
+    <script defer src="//cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.js"
+            integrity="sha384-g7c+Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI+sEnkvrMWph2EDg4"
+            crossorigin="anonymous"></script>
+    <script defer src="//cdn.jsdelivr.net/npm/katex@0.12.0/dist/contrib/auto-render.min.js"
+            integrity="sha384-mll67QQFJfxn0IYznZYonOWZ644AWYC+Pt2cHqMaRhXVrursRwvLnLaebdGIlYNa" crossorigin="anonymous"
+            onload="if (document.getElementById('write'))
+            { renderMathInElement(document.getElementById('write'), katex_config)}
+            else if (document.getElementById('tree-hole'))
+            {renderMathInElement(document.getElementById('tree-hole'), katex_config)}"></script>
+    <script src="//cdn.jsdelivr.net/npm/pjax@0.2.8/pjax.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js"></script>
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css">
     <script type="text/javascript">
-        // Pjax
         let pjax = new Pjax({
             elements: 'a[href]:not([href^="#"]):not([data-not-pjax]):not([target^="_blank"]), form', // default is "a[href], form[action]"
             cacheBust: false,
@@ -191,14 +183,16 @@
                 // 图片预览
                 post.initViewer();
 
-                // 目录事件
-                post.scrollTocFixed();
+                if (openToc) {
+                    // 目录事件
+                    post.scrollTocFixed();
 
-                // 初始化toc
-                post.initToc()
+                    // 初始化toc
+                    post.initToc()
 
-                // 删除文章最开始第一个 <ul>(如果有)
-                post.removeFirstUL()
+                    // 删除文章最开始第一个 <ul>(如果有)
+                    post.removeFirstUL()
+                }
 
                 // 分享按钮
                 post.shareIcon()
@@ -249,7 +243,6 @@
         });
 
         document.addEventListener('pjax:end', function () {
-
         });
 
         //Pjax请求失败后触发，请求对象将作为一起传递event.options.request
@@ -257,33 +250,32 @@
             NProgress.done();
             bar('系统出现问题，请手动刷新一次', '3000');
         });
-    </script>
-    <script type="text/javascript">
+
         // 建站时间统计
         function show_date_time() {
             if ($("#span_dt_dt").length > 0) {
                 window.setTimeout("show_date_time()", 1000);
-                let BirthDay = new Date("08/01/2019 00:00:00");
-                let today = new Date();
-                let timeold = (today.getTime() - BirthDay.getTime());
-                let sectimeold = timeold / 1000;
-                let secondsold = Math.floor(sectimeold);
-                let msPerDay = 24 * 60 * 60 * 1000;
-                let e_daysold = timeold / msPerDay;
-                let daysold = Math.floor(e_daysold);
-                let e_hrsold = (e_daysold - daysold) * 24;
-                let hrsold = Math.floor(e_hrsold);
-                let e_minsold = (e_hrsold - hrsold) * 60;
-                let minsold = Math.floor((e_hrsold - hrsold) * 60);
-                let seconds = Math.floor((e_minsold - minsold) * 60);
+                BirthDay = new Date("08/01/2019 00:00:00");
+                today = new Date();
+                timeold = (today.getTime() - BirthDay.getTime());
+                sectimeold = timeold / 1000;
+                secondsold = Math.floor(sectimeold);
+                msPerDay = 24 * 60 * 60 * 1000;
+                e_daysold = timeold / msPerDay;
+                daysold = Math.floor(e_daysold);
+                e_hrsold = (e_daysold - daysold) * 24;
+                hrsold = Math.floor(e_hrsold);
+                e_minsold = (e_hrsold - hrsold) * 60;
+                minsold = Math.floor((e_hrsold - hrsold) * 60);
+                seconds = Math.floor((e_minsold - minsold) * 60);
                 span_dt_dt.innerHTML = daysold + "天" + hrsold + "小时" + minsold + "分" + seconds + "秒";
             }
         }
 
         show_date_time();
-    </script>
-    <script type="text/javascript">
-        console.clear();
-        console.log("%c Github %c", "background:#24272A; color:#ffffff", "", "https://github.com/zhaoyangkun/aries");
+
+        // console.clear();
+        console.log("%c 有朋自远方来, 不亦说乎.", "background:#24272A; color:#ffffff", "");
+        console.log("%c Github %c", "background:#24272A; color:#ffffff", "", "https://github.com/zhaoyangkun");
     </script>
 {{ end }}

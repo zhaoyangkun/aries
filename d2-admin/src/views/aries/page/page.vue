@@ -130,7 +130,7 @@
         <el-form-item label="页面路径" prop="url">
           <el-input size="small" type="text" v-model="addForm.url" placeholder="页面路径不要以 / 开头"
                     style="width: 50%"></el-input>
-          <span class="form-tip">{{ blogVars.ContextPath + "/custom/" + addForm.url }}</span>
+          <span class="form-tip"> {{ blogVars.ContextPath + "/custom/" + addForm.url }}</span>
         </el-form-item>
         <el-form-item label="页面内容" prop="html">
           <addEditor ref="addEditor"></addEditor>

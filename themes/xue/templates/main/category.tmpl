@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+{{ template "head" . }}
+<body>
+
+{{ template "menu" . }}
+
+<main class="mx-auto home-page" id="container">
+    <header class="bg-cover" id="homeHeader">
+        <div class="cover-bg">
+            <img src="https://s1.ax1x.com/2020/06/29/NWtFJA.jpg"
+                 alt="苍茫误此生博客">
+        </div>
+        <div class="cover-content flex justify-center">
+            <!-- 封面内容 -->
+            <div class="inner flex flex-col justify-center">
+                <p class="post-title cover-title text-base lg:text-4xl xl:text-5xl md:text-3xl">{{ .categoryName }}</p>
+            </div>
+        </div>
+    </header>
+    <div class="container mx-auto px-4 content-container">
+        <div class="posts grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-2 xs:grid-cols-1 lg:gap-6 md:gap-4 sm:gap-3 mt-4">
+            {{ range $article := .articles }}
+                <div class="post-card m-auto mt-4">
+                    {{ if $article.IsTop }}
+                        <div class="post-top">
+                            <div>置顶</div>
+                        </div>
+                    {{ end }}
+                    <header class="card-header card-img">
+
+                        <a href="{{ $.blogVars.ContextPath }}/articles/{{ $article.URL }}"
+                           style="background-image: url({{ $article.Img }}"
+                           class="img-cover img-cover-bg">
+                        </a>
+                    </header>
+                    <div class="card-body">
+                        <p class="text-center text-xl tracking-wider svg-f text-clamp-1">
+                            <a href="{{ $.blogVars.ContextPath }}/articles/{{ $article.URL }}"
+                               class="font-medium text-gray-700 post-title">
+                                {{ $article.Title }}
+                            </a>
+                        </p>
+                    </div>
+                    <footer class="card-footer svg-f">
+                        <span class="cst-icon icon-calendar lh-25 f-10" style="margin-right: 5px"></span>
+                        <span class="post-time lh-25 mr-auto">
+                                        <span class="published"
+                                              datetime="2020-08-03">{{ $article.CreatedAt.Format "2006-01-02" }}</span>
+                                    </span>
+                        <div class="lh-25">
+                            <span class="visitors-count">
+                                <span>{{ $article.VisitCount }}</span>
+                                <a href="javascript:void(0)" class="eye-sight">
+                                            <span class="iconfont icon-Eyesight"> </span>
+                                </a>
+                            </span>
+                            <span class="visitors-comment">
+                                <span>{{ $article.CommentCount }}</span>
+                                <span class="iconfont icon-comment"> </span>
+                            </span>
+                        </div>
+                    </footer>
+                </div>
+            {{ end }}
+        </div>
+        <nav class="pagination flex flex-row justify-center mt-8" role="navigation" aria-label="pagination">
+            <ul class="pagination-list flex flex-row ">
+                {{ if gt .currentPage 1 }}
+                    <li class="pagination-previous">
+                        <a class="pagination-circle"
+                           href="{{ .blogVars.ContextPath }}/categories/{{ .categoryUrl }}/p/{{ subtract .currentPage 1 }}">
+                            <span class="iconfont icon-left-fill"> </span>
+                        </a>
+                    </li>
+                {{ end }}
+                {{ range $page := .pages }}
+                    <li>
+                        {{ if eq $page $.currentPage }}
+                            <a class="pagination-circle is-current"
+                               href="javascript:void(0);">{{ $page }}</a>
+                        {{ else }}
+                            <a class="pagination-circle"
+                               href="{{ $.blogVars.ContextPath }}/categories/{{ $.categoryUrl }}/p/{{ $page }}">{{ $page }}</a>
+                        {{ end }}
+                    </li>
+                {{ end }}
+                {{ $totalPage := len .pages }}
+                {{ if lt .currentPage $totalPage }}
+                    <li class="pagination-next">
+                        <a class="pagination-circle"
+                           href="{{ .blogVars.ContextPath }}/categories/{{ .categoryUrl }}/p/{{ add .currentPage 1 }}">
+                            <span class="iconfont icon-right-fill"> </span>
+                        </a>
+                    </li>
+                {{ end }}
+            </ul>
+        </nav>
+    </div>
+</main>
+
+{{ template "footer" . }}
+
+{{ template "script" . }}
+</body>
+</html>

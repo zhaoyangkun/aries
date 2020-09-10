@@ -2,6 +2,7 @@ package api
 
 import (
 	"aries/forms"
+	"aries/handlers"
 	"aries/log"
 	"aries/models"
 	"aries/utils"
@@ -188,6 +189,8 @@ func (c *CategoryHandler) AddArticleCategory(ctx *gin.Context) {
 		return
 	}
 
+	handlers.InitTmplVars()
+
 	ctx.JSON(http.StatusOK, utils.Result{
 		Code: utils.Success,
 		Msg:  "创建成功",
@@ -246,6 +249,8 @@ func (c *CategoryHandler) UpdateArticleCategory(ctx *gin.Context) {
 		})
 		return
 	}
+
+	handlers.InitTmplVars()
 
 	ctx.JSON(http.StatusOK, utils.Result{
 		Code: utils.Success,
@@ -477,6 +482,8 @@ func (c *CategoryHandler) DeleteCategory(ctx *gin.Context) {
 		return
 	}
 
+	handlers.InitTmplVars()
+
 	ctx.JSON(http.StatusOK, utils.Result{ // 删除成功
 		Code: utils.Success,
 		Msg:  "删除成功",
@@ -514,6 +521,8 @@ func (c *CategoryHandler) MultiDelCategories(ctx *gin.Context) {
 		})
 		return
 	}
+
+	handlers.InitTmplVars()
 
 	ctx.JSON(http.StatusOK, utils.Result{
 		Code: utils.Success,

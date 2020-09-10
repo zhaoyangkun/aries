@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+{{ template "head" . }}
+<body>
+
+{{ template "menu" . }}
+
+<main class="mx-auto home-page" id="container">
+    <header class="bg-cover post-cover" id="postHeader">
+        <div class="cover-bg">
+            <img src="https://s1.ax1x.com/2020/06/29/NWtFJA.jpg"
+                 class="z-auto" alt="相遇在人海，聚散在重逢之外">
+        </div>
+        <div class="cover-content post-cover-content flex justify-center">
+            <!-- 封面内容 -->
+            <div class="inner flex flex-col justify-center">
+                <p class="post-title cover-title text-base lg:text-4xl xl:text-5xl md:text-3xl">{{ .subTitle }}</p>
+            </div>
+        </div>
+    </header>
+
+    <div class="container mx-auto px-4 mt-16 max-w-6xl tracking-wider md:leading-relaxed sm:leading-normal ct-container cn-pd content-container">
+        <div id="tree-hole">
+            <ol class="comment-list">
+                {{ range $i, $journal := .journals }}
+                    <li id="li-comment-611"
+                        class="tree-hole-body {{ if eq (mod $i 2) 0 }}tree-hole-odd{{ else }}tree-hole-even{{ end }}">
+                        <div id="comment-611">
+                            <img class="avatar" src="{{ $.user.UserImg }}"
+                                 alt="{{ $.user.Nickname }}" width="40" height="40">
+                            <div class="tree-hole-box">
+                                <div class="tree-hole-author">
+                                    <a href="{{ $.blogVars.ContextPath }}"
+                                       rel="external nofollow">{{ $.user.Nickname }}</a>
+                                    {{ $journal.CreatedAt.Format "2006年01月02日" }}
+                                </div>
+                                <p style="overflow-x: auto;"></p>
+                                <p>{{ $journal.Content }}</p>
+                                <p></p>
+                            </div>
+                        </div>
+                    </li>
+                {{ end }}
+            </ol>
+            <nav class="pagination flex flex-row justify-center mt-8" role="navigation" aria-label="pagination">
+            </nav>
+        </div>
+    </div>
+</main>
+
+{{ template "footer" . }}
+
+{{ template "script" . }}
+</body>
+</html>

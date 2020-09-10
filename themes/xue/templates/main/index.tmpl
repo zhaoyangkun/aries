@@ -1,119 +1,9 @@
 <!DOCTYPE html>
 <html lang="zh-cmn-Hans">
-{{ template "head" .}}
+{{ template "head" . }}
 <body>
 
-<header class="nav-wrapper -sticky" id="navHeader">
-    <nav class="nav ">
-        <button class="toggle-nav">
-            <div class="burger -squeeze">
-                <span class="burger-lines"></span>
-            </div>
-        </button>
-        <ul class="nav-list " role="navigation">
-            <div class="list -left " id="menuLinks">
-                <li class="item "
-                    index="0">
-                    <a class="link md:text-base sm:text-sm" href="/"
-                       target="_self">首页</a>
-
-                </li>
-
-                <li class="item  has-sub "
-                    index="1">
-                    <a href="javascript:void(0)" target="_self"
-                       class="void-link md:text-base sm:text-sm">分类</a>
-
-                    <div class="sub-menu-tree hidden sh-box-t" id="subMenu_1">
-                        <div class="sh-box-b">
-                            <ul class="sub-menu">
-                                <li>
-                                    <a href="/categories/backend" class="link md:text-base sm:text-sm"
-                                       target="_self">
-                                        后端
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="/categories/algorithm" class="link md:text-base sm:text-sm"
-                                       target="_self">
-                                        算法
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="/categories/course" class="link md:text-base sm:text-sm"
-                                       target="_self">
-                                        教程
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="/categories/perception" class="link md:text-base sm:text-sm"
-                                       target="_self">
-                                        感悟
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="/categories/interview" class="link md:text-base sm:text-sm"
-                                       target="_self">
-                                        面试
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </li>
-
-                <li class="item "
-                    index="2">
-                    <a class="link md:text-base sm:text-sm" href="/tags"
-                       target="_self">标签</a>
-
-                </li>
-
-                <li class="item " index="3">
-                    <a class="link md:text-base sm:text-sm" href="/archives"
-                       target="_self">归档</a>
-
-                </li>
-
-                <li class="item "
-                    index="4">
-                    <a class="link md:text-base sm:text-sm" href="/journals"
-                       target="_self">日志</a>
-
-                </li>
-
-                <li class="item "
-                    index="5">
-                    <a class="link md:text-base sm:text-sm" href="/links"
-                       target="_self">友链</a>
-
-                </li>
-
-                <li class="item "
-                    index="6">
-                    <a class="link md:text-base sm:text-sm" href="/s/message"
-                       target="_self">留言板</a>
-
-                </li>
-
-                <li class="item "
-                    index="7">
-                    <a class="link md:text-base sm:text-sm" href="/s/about"
-                       target="_self">关于我</a>
-
-                </li>
-
-            </div>
-            <div class="list -right">
-                <div class="overlay"></div>
-            </div>
-        </ul>
-        <div class="day-night-mode">
-            <input id="switch_Word" type="checkbox" class="switch_Word">
-            <label for="switch_Word"><i></i></label>
-        </div>
-    </nav>
-</header>
+{{ template "menu" . }}
 
 <main class="mx-auto home-page" id="container">
     <header class="bg-cover" id="homeHeader">
@@ -182,7 +72,7 @@
             <ul class="pagination-list flex flex-row ">
                 {{ if gt .currentPage 1 }}
                     <li class="pagination-previous">
-                        <a class="pagination-circle" href="{{ .blogVars.ContextPath }}/page/{{ subtract .currentPage 1 }}">
+                        <a class="pagination-circle" href="{{ .blogVars.ContextPath }}/p/{{ subtract .currentPage 1 }}">
                             <span class="iconfont icon-left-fill"> </span>
                         </a>
                     </li>
@@ -194,14 +84,14 @@
                                href="javascript:void(0);">{{ $page }}</a>
                         {{ else }}
                             <a class="pagination-circle"
-                               href="{{ $.blogVars.ContextPath }}/page/{{ $page }}">{{ $page }}</a>
+                               href="{{ $.blogVars.ContextPath }}/p/{{ $page }}">{{ $page }}</a>
                         {{ end }}
                     </li>
                 {{ end }}
                 {{ $totalPage := len .pages }}
                 {{ if lt .currentPage $totalPage }}
                     <li class="pagination-next">
-                        <a class="pagination-circle" href="{{ .blogVars.ContextPath }}/page/{{ add .currentPage 1 }}">
+                        <a class="pagination-circle" href="{{ .blogVars.ContextPath }}/p/{{ add .currentPage 1 }}">
                             <span class="iconfont icon-right-fill"> </span>
                         </a>
                     </li>
@@ -211,144 +101,8 @@
     </div>
 </main>
 
-<div class="moon-menu">
-    <div class="moon-menu-items" id="moonMenu">
-        <span class="moon-menu-item pl-6 cst-icon icon-up"> </span>
-        <span class="moon-menu-item pl-6 cst-icon icon-down"> </span>
-        <span class="moon-menu-item pl-6 cst-icon icon-search" id="toggleSearch"></span>
-    </div>
+{{ template "footer" . }}
 
-    <div class="moon-menu-button">
-        <svg class="moon-menu-bg">
-            <circle class="moon-menu-cricle" cx="50%" cy="50%" r="44%"></circle>
-            <circle class="moon-menu-border" cx="50%" cy="50%" r="48%"></circle>
-            <g class="moon-dot">
-                <circle r=".2rem" cx="0" cy="-.8rem"></circle>
-                <circle r=".2rem"></circle>
-                <circle r=".2rem" cx="0" cy=".8rem"></circle>
-            </g>
-        </svg>
-        <div class="moon-menu-content">
-            <div class="moon-menu-icon"></div>
-            <div class="moon-menu-text"></div>
-        </div>
-    </div>
-</div>
-
-<div class="moon-content menu-bg" id="moonToc">
-</div>
-
-<form method="get" action="/search">
-    <div class="hidden search-box" id="searchBox">
-        <div class="search-ipt ipt ipt-w">
-            <div class="ipt-ct ct-bg search-container" id="searchInput">
-                <label class="sh-lab">
-                    <input class="sh-ipt" maxlength="30" name="keyword" id="searchBoxInput" spellcheck="false"
-                           placeholder="Search" autocomplete="off">
-                    <i class="sh-icon cst-icon icon-search"></i>
-                </label>
-                <a class="sh-exit cst-icon icon-exit"></a>
-            </div>
-        </div>
-    </div>
-</form>
-<footer class="footer mt-8">
-    <div class="inner container mx-auto flex flex-row lg:justify-between  md:justify-center items-center grid lg:grid-cols-2 md:grid-cols-1">
-        <div class="offsite-links flex flex-row justify-center flex-wrap">
-            <a href="//wpa.qq.com/msgrd?v=3&uin=2295098032&site=qq&menu=yes" class="circle pad-10"
-               target="_blank" rel="noopener" title="QQ Chat">
-                <span class="cst-icon icon-qq"> </span>
-            </a>
-            <a href="https://github.com/zhaoyangkun" class="circle pad-10" target="_blank" rel="noopener"
-               title="Github">
-                <span class="cst-icon icon-github"> </span>
-            </a>
-            <a href="mailto:2295098032@qq.com" class="circle pad-10" target="_blank" rel="noopener" title="邮箱">
-                <span class="cst-icon icon-email"> </span>
-            </a>
-            <a href="https://www.cangmangai.cn/atom.xml" class="circle pad-10" target="_blank" rel="noopener"
-               title="RSS">
-                <span class="cst-icon icon-feed"> </span>
-            </a>
-        </div>
-
-        <div class="site-info flex flex-col justify-center">
-
-            <p><a href="https://www.cangmangai.cn/" target="_blank">苍茫误此生博客</a> © 2020</p>
-
-            {{ safe .blogVars.GlobalFooter }}
-
-            <!-- 请尊重作者，请务必保留版权 -->
-            <div class="badges">
-                <div class="github-badge">
-                    <a style="color: #fff" rel="license" href="https://github.com/zhaoyangkun/aries" target="_blank">
-                        <span class="badge-subject">Powered</span>
-                        <span class="badge-value bg-blue">Aries</span>
-                    </a>
-                </div>
-                <div class="github-badge">
-                    <a style="color: #fff" rel="license" href="https://github.com/zhaoyangkun/aries"
-                       target="_blank">
-                        <span class="badge-subject">Theme</span>
-                        <span class="badge-value bg-red">Xue</span>
-                    </a>
-                </div>
-
-                <div class="github-badge">
-                    <a style="color: #fff" rel="license" href="javascript:void(0)">
-                        <span class="badge-subject">运行</span>
-                        <span class="badge-value bg-orange" id="span_dt_dt"></span>
-                    </a>
-                </div>
-                <div class="github-badge">
-                    <a style="color: #fff" rel="license" href="javascript:void(0)">
-                        <span class="badge-subject">用户</span>
-                        <span id="busuanzi_container_site_uv">
-                            <span class="badge-value bg-brightgreen" id="busuanzi_value_site_uv"></span>
-                        </span>
-                    </a>
-                </div>
-                <div class="github-badge">
-                    <a style="color: #fff" rel="license" href="javascript:void(0)">
-                        <span class="badge-subject">访问</span>
-                        <span id="busuanzi_container_site_pv"><span class="badge-value bg-blueviolet"
-                                                                    id="busuanzi_value_site_pv"></span></span>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-</footer>
-
-<meting-js
-        server="netease"
-        type="playlist"
-        fixed="true"
-        id="5025401103">
-</meting-js>
-
-<div class="modal micromodal-slide" id="coffeeModal" aria-hidden="true" role="dialog">
-    <div class="modal__overlay model_bg" tabindex="-1" data-micromodal-close="">
-        <div class="modal__container" role="dialog" aria-modal="true" id="modalContainer"
-             aria-labelledby="modal-1-title">
-            <header class="modal__header">
-                <h2 class="modal__title" id="coffeeModalTitle"></h2>
-                <button class="modal__close" aria-label="Close modal" id="closeCoffeeModalBtn"></button>
-            </header>
-            <div class="modal__content flex flex-row justify-center" id="coffeeModalContent">
-                <div id='qrCodeZfb' class="pay-code-invisible" code-data="支付宝">
-                    <img class="qr_code_zfb qr-code"
-                         src="https://zyk-1300089264.cos.ap-shanghai.myqcloud.com/halo/1588823719_1588823806088_1589163788840.jpg"
-                         alt="AliPay"/>
-                </div>
-            </div>
-            <footer class="modal__footer flex flex-row justify-center">
-                <button class="modal__btn zfb-btn code-btn" id="zfbBtn">支付宝</button>
-            </footer>
-        </div>
-    </div>
-</div>
-
-{{ template "script" .}}
+{{ template "script" . }}
 </body>
 </html>

@@ -24,6 +24,13 @@ func (Page) GetAll() (list []Page, err error) {
 	return
 }
 
+// 根据 URL获取页面
+func (Page) GetByUrl(url string) (p Page, err error) {
+	err = db.Db.Where("`url` = ?", url).First(&p).Error
+
+	return
+}
+
 // 分页获取页面
 func (Page) GetByPage(page *utils.Pagination, key string) (list []Page, total uint, err error) {
 	query := db.Db.Order("`created_at` desc", true).Find(&list)

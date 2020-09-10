@@ -18,6 +18,13 @@ type Picture struct {
 	Size        uint   `gorm:"int(6)" json:"size"`                       // 空间大小（KB）
 }
 
+// 获取所有图片
+func (Picture) GetAll() (list []Picture, err error) {
+	err = db.Db.Find(&list).Error
+
+	return
+}
+
 // 分页获取图片
 func (Picture) GetByPage(page *utils.Pagination, key string, storageType string) (list []Picture, total uint, err error) {
 	query := db.Db.Model(&Picture{}).Order("created_at desc", true)

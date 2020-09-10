@@ -36,7 +36,7 @@ type LinkEditForm struct {
 // 转换添加友链表单数据到友链实体
 func (form LinkAddForm) BindToModel() models.Link {
 	return models.Link{
-		CategoryId: &form.CategoryId,
+		CategoryId: form.CategoryId,
 		Name:       form.Name,
 		Url:        form.Url,
 		Desc:       form.Desc,
@@ -48,7 +48,7 @@ func (form LinkAddForm) BindToModel() models.Link {
 func (form LinkEditForm) BindToModel() models.Link {
 	return models.Link{
 		Model:      gorm.Model{ID: form.ID},
-		CategoryId: &form.CategoryId,
+		CategoryId: form.CategoryId,
 		Name:       form.Name,
 		Url:        form.Url,
 		Desc:       form.Desc,

@@ -4,6 +4,7 @@ import (
 	"aries/config/db"
 	"aries/config/migrate"
 	"aries/config/setting"
+	"aries/handlers"
 	logger "aries/log"
 	"aries/middlewares"
 	"aries/models"
@@ -62,12 +63,17 @@ func InitApp() *gin.Engine {
 	// 配置博客全局变量
 	blogSetting, _ := models.SysSettingItem{}.GetBySysSettingName("网站设置")
 	setting.BlogVars.InitBlogVars(blogSetting)
+	// 初始化模板全局变量
+	handlers.InitTmplVars()
 
 	// 加载自定义模板函数
 	router.SetFuncMap(template.FuncMap{
 		"safe":     utils.SafeHtml,
 		"add":      utils.AddUpTwoNum,
 		"subtract": utils.SubtractTwoNum,
+		"mod":      utils.Mod,
+		"year":     utils.Year,
+		"month":    utils.Month,
 	})
 	// 加载静态资源和模板
 	router.Static("/static", fmt.Sprintf("themes/%s/static", setting.BlogVars.Theme))

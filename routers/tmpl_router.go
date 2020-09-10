@@ -19,7 +19,18 @@ func (t *TmplRouter) InitTemplateRouter(rootPath string, router *gin.Engine) {
 	{
 		tmplRouter.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, url))
 		tmplRouter.GET("", tmplHandler.IndexTmpl)
-		tmplRouter.GET("/page/:page", tmplHandler.IndexTmpl)
+		tmplRouter.GET("/p/:page", tmplHandler.IndexTmpl)
 		tmplRouter.GET("/articles/:url", tmplHandler.ArticleTmpl)
+		tmplRouter.GET("/categories", tmplHandler.CategoryTmpl)
+		tmplRouter.GET("/categories/:url", tmplHandler.CategoryTmpl)
+		tmplRouter.GET("/categories/:url/p/:page", tmplHandler.CategoryTmpl)
+		tmplRouter.GET("/tags", tmplHandler.TagTmpl)
+		tmplRouter.GET("/tags/:name", tmplHandler.TagTmpl)
+		tmplRouter.GET("/tags/:name/p/:page", tmplHandler.TagTmpl)
+		tmplRouter.GET("/archives", tmplHandler.ArchiveTmpl)
+		tmplRouter.GET("/links", tmplHandler.LinkTmpl)
+		tmplRouter.GET("/journals", tmplHandler.JournalTmpl)
+		tmplRouter.GET("/photos", tmplHandler.PhotoTmpl)
+		tmplRouter.GET("/custom/:url", tmplHandler.CustomTmpl)
 	}
 }
