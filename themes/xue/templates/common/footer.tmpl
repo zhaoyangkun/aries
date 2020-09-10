@@ -64,7 +64,7 @@
             <div class="site-info flex flex-col justify-center">
                 <p><a href="https://www.cangmangai.cn/" target="_blank">{{ .blogVars.SiteName }}</a> © 2020</p>
 
-                <p><a href="http://beian.miit.gov.cn" target="_blank" class="text-xs">浙ICP备19028355号-2</a></p>
+                {{ safe .blogVars.GlobalFooter }}
 
                 <div class="badges">
                     <div class="github-badge">

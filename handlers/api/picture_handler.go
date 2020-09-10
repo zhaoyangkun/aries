@@ -19,6 +19,8 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/jinzhu/gorm"
+
 	"github.com/gin-gonic/gin"
 	"github.com/tencentyun/cos-go-sdk-v5"
 
@@ -114,8 +116,15 @@ func (p *PictureHandler) UploadImgToAttachment(ctx *gin.Context) {
 	}
 
 	picBedSetting, err := models.SysSettingItem{}.GetBySysSettingName("图床设置")
+	if (err != nil && err == gorm.ErrRecordNotFound) || len(picBedSetting) == 0 {
+		ctx.JSON(http.StatusOK, utils.Result{
+			Code: utils.ServerError,
+			Msg:  "请先配置图床",
+			Data: nil,
+		})
+		return
+	}
 	if err != nil {
-		log.Logger.Sugar().Error("err: ", err.Error())
 		ctx.JSON(http.StatusOK, utils.Result{
 			Code: utils.ServerError,
 			Msg:  "服务器端错误",
@@ -123,16 +132,16 @@ func (p *PictureHandler) UploadImgToAttachment(ctx *gin.Context) {
 		})
 		return
 	}
-	if len(picBedSetting) == 0 {
+
+	imgSetting, err := models.SysSettingItem{}.GetBySysSettingName(picBedSetting["storage_type"])
+	if (err != nil && err == gorm.ErrRecordNotFound) || len(imgSetting) == 0 {
 		ctx.JSON(http.StatusOK, utils.Result{
-			Code: utils.RequestError,
+			Code: utils.ServerError,
 			Msg:  "请先配置图床",
 			Data: nil,
 		})
 		return
 	}
-
-	imgSetting, err := models.SysSettingItem{}.GetBySysSettingName(picBedSetting["storage_type"])
 	if err != nil {
 		log.Logger.Sugar().Error("err: ", err.Error())
 		ctx.JSON(http.StatusOK, utils.Result{

@@ -1,54 +1,41 @@
 ## 项目介绍
 
-Aries 是基于 Gin + Vue + MySQL + H5 开发的现代化博客系统，博客主要分为后台管理端和展示端。
+> **主题管理**和**评论组件**功能还在开发中！
 
-- 后台管理端采用前后端分离的开发模式，Gin 和 Vue 通过 JSON 进行前后端交互。
+Aries 是基于 Gin + GORM + MySQL + Vue + H5 开发的现代化博客系统，博客主要分为**后台管理端**和**展示端**。
 
-- 展示端采用传统开发模式，采用 Go Template 模板引擎来渲染页面，有利于 SEO 优化。
+- **后台管理端**采用**前后端分离**的开发模式，Gin 和 Vue 通过 JSON 进行前后端交互。
+- **展示端**采用传统开发模式，采用 Go Template 模板引擎来渲染页面，有利于 SEO 优化。
+- 数据库层没有设置物理外键，所有外键操作都在业务层处理。
 
 ## 功能特性
 
-> **后台管理小部分功能和展示端大部分功能还未完成，尚不能正式使用！**
-
 1. 文章
-
    - markdown 编辑器采用  vditor，提升中文 markdown 使用体验
-   - 多标签
+   - 文章标签、分类管理
    - 文章置顶
    - 文章加密
    - 自定义文章链接
    - 文章排序
-   - 草稿和回收站
+   - 草稿箱和回收站
    - 从文件导入文章
-
-   ![37b31a381a9751ee.png](https://ftp.bmp.ovh/imgs/2020/08/37b31a381a9751ee.png)
-
-   ![9614b942037ca282.png](https://ftp.bmp.ovh/imgs/2020/08/9614b942037ca282.png)
 
 2. 外观
 
    - 自定义菜单
    - 导入主题
-   - 主题设置
-   - 主题文件修改
-
+   - 主题切换和设置
+   - 主题编辑
 3. 评论
 
    - 回收站
    - 评论审核
    - 评论回复邮件通知
-
 4. 图床
 
    - 支持 sm.ms，imgbb 和 腾讯云 cos 存储
    - 多图片上传
    - 图片管理
-
-   ![b4f25e1d52c50052.png](https://ftp.bmp.ovh/imgs/2020/08/b4f25e1d52c50052.png)
-
-   ![](https://ftp.bmp.ovh/imgs/2020/08/e6d838ea5a9759a8.png)
-
-   ![3142f8dd40ce6d30.png](https://ftp.bmp.ovh/imgs/2020/08/3142f8dd40ce6d30.png)
 
 5. 页面
 
@@ -56,31 +43,62 @@ Aries 是基于 Gin + Vue + MySQL + H5 开发的现代化博客系统，博客�
    - 自定义页面
    - 图库管理
 
-   ![b94d1484dfedbe5a.png](https://ftp.bmp.ovh/imgs/2020/08/b94d1484dfedbe5a.png)
-
-   ![d8ac1628e32f8017.png](https://ftp.bmp.ovh/imgs/2020/08/d8ac1628e32f8017.png)
-
 6. 友情链接
 
    - 添加、修改友链
    - 友链分类
-
-   ![1eae5804d99db93e.png](https://ftp.bmp.ovh/imgs/2020/08/1eae5804d99db93e.png)
 
 7. 用户
 
    - 修改用户信息
    - 修改密码
 
-   ![ce41bb14aa6d1fca.png](https://ftp.bmp.ovh/imgs/2020/08/ce41bb14aa6d1fca.png)
-
 8. 设置
 
-   - 站点信息和 SEO 信息设置
+   - 网站设置
+   - 邮件设置
+   - 图床设置
+   - 评论设置
+   - 参数设置
 
-   ![763266bfba1b89a2.png](https://ftp.bmp.ovh/imgs/2020/08/763266bfba1b89a2.png)
 
-   ![dbiyiq.png](https://s1.ax1x.com/2020/08/30/dbiyiq.png)
+## 部分截图
+
+- 后台管理端
+
+  ![初始化配置](https://cangmang.coding.net/p/image/d/image/git/raw/master/article/2020/9/10/20200910102026.png)
+
+  ![登录](https://cangmang.coding.net/p/image/d/image/git/raw/master/article/2020/9/10/20200910101720.png)
+
+  ![写文章](https://cangmang.coding.net/p/image/d/image/git/raw/master/article/2020/9/10/20200910102450.png)
+
+  ![image-20200910111614889](C:\Users\22950\AppData\Roaming\Typora\typora-user-images\image-20200910111614889.png
+
+  ![设置](https://cangmang.coding.net/p/image/d/image/git/raw/master/article/2020/9/10/20200910102605.png)
+
+  ![文章列表](https://cangmang.coding.net/p/image/d/image/git/raw/master/article/2020/9/10/20200910111630.png)
+
+  ![图片上传](https://cangmang.coding.net/p/image/d/image/git/raw/master/article/2020/9/10/20200910104827.png)
+
+  ![附件列表](https://cangmang.coding.net/p/image/d/image/git/raw/master/article/2020/9/10/20200910111523.png)
+
+  ![添加图库](https://cangmang.coding.net/p/image/d/image/git/raw/master/article/2020/9/10/20200910111730.png)
+
+- 博客展示端
+
+  ![首页](https://cangmang.coding.net/p/image/d/image/git/raw/master/article/2020/9/10/20200910105929.png)
+
+  ![文章详情](https://cangmang.coding.net/p/image/d/image/git/raw/master/article/2020/9/10/20200910110249.png)
+
+  ![分类列表](https://cangmang.coding.net/p/image/d/image/git/raw/master/article/2020/9/10/20200910110729.png)
+
+  ![标签列表](https://cangmang.coding.net/p/image/d/image/git/raw/master/article/2020/9/10/20200910110801.png)
+
+  ![归档](https://cangmang.coding.net/p/image/d/image/git/raw/master/article/2020/9/10/20200910110325.png)
+
+  ![友链](https://cangmang.coding.net/p/image/d/image/git/raw/master/article/2020/9/10/20200910110634.png)
+
+  ![相册](https://cangmang.coding.net/p/image/d/image/git/raw/master/article/2020/9/10/20200910111228.png)
 
 ## 如何在本地运行 Aries
 
@@ -147,4 +165,6 @@ Aries 是基于 Gin + Vue + MySQL + H5 开发的现代化博客系统，博客�
   npm run serve
   ```
 
-- 待 `gin` 和 `Vue` 项目启动完毕后，在浏览器中访问 `http://localhost:8080` 即可 。
+- 待 `gin` 和 `Vue` 项目启动完毕后，在浏览器中访问 `http://localhost:8080` 即可进入后台管理。
+
+- 在浏览器中访问 `http://127.0.0.1:8088` 可进入博客展示端。
