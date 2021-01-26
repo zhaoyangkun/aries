@@ -2,14 +2,13 @@
 <html lang="zh-cmn-Hans">
 {{ template "head" . }}
 <body>
-
 {{ template "menu" . }}
 
 <main class="mx-auto home-page" id="container">
     <header class="bg-cover post-cover" id="postHeader">
         <div class="cover-bg">
             <img src="https://s1.ax1x.com/2020/06/29/NWtFJA.jpg"
-                 class="z-auto" alt="相遇在人海，聚散在重逢之外">
+                 class="z-auto" alt="{{ .subTitle }}">
         </div>
         <div class="cover-content post-cover-content flex justify-center">
             <!-- 封面内容 -->

@@ -8,28 +8,30 @@
 <main class="mx-auto home-page" id="container">
     <header class="bg-cover post-cover" id="postHeader">
         <div class="cover-bg">
-            <img src="https://s1.ax1x.com/2020/06/29/NWtFJA.jpg"
-                 class="z-auto" alt="相遇在人海，聚散在重逢之外">
+            <img src="https://cdn.jsdelivr.net/gh/keepli/image@2.0/img/2.0/img-1.jpg" class="z-auto lazyload img-random"
+                 alt="{{ .subTitle }}"
+                 data-loaded="true">
         </div>
         <div class="cover-content post-cover-content flex justify-center">
             <!-- 封面内容 -->
             <div class="inner flex flex-col justify-center">
-                <p class="post-title cover-title text-base lg:text-4xl xl:text-5xl md:text-3xl">{{ .article.Title }}</p>
+                <p class="post-title cover-title text-base lg:text-4xl xl:text-5xl md:text-3xl">{{ .subTitle }}</p>
                 <div class="post-meta">
                     <div class="post-meta-wrap">
                         <img class="author-avatar"
-                             srcset="//cn.gravatar.com/avatar/7b072beef3e42b99231f9ecb0a0856b9&amp;d=mm, //cn.gravatar.com/avatar/7b072beef3e42b99231f9ecb0a0856b9&amp;d=mm 2x"
-                             src="//cn.gravatar.com/avatar/7b072beef3e42b99231f9ecb0a0856b9&amp;d=mm" alt="">
+                             srcset="//cn.gravatar.com/avatar/80c53563af3dd3635c82a3b43cc16dda?s=256&amp;d=mm, //cn.gravatar.com/avatar/80c53563af3dd3635c82a3b43cc16dda?s=256&amp;d=mm 2x"
+                             src="//cn.gravatar.com/avatar/80c53563af3dd3635c82a3b43cc16dda?s=256&amp;d=mm" alt="">
                         <span class="post-author">{{ .article.VisitCount }} 次访问</span>
-                        <time class="published"
-                              datetime="2020-04-15">{{ .article.CreatedAt.Format "2006-01-02" }}</time>
+                        <time class="published" datetime="2020-10-30">
+                            发布: {{ .article.CreatedAt.Format "2006-01-02" }}</time>
+                        <time class="published" datetime="2020-11-01">
+                            最后编辑: {{ .article.UpdatedAt.Format "2006-01-02" }}</time>
                     </div>
                     <div class="text-center post-categories">
                         <span class="iconfont icon-folder"> </span>
 
                         <a href="{{ .blogVars.ContextPath }}/categories/{{ .article.Category.Url }}"
-                           class="post-category"
-                           data-pjax-state="">
+                           class="post-category">
                             · {{ .article.Category.Name }}
                         </a>
                     </div>
@@ -37,57 +39,45 @@
             </div>
         </div>
     </header>
-    <div class="article-content content-container">
-        <div class="container mx-auto px-4 md-content mt-8 max-w-6xl tracking-wider md:leading-relaxed sm:leading-normal ct-container cn-pd"
+
+    <div class="article-content content-container" id="gallery-content">
+        <div id="original" style="display: none">{{ .article.Content }}</div>
+        <div class="container mx-auto px-4 md-content mt-8 max-w-6xl tracking-wider md:leading-relaxed sm:leading-normal cn-pd ct-container"
              id="write">
-            {{ safe .article.MDContent }}
         </div>
         <div id="tocFlag"></div>
-        <aside id="toc" class="toc" style="display: block; left: 1028.5px;"></aside>
-    </div>
-    <div class="container mx-auto px-4 mt-8 pb-4 max-w-6xl tracking-wider md:leading-relaxed sm:leading-normal ct-container cn-pd coffee-tags">
-        <p class="flex flex-col justify-center pt-8 pb-8">
-            <span class="text-center block pb-2">Buy me a cup of coffee ☕.</span>
-            <button id="buyCoffee" class="btn-primary rounded h-10 leading-10 w-32 mg-auto">
-                <img src="https://www.cangmangai.cn/themes/bao/source/images/cuplogo-sm.png" style="height: 13px">
-                <span class="pt-1 pl-2">Coffee</span>
-            </button>
-        </p>
-        <p class="flex flex-row justify-start flex-wrap">
-            {{ range $tag := .article.TagList }}
-                <a href="{{ $.blogVars.ContextPath }}/tags/{{ $tag.Name }}" class="post-tag mt-2 mb-2 mr-2"
-                   data-pjax-state="">
-                    #&nbsp;{{ $tag.Name }}
-                </a>
-            {{ end }}
-            <span class="share-btn">
-                <span class="iconfont icon-share"> </span>
-            </span>
-        </p>
-        <hr class="mt-4" style="background-color: rgba(96, 125, 139, .05); size: 2px;">
-        <div id="socialShare" class="no-show mt-4 share-area">
-            <div class="social-share" data-disabled="google,twitter,facebook"></div>
+        <aside id="toc" class="toc"></aside>
+
+        <!-- 上一篇和下一篇 -->
+        <div class="container mx-auto mt-4 pb-8  ct-container">
+            <div class="entry-navigation">
+                {{ if .preArticle.Title }}
+                    <div class="nav previous">
+                        <img class="lazyload img-random lazyloaded" index="544"
+                             src="https://www.keepli.cn/themes/bao/source/images/loading.svg"
+                             alt="{{ .preArticle.Title }}">
+                        <span>上一篇</span>
+                        <h4 class="entry-title">{{ .preArticle.Title }}</h4>
+                        <a class="u-permalink"
+                           href="{{ .blogVars.ContextPath }}/articles/{{ .preArticle.URL }}"></a>
+                    </div>
+                {{ end }}
+                {{ if .nextArticle.Title }}
+                    <div class="nav next">
+                        <img class="lazyload img-random lazyloaded" index="51"
+                             src="https://www.keepli.cn/themes/bao/source/images/loading.svg"
+                             alt="{{ .nextArticle.Title }}">
+                        <span>下一篇</span>
+                        <h4 class="entry-title">{{ .nextArticle.Title }}</h4>
+                        <a class="u-permalink"
+                           href="{{ .blogVars.ContextPath }}/articles/{{ .nextArticle.URL }}"></a>
+                    </div>
+                {{ end }}
+            </div>
         </div>
-    </div>
-    <div class="container mx-auto mt-8 pb-8 max-w-6xl grid grid-cols-2 flex flex-row justify-between  ct-container cn-pd post-navigation">
-        <div class="pre-post pt-4 ">
-            <a href="https://www.cangmangai.cn/archives/create-gin-project" class="nav-previous" data-pjax-state="">
-                <div class="nav-inside">
-                    <span class="nav-before"><span class="cst-icon icon-previous"> </span></span>
-                    <span class="nav-title">Gin 系列（一）：创建 Gin 项目</span>
-                </div>
-            </a>
+        <div class="container mx-auto px-4 mt-16 max-w-6xl tracking-wider md:leading-relaxed sm:leading-normal ct-container cn-pd">
+            <halo-comment id="28" type="post"></halo-comment>
         </div>
-        <div class="next-post pt-4 text-right">
-            <a href="https://www.cangmangai.cn/archives/compress-statics-in-django" class="nav-previous"
-               data-pjax-state="">
-                <div class="nav-inside">
-                    <span class="nav-title">Django压缩静态文件</span>
-                    <span class="nav-before"> <span class="cst-icon icon-next"> </span></span>
-                </div>
-            </a>
-        </div>
-    </div>
 </main>
 
 {{ template "footer" . }}

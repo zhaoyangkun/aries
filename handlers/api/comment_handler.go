@@ -55,7 +55,8 @@ func (c *CommentHandler) GetCommentsByPage(ctx *gin.Context) {
 	pageForm := forms.CommentPageForm{}
 	_ = ctx.ShouldBindQuery(&pageForm)
 
-	list, total, err := models.Comment{}.GetByPage(&pageForm.Pagination, pageForm.Key, pageForm.Type, pageForm.State)
+	list, total, err := models.Comment{}.GetByPage(&pageForm.Pagination, pageForm.Key,
+		pageForm.ArticleId, pageForm.PageId, pageForm.Type, pageForm.State, pageForm.IsParent)
 	if err != nil {
 		log.Logger.Sugar().Error("error: ", err.Error())
 		ctx.JSON(http.StatusOK, utils.Result{
@@ -66,10 +67,32 @@ func (c *CommentHandler) GetCommentsByPage(ctx *gin.Context) {
 		return
 	}
 
+	disNum := uint(0)
+	if pageForm.IsParent == 1 {
+		disNum, err = models.Comment{}.GetDisCount(pageForm.PageId, pageForm.ArticleId)
+		if err != nil {
+			log.Logger.Sugar().Error("error: ", err.Error())
+			ctx.JSON(http.StatusOK, utils.Result{
+				Code: utils.ServerError,
+				Msg:  "服务器端错误",
+				Data: nil,
+			})
+			return
+		}
+	}
+
 	ctx.JSON(http.StatusOK, utils.Result{
 		Code: utils.Success,
 		Msg:  "查询成功",
-		Data: utils.GetPageData(list, total, pageForm.Pagination),
+		Data: gin.H{
+			"ok":          true,                           // 是否成功
+			"data":        list,                           // 分页数据
+			"total_num":   total,                          // 总条数
+			"total_pages": pageForm.Pagination.TotalPages, // 总页数
+			"page":        pageForm.Pagination.Page,       // 页码
+			"size":        pageForm.Pagination.Size,       // 每页条数
+			"dis_num":     disNum,
+		},
 	})
 }
 

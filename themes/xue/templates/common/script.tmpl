@@ -1,71 +1,19 @@
 {{ define "script" }}
     <script src="//cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js"></script>
-    <script src="{{ .blogVars.ContextPath }}/static/js/utils.js"></script>
-    <script src="{{ .blogVars.ContextPath }}/static/js/modal.js"></script>
-    <script src="{{ .blogVars.ContextPath }}/static/js/night-mode.js"></script>
-    <script src="{{ .blogVars.ContextPath }}/static/js/moon-menu.js"></script>
-    <script src="{{ .blogVars.ContextPath }}/static/js/gallery.js"></script>
-    <script src="{{ .blogVars.ContextPath }}/static/js/post.js"></script>
-    <script src="{{ .blogVars.ContextPath }}/static/js/header.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <!-- markdown 插件 -->
+    <script src="//cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <!--图片预览插件-->
+    <script src="//cdn.jsdelivr.net/npm/viewerjs@1.5.0/dist/viewer.min.js"></script>
     <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.0.0/build/highlight.min.js"></script>
+    <script src="//cdn.jsdelivr.net/gh/xzzai/static@master/js/linesNumber.js"></script>
     <script src="//cdn.jsdelivr.net/gh/xzzai/static@master/js/highlight.lang.js"></script>
-    <script src="//cdn.jsdelivr.net/npm/highlightjs-line-numbers.js@2.7.0/dist/highlightjs-line-numbers.min.js"></script>
-    <script data-pjax-viewer src="//cdn.jsdelivr.net/npm/viewerjs@1.5.0/dist/viewer.min.js"></script>
-    <script src="//cdn.jsdelivr.net/npm/micromodal/dist/micromodal.min.js"></script>
-    <script src="//cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js"></script>
-    <script src="//cdn.jsdelivr.net/gh/xzzai/static@master/js/simply-nav.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/tocbot@4.11.2/dist/tocbot.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/isotope-layout@3.0.6/dist/isotope.pkgd.min.js"></script>
     <script src="//cdn.jsdelivr.net/gh/xzzai/static@master/js/moon.js"></script>
-    <script src="//cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/js/social-share.min.js"></script>
-    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-    <script src="//cdn.jsdelivr.net/gh/xzzai/static@master/js/jqcloud-1.0.4.min.js"></script>
-    <script type='text/javascript'>
-        let autoNightModeOpen = true;
-
-        // 标签
-        let tagArray = [
-            {{ range $i, $tag := .tags }}
-            {
-                'text': '{{ $tag.Name }}',
-                'weight': '{{ add $i 1 }}',
-                'link': '{{ $.blogVars.ContextPath }}/tags/{{ $tag.Name }}'
-            },
-            {{ end }}
-        ];
-
-        // 分类
-        let categoryArray = [
-            {{ range $i, $category := .categories }}
-            {
-                'text': '{{ $category.Name }}',
-                'weight': '{{ add $i 1 }}',
-                'link': '{{ $.blogVars.ContextPath }}/categories/{{ $category.Url }}'
-            },
-            {{ end }}
-        ];
-
-
-        $(function () {
-            let tagCloud = $("#tagCloud");
-            if (tagCloud && tagCloud.children().length === 0) {
-                tagCloud.jQCloud(tagArray, {autoResize: true, delayedMode: true});
-            }
-
-            let categoryCloud = $("#categoryCloud");
-            if (categoryCloud && categoryCloud.children().length === 0) {
-                categoryCloud.jQCloud(categoryArray, {autoResize: true, delayedMode: true});
-            }
-        });
-
-        $('.arrow-down').on('click', function () {
-            let postHeight = $('#homeHeader').height();
-            window.scroll({top: postHeight - 50, behavior: 'smooth'});
-        })
-
-        // 禁用的分享站点, 现在已经不支持腾讯微博
-        let socialDisabled = 'google,twitter,facebook';
-
-        let katex_config = {
+    <script src="//cdn.jsdelivr.net/gh/hshanx/static@master/js/simply-nav.js" defer></script>
+    <script type="text/javascript">
+        let openKatex = true;
+        const katex_config = {
             delimiters:
                 [
                     {left: "$$", right: "$$", display: true},
@@ -74,188 +22,104 @@
                     {left: "\\[", right: "\\]", display: true},
                 ]
         };
-        let openToc = false;
-        openToc = true;
+
+        // 是否开启代码高亮
+        let enableCodeHighlight = true;
+        // 是否开启行号
+        let enableLineNumber = true;
+        let collpaseCode = false;
+        // 黑夜模式
+        let autoNightMode = true;
+        // 默认收缩菜单
+        let hideMenu = true;
+
+        function renderTagCloud() {
+            // 标签云
+            let tagCloud = $("#tagCloud");
+            if (!(tagCloud && tagCloud.children().length === 0)) {
+                return;
+            }
+            // 标签
+            let tagArray = [
+                {{ range $i, $tag := .tags }}
+                {
+                    'text': '{{ $tag.Name }}',
+                    'weight': '{{ add $i 1 }}',
+                    'link': '{{ $.blogVars.ContextPath }}/tags/{{ $tag.Name }}'
+                },
+                {{ end }}
+            ];
+
+            // 标签云
+            tagCloud.jQCloud(tagArray, {autoResize: true, delayedMode: true});
+        }
+
+        function renderCategoryCloud() {
+            // 分类云
+            let categoryCloud = $("#categoryCloud");
+            if (!(categoryCloud && categoryCloud.children().length === 0)) {
+                return;
+            }
+            // 分类
+            let array = [
+                {{ range $i, $category := .categories }}
+                {
+                    'text': '{{ $category.Name }}',
+                    'weight': '{{ add $i 1 }}',
+                    'link': '{{ $.blogVars.ContextPath }}/categories/{{ $category.Url }}'
+                },
+                {{ end }}
+            ];
+
+            categoryCloud.jQCloud(array, {autoResize: true, delayedMode: true});
+        }
     </script>
-    <script src="//cdn.jsdelivr.net/npm/tocbot@4.11.2/dist/tocbot.min.js"></script>
+
+    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.15.2/css/all.css"
+          crossorigin="anonymous">
+
+    <link type='text/css' rel="stylesheet"
+          href="//cdn.jsdelivr.net/gh/Sanarous/files@master/font-awesome-animation.min.css">
+    <script src="{{ .blogVars.ContextPath }}/static/js/main.js"></script>
+
+
     <script src="//cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.js"></script>
     <script src="//cdn.jsdelivr.net/npm/meting@2/dist/Meting.min.js"></script>
+
     <script defer src="//cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.js"
             integrity="sha384-g7c+Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI+sEnkvrMWph2EDg4"
             crossorigin="anonymous"></script>
     <script defer src="//cdn.jsdelivr.net/npm/katex@0.12.0/dist/contrib/auto-render.min.js"
-            integrity="sha384-mll67QQFJfxn0IYznZYonOWZ644AWYC+Pt2cHqMaRhXVrursRwvLnLaebdGIlYNa" crossorigin="anonymous"
-            onload="if (document.getElementById('write'))
-            { renderMathInElement(document.getElementById('write'), katex_config)}
-            else if (document.getElementById('tree-hole'))
-            {renderMathInElement(document.getElementById('tree-hole'), katex_config)}"></script>
-    <script src="//cdn.jsdelivr.net/npm/pjax@0.2.8/pjax.js"></script>
-    <script src="//cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js"></script>
-    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css">
+            integrity="sha384-mll67QQFJfxn0IYznZYonOWZ644AWYC+Pt2cHqMaRhXVrursRwvLnLaebdGIlYNa"
+            crossorigin="anonymous"></script>
+
+
     <script type="text/javascript">
-        let pjax = new Pjax({
-            elements: 'a[href]:not([href^="#"]):not([data-not-pjax]):not([target^="_blank"]), form', // default is "a[href], form[action]"
-            cacheBust: false,
-            debug: false,
-            selectors: [
-                'title',
-                '#container'
-            ]
-        });
+        // console.clear();
+        console.log("%c 有朋自远方来, 不亦说乎.", "background:#24272A; color:#ffffff", "");
+        console.log("%c Github %c", "background:#24272A; color:#ffffff", "", "https://github.com/keepli");
+    </script>
 
-        //在Pjax请求开始后触发
-        document.addEventListener('pjax:send', function () {
-            NProgress.start();
-
-        });
-
-        //在Pjax请求完成后触发
-        document.addEventListener('pjax:complete', function (e) {
-            NProgress.done();
-            // 最开始就要隐藏
-            header.hideSubMenu();
-            // header
-            // header.hoverSubMenu();
-
-            // 加载相册
-            if ($("#container").find('.photos-page').length > 0) {
-                photo.loadGallery();
-                photo.showPhotos();
+    <script type="text/javascript">
+        const loading = "https://www.keepli.cn/themes/bao/source/images/loading-45.svg";
+        let photoList = "https://cdn.jsdelivr.net/gh/keepli/image@1.0/img/1.0/img-1.jpg;"
+            + " https://cdn.jsdelivr.net/gh/keepli/image@1.0/img/1.0/img-2.jpg;"
+            + " https://cdn.jsdelivr.net/gh/keepli/image@1.0/img/1.0/img-3.jpg;"
+            + " https://cdn.jsdelivr.net/gh/keepli/image@1.0/img/1.0/img-4.jpg;"
+        let photos = []
+        if (photoList && photoList.trim() !== '') {
+            if (photoList.endsWith(';')) {
+                photoList = photoList.substring(0, photoList.length - 1);
             }
+            photos = photoList.split(";");
+        }
+    </script>
 
-            // 隐藏 search box 并清空 input
-            $('#searchBox').addClass('hidden');
-            $("#searchBoxInput").val("");
-
-            // 标签云
-            let tagCloud = $("#tagCloud");
-            if (tagCloud && tagCloud.children().length === 0) {
-                tagCloud.jQCloud(tagArray, {autoResize: true, delayedMode: true});
-            }
-
-            // 分类云
-            let categoryCloud = $("#categoryCloud");
-            if (categoryCloud && categoryCloud.children().length === 0) {
-                categoryCloud.jQCloud(categoryArray, {autoResize: true, delayedMode: true});
-            }
-
-            // 当前菜单菜单高亮
-            hanUtils.highlightMenu();
-
-            //重载
-            if (typeof _hmt !== 'undefined') {
-                // support 百度统计
-                _hmt.push(['_trackPageview', location.pathname + location.search]);
-            }
-            if (typeof ga !== 'undefined') {
-                // support google analytics
-                ga('send', 'pageview', location.pathname + location.search);
-            }
-
-            // 重新加载 评论
-            $('script[data-pjax-comment]').each(function () {
-                let commentParent = $(this).parent()
-                let comment = $(this).remove();
-                commentParent.append(comment);
-            });
-
-            $('.icon-toc').each(function () {
-                $(this).remove();
-            });
-
-            $('#moonToc').removeClass('mm-active');
-
-            if ($("#container").find('.article-content').length > 0) {
-
-                // 转换post内容为 Markdown
-                // post.formatContent();
-
-                // 小屏幕目录
-                $('#moonMenu').append('<span class="moon-menu-item pl-6 cst-icon icon-toc"></span>')
-
-                moonMenu.initMoonToc();
-
-                moonMenu.ckShowContent();
-
-                // 代码高亮
-                post.loadHighlight();
-
-                // 图片预览
-                post.initViewer();
-
-                if (openToc) {
-                    // 目录事件
-                    post.scrollTocFixed();
-
-                    // 初始化toc
-                    post.initToc()
-
-                    // 删除文章最开始第一个 <ul>(如果有)
-                    post.removeFirstUL()
-                }
-
-                // 分享按钮
-                post.shareIcon()
-
-                // 模态框
-                coffeeModal.toggleCoffeeModal();
-
-                // 初始展示二维码
-                coffeeModal.initShowCode();
-
-                // 切换支付二维码
-                coffeeModal.switchQrCode();
-
-                try {
-                    if (renderMathInElement && typeof renderMathInElement !== 'undefined') {
-                        renderMathInElement(document.getElementById('write'), katex_config);
-                    }
-
-                    // if (mermaid && typeof mermaid !== 'undefined') {
-                    //     mermaid.initialize();
-                    // }
-                } catch (e) {
-                    console.log("error");
-                }
-            }
-
-            // table 要加上 div 避免出现小屏幕下展示不全
-            hanUtils.tableAddNode();
-
-            // li 添加 span
-            hanUtils.liAddSpan();
-
-            // 自定义页面 viewer
-            hanUtils.sheetViewer();
-
-            // 相册页面 viewer
-            hanUtils.journalViewer();
-
-
-            if (renderMathInElement && typeof renderMathInElement !== 'undefined') {
-                if (document.getElementById('write')) {
-                    renderMathInElement(document.getElementById('write'), katex_config)
-                } else if (document.getElementById('tree-hole')) {
-                    renderMathInElement(document.getElementById('tree-hole'), katex_config)
-                }
-            }
-
-        });
-
-        document.addEventListener('pjax:end', function () {
-        });
-
-        //Pjax请求失败后触发，请求对象将作为一起传递event.options.request
-        document.addEventListener('pjax:error', function () {
-            NProgress.done();
-            bar('系统出现问题，请手动刷新一次', '3000');
-        });
-
+    <script type="text/javascript">
         // 建站时间统计
         function show_date_time() {
             if ($("#span_dt_dt").length > 0) {
-                window.setTimeout("show_date_time()", 1000);
-                BirthDay = new Date("08/01/2019 00:00:00");
+                BirthDay = new Date("01/06/2020 12:00:00");
                 today = new Date();
                 timeold = (today.getTime() - BirthDay.getTime());
                 sectimeold = timeold / 1000;
@@ -273,9 +137,84 @@
         }
 
         show_date_time();
+    </script>
 
-        // console.clear();
-        console.log("%c 有朋自远方来, 不亦说乎.", "background:#24272A; color:#ffffff", "");
-        console.log("%c Github %c", "background:#24272A; color:#ffffff", "", "https://github.com/zhaoyangkun");
+
+    <script src="//cdn.jsdelivr.net/gh/xzzai/static@master/js/jquery.pjax.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js"></script>
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css">
+    <script type="text/javascript">
+        $(document).pjax('a[href]:not([href^="#"]):not([data-not-pjax]):not([target^="_blank"]), form',
+            '#container', {fragment: '#container', timeout: 8000});
+
+        $(document).on('pjax:send', function () {
+            NProgress.start();
+        })
+
+        $(document).on('pjax:complete', function () {
+            NProgress.done();
+
+            // 检查夜间模式
+            checkNightMode()
+
+            // 自动切换夜间模式
+            if (autoNightMode) {
+                autoDayNight();
+            }
+
+            // 删除 listener
+            removeScrollTocFixed();
+
+            // 重新加载 评论
+            $('script[data-pjax-comment]').each(function () {
+                let commentParent = $(this).parent()
+                let comment = $(this).remove();
+                commentParent.append(comment);
+            });
+
+            // 计算时间
+            setTimeAgo();
+
+            // 存在 markdown 页面的功能
+            if ($('#container').find('#original').length > 0) {
+                // 格式化内容
+                const format = formatContent();
+
+                if (!format) {
+                    loadGallery();
+                    lazyloadImg();
+                }
+            }
+
+            // 处理目录
+            dealContentToc();
+
+            // 相册页面功能
+            if ($("#container").find('.photos-page').length > 0) {
+                loadGallery();
+            }
+
+            // 图片懒加载
+            lazyloadImg()
+
+            // 加载云标签
+            if ($('#container').find('.jqcloud').length > 0) {
+                if (typeof $.fn.jQCloud !== "function") {
+                    $.getScript(
+                        "//cdn.jsdelivr.net/gh/xzzai/static@master/js/jqcloud-1.0.4.min.js",
+                        function () {
+                            renderTagCloud();
+                            renderCategoryCloud();
+                        });
+                } else {
+                    renderTagCloud();
+                    renderCategoryCloud();
+                }
+            }
+        });
+
+        $(document).on('pjax:error', function () {
+            NProgress.done();
+        });
     </script>
 {{ end }}

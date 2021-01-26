@@ -81,14 +81,14 @@ func (a *ApiRouter) InitApiRouter(rootPath string, router *gin.Engine) {
 		tagApiRouter.DELETE("/tags", tagHandler.MultiDelTags)
 	}
 
-	commentRouter := router.Group(rootPath, middlewares.JWTAuth())
+	commentRouter := router.Group(rootPath)
 	{
 		commentRouter.GET("/all_comments", commentHandler.GetAllComments)
 		commentRouter.GET("/comments", commentHandler.GetCommentsByPage)
 		commentRouter.POST("/comments", commentHandler.AddComment)
-		commentRouter.PUT("/comments", commentHandler.UpdateComment)
-		commentRouter.DELETE("/comments/:id", commentHandler.DeleteComment)
-		commentRouter.DELETE("/comments", commentHandler.MultiDelComments)
+		commentRouter.PUT("/comments", commentHandler.UpdateComment, middlewares.JWTAuth())
+		commentRouter.DELETE("/comments/:id", commentHandler.DeleteComment, middlewares.JWTAuth())
+		commentRouter.DELETE("/comments", commentHandler.MultiDelComments, middlewares.JWTAuth())
 	}
 
 	linkApiRouter := router.Group(rootPath, middlewares.JWTAuth())

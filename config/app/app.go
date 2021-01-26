@@ -74,6 +74,7 @@ func InitApp() *gin.Engine {
 		"mod":      utils.Mod,
 		"year":     utils.Year,
 		"month":    utils.Month,
+		"day":      utils.Day,
 	})
 	// 加载静态资源和模板
 	router.Static("/static", fmt.Sprintf("themes/%s/static", setting.BlogVars.Theme))

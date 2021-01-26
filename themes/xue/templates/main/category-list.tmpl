@@ -6,19 +6,17 @@
 {{ template "menu" . }}
 
 <main class="mx-auto home-page" id="container">
-    <header class="bg-cover post-cover" id="postHeader">
+    <header class="bg-cover post-cover">
         <div class="cover-bg">
-            <img src="https://s1.ax1x.com/2020/06/29/NWtFJA.jpg"
-                 class="z-auto" alt="相遇在人海，聚散在重逢之外">
+            <img src="https://cdn.jsdelivr.net/gh/keepli/image@1.0/header/1.0/header-8.jpg" class="z-auto" alt="{{ .subTitle }}">
         </div>
-        <div class="cover-content post-cover-content flex justify-center">
+        <div class="cover-content flex justify-center">
             <!-- 封面内容 -->
             <div class="inner flex flex-col justify-center">
-                <p class="post-title cover-title text-base lg:text-4xl xl:text-5xl md:text-3xl">{{ .subTitle }}</p>
+                <p class="cover-title text-base md:text-4xl lg:text-4xl xl:text-5xl">{{ .subTitle }}</p>
             </div>
         </div>
     </header>
-
     <div class="container mx-auto px-4 mt-16 max-w-6xl tracking-wider md:leading-relaxed sm:leading-normal ct-container cn-pd content-container">
         <h2>分类</h2>
         <p class="flex flex-row justify-start flex-wrap">
@@ -29,7 +27,7 @@
                 </a>
             {{ end }}
         </p>
-        <h2 style="margin-bottom: 0;">分类云</h2>
+        <h2 style="margin-bottom: 0;">云</h2>
         <div id="categoryCloud" class="card-content jqcloud jqcloud-hg"></div>
     </div>
 </main>

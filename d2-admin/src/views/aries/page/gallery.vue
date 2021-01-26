@@ -236,7 +236,7 @@ export default {
       selectGalleries: [],
       data: [],
       addImageSrc: '/image/none.jpg',
-      editImageSrc: '',
+      editImageSrc: '/image/none.jpg',
       clickImg: '',
       mode: 'add',
       addForm: {

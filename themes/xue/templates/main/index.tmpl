@@ -1,87 +1,156 @@
 <!DOCTYPE html>
 <html lang="zh-cmn-Hans">
 {{ template "head" . }}
-<body>
-
+<body class="">
 {{ template "menu" . }}
 
 <main class="mx-auto home-page" id="container">
-    <header class="bg-cover" id="homeHeader">
+    <header class="bg-cover home-cover" id="homeHeader">
         <div class="cover-bg">
-            <img src="https://s1.ax1x.com/2020/06/29/NWtFJA.jpg"
-                 alt="苍茫误此生博客">
+            <img src="https://cdn.jsdelivr.net/gh/keepli/image@2.0/header/2.0/header-8.jpg"
+                 alt="{{ .blogVars.SiteName }}">
         </div>
-        <div class="cover-content flex justify-center">
+        <div class="cover-content index flex justify-center">
             <!-- 封面内容 -->
-            <div class="inner flex flex-col justify-center">
-                <h2 class="cover-title text-left md:text-4xl lg:text-4xl xl:text-5xl">{{ .blogVars.SiteName }}</h2>
-                <p class="slogan text-center">{{ .blogVars.SiteDesc }}</p>
-                <a class="arrow-down" data-scroll id="arch">
-                    <span class="screen-reader-text">Scroll Down</span>
-                </a>
-            </div>
+            <h2 class="cover-title text-left md:text-4xl lg:text-4xl xl:text-5xl">{{ .blogVars.SiteName }}</h2>
+            <p class="slogan text-center" id="slogan"></p>
+            <a class="arrow-down" href="javascript:" onClick="scollTo()">
+                <span class="screen-reader-text">Scroll Down</span>
+            </a>
         </div>
     </header>
-    <div class="container mx-auto px-4 content-container">
-        <div class="posts grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-2 xs:grid-cols-1 lg:gap-6 md:gap-4 sm:gap-3 mt-4">
-            {{ range $article := .articles }}
-                <div class="post-card m-auto mt-4">
-                    {{ if $article.IsTop }}
-                        <div class="post-top">
-                            <div>置顶</div>
-                        </div>
-                    {{ end }}
-                    <header class="card-header card-img">
+    <div class="container mx-auto px-4 content-container postList mx-850">
+{{/*        <div class="popular-posts">
+            <h3>
+                <i class="iconfont icon-hot list-brands"></i>热门文章
+            </h3>
+            <div class="posts grid grid-cols-2 lg:grid-cols-4 md:grid-cols-4  lg:gap-4 md:gap-2 sm:gap-1">
+                <div class="popular-thumb xs:mt-4">
+                    <a href="https://www.keepli.cn/archives/es6-demo">
 
-                        <a href="https://www.cangmangai.cn/archives/gin-template"
-                           style="background-image: url({{ $article.Img }}"
-                           class="img-cover img-cover-bg">
-                        </a>
-                    </header>
-                    <div class="card-body">
-                        <p class="text-center text-xl tracking-wider svg-f text-clamp-1">
-                            <a href="{{ $.blogVars.ContextPath }}/articles/{{ $article.URL }}"
-                               class="font-medium text-gray-700 post-title">
-                                {{ $article.Title }}
-                            </a>
-                        </p>
-                    </div>
-                    <footer class="card-footer svg-f">
-                        <span class="cst-icon icon-calendar lh-25 f-10" style="margin-right: 5px"></span>
-                        <span class="post-time lh-25 mr-auto">
-                                        <span class="published"
-                                              datetime="2020-08-03">{{ $article.CreatedAt.Format "2006-01-02" }}</span>
-                                    </span>
-                        <div class="lh-25">
-                            <span class="visitors-count">
-                                <span>{{ $article.VisitCount }}</span>
-                                <a href="javascript:void(0)" class="eye-sight">
-                                            <span class="iconfont icon-Eyesight"> </span>
-                                </a>
-                            </span>
-                            <span class="visitors-comment">
-                                <span>{{ $article.CommentCount }}</span>
-                                <span class="iconfont icon-comment"> </span>
-                            </span>
+                        <img width="300" height="200" class="lazyload img-random" index="0"
+                             src="https://www.keepli.cn/themes/bao/source/images/loading.svg" data-src=""
+                             alt="ES6的模块化导入导出"/>
+                    </a>
+
+                    <div class="popular-content popular-middle">
+                        <div class="entry-content">
+                            <h2 class="entry-title"><a href="https://www.keepli.cn/archives/es6-demo">ES6的模块化导入导出</a>
+                            </h2>
+                            <span class="entry-date popular-meta">2020年10月30日</span>
+                            <a href="https://www.keepli.cn/archives/es6-demo"><i class="iconfont icon-yuedu"></i></a>
                         </div>
-                    </footer>
+                    </div>
                 </div>
-            {{end}}
-        </div>
-        <nav class="pagination flex flex-row justify-center mt-8" role="navigation" aria-label="pagination">
-            <ul class="pagination-list flex flex-row ">
-                {{ if gt .currentPage 1 }}
-                    <li class="pagination-previous">
-                        <a class="pagination-circle" href="{{ .blogVars.ContextPath }}/p/{{ subtract .currentPage 1 }}">
-                            <span class="iconfont icon-left-fill"> </span>
-                        </a>
+                <div class="popular-thumb xs:mt-4">
+                    <a href="https://www.keepli.cn/archives/navicat-sql">
+
+                        <img width="300" height="200" class="lazyload img-random" index="1"
+                             src="https://www.keepli.cn/themes/bao/source/images/loading.svg" data-src=""
+                             alt="Navicat生成指定sql文件版本"/>
+                    </a>
+
+                    <div class="popular-content popular-middle">
+                        <div class="entry-content">
+                            <h2 class="entry-title"><a href="https://www.keepli.cn/archives/navicat-sql">Navicat生成指定sql文件版本</a>
+                            </h2>
+                            <span class="entry-date popular-meta">2020年10月16日</span>
+                            <a href="https://www.keepli.cn/archives/navicat-sql"><i class="iconfont icon-yuedu"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="popular-thumb xs:mt-4">
+                    <a href="https://www.keepli.cn/archives/maven-no-download">
+
+                        <img width="300" height="200" class="lazyload img-random" index="2"
+                             src="https://www.keepli.cn/themes/bao/source/images/loading.svg" data-src=""
+                             alt="maven工程依赖不自动下载或更新解决方法"/>
+                    </a>
+
+                    <div class="popular-content popular-middle">
+                        <div class="entry-content">
+                            <h2 class="entry-title"><a href="https://www.keepli.cn/archives/maven-no-download">maven工程依赖不自动下载或更新解决方法</a>
+                            </h2>
+                            <span class="entry-date popular-meta">2020年11月09日</span>
+                            <a href="https://www.keepli.cn/archives/maven-no-download"><i
+                                        class="iconfont icon-yuedu"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="popular-thumb xs:mt-4">
+                    <a href="https://www.keepli.cn/archives/fastdfs-fen-bu-shi-wen-jian-xi-tong">
+
+                        <img width="300" height="200" class="lazyload img-random" index="3"
+                             src="https://www.keepli.cn/themes/bao/source/images/loading.svg" data-src=""
+                             alt="FastDFS分布式文件系统"/>
+                    </a>
+
+                    <div class="popular-content popular-middle">
+                        <div class="entry-content">
+                            <h2 class="entry-title"><a
+                                        href="https://www.keepli.cn/archives/fastdfs-fen-bu-shi-wen-jian-xi-tong">FastDFS分布式文件系统</a>
+                            </h2>
+                            <span class="entry-date popular-meta">2020年08月13日</span>
+                            <a href="https://www.keepli.cn/archives/fastdfs-fen-bu-shi-wen-jian-xi-tong"><i
+                                        class="iconfont icon-yuedu"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>*/}}
+        <h3><i class="iconfont icon-new list-brands"></i>最新文章</h3>
+        <div class="posts mt-4 pagination-container" id="pageContainer">
+            <ul class="posts-list">
+                {{ range $article := .articles }}
+                    <li class="post">
+                        <div class="post-time-img">
+                            <div class="post-date">
+                                {{ day $article.CreatedAt }}<span>{{ $article.CreatedAt.Format "2006年01月" }}</span>
+                            </div>
+                            <div class="post-preview">
+                                <a href="{{ $.blogVars.ContextPath }}/articles/{{ $article.URL }}">
+                                    <img class="lazyload img-random"
+                                         src="{{ $article.Img }}" data-src="{{ $article.Img }}"
+                                         index="0" alt="{{ $article.Title }}"/>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="post-content has-category ">
+                            <div class="post-meta">
+                                {{ range $tag := $article.TagList }}
+                                    <span class="post-categories">
+                                      <i class="fas fa-folder-open"></i>{{ $tag.Name }}
+                                    </span>
+                                {{ end }}
+                            </div>
+                            <h2>
+                                <a href="{{ $.blogVars.ContextPath }}/articles/{{ $article.URL }}" rel="bookmark">
+                                    {{ if $article.IsTop }}
+                                        <i class="iconfont icon-zhiding zhiding"></i>
+                                    {{ end }}
+                                    {{ $article.Title }}
+                                </a>
+                            </h2>
+                            <p>{{ $article.Summary }}</p>
+                            <a class="post-more-link" href="{{ $.blogVars.ContextPath }}/articles/{{ $article.URL }}">
+                                <span class="text">查看全文</span>
+                            </a>
+                        </div>
                     </li>
                 {{ end }}
+            </ul>
+        </div>
+        <nav class="pagination flex flex-row justify-center mt-8" role="navigation" aria-label="pagination">
+            <ul class="pagination-list flex flex-row " id="pagination">
+                <li class="pagination-previous {{ if eq .currentPage 1 }}is-invisible{{ end }}">
+                    <a class="pagination-circle" href="{{ .blogVars.ContextPath }}/p/{{ subtract .currentPage 1 }}">
+                        <span class="iconfont icon-left"></span>
+                    </a>
+                </li>
                 {{ range $page := .pages }}
                     <li>
-                        {{ if eq $page $.currentPage }}
-                            <a class="pagination-circle is-current"
-                               href="javascript:void(0);">{{ $page }}</a>
+                        {{ if eq $.currentPage $page }}
+                            <a class="pagination-circle is-current" href="javascript:void(0);">{{ $page }}</a>
                         {{ else }}
                             <a class="pagination-circle"
                                href="{{ $.blogVars.ContextPath }}/p/{{ $page }}">{{ $page }}</a>
@@ -89,13 +158,11 @@
                     </li>
                 {{ end }}
                 {{ $totalPage := len .pages }}
-                {{ if lt .currentPage $totalPage }}
-                    <li class="pagination-next">
-                        <a class="pagination-circle" href="{{ .blogVars.ContextPath }}/p/{{ add .currentPage 1 }}">
-                            <span class="iconfont icon-right-fill"> </span>
-                        </a>
-                    </li>
-                {{ end }}
+                <li class="pagination-next {{ if eq .currentPage $totalPage }}is-invisible{{ end }}">
+                    <a class="pagination-circle" href="{{ $.blogVars.ContextPath }}/p/{{ add .currentPage 1 }}">
+                        <span class="iconfont icon-right"></span>
+                    </a>
+                </li>
             </ul>
         </nav>
     </div>

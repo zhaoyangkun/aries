@@ -1,8 +1,11 @@
 <template>
   <div>
-    <el-tooltip content="回复" placement="top-start">
+    <el-tooltip content="回复" placement="top-start" v-if="scope.row.is_checked">
       <el-button size="small" class="el-icon-chat-line-round"
                  @click="openReplyDialog(scope.row)"></el-button>
+    </el-tooltip>
+    <el-tooltip content="通过审核" placement="top-start" v-if="!scope.row.is_checked && !scope.row.is_recycled">
+      <el-button size="small" class="el-icon-success" @click="handleChecked(scope.row)"></el-button>
     </el-tooltip>
     <el-tooltip content="加入回收站" placement="top-start" v-if="!scope.row.is_recycled">
       <el-button size="small" class="el-icon-close" type="danger"
@@ -33,6 +36,9 @@ export default {
       type: Function
     },
     handleRowRecycleOrRecover: {
+      type: Function
+    },
+    handleChecked: {
       type: Function
     }
   }

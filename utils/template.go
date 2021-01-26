@@ -34,3 +34,8 @@ func Year(datetime time.Time) int {
 func Month(datetime time.Time) int {
 	return int(datetime.Month())
 }
+
+// 获取日
+func Day(datetime time.Time) int {
+	return int(datetime.Day())
+}

@@ -107,7 +107,7 @@ func (Article) GetByTagName(page *utils.Pagination, tagName string) (list []Arti
 	return
 }
 
-// 获取前一篇文章
+// 获取上一篇文章
 func (Article) GetPrevious(orderId uint, isTop bool) (article Article, err error) {
 	if isTop {
 		err = db.Db.Raw("select * from `articles` where `order_id` < ? and is_top = 1 "+

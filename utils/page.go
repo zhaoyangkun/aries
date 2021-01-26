@@ -23,7 +23,7 @@ type Pagination struct {
 
 // 进行分页
 func ToPage(p *Pagination, db *gorm.DB, list interface{}) (uint, error) {
-	//设置默认参数
+	// 设置默认参数
 	if p.Size < 1 {
 		p.Size = defaultPageSize
 	}
@@ -56,7 +56,7 @@ func GetPageData(list interface{}, total uint, page Pagination) gin.H {
 	} else {
 		page.TotalPages = (total / page.Size) + 1
 	}
-	//返回 map
+	// 返回 map
 	return gin.H{
 		"ok":          true,            // 是否成功
 		"data":        list,            // 分页数据

@@ -100,13 +100,18 @@ func (t *TmplHandler) ArticleTmpl(ctx *gin.Context) {
 		return
 	}
 
+	preArticle, _ := models.Article{}.GetPrevious(article.OrderId, article.IsTop)
+	nextArticle, _ := models.Article{}.GetNext(article.OrderId, article.IsTop)
+
 	ctx.HTML(http.StatusOK, "article.tmpl", gin.H{
-		"blogVars":   setting.BlogVars,
-		"navs":       navs,
-		"categories": categories,
-		"tags":       tags,
-		"article":    article,
-		"subTitle":   article.Title,
+		"blogVars":    setting.BlogVars,
+		"navs":        navs,
+		"categories":  categories,
+		"tags":        tags,
+		"article":     article,
+		"preArticle":  preArticle,
+		"nextArticle": nextArticle,
+		"subTitle":    article.Title,
 	})
 }
 
@@ -307,7 +312,7 @@ func (t *TmplHandler) JournalTmpl(ctx *gin.Context) {
 }
 
 // 相册
-func (t *TmplHandler) PhotoTmpl(ctx *gin.Context) {
+func (t *TmplHandler) GalleryTmpl(ctx *gin.Context) {
 	photoCategories, _ := models.Category{}.GetGalleryCategories()
 	photos, _ := models.Gallery{}.GetAll()
 

@@ -5,7 +5,8 @@
       <el-tab-pane label="个人信息" style="width: 500px">
         <el-form :model="userForm" ref="userForm" :rules="userRules" label-width="100px">
           <el-form-item label="头像" prop="user_img">
-            <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
+            <el-input size="small" type="text" autocomplete="off" placeholder="头像链接"
+                      v-model="userForm.user_img"></el-input>
           </el-form-item>
           <el-form-item label="用户名" prop="username">
             <el-input size="small" type="text" autocomplete="off" placeholder="用户名" readonly
@@ -82,6 +83,7 @@ export default {
       },
       userForm: {
         ID: null,
+        user_img: '',
         username: '',
         nickname: '',
         email: '',
@@ -138,6 +140,7 @@ export default {
       getAllUsers()
         .then(res => {
           this.userForm.ID = res.data[0].ID
+          this.userForm.user_img = res.data[0].user_img
           this.userForm.username = res.data[0].username
           this.userForm.nickname = res.data[0].nickname
           this.userForm.email = res.data[0].email

@@ -50,13 +50,13 @@
       :visible.sync="dialogOptions.replyVisible"
       width="50%"
     >
-      <el-form ref="replyForm" :model="replyForm" label-width="80px">
+      <el-form ref="replyForm" :model="replyForm" :rules="replyFormRules" label-width="80px">
         <el-form-item label="内容" prop="content">
           <editVditor ref="editEditor"></editVditor>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" :loading="dialogOptions.replyBtnLoading"
-                     @click="handleReply">回复
+                     @click="handleReply">通过审核并回复
           </el-button>
           <el-button @click="dialogOptions.replyVisible=false">取消</el-button>
         </el-form-item>
@@ -73,6 +73,7 @@ import state from '@/components/aries/comment/state'
 import tableHandler from '@/components/aries/comment/tableHandler'
 import editVditor from '@/components/aries/post/editVditor'
 import { getAllUsers } from '@/api/aries/user'
+import { getSysSettingItem } from '@api/aries/sys'
 
 export default {
   name: 'comment',
@@ -136,7 +137,8 @@ export default {
             props: {
               openReplyDialog: this.openReplyDialog,
               handleRowRemove: this.handleRowRemove,
-              handleRowRecycleOrRecover: this.handleRowRecycleOrRecover
+              handleRowRecycleOrRecover: this.handleRowRecycleOrRecover,
+              handleChecked: this.handleChecked
             }
           }
         }
@@ -178,13 +180,23 @@ export default {
         nick_name: '',
         url: '',
         content: '',
-        md_content: ''
+        md_content: '',
+        type: 0,
+        is_recycled: false,
+        is_checked: true
+      },
+      replyFormRules: {
+        content: [
+          { required: true, pattern: /^(?!\n$)/, trigger: 'blur', message: '请输入回复内容' },
+          { min: 6, max: 1200, trigger: 'blur', message: '内容字数要在 6 ~ 1200 之间' }
+        ]
       }
     }
   },
   created () {
     this.fetchPageData()
     this.fetchUserData()
+    this.fetchSiteSetting()
   },
   methods: {
     // 分页
@@ -219,7 +231,15 @@ export default {
           this.replyForm.admin_user_id = res.data[0].ID
           this.replyForm.email = res.data[0].email
           this.replyForm.nick_name = res.data[0].nickname
-          this.replyForm.url = res.data[0].site_url
+        })
+        .catch(() => {
+        })
+    },
+    // 获取网站设置
+    fetchSiteSetting () {
+      getSysSettingItem('网站设置')
+        .then(res => {
+          this.replyForm.url = res.data.site_url
         })
         .catch(() => {
         })
@@ -245,36 +265,47 @@ export default {
     openReplyDialog (row) {
       this.resetForm('replyForm')
       this.dialogOptions.replyVisible = true
-      this.currRow = row
+      this.currRow = { ...row }
     },
     // 回复事件
     handleReply () {
-      if (this.replyForm.root_comment_id === 0) {
+      if (this.currRow.root_comment_id === 0) {
         this.replyForm.root_comment_id = this.currRow.ID
       } else {
         this.replyForm.root_comment_id = this.currRow.root_comment_id
       }
+      const OS = this.getOS()
+      const browser = this.getBrowser()
+      this.replyForm.device = `${browser.browser} ${browser.version} in ${OS}`
       this.replyForm.article_id = this.currRow.article_id
       this.replyForm.parent_comment_id = this.currRow.ID
       this.replyForm.content = this.$refs.editEditor.getContent()
       this.replyForm.md_content = this.$refs.editEditor.getHTML()
-      this.dialogOptions.replyBtnLoading = true
-      console.log('replyForm: ', this.replyForm)
-      setTimeout(() => {
-        addComment(this.replyForm)
-          .then(() => {
-            this.$message.success('回复成功')
-            this.dialogOptions.replyVisible = false
-            this.fetchPageData()
-          })
-          .catch(() => {
-          })
-        this.dialogOptions.replyBtnLoading = false
-      }, 300)
+      this.replyForm.type = this.currRow.type
+      this.$refs.replyForm.validate((valid) => {
+        if (valid) {
+          if (this.replyForm.nick_name === '') {
+            this.$message.error('请先前往用户信息管理设置呢称')
+            return
+          }
+          this.dialogOptions.replyBtnLoading = true
+          setTimeout(() => {
+            addComment(this.replyForm)
+              .then(() => {
+                this.$message.success('回复成功')
+                this.dialogOptions.replyVisible = false
+                this.fetchPageData()
+              })
+              .catch(() => {
+              })
+          }, 300)
+          this.dialogOptions.replyBtnLoading = false
+        }
+      })
     },
     // 将评论加入回收站或者恢复
     handleRowRecycleOrRecover (row) {
-      const data = row
+      const data = { ...row }
       if (data.is_recycled) {
         this.$confirm('确定要恢复吗?', '恢复', {
           confirmButtonText: '确定',
@@ -317,6 +348,20 @@ export default {
           })
       }
     },
+    // 通过审核
+    handleChecked (row) {
+      const data = { ...row }
+      setTimeout(() => {
+        data.is_checked = true
+        updateComment(data)
+          .then(() => {
+            this.$message.success('成功通过审核')
+            this.fetchPageData()
+          })
+          .catch(() => {
+          })
+      }, 300)
+    },
     // 删除评论
     handleRowRemove (id) {
       this.$confirm('确定要彻底删除吗?一旦彻底删除，将无法恢复', '彻底删除', {
@@ -337,11 +382,83 @@ export default {
         })
         .catch(() => {
         })
+    },
+    getOS () {
+      const sUserAgent = navigator.userAgent
+
+      const isIphone = sUserAgent.indexOf('iPhone') > -1
+      if (isIphone) return 'iPhone'
+      const isIpod = sUserAgent.indexOf('iPod') > -1
+      if (isIpod) return 'iPod'
+      const isIpad = sUserAgent.indexOf('iPad') > -1
+      if (isIpad) return 'iPad'
+      const isAndroid = sUserAgent.indexOf('Android') > -1
+      if (isAndroid) return 'Android'
+
+      const isWin =
+        navigator.platform === 'Win32' || navigator.platform === 'Windows'
+      const isMac =
+        navigator.platform === 'Mac68K' ||
+        navigator.platform === 'MacPPC' ||
+        navigator.platform === 'Macintosh' ||
+        navigator.platform === 'MacIntel'
+      if (isMac) return 'Mac'
+      const isUnix = navigator.platform === 'X11' && !isWin && !isMac
+      if (isUnix) return 'Unix'
+      const isLinux = String(navigator.platform).indexOf('Linux') > -1
+      if (isLinux) return 'Linux'
+      if (isWin) {
+        const isWin2K =
+          sUserAgent.indexOf('Windows NT 5.0') > -1 ||
+          sUserAgent.indexOf('Windows 2000') > -1
+        if (isWin2K) return 'Win2000'
+        const isWinXP =
+          sUserAgent.indexOf('Windows NT 5.1') > -1 ||
+          sUserAgent.indexOf('Windows XP') > -1
+        if (isWinXP) return 'WinXP'
+        const isWin2003 =
+          sUserAgent.indexOf('Windows NT 5.2') > -1 ||
+          sUserAgent.indexOf('Windows 2003') > -1
+        if (isWin2003) return 'Win2003'
+        const isWinVista =
+          sUserAgent.indexOf('Windows NT 6.0') > -1 ||
+          sUserAgent.indexOf('Windows Vista') > -1
+        if (isWinVista) return 'WinVista'
+        const isWin7 =
+          sUserAgent.indexOf('Windows NT 6.1') > -1 ||
+          sUserAgent.indexOf('Windows 7') > -1
+        if (isWin7) return 'Win7'
+        const isWin10 =
+          sUserAgent.indexOf('Windows NT 10') > -1 ||
+          sUserAgent.indexOf('Windows 10') > -1
+        if (isWin10) return 'Win10'
+      }
+      return 'unknown OS'
+    },
+    getBrowser () {
+      const ua = navigator.userAgent.toLowerCase()
+      let s
+
+      s = ua.match(/edg\/([\d.]+)/)
+      if (s) return { browser: 'Edge', version: s[1] }
+      s = ua.match(/rv:([\d.]+)\) like gecko/)
+      if (s) return { browser: 'IE', version: s[1] }
+      s = ua.match(/msie ([\d.]+)/)
+      if (s) return { browser: 'IE', version: s[1] }
+      s = ua.match(/firefox\/([\d.]+)/)
+      if (s) return { browser: 'Firefox', version: s[1] }
+      s = ua.match(/chrome\/([\d.]+)/)
+      if (s) return { browser: 'Chrome', version: s[1] }
+      s = ua.match(/opera.([\d.]+)/)
+      if (s) return { browser: 'Opera', version: s[1] }
+      s = ua.match(/version\/([\d.]+).*safari/)
+      if (s) return { browser: 'Safari', version: s[1] }
+
+      return { browser: 'Unknown Browser', version: '' }
     }
   }
 }
 </script>
 
 <style scoped>
-
 </style>

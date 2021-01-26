@@ -125,6 +125,10 @@
             </el-form-item>
           </el-col>
         </el-row>
+        <el-form-item label="文章图片">
+          <h4 class="img-tip">单击打开附件</h4>
+          <img alt="" class="img-show" :src="addImageSrc" @click="handleOpenDrawer('add')"/>
+        </el-form-item>
         <el-form-item label="内容" prop="content">
           <addEditor ref="addEditor"></addEditor>
         </el-form-item>
@@ -212,6 +216,10 @@
             </el-form-item>
           </el-col>
         </el-row>
+        <el-form-item label="文章图片">
+          <h4 class="img-tip">单击打开附件</h4>
+          <img alt="" class="img-show" :src="editImageSrc" @click="handleOpenDrawer('edit')"/>
+        </el-form-item>
         <el-form-item label="内容" prop="content">
           <editEditor :content="editForm.content" ref="editEditor"></editEditor>
         </el-form-item>
@@ -290,6 +298,9 @@
         </el-form-item>
       </el-form>
     </el-drawer>
+
+    <!--附件抽屉-->
+    <attachDrawer ref="attachDrawer" @changeClickedImg="changeClickedImg($event)"></attachDrawer>
   </d2-container>
 </template>
 
@@ -301,6 +312,7 @@ import multiTag from '@/components/aries/post/multiTag'
 import state from '@/components/aries/post/state'
 import tableHandler from '@/components/aries/post/tableHandler'
 import postTitle from '@/components/aries/post/postTitle'
+import attachDrawer from '@/components/aries/common/attachDrawer'
 import { addArticleCategory, getAllCategories, getAllParentCategories } from '@/api/aries/category'
 import { addTag, getAllTags } from '@/api/aries/tag'
 import {
@@ -316,16 +328,14 @@ import {
 export default {
   name: 'post',
   components: {
+    /* eslint-disable vue/no-unused-components */
     addEditor,
     editEditor,
-    // eslint-disable-next-line vue/no-unused-components
     singleTag,
-    // eslint-disable-next-line vue/no-unused-components
     multiTag,
-    // eslint-disable-next-line vue/no-unused-components
     tableHandler,
-    // eslint-disable-next-line vue/no-unused-components
-    postTitle
+    postTitle,
+    attachDrawer
   },
   data () {
     return {
@@ -524,6 +534,8 @@ export default {
         labelPosition: 'left',
         saveLoading: false
       },
+      addImageSrc: '/image/none.jpg',
+      editImageSrc: '/image/none.jpg',
       loading: false,
       fileList: []
     }
@@ -639,6 +651,7 @@ export default {
       this.editForm = { ...row }
       this.editForm.category_id = this.editForm.category_id === 0 ? null : this.editForm.category_id
       this.$set(this.editForm, 'selectTagIds', tagIds)
+      this.editImageSrc = this.editForm.img
     },
     // 打开导入文章弹窗
     openUploadDialog () {
@@ -649,77 +662,73 @@ export default {
     },
     // 添加文章事件
     handleRowAdd (isPublished) {
-      setTimeout(() => {
-        // 获取编辑器组件中的文本内容
-        this.addForm.content = this.$refs.addEditor.getContent()
-        this.addForm.md_content = this.$refs.addEditor.getHTML()
-        // 获取 user_id
-        this.addForm.user_id = Number(localStorage.getItem('uuid'))
-        // 将数组转换成字符串
-        this.addForm.tag_ids = this.addForm.selectTagIds.join()
-        this.addForm.is_published = isPublished
-        // 校验表单
-        this.$refs.addForm.validate((valid) => {
-          if (valid) {
-            if (isPublished) {
-              this.dialogOptions.addBtnLoading = true
-            } else {
-              this.dialogOptions.addDraftBtnLoading = true
-            }
-            setTimeout(() => {
-              addPost(this.addForm)
-                .then(res => {
-                  this.$message.success(res.msg)
-                  this.dialogOptions.addVisible = false
-                  this.fetchPageData()
-                })
-                .catch(() => {
-                })
-              if (isPublished) {
-                this.dialogOptions.addBtnLoading = false
-              } else {
-                this.dialogOptions.addDraftBtnLoading = false
-              }
-            }, 300)
+      // 获取编辑器组件中的文本内容
+      this.addForm.content = this.$refs.addEditor.getContent()
+      this.addForm.md_content = this.$refs.addEditor.getHTML()
+      // 获取 user_id
+      this.addForm.user_id = Number(localStorage.getItem('uuid'))
+      // 将数组转换成字符串
+      this.addForm.tag_ids = this.addForm.selectTagIds.join()
+      this.addForm.is_published = isPublished
+      // 校验表单
+      this.$refs.addForm.validate((valid) => {
+        if (valid) {
+          if (isPublished) {
+            this.dialogOptions.addBtnLoading = true
+          } else {
+            this.dialogOptions.addDraftBtnLoading = true
           }
-        })
-      }, 300)
+          setTimeout(() => {
+            addPost(this.addForm)
+              .then(res => {
+                this.$message.success(res.msg)
+                this.dialogOptions.addVisible = false
+                this.fetchPageData()
+              })
+              .catch(() => {
+              })
+            if (isPublished) {
+              this.dialogOptions.addBtnLoading = false
+            } else {
+              this.dialogOptions.addDraftBtnLoading = false
+            }
+          }, 300)
+        }
+      })
     },
     // 修改文章事件
     handleRowEdit (isPublished) {
-      setTimeout(() => {
-        // 获取编辑器组件中的文本内容
-        this.editForm.content = this.$refs.editEditor.getContent()
-        this.editForm.md_content = this.$refs.editEditor.getHTML()
-        // 将数组转换成字符串
-        this.editForm.tag_ids = this.editForm.selectTagIds.join()
-        this.editForm.is_published = isPublished
-        // 校验表单
-        this.$refs.editForm.validate((valid) => {
-          if (valid) {
-            if (isPublished) {
-              this.dialogOptions.editBtnLoading = true
-            } else {
-              this.dialogOptions.editDraftBtnLoading = true
-            }
-            setTimeout(() => {
-              updatePost(this.editForm)
-                .then(res => {
-                  this.$message.success(res.msg)
-                  this.dialogOptions.editVisible = false
-                  this.fetchPageData()
-                })
-                .catch(() => {
-                })
-              if (isPublished) {
-                this.dialogOptions.editBtnLoading = false
-              } else {
-                this.dialogOptions.editDraftBtnLoading = false
-              }
-            }, 300)
+      // 获取编辑器组件中的文本内容
+      this.editForm.content = this.$refs.editEditor.getContent()
+      this.editForm.md_content = this.$refs.editEditor.getHTML()
+      // 将数组转换成字符串
+      this.editForm.tag_ids = this.editForm.selectTagIds.join()
+      this.editForm.is_published = isPublished
+      // 校验表单
+      this.$refs.editForm.validate((valid) => {
+        if (valid) {
+          if (isPublished) {
+            this.dialogOptions.editBtnLoading = true
+          } else {
+            this.dialogOptions.editDraftBtnLoading = true
           }
-        })
-      }, 300)
+          setTimeout(() => {
+            updatePost(this.editForm)
+              .then(res => {
+                this.$message.success(res.msg)
+                this.dialogOptions.editVisible = false
+                this.fetchPageData()
+              })
+              .catch(() => {
+              })
+            if (isPublished) {
+              this.dialogOptions.editBtnLoading = false
+            } else {
+              this.dialogOptions.editDraftBtnLoading = false
+            }
+          }, 300)
+        }
+      })
     },
     // 将文章加入回收站或者恢复
     handleRowRecycleOrRecover (row) {
@@ -928,13 +937,133 @@ export default {
         })
         .catch(() => {
         })
+    },
+    // 打开弹窗
+    handleOpenDrawer (mode) {
+      this.$refs.attachDrawer.openDrawer()
+      this.mode = mode
+    },
+    // 选中图片
+    changeClickedImg (url) {
+      if (this.mode === 'add') {
+        this.addForm.img = url
+        this.addImageSrc = url
+      } else {
+        this.editForm.img = url
+        this.editImageSrc = url
+      }
+      this.$refs.attachDrawer.closeDrawer()
     }
   }
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 :focus {
   outline: 0;
+}
+.operation-box {
+  padding: 0;
+}
+
+.el-card__body {
+  padding: 0;
+}
+
+.card-num {
+  margin: 5px;
+}
+
+.no-tip {
+  color: #99aabb;
+}
+
+.theme-pic {
+  height: 160px;
+  width: 320px;
+}
+
+.block {
+  margin: 5px;
+}
+
+.demonstration {
+  padding-left: 5%;
+  height: 30px;
+  width: 95%;
+  line-height: 30px;
+  font-size: 13px;
+  display: block;
+  color: grey;
+  background-color: white;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.page-box {
+  margin: auto;
+}
+
+.pre-tip {
+  margin: 12px 0;
+  line-height: 20px;
+  font-weight: normal;
+  color: grey;
+}
+
+.image-container {
+  height: 126px;
+  padding: 0;
+  margin: 0;
+}
+
+.attach-image {
+  width: 100%;
+  height: 96px;
+  margin: 0;
+  padding: 0;
+  display: inline-block;
+  overflow: hidden;
+}
+
+.img_not_checked {
+  border: 2px rgba(200, 200, 200, 0.18) solid;
+}
+
+.img_checked {
+  border: #409EFF solid 2px;
+}
+
+.el-tag + .el-tag {
+  margin-left: 10px;
+}
+
+.button-new-tag {
+  margin-left: 10px;
+  height: 32px;
+  line-height: 30px;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.input-new-tag {
+  width: 90px;
+  margin-left: 10px;
+  vertical-align: bottom;
+}
+
+.img-tip {
+  height: 40px;
+  line-height: 40px;
+  margin: 0;
+  padding: 0;
+  color: #99aabb;
+  font-weight: normal;
+}
+
+.img-show {
+  width: 320px;
+  height: 180px;
 }
 </style>
