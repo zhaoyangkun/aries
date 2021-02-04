@@ -179,6 +179,7 @@ export default {
         email: '',
         nick_name: '',
         url: '',
+        user_img: '',
         content: '',
         md_content: '',
         type: 0,
@@ -231,6 +232,7 @@ export default {
           this.replyForm.admin_user_id = res.data[0].ID
           this.replyForm.email = res.data[0].email
           this.replyForm.nick_name = res.data[0].nickname
+          this.replyForm.user_img = res.data[0].user_img
         })
         .catch(() => {
         })
@@ -269,9 +271,7 @@ export default {
     },
     // 回复事件
     handleReply () {
-      if (this.currRow.root_comment_id === 0) {
-        this.replyForm.root_comment_id = this.currRow.ID
-      } else {
+      if (this.currRow.root_comment_id > 0) {
         this.replyForm.root_comment_id = this.currRow.root_comment_id
       }
       const OS = this.getOS()
@@ -279,9 +279,9 @@ export default {
       this.replyForm.device = `${browser.browser} ${browser.version} in ${OS}`
       this.replyForm.article_id = this.currRow.article_id
       this.replyForm.parent_comment_id = this.currRow.ID
+      this.replyForm.type = this.currRow.type
       this.replyForm.content = this.$refs.editEditor.getContent()
       this.replyForm.md_content = this.$refs.editEditor.getHTML()
-      this.replyForm.type = this.currRow.type
       this.$refs.replyForm.validate((valid) => {
         if (valid) {
           if (this.replyForm.nick_name === '') {

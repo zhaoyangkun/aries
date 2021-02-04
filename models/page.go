@@ -24,6 +24,13 @@ func (Page) GetAll() (list []Page, err error) {
 	return
 }
 
+//根据 ID获取页面
+func (Page) GetById(id uint) (page Page, err error) {
+	err = db.Db.Where("`id` = ?", id).First(&page).Error
+
+	return
+}
+
 // 根据 URL获取页面
 func (Page) GetByUrl(url string) (p Page, err error) {
 	err = db.Db.Where("`url` = ?", url).First(&p).Error

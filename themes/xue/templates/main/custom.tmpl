@@ -23,9 +23,10 @@
          id="write">
         {{ safe .page.MDHtml }}
     </div>
+
+    {{ template "comment" .}}
 </main>
 
-{{ template "comment" .}}
 
 {{ template "footer" . }}
 

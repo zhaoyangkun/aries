@@ -1,13 +1,47 @@
 {{ define "comment" }}
-    <div id="aries-comment-box"></div>
+    <link rel="stylesheet" href="{{ .blogVars.ContextPath }}/static/css/aries-comment.css">
+    <style>
+        .vditor-ir pre.vditor-reset {
+            background-color: var(--panel-background-color) !important;
+        }
 
-    <script src="{{ .blogVars.ContextPath }}/static/js/vue.js"></script>
-    <script type="text/javascript">
-        const commentApp = new Vue({
-            el: '#aries-comment-box',
-            data: {
-            },
-            render
-        })
+        .ant-pagination {
+            text-align: center;
+        }
+    </style>
+    <div id="comment-app" style="margin-top: 30px">
+        <Comment :article_id="article_id" :page_id="page_id" :comment_type="comment_type"></Comment>
+    </div>
+    <script data-pjax type="text/javascript">
+        $.getMultiScripts = function (arr) {
+            let _arr = $.map(arr, function (script) {
+                return $.getScript(script);
+            });
+
+            _arr.push($.Deferred(function (deferred) {
+                $(deferred.resolve);
+            }));
+
+            return $.when.apply($, _arr);
+        }
+
+        // 加载评论组件所需脚本
+        $.getMultiScripts([
+            '//cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.min.js',
+            '{{ .blogVars.ContextPath }}/static/js/aries-comment.js'
+        ]).done(function () {
+            new Vue({
+                el: "#comment-app",
+                data() {
+                    return {
+                        article_id: {{ .articleID }},
+                        page_id: {{ .pageID }},
+                        comment_type: {{ .commentType }},
+                    }
+                }
+            });
+        }).fail(function () {
+            console.log('评论脚本加载失败！')
+        });
     </script>
 {{ end }}

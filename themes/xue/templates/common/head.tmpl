@@ -6,7 +6,7 @@
         <meta name="keywords" content="{{ .blogVars.SiteKeywords }}">
         <meta name="description" content="{{ .blogVars.SiteDesc }}">
         <link rel="shortcut icon" href="{{ .blogVars.SiteLogo }}">
-        <link rel="preconnect" href="https://cdn.jsdelivr.net">
+        <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
         <title>{{ if .subTitle }}{{ .subTitle }} - {{ end }}{{ .blogVars.SiteName }}</title>
         <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/tailwindcss@1.4.6/dist/tailwind.min.css">
         <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/viewerjs@1.5.0/dist/viewer.min.css">
@@ -67,6 +67,7 @@
                 }
             }
         </style>
+        <script src="//cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js"></script>
         {{ safe .blogVars.GlobalHeader }}
     </head>
 {{ end }}

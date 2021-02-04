@@ -1,5 +1,4 @@
 {{ define "script" }}
-    <script src="//cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js"></script>
     <!-- markdown 插件 -->
     <script src="//cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <!--图片预览插件-->
@@ -96,12 +95,12 @@
 
     <script type="text/javascript">
         // console.clear();
-        console.log("%c 有朋自远方来, 不亦说乎.", "background:#24272A; color:#ffffff", "");
-        console.log("%c Github %c", "background:#24272A; color:#ffffff", "", "https://github.com/keepli");
+        // console.log("%c 有朋自远方来, 不亦说乎.", "background:#24272A; color:#ffffff", "");
+        console.log("%c Github %c", "background:#24272A; color:#ffffff", "", "https://github.com/zhaoyangkun/aries");
     </script>
 
     <script type="text/javascript">
-        const loading = "https://www.keepli.cn/themes/bao/source/images/loading-45.svg";
+        const loading = "https://wwpjaxw.keepli.cn/themes/bao/source/images/loading-45.svg";
         let photoList = "https://cdn.jsdelivr.net/gh/keepli/image@1.0/img/1.0/img-1.jpg;"
             + " https://cdn.jsdelivr.net/gh/keepli/image@1.0/img/1.0/img-2.jpg;"
             + " https://cdn.jsdelivr.net/gh/keepli/image@1.0/img/1.0/img-3.jpg;"
@@ -165,11 +164,10 @@
             // 删除 listener
             removeScrollTocFixed();
 
-            // 重新加载 评论
-            $('script[data-pjax-comment]').each(function () {
-                let commentParent = $(this).parent()
-                let comment = $(this).remove();
-                commentParent.append(comment);
+            // 重新加载 js
+            $('[data-pjax] script, script[data-pjax]').each(function () {
+                const comment = $(this).remove();
+                $(this).parent().append(comment);
             });
 
             // 计算时间

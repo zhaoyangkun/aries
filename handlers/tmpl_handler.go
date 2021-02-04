@@ -112,6 +112,9 @@ func (t *TmplHandler) ArticleTmpl(ctx *gin.Context) {
 		"preArticle":  preArticle,
 		"nextArticle": nextArticle,
 		"subTitle":    article.Title,
+		"articleID":   article.ID,
+		"pageID":      0,
+		"commentType": 1,
 	})
 }
 
@@ -341,11 +344,14 @@ func (t *TmplHandler) CustomTmpl(ctx *gin.Context) {
 	}
 
 	ctx.HTML(http.StatusOK, "custom.tmpl", gin.H{
-		"blogVars":   setting.BlogVars,
-		"navs":       navs,
-		"categories": categories,
-		"tags":       tags,
-		"page":       page,
-		"subTitle":   page.Title,
+		"blogVars":    setting.BlogVars,
+		"navs":        navs,
+		"categories":  categories,
+		"tags":        tags,
+		"page":        page,
+		"subTitle":    page.Title,
+		"articleID":   0,
+		"pageID":      page.ID,
+		"commentType": 4,
 	})
 }

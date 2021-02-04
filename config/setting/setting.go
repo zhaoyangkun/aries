@@ -78,7 +78,7 @@ type logger struct {
 	Format     string `yaml:"format"`
 }
 
-// 忘记密码 smtp 信息
+// smtp 信息（重置密码 + 评论回复）
 type smtp struct {
 	Address  string `yaml:"address"`
 	Port     int    `yaml:"port"`

@@ -23,9 +23,10 @@ type Comment struct {
 	RootComment     *Comment  `gorm:"ForeignKey:RootCommentId" json:"root_comment"`     // 根评论
 	ParentComment   *Comment  `gorm:"ForeignKey:ParentCommentId" json:"parent_comment"` // 父评论
 	ChildComments   []Comment `json:"child_comments"`
-	Type            uint      `gorm:"type:tinyint(1);unsigned;default:1" json:"type"` // 类型，1 表文章评论，2 表友链页评论，3 表关于页评论，4 表示自定义页面评论
+	Type            uint      `gorm:"type:tinyint(1);unsigned;default:1" json:"type"` // 类型，1 表文章评论，2 表友链页评论，3 表关于页评论，4 表示自定义页评论
 	Email           string    `gorm:"type:varchar(50);not null;" json:"email"`        // 邮箱
 	Url             string    `gorm:"varchar(150);not null;" json:"url"`              // 访问地址
+	UserImg         string    `gorm:"type:Text;not null;" json:"user_img"`            // 用户头像
 	NickName        string    `gorm:"varchar(50);not null;" json:"nick_name"`         // 昵称
 	Content         string    `gorm:"type:Text;not null;" json:"content"`             // 评论内容
 	MDContent       string    `gorm:"type:MediumText;not null;" json:"md_content"`    // markdown 渲染后评论内容
@@ -72,6 +73,12 @@ func (Comment) GetAll() (list []Comment, err error) {
 	return
 }
 
+// 根据 ID 获取评论
+func (Comment) GetById(id uint) (comment Comment, err error) {
+	err = db.Db.Where("`id` = ?", id).First(&comment).Error
+	return
+}
+
 // 分页获取评论
 func (Comment) GetByPage(page *utils.Pagination, key string, articleId, pageId, commentType, state, isParent uint) (list []Comment,
 	total uint, err error) {
@@ -87,14 +94,7 @@ func (Comment) GetByPage(page *utils.Pagination, key string, articleId, pageId, 
 	}
 
 	if commentType > 0 {
-		switch commentType {
-		case 1:
-			query = query.Where("type = 1")
-		case 2:
-			query = query.Where("type > 1")
-		default:
-			break
-		}
+		query = query.Where("type = ?", commentType)
 	}
 
 	if state > 0 {
@@ -121,11 +121,28 @@ func (Comment) GetByPage(page *utils.Pagination, key string, articleId, pageId, 
 	total, err = utils.ToPage(page, query, &list)
 
 	var childList []Comment
-	err = db.Db.Where("`parent_comment_id` > 0").Find(&childList).Error
+	rows, err := db.Db.Raw("select c.*, p.nick_name from comments c" +
+		" left join comments p on p.id = c.parent_comment_id" +
+		" where c.parent_comment_id > 0 and c.is_checked = 1 and c.is_recycled = 0").Rows()
+	if err != nil {
+		return
+	}
+	defer rows.Close()
+	for rows.Next() {
+		var child Comment
+		var parentComment Comment
+		rows.Scan(&child.ID, &child.CreatedAt, &child.UpdatedAt, &child.DeletedAt, &child.AdminUserId,
+			&child.ArticleId, &child.PageId, &child.RootCommentId, &child.ParentCommentId, &child.Type,
+			&child.Email, &child.Url, &child.UserImg, &child.NickName, &child.Content, &child.MDContent,
+			&child.Device, &child.IsRecycled, &child.IsChecked, &parentComment.NickName)
+		child.ParentComment = &parentComment
+		childList = append(childList, child)
+	}
+
 	for i := range list {
 		if list[i].ParentCommentId == 0 {
 			for _, c := range childList {
-				if c.ParentCommentId == list[i].ID {
+				if c.RootCommentId == list[i].ID && c.IsChecked {
 					list[i].ChildComments = append(list[i].ChildComments, c)
 				}
 			}
@@ -136,7 +153,7 @@ func (Comment) GetByPage(page *utils.Pagination, key string, articleId, pageId, 
 }
 
 // 创建评论
-func (comment Comment) Create() error {
+func (comment *Comment) Create() error {
 	comment.MDContent = setting.LuteEngine.MarkdownStr("", comment.Content)
 	return db.Db.Create(&comment).Error
 }

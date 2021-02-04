@@ -54,7 +54,6 @@ function documentClickToc(target) {
     }
 }
 
-
 function getHashCode(str, caseSensitive) {
     if (!caseSensitive) {
         str = str.toLowerCase();
@@ -185,7 +184,7 @@ function loadCodeLineNumber() {
 
 }
 
-//获取滚动条距离顶部位置
+// 获取滚动条距离顶部位置
 function getScrollTop() {
     return document.documentElement.scrollTop || document.body.scrollTop;
 }
@@ -194,7 +193,7 @@ function tocScroll(event) {
     let tocId = "#toc";
     let Obj = $("#tocFlag");
 
-    //判断元素是否存在
+    // 判断元素是否存在
     if (Obj.length !== 1) {
         return false;
     }
@@ -339,7 +338,7 @@ function formatContent() {
             }
         }
 
-        // 渲染bilibili视频
+        // 渲染 bilibili 视频
         let videos = text.match(bilibili);
         if (videos && videos.length > 0) {
             for (let j = 0; j < videos.length; j++) {
@@ -455,6 +454,7 @@ function formatContent() {
 
     mdContent.remove();
     mdContent = null;
+
     // 代码行号
     loadCodeLineNumber();
 
@@ -466,6 +466,7 @@ function formatContent() {
 
     // 图片懒加载
     lazyloadImg()
+
     return true;
 }
 
@@ -663,16 +664,16 @@ function renderMath() {
  */
 function lazyloadImg() {
     let imgs = document.querySelectorAll('img.lazyload');
-    let randomImgs = document.querySelectorAll('img.img-random');
+    // let randomImgs = document.querySelectorAll('img.img-random');
 
-    //用来判断bound.top<=clientHeight的函数，返回一个bool值
+    // 用来判断 bound.top<=clientHeight 的函数，返回一个 bool 值
     function isIn(el) {
         const bound = el.getBoundingClientRect();
         const clientHeight = window.innerHeight;
         return bound.top <= clientHeight;
     }
 
-    //检查图片是否在可视区内，如果不在，则加载
+    // 检查图片是否在可视区内，如果不在，则加载
     function check() {
         Array.from(imgs).forEach(function (el) {
             if (isIn(el)) {
@@ -680,11 +681,11 @@ function lazyloadImg() {
             }
         })
 
-        Array.from(randomImgs).forEach(function (el) {
-            if (isIn(el)) {
-                loadRandomImgs(el);
-            }
-        })
+        // Array.from(randomImgs).forEach(function (el) {
+        //     if (isIn(el)) {
+        //         loadRandomImgs(el);
+        //     }
+        // })
     }
 
     function loadImg(el) {
@@ -695,19 +696,19 @@ function lazyloadImg() {
         }
     }
 
-    function loadRandomImgs(el) {
-        const loaded = el.getAttribute('data-loaded')
-        if (!loaded) {
-            let index = el.getAttribute('index');
-            let imgIndex = !index ? new Date().getSeconds() : index;
-            if (el.classList.contains('img-random') && typeof photos !== 'undefined' && photos.length > 0) {
-                el.src = photos[imgIndex % photos.length];
-            }
-            el.setAttribute('data-loaded', true)
-        }
-    }
+    // function loadRandomImgs(el) {
+    //     const loaded = el.getAttribute('data-loaded')
+    //     if (!loaded) {
+    //         let index = el.getAttribute('index');
+    //         let imgIndex = !index ? new Date().getSeconds() : index;
+    //         if (el.classList.contains('img-random') && typeof photos !== 'undefined' && photos.length > 0) {
+    //             el.src = photos[imgIndex % photos.length];
+    //         }
+    //         el.setAttribute('data-loaded', true)
+    //     }
+    // }
 
-    window.onload = window.onscroll = function () { //onscroll()在滚动条滚动的时候触发
+    window.onload = window.onscroll = function () { // onscroll() 在滚动条滚动的时候触发
         check();
     }
 }

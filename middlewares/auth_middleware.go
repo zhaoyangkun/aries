@@ -11,7 +11,14 @@ import (
 func JWTAuth() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		token := ctx.Request.Header.Get("token") // 从请求体头部获取 token
-		result := utils.Result{                  // 封装返回体内容
+		path := ctx.Request.URL.Path
+		name := ctx.Query("name")
+		// 允许访问评论设置数据
+		if path == "/api/v1/sys_setting/items" && name == "评论设置" {
+			ctx.Next()
+			return
+		}
+		result := utils.Result{ // 封装返回体内容
 			Code: utils.Forbidden, // 状态码
 			Msg:  "",              // 提示信息
 			Data: nil,             // 数据

@@ -47,38 +47,65 @@
         </div>
         <div id="tocFlag"></div>
         <aside id="toc" class="toc"></aside>
+    </div>
 
-        <!-- 上一篇和下一篇 -->
-        <div class="container mx-auto mt-4 pb-8  ct-container">
-            <div class="entry-navigation">
-                {{ if .preArticle.Title }}
-                    <div class="nav previous">
-                        <img class="lazyload img-random lazyloaded" index="544"
-                             src="https://www.keepli.cn/themes/bao/source/images/loading.svg"
-                             alt="{{ .preArticle.Title }}">
-                        <span>上一篇</span>
-                        <h4 class="entry-title">{{ .preArticle.Title }}</h4>
-                        <a class="u-permalink"
-                           href="{{ .blogVars.ContextPath }}/articles/{{ .preArticle.URL }}"></a>
-                    </div>
-                {{ end }}
-                {{ if .nextArticle.Title }}
-                    <div class="nav next">
-                        <img class="lazyload img-random lazyloaded" index="51"
-                             src="https://www.keepli.cn/themes/bao/source/images/loading.svg"
-                             alt="{{ .nextArticle.Title }}">
-                        <span>下一篇</span>
-                        <h4 class="entry-title">{{ .nextArticle.Title }}</h4>
-                        <a class="u-permalink"
-                           href="{{ .blogVars.ContextPath }}/articles/{{ .nextArticle.URL }}"></a>
-                    </div>
-                {{ end }}
-            </div>
+    <div class="container mx-auto px-4 mt-8 max-w-6xl tracking-wider md:leading-relaxed sm:leading-normal  cn-pd ct-container coffee-tags">
+        <blockquote class="post-copyright">
+            <p>
+                <b>Copyright: </b> 采用 <a href="https://creativecommons.org/licenses/by/4.0/"
+                                         target="_blank"
+                                         rel="external nofollow">知识共享署名4.0</a> 国际许可协议进行许可</p>
+            <p>
+                <b>Links: </b><a href="{{ .blogVars.ContextPath }}/articles/{{ .article.URL }}">
+                    {{ .blogVars.ContextPath }}/articles/{{ .article.URL }}</a></p>
+        </blockquote>
+    </div>
+
+
+    <div class="container mx-auto px-4 mt-8 pb-4 max-w-6xl tracking-wider md:leading-relaxed sm:leading-normal cn-pd coffee-tags ct-container">
+        <p class="flex flex-row justify-start flex-wrap">
+            {{ range $tag := .article.TagList }}
+                <a href="{{ $.blogVars.ContextPath }}/tags/{{ $tag.Name }}" class="post-tag mt-2 mb-2 mr-2">
+                    #&nbsp;{{ $tag.Name }}
+                </a>
+            {{ end }}
+        </p>
+        <hr class="mt-4" style="background-color: rgba(96, 125, 139, .05); size: 2px;">
+    </div>
+
+    <!-- 上一篇和下一篇 -->
+    <div class="container mx-auto mt-4 pb-8  ct-container">
+        <div class="entry-navigation">
+            {{ if .preArticle.Title }}
+                <div class="nav previous">
+                    <img class="lazyload" index="544"
+                         src="https://www.keepli.cn/themes/bao/source/images/loading.svg"
+                         data-src="{{ .preArticle.Img }}"
+                         alt="{{ .preArticle.Title }}">
+                    <span>上一篇</span>
+                    <h4 class="entry-title">{{ .preArticle.Title }}</h4>
+                    <a class="u-permalink"
+                       href="{{ .blogVars.ContextPath }}/articles/{{ .preArticle.URL }}"></a>
+                </div>
+            {{ end }}
+            {{ if .nextArticle.Title }}
+                <div class="nav next">
+                    <img class="lazyload" index="51"
+                         src="https://www.keepli.cn/themes/bao/source/images/loading.svg"
+                         data-src="{{ .nextArticle.Img }}"
+                         alt="{{ .nextArticle.Title }}">
+                    <span>下一篇</span>
+                    <h4 class="entry-title">{{ .nextArticle.Title }}</h4>
+                    <a class="u-permalink"
+                       href="{{ .blogVars.ContextPath }}/articles/{{ .nextArticle.URL }}"></a>
+                </div>
+            {{ end }}
         </div>
-        <div class="container mx-auto px-4 mt-16 max-w-6xl tracking-wider md:leading-relaxed sm:leading-normal ct-container cn-pd">
-            <halo-comment id="28" type="post"></halo-comment>
-        </div>
+    </div>
+
+    {{ template "comment" . }}
 </main>
+
 
 {{ template "footer" . }}
 

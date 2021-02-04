@@ -1,6 +1,6 @@
 @charset "UTF-8";
 /* 修改代码块颜色 */
-pre {
+#write pre {
     background-color: #282c34 !important;
 }
 

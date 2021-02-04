@@ -1,13 +1,16 @@
 package api
 
 import (
+	"aries/config/setting"
 	"aries/forms"
 	"aries/log"
 	"aries/models"
 	"aries/utils"
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
+	"github.com/go-gomail/gomail"
 )
 
 type CommentHandler struct {
@@ -124,6 +127,76 @@ func (c *CommentHandler) AddComment(ctx *gin.Context) {
 			Data: nil,
 		})
 		return
+	}
+
+	commentItems, _ := models.SysSettingItem{}.GetBySysSettingName("评论设置")
+	siteItems, _ := models.SysSettingItem{}.GetBySysSettingName("网站设置")
+	userList, _ := models.User{}.GetAll()
+	// 若开启邮件回复功能，发送回复邮件
+	if isReplyOn, ok := commentItems["is_reply_on"]; ok && isReplyOn == "1" {
+		msg := gomail.NewMessage()
+		if comment.ParentCommentId == 0 {
+			// 设置收件人
+			msg.SetHeader("To", userList[0].Email)
+			// 设置发件人
+			msg.SetAddressHeader("From", setting.Config.SMTP.Account, setting.Config.SMTP.Account)
+			// 主题
+			msg.SetHeader("Subject", "评论通知")
+			// 正文
+			if comment.ArticleId > 0 {
+				article, _ := models.Article{}.GetById(strconv.Itoa(int(comment.ArticleId)))
+				msg.SetBody("text/html", utils.GetCommentEmailHTML(
+					siteItems["site_name"], siteItems["site_url"], "评论通知",
+					userList[0].Nickname, comment.NickName, comment.Url, article.Title,
+					siteItems["site_url"]+"/article/"+article.URL, comment.MDContent,
+				))
+			} else {
+				page, _ := models.Page{}.GetById(comment.PageId)
+				msg.SetBody("text/html", utils.GetCommentEmailHTML(
+					siteItems["site_name"], siteItems["site_url"], "评论通知",
+					userList[0].Nickname, comment.NickName, comment.Url, page.Title,
+					siteItems["site_url"]+"/custom/"+page.Url, comment.MDContent,
+				))
+			}
+		} else {
+			parentComment, _ := models.Comment{}.GetById(comment.ParentCommentId)
+			// 设置收件人
+			msg.SetHeader("To", parentComment.Email)
+			log.Logger.Sugar().Debug("parentComment: ", parentComment)
+			// 设置发件人
+			msg.SetAddressHeader("From", setting.Config.SMTP.Account, setting.Config.SMTP.Account)
+			// 主题
+			msg.SetHeader("Subject", "评论通知")
+			if comment.ArticleId > 0 {
+				article, _ := models.Article{}.GetById(strconv.Itoa(int(comment.ArticleId)))
+				msg.SetBody("text/html", utils.GetReplyEmailHTML(
+					siteItems["site_name"], siteItems["site_url"], "评论通知",
+					parentComment.NickName, comment.NickName, comment.Url, article.Title,
+					siteItems["site_url"]+"/article/"+article.URL, comment.MDContent,
+				))
+			} else {
+				page, _ := models.Page{}.GetById(comment.PageId)
+				msg.SetBody("text/html", utils.GetReplyEmailHTML(
+					siteItems["site_name"], siteItems["site_url"], "评论通知",
+					parentComment.NickName, comment.NickName, comment.Url, page.Title,
+					siteItems["site_url"]+"/custom/"+page.Url, comment.MDContent,
+				))
+			}
+		}
+		// 设置 SMTP 参数
+		d := gomail.NewDialer(setting.Config.SMTP.Address, setting.Config.SMTP.Port,
+			setting.Config.SMTP.Account, setting.Config.SMTP.Password)
+		// 发送邮件
+		err := d.DialAndSend(msg)
+		if err != nil {
+			log.Logger.Sugar().Error("回复邮件发送失败：", err.Error())
+			ctx.JSON(http.StatusOK, utils.Result{
+				Code: utils.ServerError,
+				Msg:  "回复邮件发送失败，请检查 smtp 配置",
+				Data: nil,
+			})
+			return
+		}
 	}
 
 	ctx.JSON(http.StatusOK, utils.Result{
