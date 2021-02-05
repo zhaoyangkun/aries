@@ -106,7 +106,6 @@ function handleNavMenu() {
 }
 
 function handleScrollMenu() {
-
     if (getClientWidth() <= 800) {
         $('#navHeader .nav').addClass('opacity-100').removeClass('opacity-0')
         return;
@@ -298,7 +297,8 @@ function getWangYiMusic(id) {
 
 const wangyi = /\[music:\s*\d+\s*\]/g;
 
-let bilibili = /\[bilibili:\s*\d+\s*,\s*\d+\s*,\s*\d+\s*\]/g
+const bilibili = /\[bilibili:\s*\d+\s*,\s*\d+\s*,\s*\d+\s*\]/g;
+
 
 /**
  * 将文本转成 markdown
@@ -349,6 +349,22 @@ function formatContent() {
                 }
             }
         }
+
+        let maths = text.match(/^\$\$[\s\S]*\$\$$/g);
+        if (maths && maths.length > 0) {
+            maths.forEach(function (exr) {
+                exr = exr.replaceAll("$", "");
+                let rep = exr;
+                if (exr.match(/\\\n/g))
+                    rep = rep.replace(/\\\n/g, "\\\\\n");
+                if (exr.match(/\\=/g))
+                    rep = rep.replace(/\\=/g, "\\\\=");
+                if (exr.match(/\\\(/g))
+                    rep = rep.replace(/\\\(/g, "\\\\\(");
+                text = text.replace(exr, rep);
+            });
+        }
+
         return `<p>${text}</p>`
     };
 
@@ -459,13 +475,13 @@ function formatContent() {
     loadCodeLineNumber();
 
     // 相册
-    loadGallery()
+    loadGallery();
 
     // 数学公式
-    renderMath()
+    renderMath();
 
     // 图片懒加载
-    lazyloadImg()
+    lazyloadImg();
 
     return true;
 }
@@ -652,11 +668,36 @@ function ckMoonButton() {
  * 渲染数学公式
  */
 function renderMath() {
-    if (openKatex && renderMathInElement && typeof renderMathInElement !== 'undefined') {
-        if (document.getElementById('write')) {
-            renderMathInElement(document.getElementById('write'), katex_config)
+    // if (openKatex && renderMathInElement && typeof renderMathInElement !== 'undefined') {
+    //     if (document.getElementById('write')) {
+    //         renderMathInElement(document.getElementById('write'), katex_config)
+    //     }
+    // }
+    // $("span .vditor-math").each(function () {
+    //     const katexStr = $(this).html();
+    //     console.log('单行: ', katexStr);
+    //     const katexHTML = katex.renderToString(katexStr, {
+    //         throwOnError: true,
+    //         displayMode: false,
+    //     })
+    //     $(this).html(katexHTML);
+    // });
+    $(".vditor-math").each(function () {
+        const katexStr = $(this).text();
+        let katexHTML;
+        if (this.tagName === 'DIV') {
+            katexHTML = katex.renderToString(katexStr, {
+                throwOnError: true,
+                displayMode: true,
+            })
+        } else {
+            katexHTML = katex.renderToString(katexStr, {
+                throwOnError: true,
+                displayMode: false,
+            })
         }
-    }
+        $(this).html(katexHTML);
+    });
 }
 
 /**
@@ -800,8 +841,11 @@ function setTimeAgo() {
  * 代码高亮
  */
 function hljsCode() {
-    $('.md-content pre code').each(function () {
-        hljs.highlightBlock(this);
+    // $('#write pre code').each(function () {
+    //     hljs.highlightBlock(this);
+    // });
+    document.querySelectorAll('pre code').forEach((block) => {
+        hljs.highlightBlock(block);
     });
 }
 
@@ -920,7 +964,11 @@ $(function () {
     handleNavMenu();
 
     // 格式化 markdown 文章
-    const format = formatContent();
+    // const format = formatContent();
+
+    hljsCode();
+
+    renderMath();
 
     // 目录相关
     dealContentToc();

@@ -13,13 +13,10 @@
     <script type="text/javascript">
         let openKatex = true;
         const katex_config = {
-            delimiters:
-                [
-                    {left: "$$", right: "$$", display: true},
-                    {left: "$", right: "$", display: false},
-                    {left: "\\(", right: "\\)", display: false},
-                    {left: "\\[", right: "\\]", display: true},
-                ]
+            delimiters: [
+                {left: "$$", right: "$$", display: true},
+                {left: "$", right: "$", display: false},
+            ]
         };
 
         // 是否开启代码高亮
@@ -81,17 +78,15 @@
           href="//cdn.jsdelivr.net/gh/Sanarous/files@master/font-awesome-animation.min.css">
     <script src="{{ .blogVars.ContextPath }}/static/js/main.js"></script>
 
-
     <script src="//cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.js"></script>
     <script src="//cdn.jsdelivr.net/npm/meting@2/dist/Meting.min.js"></script>
 
     <script defer src="//cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.js"
             integrity="sha384-g7c+Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI+sEnkvrMWph2EDg4"
             crossorigin="anonymous"></script>
-    <script defer src="//cdn.jsdelivr.net/npm/katex@0.12.0/dist/contrib/auto-render.min.js"
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/contrib/auto-render.min.js"
             integrity="sha384-mll67QQFJfxn0IYznZYonOWZ644AWYC+Pt2cHqMaRhXVrursRwvLnLaebdGIlYNa"
             crossorigin="anonymous"></script>
-
 
     <script type="text/javascript">
         // console.clear();
@@ -100,7 +95,7 @@
     </script>
 
     <script type="text/javascript">
-        const loading = "https://wwpjaxw.keepli.cn/themes/bao/source/images/loading-45.svg";
+        const loading = "{{ .blogVars.ContextPath }}/static/img/loading.svg";
         let photoList = "https://cdn.jsdelivr.net/gh/keepli/image@1.0/img/1.0/img-1.jpg;"
             + " https://cdn.jsdelivr.net/gh/keepli/image@1.0/img/1.0/img-2.jpg;"
             + " https://cdn.jsdelivr.net/gh/keepli/image@1.0/img/1.0/img-3.jpg;"
@@ -176,7 +171,11 @@
             // 存在 markdown 页面的功能
             if ($('#container').find('#original').length > 0) {
                 // 格式化内容
-                const format = formatContent();
+                // const format = formatContent();
+
+                hljsCode();
+
+                renderMath();
 
                 if (!format) {
                     loadGallery();

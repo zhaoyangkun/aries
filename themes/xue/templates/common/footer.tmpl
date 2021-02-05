@@ -12,14 +12,13 @@
                 <a href="mailto:248147986@qq.com" class="circle pad-10" target="_blank" rel="noopener" title="邮箱">
                     <span class="iconfont icon-email"> </span>
                 </a>
-                <a href="https://www.keepli.cn/atom.xml" class="circle pad-10" target="_blank" rel="noopener"
+                <a href="{{ .blogVars.ContextPath }}/atom.xml" class="circle pad-10" target="_blank" rel="noopener"
                    title="RSS">
                     <span class="iconfont icon-rss"> </span>
                 </a>
             </div>
 
             <div class="site-info flex flex-col justify-center">
-{{/*                <script async src="https://www.googletagmanager.com/gtag/js?id=G-RHS7MF12RC"></script>*/}}
                 <script>
                     window.dataLayer = window.dataLayer || [];
 
@@ -32,7 +31,7 @@
                     gtag('config', 'G-RHS7MF12RC');
                 </script>
 
-                <p><a href="http://beian.miit.gov.cn" target="_blank" class="text-xs">湘ICP备2020019588号</a></p>
+                <p><a href="http://beian.miit.gov.cn" target="_blank" class="text-xs"> 浙ICP备19028355号-3</a></p>
 
                 {{ safe .blogVars.GlobalFooter }}
 

@@ -44,6 +44,7 @@
         <div id="original" style="display: none">{{ .article.Content }}</div>
         <div class="container mx-auto px-4 md-content mt-8 max-w-6xl tracking-wider md:leading-relaxed sm:leading-normal cn-pd ct-container"
              id="write">
+            {{ safe .article.MDContent }}
         </div>
         <div id="tocFlag"></div>
         <aside id="toc" class="toc"></aside>
@@ -79,7 +80,7 @@
             {{ if .preArticle.Title }}
                 <div class="nav previous">
                     <img class="lazyload" index="544"
-                         src="https://www.keepli.cn/themes/bao/source/images/loading.svg"
+                         src="{{ .blogVars.ContextPath }}/static/img/loading.svg"
                          data-src="{{ .preArticle.Img }}"
                          alt="{{ .preArticle.Title }}">
                     <span>上一篇</span>
@@ -91,7 +92,7 @@
             {{ if .nextArticle.Title }}
                 <div class="nav next">
                     <img class="lazyload" index="51"
-                         src="https://www.keepli.cn/themes/bao/source/images/loading.svg"
+                         src="{{ .blogVars.ContextPath }}/static/img/loading.svg"
                          data-src="{{ .nextArticle.Img }}"
                          alt="{{ .nextArticle.Title }}">
                     <span>下一篇</span>
