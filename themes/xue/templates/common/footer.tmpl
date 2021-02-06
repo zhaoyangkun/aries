@@ -31,7 +31,9 @@
                     gtag('config', 'G-RHS7MF12RC');
                 </script>
 
-                <p><a href="http://beian.miit.gov.cn" target="_blank" class="text-xs"> 浙ICP备19028355号-3</a></p>
+                <p>
+                    <a href="http://beian.miit.gov.cn" target="_blank" class="text-xs"> {{ .blogVars.RecordNumber }}</a>
+                </p>
 
                 {{ safe .blogVars.GlobalFooter }}
 
@@ -50,13 +52,12 @@
                             <span class="badge-value bg-red">Xue</span>
                         </a>
                     </div>
-
-                    {{/*                    <div class="github-badge">*/}}
-                    {{/*                        <a style="color: #fff" rel="license" href="javascript:void(0)">*/}}
-                    {{/*                            <span class="badge-subject">运行</span>*/}}
-                    {{/*                            <span class="badge-value bg-orange" id="span_dt_dt"></span>*/}}
-                    {{/*                        </a>*/}}
-                    {{/*                    </div>*/}}
+                    <div class="github-badge">
+                        <a style="color: #fff" rel="license" href="javascript:void(0)">
+                            <span class="badge-subject">运行</span>
+                            <span class="badge-value bg-orange" id="span_dt_dt"></span>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>

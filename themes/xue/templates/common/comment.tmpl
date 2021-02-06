@@ -9,29 +9,34 @@
             text-align: center;
         }
     </style>
-    <div id="comment-app" style="margin-top: 30px">
+    <div id="aries-comment" style="margin-top: 30px">
         <Comment :article_id="article_id" :page_id="page_id" :comment_type="comment_type"></Comment>
     </div>
-    <script data-pjax type="text/javascript">
-        $.getMultiScripts = function (arr) {
-            let _arr = $.map(arr, function (script) {
-                return $.getScript(script);
+    <script type="text/javascript">
+        function loadScripts(urls, path) {
+            return new Promise(function (resolve) {
+                urls.forEach(function (src, i) {
+                    let script = document.createElement('script');
+                    script.type = 'text/javascript';
+                    script.src = (path || "") + src;
+                    script.async = false;
+
+                    // If last script, bind the callback event to resolve
+                    if (i == urls.length - 1) {
+                        // Multiple binding for browser compatibility
+                        script.onreadystatechange = resolve;
+                        script.onload = resolve;
+                    }
+
+                    // Fire the loading
+                    document.body.appendChild(script);
+                });
             });
-
-            _arr.push($.Deferred(function (deferred) {
-                $(deferred.resolve);
-            }));
-
-            return $.when.apply($, _arr);
         }
 
-        // 加载评论组件所需脚本
-        $.getMultiScripts([
-            '//cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.min.js',
-            '{{ .blogVars.ContextPath }}/static/js/aries-comment.js'
-        ]).done(function () {
+        function renderComment() {
             new Vue({
-                el: "#comment-app",
+                el: "#aries-comment",
                 data() {
                     return {
                         article_id: {{ .articleID }},
@@ -40,8 +45,11 @@
                     }
                 }
             });
-        }).fail(function () {
-            console.log('评论脚本加载失败！')
-        });
+        }
+
+        loadScripts([
+            "//cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.min.js",
+            "{{ .blogVars.ContextPath }}/static/js/aries-comment.js",
+        ]).then(renderComment);
     </script>
 {{ end }}

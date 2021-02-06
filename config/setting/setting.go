@@ -34,6 +34,7 @@ type BlogVariable struct {
 	SiteDesc     string
 	SiteKeywords string
 	SiteLogo     string
+	RecordNumber string
 	GlobalHeader string
 	GlobalFooter string
 }
@@ -146,6 +147,11 @@ func (b *BlogVariable) InitBlogVars(siteSetting map[string]string) {
 		b.SiteLogo = siteLogo
 	} else {
 		b.SiteLogo = "https://s1.ax1x.com/2020/08/07/aWuU41.png"
+	}
+	if recordNumber, ok := siteSetting["record_number"]; ok {
+		b.RecordNumber = recordNumber
+	} else {
+		b.RecordNumber = ""
 	}
 	if globalHeader, ok := siteSetting["head_content"]; ok {
 		b.GlobalHeader = globalHeader

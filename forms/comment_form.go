@@ -21,7 +21,7 @@ type CommentPageForm struct {
 // 添加评论表单
 type CommentAddForm struct {
 	AdminUserId     uint   `json:"admin_user_id" label:"博主 ID"`                            // 博主 ID
-	ArticleId       uint   `json:"article_id" binding:"required" label:"文章 ID"`            // 文章 ID
+	ArticleId       uint   `json:"article_id" label:"文章 ID"`                               // 文章 ID
 	PageId          uint   `json:"page_id" label:"页面 ID"`                                  // 页面 ID
 	RootCommentId   uint   `json:"root_comment_id" label:"根评论 ID"`                         // 根评论 ID
 	ParentCommentId uint   `json:"parent_comment_id" label:"父评论 ID"`                       // 父评论 ID
@@ -41,7 +41,7 @@ type CommentAddForm struct {
 type CommentEditForm struct {
 	ID              uint   `json:"id" binding:"required" label:"ID"`                       // ID
 	AdminUserId     uint   `json:"admin_user_id" label:"博主 ID"`                            // 博主 ID
-	ArticleId       uint   `json:"article_id" binding:"required" label:"文章 ID"`            // 文章 ID
+	ArticleId       uint   `json:"article_id" label:"文章 ID"`                               // 文章 ID
 	PageId          uint   `json:"page_id" label:"页面 ID"`                                  // 页面 ID
 	RootCommentId   uint   `json:"root_comment_id" label:"根评论 ID"`                         // 根评论 ID
 	ParentCommentId uint   `json:"parent_comment_id" label:"父评论 ID"`                       // 父评论 ID

@@ -1,4 +1,5 @@
 {{ define "script" }}
+    <script src="//cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js"></script>
     <!-- markdown 插件 -->
     <script src="//cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <!--图片预览插件-->
@@ -71,11 +72,6 @@
         }
     </script>
 
-    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.15.2/css/all.css"
-          crossorigin="anonymous">
-
-    <link type='text/css' rel="stylesheet"
-          href="//cdn.jsdelivr.net/gh/Sanarous/files@master/font-awesome-animation.min.css">
     <script src="{{ .blogVars.ContextPath }}/static/js/main.js"></script>
 
     <script src="//cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.js"></script>
@@ -133,14 +129,11 @@
         show_date_time();
     </script>
 
-
     <script src="//cdn.jsdelivr.net/gh/xzzai/static@master/js/jquery.pjax.js"></script>
     <script src="//cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js"></script>
-    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css">
     <script type="text/javascript">
         $(document).pjax('a[href]:not([href^="#"]):not([data-not-pjax]):not([target^="_blank"]), form',
             '#container', {fragment: '#container', timeout: 8000});
-
         $(document).on('pjax:send', function () {
             NProgress.start();
         })
@@ -148,8 +141,7 @@
         $(document).on('pjax:complete', function () {
             NProgress.done();
 
-            // 检查夜间模式
-            checkNightMode()
+            checkNightMode();
 
             // 自动切换夜间模式
             if (autoNightMode) {
@@ -159,50 +151,38 @@
             // 删除 listener
             removeScrollTocFixed();
 
-            // 重新加载 js
-            $('[data-pjax] script, script[data-pjax]').each(function () {
-                const comment = $(this).remove();
-                $(this).parent().append(comment);
-            });
+            // 处理导航菜单
+            handleNavMenu();
 
-            // 计算时间
-            setTimeAgo();
+            // 代码高亮
+            hljsCode();
 
-            // 存在 markdown 页面的功能
-            if ($('#container').find('#original').length > 0) {
-                // 格式化内容
-                // const format = formatContent();
+            // 代码行号
+            loadCodeLineNumber();
 
-                hljsCode();
+            // 渲染图片
+            renderImg();
 
-                renderMath();
-
-                if (!format) {
-                    loadGallery();
-                    lazyloadImg();
-                }
-            }
+            // 渲染公式
+            renderMath();
 
             // 处理目录
             dealContentToc();
 
-            // 相册页面功能
-            if ($("#container").find('.photos-page').length > 0) {
-                loadGallery();
-            }
+            // 加载相册
+            loadGallery();
 
             // 图片懒加载
-            lazyloadImg()
+            lazyloadImg();
 
-            // 加载云标签
             if ($('#container').find('.jqcloud').length > 0) {
-                if (typeof $.fn.jQCloud !== "function") {
+                if (typeof $.fn.jQCloud !== 'function') {
                     $.getScript(
-                        "//cdn.jsdelivr.net/gh/xzzai/static@master/js/jqcloud-1.0.4.min.js",
+                        '//cdn.jsdelivr.net/gh/xzzai/static@master/js/jqcloud-1.0.4.min.js',
                         function () {
                             renderTagCloud();
                             renderCategoryCloud();
-                        });
+                        })
                 } else {
                     renderTagCloud();
                     renderCategoryCloud();

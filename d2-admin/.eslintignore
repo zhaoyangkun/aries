@@ -2,6 +2,7 @@
 build/
 tests/
 node_modules/
+themes/
 
 # D2CRUD 演示
 src/views/demo/d2-crud/

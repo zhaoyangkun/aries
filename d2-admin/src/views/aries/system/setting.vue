@@ -24,6 +24,10 @@
             <el-input size="small" v-model="siteForm.seo_key_words" type="text" autocomplete="off"
                       placeholder="关键词以逗号隔开，如 Java,python,Golang"></el-input>
           </el-form-item>
+          <el-form-item label="备案号" prop="record_number">
+            <el-input size="small" :rows="5" v-model="siteForm.record_number" type="text" autocomplete="off"
+                      placeholder="备案号"></el-input>
+          </el-form-item>
           <el-form-item label="全局 head" prop="head_content">
             <el-input size="small" :rows="5" v-model="siteForm.head_content" type="textarea" autocomplete="off"
                       placeholder="全局 head"></el-input>
@@ -226,7 +230,8 @@
 import {
   getSysSettingItem,
   saveCommentSetting,
-  saveImgbbSetting, saveParamSetting,
+  saveImgbbSetting,
+  saveParamSetting,
   saveSiteSetting,
   saveSmmsSetting,
   saveSMTPSetting,
@@ -264,6 +269,7 @@ export default {
         site_url: '',
         site_logo: '',
         seo_key_words: '',
+        record_number: '',
         head_content: '',
         footer_content: ''
       },
@@ -439,8 +445,7 @@ export default {
           { required: true, message: '请选择是否开启评论审核功能', trigger: 'blur' }
         ]
       },
-      paramFormRules: {
-      },
+      paramFormRules: {},
       btn: {
         siteSaveLoading: false,
         smtpSaveLoading: false,

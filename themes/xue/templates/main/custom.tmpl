@@ -2,19 +2,17 @@
 <html lang="zh-cmn-Hans">
 {{ template "head" . }}
 <body>
-
 {{ template "menu" . }}
 
 <main class="mx-auto home-page" id="container">
-    <header class="bg-cover post-cover" id="postHeader">
+    <header class="bg-cover post-cover">
         <div class="cover-bg">
-            <img src="https://s1.ax1x.com/2020/06/29/NWtFJA.jpg"
-                 class="z-auto" alt="{{ .page.Title }}">
+            <img src="https://cdn.jsdelivr.net/gh/keepli/image@1.0/header/1.0/header-9.jpg" class="z-auto" alt="留言板">
         </div>
-        <div class="cover-content post-cover-content flex justify-center">
+        <div class="cover-content flex justify-center">
             <!-- 封面内容 -->
             <div class="inner flex flex-col justify-center">
-                <p class="post-title cover-title text-base lg:text-4xl xl:text-5xl md:text-3xl">{{ .page.Title }}</p>
+                <p class="cover-title text-base md:text-4xl lg:text-4xl xl:text-5xl">{{ .page.Title }}</p>
             </div>
         </div>
     </header>
@@ -24,9 +22,8 @@
         {{ safe .page.MDHtml }}
     </div>
 
-    {{ template "comment" .}}
+    {{ template "comment" . }}
 </main>
-
 
 {{ template "footer" . }}
 
