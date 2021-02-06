@@ -1,7 +1,6 @@
 package api
 
 import (
-	"aries/config/setting"
 	"aries/forms"
 	"aries/log"
 	"aries/models"
@@ -131,6 +130,15 @@ func (c *CommentHandler) AddComment(ctx *gin.Context) {
 
 	commentItems, _ := models.SysSettingItem{}.GetBySysSettingName("评论设置")
 	siteItems, _ := models.SysSettingItem{}.GetBySysSettingName("网站设置")
+	emailSetting, _ := models.SysSettingItem{}.GetBySysSettingName("邮件设置")
+	if len(emailSetting) == 0 {
+		ctx.JSON(http.StatusOK, utils.Result{
+			Code: utils.RequestError,
+			Msg:  "邮件发送失败，请先配置 SMTP",
+			Data: nil,
+		})
+		return
+	}
 	userList, _ := models.User{}.GetAll()
 	// 若开启邮件回复功能，发送回复邮件
 	if isReplyOn, ok := commentItems["is_reply_on"]; ok && isReplyOn == "1" {
@@ -139,7 +147,7 @@ func (c *CommentHandler) AddComment(ctx *gin.Context) {
 			// 设置收件人
 			msg.SetHeader("To", userList[0].Email)
 			// 设置发件人
-			msg.SetAddressHeader("From", setting.Config.SMTP.Account, setting.Config.SMTP.Account)
+			msg.SetAddressHeader("From", emailSetting["account"], emailSetting["account"])
 			// 主题
 			msg.SetHeader("Subject", "评论通知")
 			// 正文
@@ -162,9 +170,8 @@ func (c *CommentHandler) AddComment(ctx *gin.Context) {
 			parentComment, _ := models.Comment{}.GetById(comment.ParentCommentId)
 			// 设置收件人
 			msg.SetHeader("To", parentComment.Email)
-			log.Logger.Sugar().Debug("parentComment: ", parentComment)
 			// 设置发件人
-			msg.SetAddressHeader("From", setting.Config.SMTP.Account, setting.Config.SMTP.Account)
+			msg.SetAddressHeader("From", emailSetting["account"], emailSetting["account"])
 			// 主题
 			msg.SetHeader("Subject", "评论通知")
 			if comment.ArticleId > 0 {
@@ -184,8 +191,9 @@ func (c *CommentHandler) AddComment(ctx *gin.Context) {
 			}
 		}
 		// 设置 SMTP 参数
-		d := gomail.NewDialer(setting.Config.SMTP.Address, setting.Config.SMTP.Port,
-			setting.Config.SMTP.Account, setting.Config.SMTP.Password)
+		port, _ := strconv.Atoi(emailSetting["port"])
+		// 设置 SMTP 参数
+		d := gomail.NewDialer(emailSetting["address"], port, emailSetting["account"], emailSetting["pwd"])
 		// 发送邮件
 		err := d.DialAndSend(msg)
 		if err != nil {
