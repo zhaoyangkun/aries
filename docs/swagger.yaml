@@ -193,6 +193,9 @@ definitions:
       content:
         description: 评论内容
         type: string
+      device:
+        description: 设备
+        type: string
       email:
         description: 邮箱
         type: string
@@ -208,21 +211,32 @@ definitions:
       nick_name:
         description: 昵称
         type: string
+      page_id:
+        description: 页面 ID
+        type: integer
       parent_comment_id:
         description: 父评论 ID
         type: integer
       root_comment_id:
         description: 根评论 ID
         type: integer
+      type:
+        description: 类型，1 表文章评论，2 表友链页评论，3 表关于页评论，4 表示自定义页面评论
+        type: integer
       url:
         description: 访问地址
         type: string
+      user_img:
+        description: 用户头像
+        type: string
     required:
-    - article_id
     - content
+    - device
     - email
     - nick_name
+    - type
     - url
+    - user_img
     type: object
   forms.CommentEditForm:
     properties:
@@ -234,6 +248,9 @@ definitions:
         type: integer
       content:
         description: 评论内容
+        type: string
+      device:
+        description: 设备
         type: string
       email:
         description: 邮箱
@@ -253,21 +270,28 @@ definitions:
       nick_name:
         description: 昵称
         type: string
+      page_id:
+        description: 页面 ID
+        type: integer
       parent_comment_id:
         description: 父评论 ID
         type: integer
       root_comment_id:
         description: 根评论 ID
         type: integer
+      type:
+        description: 类型，1 表文章评论，2 表友链页评论，3 表关于页评论，4 表示自定义页面评论
+        type: integer
       url:
         description: 访问地址
         type: string
     required:
-    - article_id
     - content
+    - device
     - email
     - id
     - nick_name
+    - type
     - url
     type: object
   forms.CommentSettingForm:
@@ -549,6 +573,8 @@ definitions:
         type: string
       head_content:
         type: string
+      record_number:
+        type: string
       seo_key_words:
         type: string
       site_desc:
@@ -634,6 +660,8 @@ definitions:
         type: string
       signature:
         type: string
+      user_img:
+        type: string
       username:
         type: string
     required:
@@ -681,6 +709,7 @@ paths:
           schema:
             $ref: '#/definitions/utils.Result'
         "104":
+          description: ""
           schema:
             $ref: '#/definitions/utils.Result'
       summary: 向上移动文章
@@ -696,6 +725,7 @@ paths:
           schema:
             $ref: '#/definitions/utils.Result'
         "104":
+          description: ""
           schema:
             $ref: '#/definitions/utils.Result'
       summary: 获取所有文章
@@ -717,6 +747,7 @@ paths:
           schema:
             $ref: '#/definitions/utils.Result'
         "104":
+          description: ""
           schema:
             $ref: '#/definitions/utils.Result'
       summary: 获取所有分类
@@ -732,6 +763,7 @@ paths:
           schema:
             $ref: '#/definitions/utils.Result'
         "104":
+          description: ""
           schema:
             $ref: '#/definitions/utils.Result'
       summary: 获取所有评论
@@ -747,6 +779,7 @@ paths:
           schema:
             $ref: '#/definitions/utils.Result'
         "104":
+          description: ""
           schema:
             $ref: '#/definitions/utils.Result'
       summary: 获取所有图库
@@ -762,6 +795,7 @@ paths:
           schema:
             $ref: '#/definitions/utils.Result'
         "104":
+          description: ""
           schema:
             $ref: '#/definitions/utils.Result'
       summary: 获取所有日志
@@ -777,6 +811,7 @@ paths:
           schema:
             $ref: '#/definitions/utils.Result'
         "104":
+          description: ""
           schema:
             $ref: '#/definitions/utils.Result'
       summary: 获取所有友链
@@ -792,6 +827,7 @@ paths:
           schema:
             $ref: '#/definitions/utils.Result'
         "104":
+          description: ""
           schema:
             $ref: '#/definitions/utils.Result'
       summary: 获取所有标签
@@ -807,6 +843,7 @@ paths:
           schema:
             $ref: '#/definitions/utils.Result'
         "104":
+          description: ""
           schema:
             $ref: '#/definitions/utils.Result'
       summary: 获取所有用户
@@ -828,6 +865,7 @@ paths:
           schema:
             $ref: '#/definitions/utils.Result'
         "104":
+          description: ""
           schema:
             $ref: '#/definitions/utils.Result'
       summary: 批量删除文章
@@ -863,6 +901,7 @@ paths:
           schema:
             $ref: '#/definitions/utils.Result'
         "104":
+          description: ""
           schema:
             $ref: '#/definitions/utils.Result'
       summary: 分页获取文章
@@ -884,6 +923,7 @@ paths:
           schema:
             $ref: '#/definitions/utils.Result'
         "104":
+          description: ""
           schema:
             $ref: '#/definitions/utils.Result'
       summary: 添加文章
@@ -905,6 +945,7 @@ paths:
           schema:
             $ref: '#/definitions/utils.Result'
         "104":
+          description: ""
           schema:
             $ref: '#/definitions/utils.Result'
       summary: 修改文章
@@ -926,6 +967,7 @@ paths:
           schema:
             $ref: '#/definitions/utils.Result'
         "104":
+          description: ""
           schema:
             $ref: '#/definitions/utils.Result'
       summary: 删除文章
@@ -946,6 +988,7 @@ paths:
           schema:
             $ref: '#/definitions/utils.Result'
         "104":
+          description: ""
           schema:
             $ref: '#/definitions/utils.Result'
       summary: 根据 ID 获取文章
@@ -968,6 +1011,7 @@ paths:
           schema:
             $ref: '#/definitions/utils.Result'
         "104":
+          description: ""
           schema:
             $ref: '#/definitions/utils.Result'
       summary: 向下移动文章
@@ -983,6 +1027,7 @@ paths:
           schema:
             $ref: '#/definitions/utils.Result'
         "104":
+          description: ""
           schema:
             $ref: '#/definitions/utils.Result'
       summary: 从文件导入文章
@@ -998,6 +1043,7 @@ paths:
           schema:
             $ref: '#/definitions/utils.Result'
         "104":
+          description: ""
           schema:
             $ref: '#/definitions/utils.Result'
       summary: 创建验证码
@@ -1020,6 +1066,7 @@ paths:
           schema:
             $ref: '#/definitions/utils.Result'
         "104":
+          description: ""
           schema:
             $ref: '#/definitions/utils.Result'
       summary: 登录
@@ -1042,6 +1089,7 @@ paths:
           schema:
             $ref: '#/definitions/utils.Result'
         "104":
+          description: ""
           schema:
             $ref: '#/definitions/utils.Result'
       summary: 忘记密码
@@ -1064,6 +1112,7 @@ paths:
           schema:
             $ref: '#/definitions/utils.Result'
         "104":
+          description: ""
           schema:
             $ref: '#/definitions/utils.Result'
       summary: 重置密码
@@ -1086,6 +1135,7 @@ paths:
           schema:
             $ref: '#/definitions/utils.Result'
         "104":
+          description: ""
           schema:
             $ref: '#/definitions/utils.Result'
       summary: 注册
@@ -1107,6 +1157,7 @@ paths:
           schema:
             $ref: '#/definitions/utils.Result'
         "104":
+          description: ""
           schema:
             $ref: '#/definitions/utils.Result'
       summary: 批量删除分类
@@ -1139,6 +1190,7 @@ paths:
           schema:
             $ref: '#/definitions/utils.Result'
         "104":
+          description: ""
           schema:
             $ref: '#/definitions/utils.Result'
       summary: 分页获取分类数据
@@ -1160,6 +1212,7 @@ paths:
           schema:
             $ref: '#/definitions/utils.Result'
         "104":
+          description: ""
           schema:
             $ref: '#/definitions/utils.Result'
       summary: 删除分类
@@ -1182,6 +1235,7 @@ paths:
           schema:
             $ref: '#/definitions/utils.Result'
         "104":
+          description: ""
           schema:
             $ref: '#/definitions/utils.Result'
       summary: 添加文章分类
@@ -1203,6 +1257,7 @@ paths:
           schema:
             $ref: '#/definitions/utils.Result'
         "104":
+          description: ""
           schema:
             $ref: '#/definitions/utils.Result'
       summary: 修改文章分类
@@ -1225,6 +1280,7 @@ paths:
           schema:
             $ref: '#/definitions/utils.Result'
         "104":
+          description: ""
           schema:
             $ref: '#/definitions/utils.Result'
       summary: 添加图库分类
@@ -1246,6 +1302,7 @@ paths:
           schema:
             $ref: '#/definitions/utils.Result'
         "104":
+          description: ""
           schema:
             $ref: '#/definitions/utils.Result'
       summary: 修改图库分类
@@ -1268,6 +1325,7 @@ paths:
           schema:
             $ref: '#/definitions/utils.Result'
         "104":
+          description: ""
           schema:
             $ref: '#/definitions/utils.Result'
       summary: 添加友链分类
@@ -1289,6 +1347,7 @@ paths:
           schema:
             $ref: '#/definitions/utils.Result'
         "104":
+          description: ""
           schema:
             $ref: '#/definitions/utils.Result'
       summary: 修改友链分类
@@ -1310,6 +1369,7 @@ paths:
           schema:
             $ref: '#/definitions/utils.Result'
         "104":
+          description: ""
           schema:
             $ref: '#/definitions/utils.Result'
       summary: 批量删除评论
@@ -1345,6 +1405,7 @@ paths:
           schema:
             $ref: '#/definitions/utils.Result'
         "104":
+          description: ""
           schema:
             $ref: '#/definitions/utils.Result'
       summary: 分页获取评论
@@ -1365,6 +1426,7 @@ paths:
           schema:
             $ref: '#/definitions/utils.Result'
         "104":
+          description: ""
           schema:
             $ref: '#/definitions/utils.Result'
       summary: 发表评论
@@ -1385,6 +1447,7 @@ paths:
           schema:
             $ref: '#/definitions/utils.Result'
         "104":
+          description: ""
           schema:
             $ref: '#/definitions/utils.Result'
       summary: 修改评论
@@ -1406,6 +1469,7 @@ paths:
           schema:
             $ref: '#/definitions/utils.Result'
         "104":
+          description: ""
           schema:
             $ref: '#/definitions/utils.Result'
       summary: 删除评论
@@ -1427,6 +1491,7 @@ paths:
           schema:
             $ref: '#/definitions/utils.Result'
         "104":
+          description: ""
           schema:
             $ref: '#/definitions/utils.Result'
       summary: 批量删除图库
@@ -1458,6 +1523,7 @@ paths:
           schema:
             $ref: '#/definitions/utils.Result'
         "104":
+          description: ""
           schema:
             $ref: '#/definitions/utils.Result'
       summary: 分页获取图库
@@ -1478,6 +1544,7 @@ paths:
           schema:
             $ref: '#/definitions/utils.Result'
         "104":
+          description: ""
           schema:
             $ref: '#/definitions/utils.Result'
       summary: 创建图库
@@ -1498,6 +1565,7 @@ paths:
           schema:
             $ref: '#/definitions/utils.Result'
         "104":
+          description: ""
           schema:
             $ref: '#/definitions/utils.Result'
       summary: 修改图库
@@ -1519,6 +1587,7 @@ paths:
           schema:
             $ref: '#/definitions/utils.Result'
         "104":
+          description: ""
           schema:
             $ref: '#/definitions/utils.Result'
       summary: 根据 ID 获取图库
@@ -1540,6 +1609,7 @@ paths:
           schema:
             $ref: '#/definitions/utils.Result'
         "104":
+          description: ""
           schema:
             $ref: '#/definitions/utils.Result'
       summary: 批量删除图片
@@ -1571,6 +1641,7 @@ paths:
           schema:
             $ref: '#/definitions/utils.Result'
         "104":
+          description: ""
           schema:
             $ref: '#/definitions/utils.Result'
       summary: 分页获取图片
@@ -1586,6 +1657,7 @@ paths:
           schema:
             $ref: '#/definitions/utils.Result'
         "104":
+          description: ""
           schema:
             $ref: '#/definitions/utils.Result'
       summary: 上传图片到附件
@@ -1607,6 +1679,7 @@ paths:
           schema:
             $ref: '#/definitions/utils.Result'
         "104":
+          description: ""
           schema:
             $ref: '#/definitions/utils.Result'
       summary: 批量删除日志
@@ -1634,6 +1707,7 @@ paths:
           schema:
             $ref: '#/definitions/utils.Result'
         "104":
+          description: ""
           schema:
             $ref: '#/definitions/utils.Result'
       summary: 分页获取日志
@@ -1655,6 +1729,7 @@ paths:
           schema:
             $ref: '#/definitions/utils.Result'
         "104":
+          description: ""
           schema:
             $ref: '#/definitions/utils.Result'
       summary: 创建日志
@@ -1676,6 +1751,7 @@ paths:
           schema:
             $ref: '#/definitions/utils.Result'
         "104":
+          description: ""
           schema:
             $ref: '#/definitions/utils.Result'
       summary: 更新日志
@@ -1697,6 +1773,7 @@ paths:
           schema:
             $ref: '#/definitions/utils.Result'
         "104":
+          description: ""
           schema:
             $ref: '#/definitions/utils.Result'
       summary: 根据 ID 获取日志
@@ -1718,6 +1795,7 @@ paths:
           schema:
             $ref: '#/definitions/utils.Result'
         "104":
+          description: ""
           schema:
             $ref: '#/definitions/utils.Result'
       summary: 删除友链
@@ -1732,6 +1810,7 @@ paths:
           schema:
             $ref: '#/definitions/utils.Result'
         "104":
+          description: ""
           schema:
             $ref: '#/definitions/utils.Result'
       summary: 分页获取友链
@@ -1746,6 +1825,7 @@ paths:
           schema:
             $ref: '#/definitions/utils.Result'
         "104":
+          description: ""
           schema:
             $ref: '#/definitions/utils.Result'
       summary: 修改友链
@@ -1761,6 +1841,7 @@ paths:
           schema:
             $ref: '#/definitions/utils.Result'
         "104":
+          description: ""
           schema:
             $ref: '#/definitions/utils.Result'
       summary: 删除友链
@@ -1782,6 +1863,7 @@ paths:
           schema:
             $ref: '#/definitions/utils.Result'
         "104":
+          description: ""
           schema:
             $ref: '#/definitions/utils.Result'
       summary: 批量删除菜单
@@ -1796,6 +1878,7 @@ paths:
           schema:
             $ref: '#/definitions/utils.Result'
         "104":
+          description: ""
           schema:
             $ref: '#/definitions/utils.Result'
       summary: 获取所有菜单
@@ -1817,6 +1900,7 @@ paths:
           schema:
             $ref: '#/definitions/utils.Result'
         "104":
+          description: ""
           schema:
             $ref: '#/definitions/utils.Result'
       summary: 添加菜单
@@ -1838,6 +1922,7 @@ paths:
           schema:
             $ref: '#/definitions/utils.Result'
         "104":
+          description: ""
           schema:
             $ref: '#/definitions/utils.Result'
       summary: 修改菜单
@@ -1859,6 +1944,7 @@ paths:
           schema:
             $ref: '#/definitions/utils.Result'
         "104":
+          description: ""
           schema:
             $ref: '#/definitions/utils.Result'
       summary: 删除菜单
@@ -1885,6 +1971,7 @@ paths:
           schema:
             $ref: '#/definitions/utils.Result'
         "104":
+          description: ""
           schema:
             $ref: '#/definitions/utils.Result'
       summary: 向移下动菜单
@@ -1911,6 +1998,7 @@ paths:
           schema:
             $ref: '#/definitions/utils.Result'
         "104":
+          description: ""
           schema:
             $ref: '#/definitions/utils.Result'
       summary: 向上移动菜单
@@ -1932,6 +2020,7 @@ paths:
           schema:
             $ref: '#/definitions/utils.Result'
         "104":
+          description: ""
           schema:
             $ref: '#/definitions/utils.Result'
       summary: 获取所有父级分类
@@ -1947,6 +2036,7 @@ paths:
           schema:
             $ref: '#/definitions/utils.Result'
         "104":
+          description: ""
           schema:
             $ref: '#/definitions/utils.Result'
       summary: 获取博客全局变量
@@ -1969,6 +2059,7 @@ paths:
           schema:
             $ref: '#/definitions/utils.Result'
         "104":
+          description: ""
           schema:
             $ref: '#/definitions/utils.Result'
       summary: 保存评论配置信息
@@ -1984,6 +2075,7 @@ paths:
           schema:
             $ref: '#/definitions/utils.Result'
         "104":
+          description: ""
           schema:
             $ref: '#/definitions/utils.Result'
       summary: 发送测试邮件
@@ -1999,6 +2091,7 @@ paths:
           schema:
             $ref: '#/definitions/utils.Result'
         "104":
+          description: ""
           schema:
             $ref: '#/definitions/utils.Result'
       summary: 获取后台首页数据
@@ -2019,6 +2112,7 @@ paths:
           schema:
             $ref: '#/definitions/utils.Result'
         "104":
+          description: ""
           schema:
             $ref: '#/definitions/utils.Result'
       summary: 获取设置条目
@@ -2041,6 +2135,7 @@ paths:
           schema:
             $ref: '#/definitions/utils.Result'
         "104":
+          description: ""
           schema:
             $ref: '#/definitions/utils.Result'
       summary: 保存参数配置
@@ -2063,6 +2158,7 @@ paths:
           schema:
             $ref: '#/definitions/utils.Result'
         "104":
+          description: ""
           schema:
             $ref: '#/definitions/utils.Result'
       summary: 保存 imgbb 配置信息
@@ -2085,6 +2181,7 @@ paths:
           schema:
             $ref: '#/definitions/utils.Result'
         "104":
+          description: ""
           schema:
             $ref: '#/definitions/utils.Result'
       summary: 保存 sm.ms 配置信息
@@ -2107,6 +2204,7 @@ paths:
           schema:
             $ref: '#/definitions/utils.Result'
         "104":
+          description: ""
           schema:
             $ref: '#/definitions/utils.Result'
       summary: 保存腾讯云 COS 配置信息
@@ -2129,6 +2227,7 @@ paths:
           schema:
             $ref: '#/definitions/utils.Result'
         "104":
+          description: ""
           schema:
             $ref: '#/definitions/utils.Result'
       summary: 保存网站配置信息
@@ -2151,6 +2250,7 @@ paths:
           schema:
             $ref: '#/definitions/utils.Result'
         "104":
+          description: ""
           schema:
             $ref: '#/definitions/utils.Result'
       summary: 保存 SMTP 服务配置信息
@@ -2172,6 +2272,7 @@ paths:
           schema:
             $ref: '#/definitions/utils.Result'
         "104":
+          description: ""
           schema:
             $ref: '#/definitions/utils.Result'
       summary: 批量删除标签
@@ -2199,6 +2300,7 @@ paths:
           schema:
             $ref: '#/definitions/utils.Result'
         "104":
+          description: ""
           schema:
             $ref: '#/definitions/utils.Result'
       summary: 分页获取标签
@@ -2220,6 +2322,7 @@ paths:
           schema:
             $ref: '#/definitions/utils.Result'
         "104":
+          description: ""
           schema:
             $ref: '#/definitions/utils.Result'
       summary: 添加标签
@@ -2241,6 +2344,7 @@ paths:
           schema:
             $ref: '#/definitions/utils.Result'
         "104":
+          description: ""
           schema:
             $ref: '#/definitions/utils.Result'
       summary: 修改标签
@@ -2262,6 +2366,7 @@ paths:
           schema:
             $ref: '#/definitions/utils.Result'
         "104":
+          description: ""
           schema:
             $ref: '#/definitions/utils.Result'
       summary: 删除标签
@@ -2282,6 +2387,7 @@ paths:
           schema:
             $ref: '#/definitions/utils.Result'
         "104":
+          description: ""
           schema:
             $ref: '#/definitions/utils.Result'
       summary: 根据 ID 获取标签
@@ -2304,6 +2410,7 @@ paths:
           schema:
             $ref: '#/definitions/utils.Result'
         "104":
+          description: ""
           schema:
             $ref: '#/definitions/utils.Result'
       summary: 更新用户信息
@@ -2326,6 +2433,7 @@ paths:
           schema:
             $ref: '#/definitions/utils.Result'
         "104":
+          description: ""
           schema:
             $ref: '#/definitions/utils.Result'
       summary: 修改密码

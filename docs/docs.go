@@ -56,6 +56,7 @@ var doc = `{
                         }
                     },
                     "104": {
+                        "description": "",
                         "schema": {
                             "$ref": "#/definitions/utils.Result"
                         }
@@ -80,6 +81,7 @@ var doc = `{
                         }
                     },
                     "104": {
+                        "description": "",
                         "schema": {
                             "$ref": "#/definitions/utils.Result"
                         }
@@ -113,6 +115,7 @@ var doc = `{
                         }
                     },
                     "104": {
+                        "description": "",
                         "schema": {
                             "$ref": "#/definitions/utils.Result"
                         }
@@ -137,6 +140,7 @@ var doc = `{
                         }
                     },
                     "104": {
+                        "description": "",
                         "schema": {
                             "$ref": "#/definitions/utils.Result"
                         }
@@ -161,6 +165,7 @@ var doc = `{
                         }
                     },
                     "104": {
+                        "description": "",
                         "schema": {
                             "$ref": "#/definitions/utils.Result"
                         }
@@ -185,6 +190,7 @@ var doc = `{
                         }
                     },
                     "104": {
+                        "description": "",
                         "schema": {
                             "$ref": "#/definitions/utils.Result"
                         }
@@ -209,6 +215,7 @@ var doc = `{
                         }
                     },
                     "104": {
+                        "description": "",
                         "schema": {
                             "$ref": "#/definitions/utils.Result"
                         }
@@ -233,6 +240,7 @@ var doc = `{
                         }
                     },
                     "104": {
+                        "description": "",
                         "schema": {
                             "$ref": "#/definitions/utils.Result"
                         }
@@ -257,6 +265,7 @@ var doc = `{
                         }
                     },
                     "104": {
+                        "description": "",
                         "schema": {
                             "$ref": "#/definitions/utils.Result"
                         }
@@ -313,6 +322,7 @@ var doc = `{
                         }
                     },
                     "104": {
+                        "description": "",
                         "schema": {
                             "$ref": "#/definitions/utils.Result"
                         }
@@ -346,6 +356,7 @@ var doc = `{
                         }
                     },
                     "104": {
+                        "description": "",
                         "schema": {
                             "$ref": "#/definitions/utils.Result"
                         }
@@ -379,6 +390,7 @@ var doc = `{
                         }
                     },
                     "104": {
+                        "description": "",
                         "schema": {
                             "$ref": "#/definitions/utils.Result"
                         }
@@ -410,6 +422,7 @@ var doc = `{
                         }
                     },
                     "104": {
+                        "description": "",
                         "schema": {
                             "$ref": "#/definitions/utils.Result"
                         }
@@ -445,6 +458,7 @@ var doc = `{
                         }
                     },
                     "104": {
+                        "description": "",
                         "schema": {
                             "$ref": "#/definitions/utils.Result"
                         }
@@ -469,6 +483,7 @@ var doc = `{
                         }
                     },
                     "104": {
+                        "description": "",
                         "schema": {
                             "$ref": "#/definitions/utils.Result"
                         }
@@ -502,6 +517,7 @@ var doc = `{
                         }
                     },
                     "104": {
+                        "description": "",
                         "schema": {
                             "$ref": "#/definitions/utils.Result"
                         }
@@ -533,6 +549,7 @@ var doc = `{
                         }
                     },
                     "104": {
+                        "description": "",
                         "schema": {
                             "$ref": "#/definitions/utils.Result"
                         }
@@ -557,6 +574,7 @@ var doc = `{
                         }
                     },
                     "104": {
+                        "description": "",
                         "schema": {
                             "$ref": "#/definitions/utils.Result"
                         }
@@ -592,6 +610,7 @@ var doc = `{
                         }
                     },
                     "104": {
+                        "description": "",
                         "schema": {
                             "$ref": "#/definitions/utils.Result"
                         }
@@ -627,6 +646,7 @@ var doc = `{
                         }
                     },
                     "104": {
+                        "description": "",
                         "schema": {
                             "$ref": "#/definitions/utils.Result"
                         }
@@ -662,6 +682,7 @@ var doc = `{
                         }
                     },
                     "104": {
+                        "description": "",
                         "schema": {
                             "$ref": "#/definitions/utils.Result"
                         }
@@ -697,6 +718,7 @@ var doc = `{
                         }
                     },
                     "104": {
+                        "description": "",
                         "schema": {
                             "$ref": "#/definitions/utils.Result"
                         }
@@ -748,6 +770,7 @@ var doc = `{
                         }
                     },
                     "104": {
+                        "description": "",
                         "schema": {
                             "$ref": "#/definitions/utils.Result"
                         }
@@ -779,6 +802,7 @@ var doc = `{
                         }
                     },
                     "104": {
+                        "description": "",
                         "schema": {
                             "$ref": "#/definitions/utils.Result"
                         }
@@ -814,6 +838,7 @@ var doc = `{
                         }
                     },
                     "104": {
+                        "description": "",
                         "schema": {
                             "$ref": "#/definitions/utils.Result"
                         }
@@ -847,6 +872,7 @@ var doc = `{
                         }
                     },
                     "104": {
+                        "description": "",
                         "schema": {
                             "$ref": "#/definitions/utils.Result"
                         }
@@ -882,6 +908,7 @@ var doc = `{
                         }
                     },
                     "104": {
+                        "description": "",
                         "schema": {
                             "$ref": "#/definitions/utils.Result"
                         }
@@ -915,6 +942,7 @@ var doc = `{
                         }
                     },
                     "104": {
+                        "description": "",
                         "schema": {
                             "$ref": "#/definitions/utils.Result"
                         }
@@ -950,6 +978,7 @@ var doc = `{
                         }
                     },
                     "104": {
+                        "description": "",
                         "schema": {
                             "$ref": "#/definitions/utils.Result"
                         }
@@ -983,6 +1012,7 @@ var doc = `{
                         }
                     },
                     "104": {
+                        "description": "",
                         "schema": {
                             "$ref": "#/definitions/utils.Result"
                         }
@@ -1016,6 +1046,7 @@ var doc = `{
                         }
                     },
                     "104": {
+                        "description": "",
                         "schema": {
                             "$ref": "#/definitions/utils.Result"
                         }
@@ -1072,6 +1103,7 @@ var doc = `{
                         }
                     },
                     "104": {
+                        "description": "",
                         "schema": {
                             "$ref": "#/definitions/utils.Result"
                         }
@@ -1104,6 +1136,7 @@ var doc = `{
                         }
                     },
                     "104": {
+                        "description": "",
                         "schema": {
                             "$ref": "#/definitions/utils.Result"
                         }
@@ -1136,6 +1169,7 @@ var doc = `{
                         }
                     },
                     "104": {
+                        "description": "",
                         "schema": {
                             "$ref": "#/definitions/utils.Result"
                         }
@@ -1167,6 +1201,7 @@ var doc = `{
                         }
                     },
                     "104": {
+                        "description": "",
                         "schema": {
                             "$ref": "#/definitions/utils.Result"
                         }
@@ -1200,6 +1235,7 @@ var doc = `{
                         }
                     },
                     "104": {
+                        "description": "",
                         "schema": {
                             "$ref": "#/definitions/utils.Result"
                         }
@@ -1250,6 +1286,7 @@ var doc = `{
                         }
                     },
                     "104": {
+                        "description": "",
                         "schema": {
                             "$ref": "#/definitions/utils.Result"
                         }
@@ -1282,6 +1319,7 @@ var doc = `{
                         }
                     },
                     "104": {
+                        "description": "",
                         "schema": {
                             "$ref": "#/definitions/utils.Result"
                         }
@@ -1314,6 +1352,7 @@ var doc = `{
                         }
                     },
                     "104": {
+                        "description": "",
                         "schema": {
                             "$ref": "#/definitions/utils.Result"
                         }
@@ -1345,6 +1384,7 @@ var doc = `{
                         }
                     },
                     "104": {
+                        "description": "",
                         "schema": {
                             "$ref": "#/definitions/utils.Result"
                         }
@@ -1378,6 +1418,7 @@ var doc = `{
                         }
                     },
                     "104": {
+                        "description": "",
                         "schema": {
                             "$ref": "#/definitions/utils.Result"
                         }
@@ -1428,6 +1469,7 @@ var doc = `{
                         }
                     },
                     "104": {
+                        "description": "",
                         "schema": {
                             "$ref": "#/definitions/utils.Result"
                         }
@@ -1459,6 +1501,7 @@ var doc = `{
                         }
                     },
                     "104": {
+                        "description": "",
                         "schema": {
                             "$ref": "#/definitions/utils.Result"
                         }
@@ -1483,6 +1526,7 @@ var doc = `{
                         }
                     },
                     "104": {
+                        "description": "",
                         "schema": {
                             "$ref": "#/definitions/utils.Result"
                         }
@@ -1527,6 +1571,7 @@ var doc = `{
                         }
                     },
                     "104": {
+                        "description": "",
                         "schema": {
                             "$ref": "#/definitions/utils.Result"
                         }
@@ -1560,6 +1605,7 @@ var doc = `{
                         }
                     },
                     "104": {
+                        "description": "",
                         "schema": {
                             "$ref": "#/definitions/utils.Result"
                         }
@@ -1593,6 +1639,7 @@ var doc = `{
                         }
                     },
                     "104": {
+                        "description": "",
                         "schema": {
                             "$ref": "#/definitions/utils.Result"
                         }
@@ -1624,6 +1671,7 @@ var doc = `{
                         }
                     },
                     "104": {
+                        "description": "",
                         "schema": {
                             "$ref": "#/definitions/utils.Result"
                         }
@@ -1657,6 +1705,7 @@ var doc = `{
                         }
                     },
                     "104": {
+                        "description": "",
                         "schema": {
                             "$ref": "#/definitions/utils.Result"
                         }
@@ -1681,6 +1730,7 @@ var doc = `{
                         }
                     },
                     "104": {
+                        "description": "",
                         "schema": {
                             "$ref": "#/definitions/utils.Result"
                         }
@@ -1703,6 +1753,7 @@ var doc = `{
                         }
                     },
                     "104": {
+                        "description": "",
                         "schema": {
                             "$ref": "#/definitions/utils.Result"
                         }
@@ -1734,6 +1785,7 @@ var doc = `{
                         }
                     },
                     "104": {
+                        "description": "",
                         "schema": {
                             "$ref": "#/definitions/utils.Result"
                         }
@@ -1758,6 +1810,7 @@ var doc = `{
                         }
                     },
                     "104": {
+                        "description": "",
                         "schema": {
                             "$ref": "#/definitions/utils.Result"
                         }
@@ -1782,6 +1835,7 @@ var doc = `{
                         }
                     },
                     "104": {
+                        "description": "",
                         "schema": {
                             "$ref": "#/definitions/utils.Result"
                         }
@@ -1815,6 +1869,7 @@ var doc = `{
                         }
                     },
                     "104": {
+                        "description": "",
                         "schema": {
                             "$ref": "#/definitions/utils.Result"
                         }
@@ -1848,6 +1903,7 @@ var doc = `{
                         }
                     },
                     "104": {
+                        "description": "",
                         "schema": {
                             "$ref": "#/definitions/utils.Result"
                         }
@@ -1879,6 +1935,7 @@ var doc = `{
                         }
                     },
                     "104": {
+                        "description": "",
                         "schema": {
                             "$ref": "#/definitions/utils.Result"
                         }
@@ -1912,6 +1969,7 @@ var doc = `{
                         }
                     },
                     "104": {
+                        "description": "",
                         "schema": {
                             "$ref": "#/definitions/utils.Result"
                         }
@@ -1952,6 +2010,7 @@ var doc = `{
                         }
                     },
                     "104": {
+                        "description": "",
                         "schema": {
                             "$ref": "#/definitions/utils.Result"
                         }
@@ -1992,6 +2051,7 @@ var doc = `{
                         }
                     },
                     "104": {
+                        "description": "",
                         "schema": {
                             "$ref": "#/definitions/utils.Result"
                         }
@@ -2025,6 +2085,7 @@ var doc = `{
                         }
                     },
                     "104": {
+                        "description": "",
                         "schema": {
                             "$ref": "#/definitions/utils.Result"
                         }
@@ -2049,6 +2110,7 @@ var doc = `{
                         }
                     },
                     "104": {
+                        "description": "",
                         "schema": {
                             "$ref": "#/definitions/utils.Result"
                         }
@@ -2084,6 +2146,7 @@ var doc = `{
                         }
                     },
                     "104": {
+                        "description": "",
                         "schema": {
                             "$ref": "#/definitions/utils.Result"
                         }
@@ -2108,6 +2171,7 @@ var doc = `{
                         }
                     },
                     "104": {
+                        "description": "",
                         "schema": {
                             "$ref": "#/definitions/utils.Result"
                         }
@@ -2132,6 +2196,7 @@ var doc = `{
                         }
                     },
                     "104": {
+                        "description": "",
                         "schema": {
                             "$ref": "#/definitions/utils.Result"
                         }
@@ -2164,6 +2229,7 @@ var doc = `{
                         }
                     },
                     "104": {
+                        "description": "",
                         "schema": {
                             "$ref": "#/definitions/utils.Result"
                         }
@@ -2199,6 +2265,7 @@ var doc = `{
                         }
                     },
                     "104": {
+                        "description": "",
                         "schema": {
                             "$ref": "#/definitions/utils.Result"
                         }
@@ -2234,6 +2301,7 @@ var doc = `{
                         }
                     },
                     "104": {
+                        "description": "",
                         "schema": {
                             "$ref": "#/definitions/utils.Result"
                         }
@@ -2269,6 +2337,7 @@ var doc = `{
                         }
                     },
                     "104": {
+                        "description": "",
                         "schema": {
                             "$ref": "#/definitions/utils.Result"
                         }
@@ -2304,6 +2373,7 @@ var doc = `{
                         }
                     },
                     "104": {
+                        "description": "",
                         "schema": {
                             "$ref": "#/definitions/utils.Result"
                         }
@@ -2339,6 +2409,7 @@ var doc = `{
                         }
                     },
                     "104": {
+                        "description": "",
                         "schema": {
                             "$ref": "#/definitions/utils.Result"
                         }
@@ -2374,6 +2445,7 @@ var doc = `{
                         }
                     },
                     "104": {
+                        "description": "",
                         "schema": {
                             "$ref": "#/definitions/utils.Result"
                         }
@@ -2418,6 +2490,7 @@ var doc = `{
                         }
                     },
                     "104": {
+                        "description": "",
                         "schema": {
                             "$ref": "#/definitions/utils.Result"
                         }
@@ -2451,6 +2524,7 @@ var doc = `{
                         }
                     },
                     "104": {
+                        "description": "",
                         "schema": {
                             "$ref": "#/definitions/utils.Result"
                         }
@@ -2484,6 +2558,7 @@ var doc = `{
                         }
                     },
                     "104": {
+                        "description": "",
                         "schema": {
                             "$ref": "#/definitions/utils.Result"
                         }
@@ -2515,6 +2590,7 @@ var doc = `{
                         }
                     },
                     "104": {
+                        "description": "",
                         "schema": {
                             "$ref": "#/definitions/utils.Result"
                         }
@@ -2548,6 +2624,7 @@ var doc = `{
                         }
                     },
                     "104": {
+                        "description": "",
                         "schema": {
                             "$ref": "#/definitions/utils.Result"
                         }
@@ -2579,6 +2656,7 @@ var doc = `{
                         }
                     },
                     "104": {
+                        "description": "",
                         "schema": {
                             "$ref": "#/definitions/utils.Result"
                         }
@@ -2614,6 +2692,7 @@ var doc = `{
                         }
                     },
                     "104": {
+                        "description": "",
                         "schema": {
                             "$ref": "#/definitions/utils.Result"
                         }
@@ -2649,6 +2728,7 @@ var doc = `{
                         }
                     },
                     "104": {
+                        "description": "",
                         "schema": {
                             "$ref": "#/definitions/utils.Result"
                         }
@@ -2912,11 +2992,13 @@ var doc = `{
         "forms.CommentAddForm": {
             "type": "object",
             "required": [
-                "article_id",
                 "content",
+                "device",
                 "email",
                 "nick_name",
-                "url"
+                "type",
+                "url",
+                "user_img"
             ],
             "properties": {
                 "admin_user_id": {
@@ -2929,6 +3011,10 @@ var doc = `{
                 },
                 "content": {
                     "description": "评论内容",
+                    "type": "string"
+                },
+                "device": {
+                    "description": "设备",
                     "type": "string"
                 },
                 "email": {
@@ -2951,6 +3037,10 @@ var doc = `{
                     "description": "昵称",
                     "type": "string"
                 },
+                "page_id": {
+                    "description": "页面 ID",
+                    "type": "integer"
+                },
                 "parent_comment_id": {
                     "description": "父评论 ID",
                     "type": "integer"
@@ -2959,8 +3049,16 @@ var doc = `{
                     "description": "根评论 ID",
                     "type": "integer"
                 },
+                "type": {
+                    "description": "类型，1 表文章评论，2 表友链页评论，3 表关于页评论，4 表示自定义页面评论",
+                    "type": "integer"
+                },
                 "url": {
                     "description": "访问地址",
+                    "type": "string"
+                },
+                "user_img": {
+                    "description": "用户头像",
                     "type": "string"
                 }
             }
@@ -2968,11 +3066,12 @@ var doc = `{
         "forms.CommentEditForm": {
             "type": "object",
             "required": [
-                "article_id",
                 "content",
+                "device",
                 "email",
                 "id",
                 "nick_name",
+                "type",
                 "url"
             ],
             "properties": {
@@ -2986,6 +3085,10 @@ var doc = `{
                 },
                 "content": {
                     "description": "评论内容",
+                    "type": "string"
+                },
+                "device": {
+                    "description": "设备",
                     "type": "string"
                 },
                 "email": {
@@ -3012,12 +3115,20 @@ var doc = `{
                     "description": "昵称",
                     "type": "string"
                 },
+                "page_id": {
+                    "description": "页面 ID",
+                    "type": "integer"
+                },
                 "parent_comment_id": {
                     "description": "父评论 ID",
                     "type": "integer"
                 },
                 "root_comment_id": {
                     "description": "根评论 ID",
+                    "type": "integer"
+                },
+                "type": {
+                    "description": "类型，1 表文章评论，2 表友链页评论，3 表关于页评论，4 表示自定义页面评论",
                     "type": "integer"
                 },
                 "url": {
@@ -3438,6 +3549,9 @@ var doc = `{
                 "head_content": {
                     "type": "string"
                 },
+                "record_number": {
+                    "type": "string"
+                },
                 "seo_key_words": {
                     "type": "string"
                 },
@@ -3560,6 +3674,9 @@ var doc = `{
                     "type": "string"
                 },
                 "signature": {
+                    "type": "string"
+                },
+                "user_img": {
                     "type": "string"
                 },
                 "username": {

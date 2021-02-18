@@ -67,7 +67,7 @@
         </el-form-item>
         <el-form-item label="分类" prop="category_id">
           <el-select size="small" v-model="addForm.category_id" clearable
-                     @clear="editForm.category_id=null" placeholder="请选择分类">
+                     @clear="addForm.category_id=null" placeholder="请选择分类">
             <el-option
               v-for="item in categories"
               :key="item.ID"
@@ -369,6 +369,7 @@ export default {
     },
     // 修改友链
     handleRowEdit () {
+      console.log(this.editForm)
       this.$refs.editForm.validate(valid => {
         if (valid) {
           this.btnOptions.editBtnLoading = true

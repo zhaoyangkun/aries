@@ -58,7 +58,15 @@ func (link *Link) Create() (err error) {
 
 // 更新友链
 func (link *Link) Update() (err error) {
-	err = db.Db.Model(&Link{}).Updates(&link).Error
+	err = db.Db.Model(&Link{}).Where("`id` = ?", link.ID).
+		Updates(map[string]interface{}{
+			"category_id": link.CategoryId,
+			"name":        link.Name,
+			"url":         link.Url,
+			"desc":        link.Desc,
+			"icon":        link.Icon,
+		}).Error
+
 	return
 }
 
