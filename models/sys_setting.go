@@ -10,7 +10,7 @@ import (
 type SysSetting struct {
 	gorm.Model
 	Items []SysSettingItem `gorm:"ForeignKey:SysId" json:"items"`     // 设置条目列表
-	Name  string           `gorm:"varchar(50);not null;" json:"name"` // 名称
+	Name  string           `gorm:"type:varchar(50);not null;" json:"name"` // 名称
 }
 
 // 根据名称获取系统设置

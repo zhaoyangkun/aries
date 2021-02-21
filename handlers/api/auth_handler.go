@@ -3,6 +3,7 @@ package api
 import (
 	"aries/config/setting"
 	"aries/forms"
+	"aries/handlers"
 	"aries/log"
 	"aries/models"
 	"aries/utils"
@@ -92,6 +93,20 @@ func (a *AuthHandler) Register(ctx *gin.Context) {
 		return
 	}
 
+	indexNav := models.Nav{Name: "首页", Url: "/"}
+	_ = indexNav.Create()
+	categoryNav := models.Nav{Name: "分类", Url: "/categories"}
+	_ = categoryNav.Create()
+	tagNav := models.Nav{Name: "标签", Url: "/tags"}
+	_ = tagNav.Create()
+	archivesNav := models.Nav{Name: "归档", Url: "/archives"}
+	_ = archivesNav.Create()
+	linkNav := models.Nav{Name: "友链", Url: "/links"}
+	_ = linkNav.Create()
+
+	// 初始化模板全局变量
+	handlers.InitTmplVars()
+
 	ctx.JSON(http.StatusOK, result)
 }
 
@@ -144,7 +159,7 @@ func (a *AuthHandler) Login(ctx *gin.Context) {
 		return
 	}
 
-	j := utils.NewJWT()                             // 创建 JWT 实例
+	j := utils.NewJWT() // 创建 JWT 实例
 	token, err := j.CreateToken(utils.CustomClaims{ // 生成 JWT token
 		Username: u.Username,
 		UserImg:  u.UserImg,
@@ -181,7 +196,7 @@ func (a *AuthHandler) Login(ctx *gin.Context) {
 // @Router /api/v1/auth/captcha [get]
 func (a *AuthHandler) CreateCaptcha(ctx *gin.Context) {
 	captcha := utils.CaptchaConfig{} // 创建验证码配置结构
-	result := utils.Result{          // 返回数据结构
+	result := utils.Result{ // 返回数据结构
 		Code: utils.Success,
 		Msg:  "验证码创建成功",
 		Data: nil,

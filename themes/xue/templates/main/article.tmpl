@@ -2,7 +2,6 @@
 <html lang="zh-cmn-Hans">
 {{ template "head" . }}
 <body>
-
 {{ template "menu" . }}
 
 <main class="mx-auto home-page" id="container">
@@ -77,8 +76,8 @@
     <!-- 上一篇和下一篇 -->
     <div class="container mx-auto mt-4 pb-8  ct-container">
         <div class="entry-navigation">
-            {{ if .preArticle.Title }}
-                <div class="nav previous">
+            <div class="nav previous">
+                {{ if .preArticle.Title }}
                     <img class="lazyload" index="544"
                          src="{{ .blogVars.ContextPath }}/static/img/loading.svg"
                          data-src="{{ .preArticle.Img }}"
@@ -87,10 +86,11 @@
                     <h4 class="entry-title">{{ .preArticle.Title }}</h4>
                     <a class="u-permalink"
                        href="{{ .blogVars.ContextPath }}/articles/{{ .preArticle.URL }}"></a>
-                </div>
-            {{ end }}
-            {{ if .nextArticle.Title }}
-                <div class="nav next">
+                {{ end }}
+            </div>
+
+            <div class="nav next">
+                {{ if .nextArticle.Title }}
                     <img class="lazyload" index="51"
                          src="{{ .blogVars.ContextPath }}/static/img/loading.svg"
                          data-src="{{ .nextArticle.Img }}"
@@ -99,8 +99,8 @@
                     <h4 class="entry-title">{{ .nextArticle.Title }}</h4>
                     <a class="u-permalink"
                        href="{{ .blogVars.ContextPath }}/articles/{{ .nextArticle.URL }}"></a>
-                </div>
-            {{ end }}
+                {{ end }}
+            </div>
         </div>
     </div>
 

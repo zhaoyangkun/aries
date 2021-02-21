@@ -346,6 +346,7 @@ export default {
     openEditDialog (row) {
       this.dialogOptions.editVisible = true
       this.editForm = { ...row }
+      this.editForm.category_id = this.editForm.category_id === 0 ? null : this.editForm.category_id
     },
     // 添加友链
     handleRowAdd () {

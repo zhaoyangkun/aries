@@ -12,7 +12,7 @@ import (
 type Journal struct {
 	gorm.Model
 	IsSecret bool   `gorm:"type:bool;default:false;" json:"is_secret"` // 是否私密
-	Content  string `gorm:"varchar(255);not null;" json:"content"`     // 内容
+	Content  string `gorm:"type:varchar(255);not null;" json:"content"`     // 内容
 }
 
 // 获取所有日志

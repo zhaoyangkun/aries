@@ -25,9 +25,9 @@ type Comment struct {
 	ChildComments   []Comment `json:"child_comments"`
 	Type            uint      `gorm:"type:tinyint(1);unsigned;default:1" json:"type"` // 类型，1 表文章评论，2 表友链页评论，3 表关于页评论，4 表示自定义页评论
 	Email           string    `gorm:"type:varchar(50);not null;" json:"email"`        // 邮箱
-	Url             string    `gorm:"varchar(150);not null;" json:"url"`              // 访问地址
+	Url             string    `gorm:"type:varchar(150);not null;" json:"url"`              // 访问地址
 	UserImg         string    `gorm:"type:Text;not null;" json:"user_img"`            // 用户头像
-	NickName        string    `gorm:"varchar(50);not null;" json:"nick_name"`         // 昵称
+	NickName        string    `gorm:"type:varchar(50);not null;" json:"nick_name"`         // 昵称
 	Content         string    `gorm:"type:Text;not null;" json:"content"`             // 评论内容
 	MDContent       string    `gorm:"type:MediumText;not null;" json:"md_content"`    // markdown 渲染后评论内容
 	Device          string    `gorm:"type:varchar(100);not null;" json:"device"`      // 设备

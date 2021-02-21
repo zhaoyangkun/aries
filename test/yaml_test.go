@@ -57,13 +57,16 @@ func TestThemeYaml(t *testing.T) {
 	rootPath = strings.Replace(rootPath, "test", "", -1)
 	yamlPath := filepath.Join(rootPath, "themes", "xue", "theme.yaml")
 	log.Println("主题配置文件路径：", yamlPath)
+
 	yamlFile, err := ioutil.ReadFile(yamlPath)
 	if err != nil {
 		log.Panicln("读取配置文件失败：", err.Error())
 	}
+
 	err = yaml.Unmarshal(yamlFile, &themeInfo)
 	if err != nil {
 		log.Panicln("配置参数转换失败：", err.Error())
 	}
+
 	log.Println("themeInfo: ", themeInfo)
 }

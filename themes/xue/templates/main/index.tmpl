@@ -64,7 +64,7 @@
         </div>
         <nav class="pagination flex flex-row justify-center mt-8" role="navigation" aria-label="pagination">
             <ul class="pagination-list flex flex-row " id="pagination">
-                <li class="pagination-previous {{ if eq .currentPage 1 }}is-invisible{{ end }}">
+                <li class="pagination-previous {{ if le .currentPage 1 }}is-invisible{{ end }}">
                     <a class="pagination-circle" href="{{ .blogVars.ContextPath }}/p/{{ subtract .currentPage 1 }}">
                         <span class="iconfont icon-left"></span>
                     </a>
@@ -80,7 +80,8 @@
                     </li>
                 {{ end }}
                 {{ $totalPage := len .pages }}
-                <li class="pagination-next {{ if eq .currentPage $totalPage }}is-invisible{{ end }}">
+                {{ .currentPage }},{{ $totalPage }}
+                <li class="pagination-next {{ if ge .currentPage $totalPage }}is-invisible{{ end }}">
                     <a class="pagination-circle" href="{{ $.blogVars.ContextPath }}/p/{{ add .currentPage 1 }}">
                         <span class="iconfont icon-right"></span>
                     </a>

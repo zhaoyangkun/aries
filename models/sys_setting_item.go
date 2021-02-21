@@ -11,7 +11,7 @@ import (
 type SysSettingItem struct {
 	gorm.Model
 	SysId uint   `json:"sys_id"`                            // 系统设置 ID
-	Key   string `gorm:"varchar(100);not null;" json:"key"` // 键
+	Key   string `gorm:"type:varchar(100);not null;" json:"key"` // 键
 	Val   string `gorm:"type:Text;not null;" json:"val"`    // 值
 }
 

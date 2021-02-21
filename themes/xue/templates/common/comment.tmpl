@@ -22,7 +22,7 @@
                     script.async = false;
 
                     // If last script, bind the callback event to resolve
-                    if (i == urls.length - 1) {
+                    if (i === urls.length - 1) {
                         // Multiple binding for browser compatibility
                         script.onreadystatechange = resolve;
                         script.onload = resolve;

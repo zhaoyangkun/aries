@@ -5,10 +5,10 @@ import (
 	"aries/log"
 	"aries/models"
 	"aries/utils"
+	"github.com/douyacun/gositemap"
+	"github.com/gin-gonic/gin"
 	"net/http"
 	"strconv"
-
-	"github.com/gin-gonic/gin"
 )
 
 type TmplHandler struct {
@@ -354,4 +354,22 @@ func (t *TmplHandler) CustomTmpl(ctx *gin.Context) {
 		"pageID":      page.ID,
 		"commentType": 4,
 	})
+}
+
+// 站点地图
+func (t *TmplHandler) SiteMapXml(ctx *gin.Context) {
+	st := gositemap.NewSiteMap()
+	st.SetPretty(true)
+
+	articles, _ := models.Article{}.GetAll()
+	for _, article := range articles {
+		url := gositemap.NewUrl()
+		url.SetLoc(setting.BlogVars.ContextPath + "/articles/" + article.URL)
+		url.SetLastmod(article.UpdatedAt)
+		url.SetChangefreq("daily")
+		url.SetPriority(1)
+		st.AppendUrl(url)
+	}
+
+	ctx.XML(http.StatusOK, st)
 }

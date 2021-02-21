@@ -32,5 +32,6 @@ func (t *TmplRouter) InitTemplateRouter(rootPath string, router *gin.Engine) {
 		tmplRouter.GET("/journals", tmplHandler.JournalTmpl)
 		tmplRouter.GET("/galleries", tmplHandler.GalleryTmpl)
 		tmplRouter.GET("/custom/:url", tmplHandler.CustomTmpl)
+		tmplRouter.GET("/sitemap.xml", tmplHandler.SiteMapXml)
 	}
 }
