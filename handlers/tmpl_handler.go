@@ -100,8 +100,9 @@ func (t *TmplHandler) ArticleTmpl(ctx *gin.Context) {
 		return
 	}
 
-	preArticle, _ := models.Article{}.GetPrevious(article.OrderId, article.IsTop)
-	nextArticle, _ := models.Article{}.GetNext(article.OrderId, article.IsTop)
+	preArticle, _ := models.Article{}.GetPrevious(article.OrderId, article.IsTop, true)
+	nextArticle, _ := models.Article{}.GetNext(article.OrderId, article.IsTop, true)
+	users, _ := models.User{}.GetAll()
 
 	ctx.HTML(http.StatusOK, "article.tmpl", gin.H{
 		"blogVars":    setting.BlogVars,
@@ -111,6 +112,7 @@ func (t *TmplHandler) ArticleTmpl(ctx *gin.Context) {
 		"article":     article,
 		"preArticle":  preArticle,
 		"nextArticle": nextArticle,
+		"user":        users[0],
 		"subTitle":    article.Title,
 		"articleID":   article.ID,
 		"pageID":      0,
@@ -314,7 +316,7 @@ func (t *TmplHandler) JournalTmpl(ctx *gin.Context) {
 	})
 }
 
-// 相册
+// 图库
 func (t *TmplHandler) GalleryTmpl(ctx *gin.Context) {
 	photoCategories, _ := models.Category{}.GetGalleryCategories()
 	photos, _ := models.Gallery{}.GetAll()
@@ -325,7 +327,7 @@ func (t *TmplHandler) GalleryTmpl(ctx *gin.Context) {
 		"categories":      categories,
 		"photoCategories": photoCategories,
 		"photos":          photos,
-		"subTitle":        "相册",
+		"subTitle":        "图库",
 	})
 }
 
@@ -372,4 +374,45 @@ func (t *TmplHandler) SiteMapXml(ctx *gin.Context) {
 	}
 
 	ctx.XML(http.StatusOK, st)
+}
+
+// 搜索
+func (t *TmplHandler) SearchTmpl(ctx *gin.Context) {
+	keyword := ctx.Query("keyword")
+	page := ctx.Param("page")
+
+	pagination := utils.Pagination{Page: 1, Size: 1}
+	if page != "" {
+		p, err := strconv.ParseUint(page, 10, 0)
+		if err != nil {
+			ctx.HTML(http.StatusOK, "error.tmpl", gin.H{
+				"blogVars": setting.BlogVars,
+				"code":     "400",
+				"msg":      "请求错误",
+			})
+			return
+		}
+
+		pagination.Page = uint(p)
+	}
+	articles, total, _ := models.Article{}.GetByPage(&pagination, keyword, 5, 0)
+	pageData := utils.GetPageData(articles, total, pagination)
+
+	var pages []int
+	totalPages := pageData["total_pages"].(uint)
+	for i := 1; i <= int(totalPages); i++ {
+		pages = append(pages, i)
+	}
+
+	ctx.HTML(http.StatusOK, "search.tmpl", gin.H{
+		"blogVars":    setting.BlogVars,
+		"navs":        navs,
+		"categories":  categories,
+		"tags":        tags,
+		"articles":    articles,
+		"currentPage": int(pagination.Page),
+		"pages":       pages,
+		"subTitle":    "关于「" + keyword + "」的搜索结果",
+		"keyword":     keyword,
+	})
 }

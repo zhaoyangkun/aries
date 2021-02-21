@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+{{ template "head" . }}
+<body>
+{{ template "menu" . }}
+
+<main class="mx-auto home-page" id="container">
+    <header class="bg-cover post-cover">
+        <div class="cover-bg">
+            <img src="https://cdn.jsdelivr.net/gh/keepli/image@2.0/header/2.0/header-10.jpg" class="z-auto" alt="{{ .subTitle }}">
+        </div>
+        <div class="cover-content flex justify-center">
+            <!-- 封面内容 -->
+            <div class="inner flex flex-col justify-center">
+                <p class="cover-title text-base md:text-4xl lg:text-4xl xl:text-5xl">{{ .subTitle }}</p>
+            </div>
+        </div>
+    </header>
+
+    {{ if .articles }}
+        <div class="container mx-auto px-4 mt-16 max-w-6xl tracking-wider md:leading-relaxed sm:leading-normal ph-container cn-pd"
+             id="pageContainer">
+            {{ range $article := $.articles }}
+                <a href="{{ $.blogVars.ContextPath }}/articles/{{ $article.URL }}" class="ah-hf ah-hv">
+                    <span class="ah-dt">{{ $article.CreatedAt.Format "2006-01-02" }}</span>
+                    <span class="ah-tt">{{ $article.Title }}</span>
+                </a>
+            {{ end }}
+        </div>
+    {{ else }}
+        <div class="container mx-auto px-4 mt-16 max-w-6xl tracking-wider md:leading-relaxed sm:leading-normal ph-container cn-pd">
+            <div id="post-list" class="post-list inner">
+                <section class="no-results not-found">
+                    <header class="not-found-header">
+                        <h1 class="not-found-title">Sorry! Nothing Found...</h1>
+                    </header>
+                </section>
+            </div>
+        </div>
+    {{ end }}
+
+    <nav class="pagination flex flex-row justify-center mt-8" role="navigation" aria-label="pagination">
+        <ul class="pagination-list flex flex-row " id="pagination">
+            <li class="pagination-previous {{ if le .currentPage 1}}is-invisible{{ end }}">
+                <a class="pagination-circle"
+                   href="{{ .blogVars.ContextPath }}/search/p/{{ subtract .currentPage 1 }}?keyword={{ .keyword }}">
+                    <span class="iconfont icon-left"> </span>
+                </a>
+            </li>
+            {{ range $page := .pages }}
+                <li>
+                    {{ if eq $.currentPage $page }}
+                        <a class="pagination-circle is-current" href="javascript:void(0);">{{ $page }}</a>
+                    {{ else }}
+                        <a class="pagination-circle"
+                           href="{{ $.blogVars.ContextPath }}/search/p/{{ $page }}?keyword={{ $.keyword }}">{{ $page }}</a>
+                    {{ end }}
+                </li>
+            {{ end }}
+            {{ $totalPage := len .pages }}
+            <li class="pagination-next {{ if ge .currentPage $totalPage }}is-invisible{{ end }}">
+                <a class="pagination-circle"
+                   href="{{ .blogVars.ContextPath }}/search/p/{{ add .currentPage 1 }}?keyword={{ .keyword }}">
+                    <span class="iconfont icon-right"> </span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</main>
+
+{{ template "footer" . }}
+
+{{ template "script" . }}
+</body>
+</html>

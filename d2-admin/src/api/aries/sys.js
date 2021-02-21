@@ -95,3 +95,12 @@ export function saveParamSetting (data) {
     data: data
   })
 }
+
+// 保存社交信息
+export function saveSocialInfo (data) {
+  return request({
+    url: '/sys_setting/social_info',
+    method: 'post',
+    data: data
+  })
+}

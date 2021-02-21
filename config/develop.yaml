@@ -16,7 +16,7 @@ db:
   max_open_conn: 20       # 最大打开连接数
 # 日志配置
 logger:
-  file_name: "/home/zyk/projects/go/aries/log/logfile/aries.log"   # 日志文件
+  file_name: "aries.log"   # 日志文件
   max_size: 10                                              # 最大存储空间（MB）
   max_backups: 2                                            # 最大保存个数
   max_age: 1                                                # 最大保存时间（天）

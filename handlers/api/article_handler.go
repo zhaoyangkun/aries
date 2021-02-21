@@ -390,7 +390,7 @@ func (a *ArticleHandler) MoveArticleUp(ctx *gin.Context) {
 	}
 
 	currArticle := orderForm.BindToModel()
-	preArticle, _ := currArticle.GetPrevious(currArticle.OrderId, currArticle.IsTop)
+	preArticle, _ := currArticle.GetPrevious(currArticle.OrderId, currArticle.IsTop, false)
 	if preArticle.ID == 0 {
 		ctx.JSON(http.StatusOK, utils.Result{
 			Code: utils.RequestError,
@@ -438,7 +438,7 @@ func (a *ArticleHandler) MoveArticleDown(ctx *gin.Context) {
 	}
 
 	currArticle := orderForm.BindToModel()
-	nextArticle, _ := currArticle.GetNext(currArticle.OrderId, currArticle.IsTop)
+	nextArticle, _ := currArticle.GetNext(currArticle.OrderId, currArticle.IsTop, false)
 	if nextArticle.ID == 0 {
 		ctx.JSON(http.StatusOK, utils.Result{
 			Code: utils.RequestError,

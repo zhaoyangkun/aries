@@ -159,7 +159,7 @@ func (a *AuthHandler) Login(ctx *gin.Context) {
 		return
 	}
 
-	j := utils.NewJWT() // 创建 JWT 实例
+	j := utils.NewJWT()                             // 创建 JWT 实例
 	token, err := j.CreateToken(utils.CustomClaims{ // 生成 JWT token
 		Username: u.Username,
 		UserImg:  u.UserImg,
@@ -196,7 +196,7 @@ func (a *AuthHandler) Login(ctx *gin.Context) {
 // @Router /api/v1/auth/captcha [get]
 func (a *AuthHandler) CreateCaptcha(ctx *gin.Context) {
 	captcha := utils.CaptchaConfig{} // 创建验证码配置结构
-	result := utils.Result{ // 返回数据结构
+	result := utils.Result{          // 返回数据结构
 		Code: utils.Success,
 		Msg:  "验证码创建成功",
 		Data: nil,
@@ -247,9 +247,9 @@ func (a *AuthHandler) ForgetPwd(ctx *gin.Context) {
 		return
 	}
 
-	verifyCode := ""
-	_ = setting.Cache.Get(forgetPwdForm.Email, &verifyCode)
-	if verifyCode == "" {
+	code := ""
+	_ = setting.Cache.Get(forgetPwdForm.Email, &code)
+	if code == "" {
 		verifyCode, err := utils.CreateRandomCode(6)
 		if err != nil {
 			log.Logger.Sugar().Error("创建验证码失败：", err.Error())
@@ -260,7 +260,8 @@ func (a *AuthHandler) ForgetPwd(ctx *gin.Context) {
 			})
 			return
 		}
-		_ = setting.Cache.Set(forgetPwdForm.Email, verifyCode, time.Minute*15)
+		code = verifyCode
+		_ = setting.Cache.Set(forgetPwdForm.Email, code, time.Minute*15)
 	}
 
 	msg := gomail.NewMessage()
@@ -270,8 +271,9 @@ func (a *AuthHandler) ForgetPwd(ctx *gin.Context) {
 	msg.SetAddressHeader("From", setting.Config.SMTP.Account, setting.Config.SMTP.Account)
 	// 主题
 	msg.SetHeader("Subject", "忘记密码验证")
+	log.Logger.Sugar().Info("verifyCode: ", code)
 	// 正文
-	msg.SetBody("text/html", utils.GetForgetPwdEmailHTML(user.Username, verifyCode))
+	msg.SetBody("text/html", utils.GetForgetPwdEmailHTML(user.Username, code))
 	// 设置 SMTP 参数
 	d := gomail.NewDialer(setting.Config.SMTP.Address, setting.Config.SMTP.Port,
 		setting.Config.SMTP.Account, setting.Config.SMTP.Password)
@@ -336,6 +338,9 @@ func (a *AuthHandler) ResetPwd(ctx *gin.Context) {
 		})
 		return
 	}
+
+	// 删除缓存中的验证码
+	_ = setting.Cache.Delete(resetPwdForm.Email)
 
 	ctx.JSON(http.StatusOK, utils.Result{
 		Code: utils.Success,

@@ -7,7 +7,7 @@
 <main class="mx-auto home-page" id="container">
     <header class="bg-cover post-cover" id="postHeader">
         <div class="cover-bg">
-            <img src="https://cdn.jsdelivr.net/gh/keepli/image@2.0/img/2.0/img-1.jpg" class="z-auto lazyload img-random"
+            <img src="{{ .article.Img }}" class="z-auto lazyload img-random"
                  alt="{{ .subTitle }}"
                  data-loaded="true">
         </div>
@@ -18,8 +18,8 @@
                 <div class="post-meta">
                     <div class="post-meta-wrap">
                         <img class="author-avatar"
-                             srcset="//cn.gravatar.com/avatar/80c53563af3dd3635c82a3b43cc16dda?s=256&amp;d=mm, //cn.gravatar.com/avatar/80c53563af3dd3635c82a3b43cc16dda?s=256&amp;d=mm 2x"
-                             src="//cn.gravatar.com/avatar/80c53563af3dd3635c82a3b43cc16dda?s=256&amp;d=mm" alt="">
+                             srcset="{{ .user.UserImg }}"
+                             src="{{ .user.UserImg }}" alt="">
                         <span class="post-author">{{ .article.VisitCount }} 次访问</span>
                         <time class="published" datetime="2020-10-30">
                             发布: {{ .article.CreatedAt.Format "2006-01-02" }}</time>

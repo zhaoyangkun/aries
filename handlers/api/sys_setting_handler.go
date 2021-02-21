@@ -112,7 +112,8 @@ func (s *SysSettingHandler) SaveSiteSetting(ctx *gin.Context) {
 	}
 
 	blogSetting, _ := models.SysSettingItem{}.GetBySysSettingName("网站设置")
-	setting.BlogVars.InitBlogVars(blogSetting)
+	socialInfo, _ := models.SysSettingItem{}.GetBySysSettingName("社交信息")
+	setting.BlogVars.InitBlogVars(blogSetting, socialInfo)
 
 	ctx.JSON(http.StatusOK, utils.Result{
 		Code: utils.Success,
@@ -790,6 +791,69 @@ func (s *SysSettingHandler) SaveParamSetting(ctx *gin.Context) {
 		})
 		return
 	}
+
+	ctx.JSON(http.StatusOK, utils.Result{
+		Code: utils.Success,
+		Msg:  "保存成功",
+		Data: nil,
+	})
+}
+
+// @Summary 保存社交信息
+// @Tags 系统设置
+// @version 1.0
+// @Accept application/json
+// @Param settingForm body forms.SocialInfoForm true "社交信息表单"
+// @Success 100 object utils.Result 成功
+// @Failure 103/104 object utils.Result 失败
+// @Router /api/v1/sys_setting/social_info [post]
+func (s *SysSettingHandler) SaveSocialInfo(ctx *gin.Context) {
+	settingForm := forms.SocialInfoForm{}
+	_ = ctx.ShouldBindJSON(&settingForm)
+
+	sysId, _ := strconv.ParseUint(settingForm.SysId, 10, 0)
+	sysSetting := models.SysSetting{
+		Model: gorm.Model{ID: uint(sysId)},
+		Name:  settingForm.TypeName,
+	}
+
+	if sysId == 0 {
+		if err := sysSetting.Create(); err != nil {
+			log.Logger.Sugar().Error("error: ", err.Error())
+			ctx.JSON(http.StatusOK, utils.Result{
+				Code: utils.ServerError,
+				Msg:  "服务器端错误",
+				Data: nil,
+			})
+			return
+		}
+	}
+	t := reflect.TypeOf(settingForm)
+	v := reflect.ValueOf(settingForm)
+	var itemList []models.SysSettingItem
+	for i := 0; i < t.NumField(); i++ {
+		item := models.SysSettingItem{
+			SysId: sysSetting.ID,
+			Key:   t.Field(i).Tag.Get("json"),
+			Val:   v.Field(i).Interface().(string),
+		}
+		itemList = append(itemList, item)
+	}
+
+	err := models.SysSettingItem{}.MultiCreateOrUpdate(itemList)
+	if err != nil {
+		log.Logger.Sugar().Error("error: ", err.Error())
+		ctx.JSON(http.StatusOK, utils.Result{
+			Code: utils.ServerError,
+			Msg:  "服务器端错误",
+			Data: nil,
+		})
+		return
+	}
+
+	blogSetting, _ := models.SysSettingItem{}.GetBySysSettingName("网站设置")
+	socialInfo, _ := models.SysSettingItem{}.GetBySysSettingName("社交信息")
+	setting.BlogVars.InitBlogVars(blogSetting, socialInfo)
 
 	ctx.JSON(http.StatusOK, utils.Result{
 		Code: utils.Success,

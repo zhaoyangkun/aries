@@ -37,6 +37,11 @@ type BlogVariable struct {
 	RecordNumber string
 	GlobalHeader string
 	GlobalFooter string
+	QQ           string
+	Wechat       string
+	Github       string
+	Weibo        string
+	Zhihu        string
 }
 
 // 博客全局变量
@@ -88,12 +93,13 @@ type smtp struct {
 }
 
 // 读取 yaml 配置文件
-func (s *Setting) InitSetting() {
+func (s *Setting) InitSetting(home string) {
 	// 获取当前项目根目录
 	rootPath, _ := os.Getwd()
 	// 解决 GoLand 默认单元测试环境下，读取配置文件失败的问题
 	rootPath = strings.Replace(rootPath, "test", "", -1)
 	// 拼接配置文件访问路径
+	//yamlPath := filepath.Join(home, ".aries", "aries.yaml")
 	yamlPath := filepath.Join(rootPath, "config", "develop.yaml")
 	log.Println("配置文件路径：", yamlPath)
 
@@ -119,7 +125,7 @@ func (s *Setting) InitCache() {
 }
 
 // 配置博客全局变量
-func (b *BlogVariable) InitBlogVars(siteSetting map[string]string) {
+func (b *BlogVariable) InitBlogVars(siteSetting map[string]string, socialInfo map[string]string) {
 	if theme, ok := siteSetting["theme"]; ok {
 		b.Theme = theme
 	} else {
@@ -158,5 +164,20 @@ func (b *BlogVariable) InitBlogVars(siteSetting map[string]string) {
 	}
 	if globalFooter, ok := siteSetting["footer_content"]; ok {
 		b.GlobalFooter = globalFooter
+	}
+	if qq, ok := socialInfo["qq"]; ok {
+		b.QQ = qq
+	}
+	if wechat, ok := socialInfo["wechat"]; ok {
+		b.Wechat = wechat
+	}
+	if github, ok := socialInfo["github"]; ok {
+		b.Github = github
+	}
+	if zhihu, ok := socialInfo["zhihu"]; ok {
+		b.Zhihu = zhihu
+	}
+	if weibo, ok := socialInfo["weibo"]; ok {
+		b.Weibo = weibo
 	}
 }

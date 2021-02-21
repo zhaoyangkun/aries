@@ -125,6 +125,7 @@ func (a *ApiRouter) InitApiRouter(rootPath string, router *gin.Engine) {
 		sysSettingApiRouter.POST("/sys_setting/pic_bed/tencent_cos", sysSettingHandler.SaveTencentCosSetting)
 		sysSettingApiRouter.POST("/sys_setting/comment", sysSettingHandler.SaveCommentSetting)
 		sysSettingApiRouter.POST("/sys_setting/param", sysSettingHandler.SaveParamSetting)
+		sysSettingApiRouter.POST("/sys_setting/social_info", sysSettingHandler.SaveSocialInfo)
 	}
 
 	imgApiRouter := router.Group(rootPath, middlewares.JWTAuth())

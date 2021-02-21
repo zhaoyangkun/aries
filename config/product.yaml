@@ -2,13 +2,13 @@
 server:
   mode: "release"                             # 运行模式，debug / release
   port: "8088"                                # 端口
-  token_expire_time: 18000                     # JWT token 过期时间
+  token_expire_time: 18000                    # JWT token 过期时间（单位：秒）
   allowed_refers: [ "localhost", "127.0.0.1" ]  # 允许的 referer
 # 数据库配置
 db:
-  host: "mysql"           # 主机地址
-  user_name: "root"       # 用户名
-  password: "19960331"    # 密码
+  host: "127.0.0.1"           # 主机地址
+  user_name: "root"           # 用户名
+  password: ""             # 密码
   database: "aries"       # 数据库名
   port: "3306"            # 端口
   time_zone: "Local"      # 时区
@@ -16,7 +16,7 @@ db:
   max_open_conn: 20       # 最大打开连接数
 # 日志配置
 logger:
-  file_name: "~/.aries/log/aries.log"         # 日志文件
+  file_name: "aries.log"         # 日志文件
   max_size: 10                                # 最大存储空间（MB）
   max_backups: 2                              # 最大保存个数
   max_age: 1                                  # 最大保存时间（天）
@@ -26,5 +26,5 @@ logger:
 smtp:
   address: "smtp.qq.com"       # 协议地址
   port: 465                    # 端口
-  account: "1040970792@qq.com" # 帐号
+  account: ""                  # 帐号
   password: ""                 # 密码

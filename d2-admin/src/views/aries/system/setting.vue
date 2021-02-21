@@ -222,6 +222,31 @@
           </el-form-item>
         </el-form>
       </el-tab-pane>
+
+      <el-tab-pane label="社交信息" style="width: 500px">
+        <el-form ref="socialForm" :model="socialForm" label-width="130px">
+          <el-form-item label="QQ" prop="qq">
+            <el-input size="small" v-model="socialForm.qq" type="text" autocomplete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="微信" prop="wechat">
+            <el-input size="small" v-model="socialForm.wechat" type="text" autocomplete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="github" prop="github">
+            <el-input size="small" v-model="socialForm.github" type="text" autocomplete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="微博" prop="weibo">
+            <el-input size="small" v-model="socialForm.weibo" type="text" autocomplete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="知乎" prop="zhihu">
+            <el-input size="small" v-model="socialForm.zhihu" type="text" autocomplete="off"></el-input>
+          </el-form-item>
+          <el-form-item>
+            <el-button size="small" type="primary" :loading="btn.socialSaveLoading"
+                       @click="saveSocialInfoForm">保存
+            </el-button>
+          </el-form-item>
+        </el-form>
+      </el-tab-pane>
     </el-tabs>
   </d2-container>
 </template>
@@ -236,6 +261,7 @@ import {
   saveSmmsSetting,
   saveSMTPSetting,
   saveTencentCosSetting,
+  saveSocialInfo,
   sendTestEmail
 } from '@/api/aries/sys'
 
@@ -317,7 +343,7 @@ export default {
         type_name: '评论设置',
         is_on: '1',
         is_review_on: '1',
-        is_reply_on: '1',
+        is_reply_on: '0',
         page_size: '10'
       },
       paramForm: {
@@ -326,6 +352,15 @@ export default {
         index_page_size: null,
         archive_page_size: null,
         site_map_page_size: null
+      },
+      socialForm: {
+        sys_id: '',
+        type_name: '社交信息',
+        qq: '',
+        wechat: '',
+        github: '',
+        weibo: '',
+        zhihu: ''
       },
       siteRules: {
         site_name: [
@@ -452,7 +487,8 @@ export default {
         emailSendLoading: false,
         bedSaveLoading: false,
         commentSaveLoading: false,
-        paramSaveLoading: false
+        paramSaveLoading: false,
+        socialSaveLoading: false
       },
       is_public: true
     }
@@ -473,6 +509,8 @@ export default {
         this.getSysSetItem(tab.label, 'commentForm')
       } else if (tab.label === '参数设置') {
         this.getSysSetItem(tab.label, 'paramForm')
+      } else if (tab.label === '社交信息') {
+        this.getSysSetItem(tab.label, 'socialForm')
       }
     },
     // 获取设置条目
@@ -647,6 +685,20 @@ export default {
           }, 300)
         }
       })
+    },
+    // 保存社交信息
+    saveSocialInfoForm () {
+      this.btn.socialSaveLoading = true
+      setTimeout(() => {
+        saveSocialInfo(this.socialForm)
+          .then(res => {
+            this.$message.success(res.msg)
+            this.getSysSetItem('社交信息', 'socialForm')
+          })
+          .catch(() => {
+          })
+        this.btn.socialSaveLoading = false
+      }, 300)
     }
   }
 }

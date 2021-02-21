@@ -2,20 +2,37 @@
     <footer class="footer mt-8">
         <div class="inner container mx-auto flex flex-row lg:justify-between  md:justify-center items-center grid lg:grid-cols-2 md:grid-cols-1">
             <div class="offsite-links flex flex-row justify-center flex-wrap">
-                <a href="//wpa.qq.com/msgrd?v=3&uin=248147986&site=qq&menu=yes" class="circle pad-10"
-                   target="_blank" rel="noopener" title="QQ Chat">
-                    <span class="iconfont icon-tencentqq"> </span>
-                </a>
-                <a href="https://github.com/keepli" class="circle pad-10" target="_blank" rel="noopener" title="Github">
-                    <span class="iconfont icon-github"> </span>
-                </a>
-                <a href="mailto:248147986@qq.com" class="circle pad-10" target="_blank" rel="noopener" title="邮箱">
-                    <span class="iconfont icon-email"> </span>
-                </a>
-                <a href="{{ .blogVars.ContextPath }}/atom.xml" class="circle pad-10" target="_blank" rel="noopener"
-                   title="RSS">
-                    <span class="iconfont icon-rss"> </span>
-                </a>
+                {{ if .blogVars.QQ }}
+                    <a href="//wpa.qq.com/msgrd?v=3&uin={{ $.blogVars.QQ }}&site=qq&menu=yes" class="circle pad-10"
+                       target="_blank" rel="noopener" title="{{ $.blogVars.QQ }}">
+                        <span class="iconfont icon-tencentqq"> </span>
+                    </a>
+                {{ end }}
+                {{ if .blogVars.Wechat }}
+                    <a href="javascript:void(0);" class="circle pad-10" rel="noopener" title="{{ $.blogVars.Wechat }}">
+                        <span class="iconfont icon-wechat"> </span>
+                    </a>
+                {{ end }}
+                {{ if .blogVars.Github }}
+                    <a href="https://github.com/{{ $.blogVars.Github }}" class="circle pad-10" target="_blank"
+                       rel="noopener"
+                       title="Github">
+                        <span class="iconfont icon-github"> </span>
+                    </a>
+                {{ end }}
+                {{ if .blogVars.Zhihu }}
+                    <a href="https://www.zhihu.com/people/{{ $.blogVars.Zhihu }}" class="circle pad-10" target="_blank"
+                       rel="noopener"
+                       title="知乎">
+                        <span class="iconfont icon-zhihu-circle-fill"> </span>
+                    </a>
+                {{ end }}
+                {{ if .blogVars.Weibo }}
+                    <a href="https://weibo.com/{{ $.blogVars.Weibo }}" class="circle pad-10" target="_blank"
+                       rel="noopener">
+                        <span class="iconfont icon-weibo"> </span>
+                    </a>
+                {{ end }}
             </div>
 
             <div class="site-info flex flex-col justify-center">
@@ -52,12 +69,12 @@
                             <span class="badge-value bg-red">Xue</span>
                         </a>
                     </div>
-                    <div class="github-badge">
+{{/*                    <div class="github-badge">
                         <a style="color: #fff" rel="license" href="javascript:void(0)">
                             <span class="badge-subject">运行</span>
                             <span class="badge-value bg-orange" id="span_dt_dt"></span>
                         </a>
-                    </div>
+                    </div>*/}}
                 </div>
             </div>
         </div>
@@ -91,12 +108,12 @@
     <div class="moon-content menu-bg" id="moonToc">
     </div>
 
-    <meting-js
+    {{/*    <meting-js
             server="netease"
             type="playlist"
             fixed="true"
             id="933590929">
-    </meting-js>
+    </meting-js>*/}}
 
     <form method="get" action="/search">
         <div class="hidden search-box" id="searchBox">

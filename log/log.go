@@ -1,9 +1,10 @@
 package log
 
 import (
+	"aries/config/setting"
 	"aries/utils"
-	"log"
 	"os"
+	"path/filepath"
 	"time"
 
 	"github.com/natefinch/lumberjack"
@@ -57,19 +58,26 @@ func getEncoder(format string) zapcore.Encoder {
 }
 
 func getLogWriter(fileName string, maxSize, maxBackups, maxAge int) (zapcore.WriteSyncer, error) {
-	if !utils.FileIsExists(fileName) {
-		file, err := os.Create(fileName)
+	filePath := ""
+	if setting.Config.Server.Mode == "debug" {
+		filePath = filepath.Join("./log", fileName)
+	} else {
+		home, _ := utils.Home()
+		filePath = filepath.Join(home, ".aries", fileName)
+	}
+
+	if !utils.FileIsExists(filePath) {
+		file, err := os.Create(filePath)
 		if err != nil {
 			return nil, err
 		}
-		log.Println("日志文件路径：", fileName)
 		defer func() {
 			_ = file.Close()
 		}()
 	}
 
 	lumberJackLogger := &lumberjack.Logger{
-		Filename:   fileName,
+		Filename:   filePath,
 		MaxSize:    maxSize,
 		MaxBackups: maxBackups,
 		MaxAge:     maxAge,

@@ -11,13 +11,13 @@ import (
 // 日志
 type Journal struct {
 	gorm.Model
-	IsSecret bool   `gorm:"type:bool;default:false;" json:"is_secret"` // 是否私密
-	Content  string `gorm:"type:varchar(255);not null;" json:"content"`     // 内容
+	IsSecret bool   `gorm:"type:bool;default:false;" json:"is_secret"`  // 是否私密
+	Content  string `gorm:"type:varchar(255);not null;" json:"content"` // 内容
 }
 
 // 获取所有日志
 func (Journal) GetAll() (list []Journal, err error) {
-	err = db.Db.Order("created_at desc", true).Find(&list).Error
+	err = db.Db.Order("created_at desc", true).Where("is_secret = false").Find(&list).Error
 
 	return
 }

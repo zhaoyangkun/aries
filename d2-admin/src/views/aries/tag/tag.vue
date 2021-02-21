@@ -202,7 +202,7 @@ export default {
     // 删除
     handleRowRemove (row) {
       setTimeout(() => {
-        deleteTag(row.ID)
+        deleteTag(row.row.ID)
           .then(res => {
             this.$message.success(res.msg)
             this.fetchData()

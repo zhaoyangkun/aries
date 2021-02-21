@@ -84,3 +84,14 @@ type ParamSettingForm struct {
 	ArchivePageSize string `json:"archive_page_size" label:"归档页每页条数"`
 	SiteMapPageSize string `json:"site_map_page_size" label:"站点地图每页条数"`
 }
+
+// 社交信息
+type SocialInfoForm struct {
+	SysId    string `json:"sys_id" label:"设置 ID"`
+	TypeName string `json:"type_name" label:"设置类型名称"`
+	QQ       string `json:"qq" label:"qq"`
+	Wechat   string `json:"wechat" label:"微信"`
+	Github   string `json:"github" label:"github"`
+	Weibo    string `json:"weibo" label:"微博"`
+	Zhihu    string `json:"zhihu" label:"知乎"`
+}

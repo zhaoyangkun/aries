@@ -46,6 +46,7 @@ type Archive struct {
 func (Article) GetCount() (int, error) {
 	count := 0
 	err := db.Db.Model(&Article{}).Count(&count).Error
+
 	return count, err
 }
 
@@ -53,6 +54,7 @@ func (Article) GetCount() (int, error) {
 func (Article) GetLatest(limit uint) (list []Article, err error) {
 	err = db.Db.Order("created_at desc", true).Limit(limit).
 		Where("is_published = 1 and is_recycled = 0").Find(&list).Error
+
 	return
 }
 
@@ -61,6 +63,7 @@ func (Article) GetAll() (list []Article, err error) {
 	err = db.Db.Preload("Category").Preload("TagList").
 		Order("created_at desc", true).
 		Where("is_published = 1 and is_recycled = 0").Find(&list).Error
+
 	return
 }
 
@@ -68,6 +71,7 @@ func (Article) GetAll() (list []Article, err error) {
 func (Article) GetById(id string) (article Article, err error) {
 	err = db.Db.Preload("Category").Preload("TagList").
 		Where("`id` = ?", id).First(&article).Error
+
 	return
 }
 
@@ -108,34 +112,74 @@ func (Article) GetByTagName(page *utils.Pagination, tagName string) (list []Arti
 		"(select `article_id` from `tag_article` "+
 		"where is_published = 1 and is_recycled = 0 and `tag_id` = ?) "+
 		"limit ? offset ?", tag.ID, limit, offset).Scan(&list).Error
+
 	return
 }
 
 // 获取上一篇文章
-func (Article) GetPrevious(orderId uint, isTop bool) (article Article, err error) {
+func (Article) GetPrevious(orderId uint, isTop bool, ignore bool) (article Article, err error) {
+	if ignore {
+		if isTop {
+			err = db.Db.Raw("select * from `articles`"+
+				" where is_published = 1 and is_recycled = 0 and `order_id` < ? and is_top = 1"+
+				" order by `order_id` desc limit 1", orderId).Scan(&article).Error
+		} else {
+			err = db.Db.Raw("select * from `articles`"+
+				" where is_published = 1 and is_recycled = 0 and `order_id` < ? and is_top = 0"+
+				" order by `order_id` desc limit 1", orderId).Scan(&article).Error
+			if article.Title == "" {
+				err = db.Db.Raw("select * from `articles`" +
+					" where is_published = 1 and is_recycled = 0 and is_top = 1" +
+					" order by `order_id` desc limit 1").Scan(&article).Error
+			}
+		}
+
+		return
+	}
+
 	if isTop {
 		err = db.Db.Raw("select * from `articles` "+
-			"where is_published = 1 and is_recycled = 0 and `order_id` < ? and is_top = 1 "+
-			"order by `order_id` desc limit 1", orderId).Scan(&article).Error
+			" where is_published = 1 and is_recycled = 0 and `order_id` < ? and is_top = 1"+
+			" order by `order_id` desc limit 1", orderId).Scan(&article).Error
 	} else {
-		err = db.Db.Raw("select * from `articles` "+
-			"where is_published = 1 and is_recycled = 0 and `order_id` < ? and is_top = 0 "+
-			"order by `order_id` desc limit 1", orderId).Scan(&article).Error
+		err = db.Db.Raw("select * from `articles`"+
+			" where is_published = 1 and is_recycled = 0 and `order_id` < ? and is_top = 0"+
+			" order by `order_id` desc limit 1", orderId).Scan(&article).Error
 	}
+
 	return
 }
 
 // 获取下一篇文章
-func (Article) GetNext(orderId uint, isTop bool) (article Article, err error) {
-	if isTop {
-		err = db.Db.Raw("select * from `articles` "+
-			"where is_published = 1 and is_recycled = 0 and `order_id` > ? and is_top = 1 "+
-			"order by `order_id` asc limit 1", orderId).Scan(&article).Error
-	} else {
-		err = db.Db.Raw("select * from `articles` "+
-			"where is_published = 1 and is_recycled = 0 and `order_id` > ? and is_top = 0 "+
-			"order by `order_id` asc limit 1", orderId).Scan(&article).Error
+func (Article) GetNext(orderId uint, isTop bool, ignore bool) (article Article, err error) {
+	if ignore {
+		if isTop {
+			err = db.Db.Raw("select * from `articles`"+
+				" where is_published = 1 and is_recycled = 0 and `order_id` > ? and is_top = 1"+
+				" order by `order_id` asc limit 1", orderId).Scan(&article).Error
+			if article.Title == "" {
+				err = db.Db.Raw("select * from `articles`" +
+					" where is_published = 1 and is_recycled = 0 and is_top = 0" +
+					" order by `order_id` asc limit 1").Scan(&article).Error
+			}
+		} else {
+			err = db.Db.Raw("select * from `articles`"+
+				" where is_published = 1 and is_recycled = 0 and `order_id` > ? and is_top = 0"+
+				" order by `order_id` asc limit 1", orderId).Scan(&article).Error
+		}
+		return
 	}
+
+	if isTop {
+		err = db.Db.Raw("select * from `articles`"+
+			" where is_published = 1 and is_recycled = 0 and `order_id` > ? and is_top = 1"+
+			" order by `order_id` asc limit 1", orderId).Scan(&article).Error
+	} else {
+		err = db.Db.Raw("select * from `articles`"+
+			" where is_published = 1 and is_recycled = 0 and `order_id` > ? and is_top = 0"+
+			" order by `order_id` asc limit 1", orderId).Scan(&article).Error
+	}
+
 	return
 }
 
@@ -165,6 +209,8 @@ func (Article) GetByPage(page *utils.Pagination, key string, state uint,
 		// 加密
 		case 4:
 			query = query.Where("is_published = 1 and is_recycled = 0 and pwd != ''")
+		case 5:
+			query = query.Where("is_published = 1 and is_recycled = 0")
 		default:
 			break
 		}
