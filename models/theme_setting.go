@@ -6,6 +6,6 @@ import "github.com/jinzhu/gorm"
 type ThemeSetting struct {
 	gorm.Model
 	ThemeID string `gorm:"type:varchar(50);not null;" json:"theme_id"` // 主题 ID
-	Key     string `gorm:"type:varchar(100);not null;" json:"key"`          // 键
-	Val     string `gorm:"type:varchar(255);not null;" json:"val"`          // 值
+	Key     string `gorm:"type:varchar(100);not null;" json:"key"`     // 键
+	Val     string `gorm:"type:varchar(255);not null;" json:"val"`     // 值
 }

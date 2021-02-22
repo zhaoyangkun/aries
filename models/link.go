@@ -11,12 +11,12 @@ import (
 // 友情链接
 type Link struct {
 	gorm.Model
-	Category   Category `gorm:"ForeignKey:CategoryId" json:"category"` // 分类
-	CategoryId uint     `json:"category_id"`                           // 分类 ID
-	Name       string   `gorm:"type:varchar(100);not null;" json:"name"`    // 网站名称
-	Url        string   `gorm:"type:varchar(255);not null;" json:"url"`     // 网站地址
-	Desc       string   `gorm:"type:varchar(255);" json:"desc"`             // 网站描述
-	Icon       string   `gorm:"type:varchar(255);not null;" json:"icon"`    // 图标
+	Category   Category `gorm:"ForeignKey:CategoryId" json:"category"`   // 分类
+	CategoryId uint     `json:"category_id"`                             // 分类 ID
+	Name       string   `gorm:"type:varchar(100);not null;" json:"name"` // 网站名称
+	Url        string   `gorm:"type:varchar(255);not null;" json:"url"`  // 网站地址
+	Desc       string   `gorm:"type:varchar(255);" json:"desc"`          // 网站描述
+	Icon       string   `gorm:"type:varchar(255);not null;" json:"icon"` // 图标
 }
 
 // 获取所有友链

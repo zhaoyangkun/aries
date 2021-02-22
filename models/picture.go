@@ -15,7 +15,7 @@ type Picture struct {
 	Hash        string `gorm:"type:varchar(100)" json:"hash"`                 // 标识
 	FileName    string `gorm:"type:varchar(255);not null" json:"file_name"`   // 文件名
 	URL         string `gorm:"type:varchar(255);not null" json:"url"`         // 访问地址
-	Size        uint   `gorm:"int(6)" json:"size"`                       // 空间大小（KB）
+	Size        uint   `gorm:"int(6)" json:"size"`                            // 空间大小（KB）
 }
 
 // 获取所有图片

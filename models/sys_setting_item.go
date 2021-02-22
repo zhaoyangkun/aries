@@ -10,9 +10,9 @@ import (
 // 系统设置条目
 type SysSettingItem struct {
 	gorm.Model
-	SysId uint   `json:"sys_id"`                            // 系统设置 ID
+	SysId uint   `json:"sys_id"`                                 // 系统设置 ID
 	Key   string `gorm:"type:varchar(100);not null;" json:"key"` // 键
-	Val   string `gorm:"type:Text;not null;" json:"val"`    // 值
+	Val   string `gorm:"type:Text;not null;" json:"val"`         // 值
 }
 
 // 根据设置名称获取系统设置条目
