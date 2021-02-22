@@ -466,6 +466,12 @@ func (article Article) Update(tagIds string) error {
 	return tx.Commit().Error
 }
 
+// 更新访问量
+func (article Article) UpdateVisitCount() error {
+	return db.Db.Model(&Article{}).Where("id = ?", article.ID).
+		Update("visit_count", article.VisitCount+1).Error
+}
+
 // 将文章加入回收站或恢复
 func (article Article) RecycleOrRecover() (err error) {
 	err = db.Db.Model(&Article{}).Where("`id` = ?", article.ID).

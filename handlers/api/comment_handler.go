@@ -83,6 +83,9 @@ func (c *CommentHandler) GetCommentsByPage(ctx *gin.Context) {
 		}
 	}
 
+	for _, c := range list {
+		log.Logger.Sugar().Info("ChildComments: ", c.ChildComments)
+	}
 	ctx.JSON(http.StatusOK, utils.Result{
 		Code: utils.Success,
 		Msg:  "查询成功",
@@ -156,7 +159,7 @@ func (c *CommentHandler) AddComment(ctx *gin.Context) {
 				msg.SetBody("text/html", utils.GetCommentEmailHTML(
 					siteItems["site_name"], siteItems["site_url"], "评论通知",
 					userList[0].Nickname, comment.NickName, comment.Url, article.Title,
-					siteItems["site_url"]+"/article/"+article.URL, comment.MDContent,
+					siteItems["site_url"]+"/articles/"+article.URL, comment.MDContent,
 				))
 			} else {
 				page, _ := models.Page{}.GetById(comment.PageId)
@@ -179,7 +182,7 @@ func (c *CommentHandler) AddComment(ctx *gin.Context) {
 				msg.SetBody("text/html", utils.GetReplyEmailHTML(
 					siteItems["site_name"], siteItems["site_url"], "评论通知",
 					parentComment.NickName, comment.NickName, comment.Url, article.Title,
-					siteItems["site_url"]+"/article/"+article.URL, comment.MDContent,
+					siteItems["site_url"]+"/articles/"+article.URL, comment.MDContent,
 				))
 			} else {
 				page, _ := models.Page{}.GetById(comment.PageId)

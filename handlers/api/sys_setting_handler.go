@@ -560,6 +560,16 @@ func (s *SysSettingHandler) SendTestEmail(ctx *gin.Context) {
 		})
 		return
 	}
+	siteItems, err := models.SysSettingItem{}.GetBySysSettingName("网站设置")
+	if err != nil {
+		log.Logger.Sugar().Error("error: ", err.Error())
+		ctx.JSON(http.StatusOK, utils.Result{
+			Code: utils.ServerError,
+			Msg:  "服务器端错误",
+			Data: nil,
+		})
+		return
+	}
 
 	if len(emailSetting) == 0 {
 		ctx.JSON(http.StatusOK, utils.Result{
@@ -578,7 +588,7 @@ func (s *SysSettingHandler) SendTestEmail(ctx *gin.Context) {
 	// 主题
 	msg.SetHeader("Subject", sendForm.Title)
 	// 正文
-	msg.SetBody("text/html", utils.GetEmailHTML(sendForm.Title, sendForm.ReceiveEmail,
+	msg.SetBody("text/html", utils.GetEmailHTML(sendForm.Title, siteItems["site_url"], sendForm.ReceiveEmail,
 		sendForm.Content))
 	port, _ := strconv.Atoi(emailSetting["port"])
 	// 设置 SMTP 参数

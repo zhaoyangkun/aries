@@ -271,11 +271,12 @@ export default {
     },
     // 回复事件
     handleReply () {
+      const OS = this.getOS()
+      const browser = this.getBrowser()
+      this.replyForm.root_comment_id = this.currRow.ID
       if (this.currRow.root_comment_id > 0) {
         this.replyForm.root_comment_id = this.currRow.root_comment_id
       }
-      const OS = this.getOS()
-      const browser = this.getBrowser()
       this.replyForm.device = `${browser.browser} ${browser.version} in ${OS}`
       this.replyForm.article_id = this.currRow.article_id
       this.replyForm.parent_comment_id = this.currRow.ID
@@ -285,7 +286,11 @@ export default {
       this.$refs.replyForm.validate((valid) => {
         if (valid) {
           if (this.replyForm.nick_name === '') {
-            this.$message.error('请先前往用户信息管理设置呢称')
+            this.$message.error('请先设置呢称')
+            return
+          }
+          if (this.replyForm.user_img === '') {
+            this.$message.error('请先设置用户头像')
             return
           }
           this.dialogOptions.replyBtnLoading = true

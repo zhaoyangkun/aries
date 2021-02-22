@@ -134,7 +134,7 @@ func (b *BlogVariable) InitBlogVars(siteSetting map[string]string, socialInfo ma
 	if contextPath, ok := siteSetting["site_url"]; ok {
 		b.ContextPath = contextPath
 	} else {
-		b.ContextPath = "http://localhost:8088"
+		b.ContextPath = ""
 	}
 	if siteName, ok := siteSetting["site_name"]; ok {
 		b.SiteName = siteName

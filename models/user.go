@@ -16,14 +16,6 @@ type User struct {
 	Nickname  string `gorm:"type:varchar(30);" json:"nickname"`           // 昵称
 	UserImg   string `gorm:"type:varchar(255);not null;" json:"user_img"` // 用户头像
 	Signature string `gorm:"type:varchar(255);" json:"signature"`         // 个性签名
-	/*	CommentCheckedOn bool   `gorm:"type:bool;default:true;" json:"comment_checked_on"` // 开启评论审核：默认为 true
-		SiteUrl   string `gorm:"type:varchar(255);" json:"site_url"`          // 网址
-		QQ               string `gorm:"type:varchar(30);" json:"qq"`                       // qq 号
-		WeChat           string `gorm:"type:varchar(30);" json:"we_chat"`                  // 微信号
-		Github           string `gorm:"type:varchar(30);" json:"github"`                   // github 账号
-		WeiBo            string `gorm:"type:varchar(30);" json:"wei_bo"`                   // 微博账号
-		WeChatPayImg     string `gorm:"type:varchar(255);" json:"we_chat_pay_img"`         // 微信支付收款二维码
-		AliPayImg        string `gorm:"type:varchar(255);" json:"ali_pay_img"`             // 支付宝收款二维码*/
 }
 
 // 获取所有用户
@@ -65,7 +57,13 @@ func (user User) Create() error {
 
 // 更新用户
 func (user User) Update() error {
-	return db.Db.Model(&User{}).Updates(&user).Error
+	return db.Db.Model(&User{}).Updates(map[string]interface{}{
+		"username":  user.Username,
+		"email":     user.Email,
+		"nickname":  user.Nickname,
+		"user_img":  user.UserImg,
+		"signature": user.Signature,
+	}).Error
 }
 
 // 修改密码

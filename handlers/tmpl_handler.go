@@ -100,6 +100,7 @@ func (t *TmplHandler) ArticleTmpl(ctx *gin.Context) {
 		return
 	}
 
+	_ = article.UpdateVisitCount()
 	preArticle, _ := models.Article{}.GetPrevious(article.OrderId, article.IsTop, true)
 	nextArticle, _ := models.Article{}.GetNext(article.OrderId, article.IsTop, true)
 	users, _ := models.User{}.GetAll()

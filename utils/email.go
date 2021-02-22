@@ -8,7 +8,7 @@ import (
 	"strings"
 )
 
-func GetEmailHTML(theme string, receiver string, content string) string {
+func GetEmailHTML(theme string, siteUrl string, receiver string, content string) string {
 	return `<div
       style="
         box-shadow: 0 1px 4px rgba(0,0,0,.12);
@@ -40,12 +40,9 @@ func GetEmailHTML(theme string, receiver string, content string) string {
           "
           >「<a
             style="color: #00a1ff; font-weight: 600; text-decoration: none;"
-            href=""
+            href="` + siteUrl + `"
             target="_blank"
             rel="external nofollow"
-            target="_blank"
-            rel="external nofollow"
-            target="_blank"
             >Aries</a
           >」` + theme + `</span
         >

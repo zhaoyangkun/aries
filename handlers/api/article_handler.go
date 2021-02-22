@@ -2,6 +2,7 @@ package api
 
 import (
 	"aries/forms"
+	"aries/handlers"
 	"aries/log"
 	"aries/models"
 	"aries/utils"
@@ -146,6 +147,8 @@ func (a *ArticleHandler) AddArticle(ctx *gin.Context) {
 		return
 	}
 
+	handlers.InitTmplVars()
+
 	ctx.JSON(http.StatusOK, utils.Result{
 		Code: utils.Success,
 		Msg:  "发布文章成功",
@@ -195,6 +198,8 @@ func (a *ArticleHandler) UpdateArticle(ctx *gin.Context) {
 		return
 	}
 
+	handlers.InitTmplVars()
+
 	ctx.JSON(http.StatusOK, utils.Result{
 		Code: utils.Success,
 		Msg:  "修改文章成功",
@@ -223,6 +228,8 @@ func (a *ArticleHandler) DeleteArticle(ctx *gin.Context) {
 		})
 		return
 	}
+
+	handlers.InitTmplVars()
 
 	ctx.JSON(http.StatusOK, utils.Result{
 		Code: utils.Success,
@@ -261,6 +268,8 @@ func (a *ArticleHandler) MultiDelArticles(ctx *gin.Context) {
 		})
 		return
 	}
+
+	handlers.InitTmplVars()
 
 	ctx.JSON(http.StatusOK, utils.Result{
 		Code: utils.Success,

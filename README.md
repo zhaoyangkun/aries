@@ -1,4 +1,4 @@
-## 项目介绍
+### 项目介绍
 
 > **主题管理**功能还在开发中！
 
@@ -9,7 +9,11 @@ Aries 是基于 Gin + GORM + MySQL + Vue + H5 开发的现代化博客系统，�
 - 数据库层没有设置物理外键，所有外键操作都在业务层处理。
 - 评论功能通过**评论组件**方式实现。
 
-## 功能特性
+### 预览
+
+预览地址：https://cangmangai.cn
+
+### 功能特性
 
 1. 文章
    - 编辑器采用 `vditor`，提升中文 `markdown` 使用体验
@@ -27,12 +31,12 @@ Aries 是基于 Gin + GORM + MySQL + Vue + H5 开发的现代化博客系统，�
    - 主题切换
    - 主题设置  
    - 主题编辑
-    
+   
 3. 评论
    - 回收站
    - 评论审核
    - 邮件通知
-    
+   
 4. 图床
    - 支持 sm.ms，imgbb 和 腾讯云 cos 存储
    - 多图片上传
@@ -58,7 +62,7 @@ Aries 是基于 Gin + GORM + MySQL + Vue + H5 开发的现代化博客系统，�
    - 评论设置
    - 参数设置
 
-## 部分截图
+### 部分截图
 
 - 后台管理端
 
@@ -94,7 +98,7 @@ Aries 是基于 Gin + GORM + MySQL + Vue + H5 开发的现代化博客系统，�
 
   ![相册](https://s1.ax1x.com/2020/09/10/wGgOoj.png)
 
-## 如何在本地运行 Aries
+### 如何在本地运行 Aries
 
 - 运行环境：
 
@@ -107,7 +111,6 @@ Aries 是基于 Gin + GORM + MySQL + Vue + H5 开发的现代化博客系统，�
   >
   > 如何配置 `npm` 国内镜像源：https://www.cnblogs.com/luckyhui28/p/12268313.html
   
-
 - 克隆项目代码到本地：
 
   ```shell
@@ -160,3 +163,88 @@ Aries 是基于 Gin + GORM + MySQL + Vue + H5 开发的现代化博客系统，�
 - 待 `gin` 和 `Vue` 项目启动完毕后，在浏览器中访问 `http://localhost:8080` 即可进入后台管理。
 
 - 在浏览器中访问 `http://127.0.0.1:8088` 可进入博客展示端。
+
+### 部署
+
+> 仅支持 `docker` 部署，需要具备一定的 `linux` 基础。
+> 
+> 确保服务器已配置好 `docker` 运行环境，并安装好 `mysql`，`mysql` 版本不低于 5.7。
+
+- 在 `mysql` 中新建名称为 **aries** 的数据库，注意字符集为 **utf8m64**，字符编码为 **utf8m64_general_ci**。
+
+- 在主目录下创建 `.aries` 文件夹：
+
+  ```shell
+  mkdir ~/.aries
+  ```
+
+- 创建配置文件 `aries.yaml`：
+  
+  ```shell
+  touch ~/.aries/aries.yaml
+  ```
+  
+  `aries.yaml` 配置条目具体可以参考：https://github.com/zhaoyangkun/aries/blob/master/config/product.yaml：
+  
+  > 可先将 `product.yaml` 所有内容复制到 `aries.yaml` 中再做修改。
+  >
+  > ***注意***：
+  >
+  > - `mode` 要设置为 `release`，表示生产环境；
+  >
+  > - 注意校对数据库的**主机地址**，**帐号**和**密码**；
+  > - 使用**重置密码**功能的话，需配置 `smtp`。
+  
+- 拉取 `aries` 镜像：
+  
+  ```shell
+  docker pull zhaoyangkun/aries
+  ```
+
+- 运行容器：
+
+  ```shell
+  docker run -p 8088:8088 --name aries --restart=always --network=host -v ~/.aries:/root/.aries -d zhaoyangkun/aries
+  ```
+
+- 反向代理：
+
+  推荐使用 `nginx` ，由于 `aries` 默认运行在 `8088` 端口上，需要在云服务器**安全组**开放 `8088` 端口，同时 `nginx` 反代 `8088` 端口到 `80` 端口，这里给出一段 `nginx`配置文件的示例：
+
+  ```nginx
+  upstream aries_server {
+      server cangmangai.cn:8088; # cangmangai.cn 为域名，也可以改为公网 IP，8088 表示监听端口
+  }
+  
+  # http 重定向到 https
+  server {
+      listen 80; # 80 为 http 默认端口
+      server_name cangmangai.cn;
+      rewrite ^(.*) https://$host$1 permanent;            
+  }
+  
+  # https 配置
+  server {
+      charset  utf-8;
+      listen 443 ssl; # 443 为 https 默认端口
+      server_name  cangmangai.cn;
+      ssl_certificate    /ssl/cn.pem; # .pem证书路径
+      ssl_certificate_key  /ssl/cn.key; # .key证书路径
+      ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+      ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:HIGH:!aNULL:!MD5:!RC4:!DHE;
+      ssl_prefer_server_ciphers on;
+      ssl_session_cache shared:SSL:10m;
+      ssl_session_timeout 10m;
+      location / {
+          proxy_pass http://aries_server$request_uri; # 反向代理，将 8088 端口转发到 443 端口
+          proxy_set_header  Host $http_host;
+          proxy_set_header  X-Real-IP  $remote_addr;
+          client_max_body_size  10m;
+      }
+      location /bdunion.txt {
+          alias   /ssl/bdunion.txt;
+      }
+  }
+```
+  
+  
