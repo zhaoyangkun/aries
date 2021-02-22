@@ -382,7 +382,7 @@ func (t *TmplHandler) SearchTmpl(ctx *gin.Context) {
 	keyword := ctx.Query("keyword")
 	page := ctx.Param("page")
 
-	pagination := utils.Pagination{Page: 1, Size: 1}
+	pagination := utils.Pagination{Page: 1}
 	if page != "" {
 		p, err := strconv.ParseUint(page, 10, 0)
 		if err != nil {
