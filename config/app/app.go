@@ -27,8 +27,7 @@ import (
 func InitApp() *gin.Engine {
 	// 加载配置
 	s := setting.Setting{}
-	home, _ := utils.Home()
-	s.InitSetting(home)
+	s.InitSetting()
 	s.InitLute()
 	s.InitCache()
 	db.InitDb()
@@ -79,9 +78,9 @@ func InitApp() *gin.Engine {
 		"day":      utils.Day,
 	})
 	// 加载静态资源和模板
-	router.Static("/static", fmt.Sprintf("./themes/%s/static", setting.BlogVars.Theme))
-	router.Static("/admin", "./dist")
-	router.LoadHTMLGlob(fmt.Sprintf("./themes/%s/templates/**/*", setting.BlogVars.Theme))
+	router.Static("/static", fmt.Sprintf("./resources/themes/%s/static", setting.BlogVars.Theme))
+	router.Static("/admin", "./resources/dist")
+	router.LoadHTMLGlob(fmt.Sprintf("./resources/themes/%s/templates/**/*", setting.BlogVars.Theme))
 
 	// 加载路由
 	apiRouter := routers.ApiRouter{}

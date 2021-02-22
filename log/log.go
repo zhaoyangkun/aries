@@ -62,8 +62,7 @@ func getLogWriter(fileName string, maxSize, maxBackups, maxAge int) (zapcore.Wri
 	if setting.Config.Server.Mode == "debug" {
 		filePath = filepath.Join("./log", fileName)
 	} else {
-		home, _ := utils.Home()
-		filePath = filepath.Join(home, ".aries", fileName)
+		filePath = filepath.Join("/root", ".aries", fileName)
 	}
 
 	if !utils.FileIsExists(filePath) {

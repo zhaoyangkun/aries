@@ -606,6 +606,23 @@ definitions:
     - storage_type
     - token
     type: object
+  forms.SocialInfoForm:
+    properties:
+      github:
+        type: string
+      qq:
+        type: string
+      sys_id:
+        type: string
+      type_name:
+        type: string
+      wechat:
+        type: string
+      weibo:
+        type: string
+      zhihu:
+        type: string
+    type: object
   forms.TagAddForm:
     properties:
       name:
@@ -2254,6 +2271,29 @@ paths:
           schema:
             $ref: '#/definitions/utils.Result'
       summary: 保存 SMTP 服务配置信息
+      tags:
+      - 系统设置
+  /api/v1/sys_setting/social_info:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 社交信息表单
+        in: body
+        name: settingForm
+        required: true
+        schema:
+          $ref: '#/definitions/forms.SocialInfoForm'
+      responses:
+        "100":
+          description: Continue
+          schema:
+            $ref: '#/definitions/utils.Result'
+        "104":
+          description: ""
+          schema:
+            $ref: '#/definitions/utils.Result'
+      summary: 保存社交信息
       tags:
       - 系统设置
   /api/v1/tags:

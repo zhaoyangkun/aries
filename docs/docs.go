@@ -2453,6 +2453,42 @@ var doc = `{
                 }
             }
         },
+        "/api/v1/sys_setting/social_info": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "系统设置"
+                ],
+                "summary": "保存社交信息",
+                "parameters": [
+                    {
+                        "description": "社交信息表单",
+                        "name": "settingForm",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/forms.SocialInfoForm"
+                        }
+                    }
+                ],
+                "responses": {
+                    "100": {
+                        "description": "Continue",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Result"
+                        }
+                    },
+                    "104": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Result"
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/tags": {
             "get": {
                 "consumes": [
@@ -3589,6 +3625,32 @@ var doc = `{
                     "type": "string"
                 },
                 "token": {
+                    "type": "string"
+                }
+            }
+        },
+        "forms.SocialInfoForm": {
+            "type": "object",
+            "properties": {
+                "github": {
+                    "type": "string"
+                },
+                "qq": {
+                    "type": "string"
+                },
+                "sys_id": {
+                    "type": "string"
+                },
+                "type_name": {
+                    "type": "string"
+                },
+                "wechat": {
+                    "type": "string"
+                },
+                "weibo": {
+                    "type": "string"
+                },
+                "zhihu": {
                     "type": "string"
                 }
             }
