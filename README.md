@@ -184,7 +184,7 @@ Aries 是基于 Gin + GORM + MySQL + Vue + H5 开发的现代化博客系统，�
   touch ~/.aries/aries.yaml
   ```
   
-  `aries.yaml` 配置条目具体可以参考：https://github.com/zhaoyangkun/aries/blob/master/config/product.yaml：
+  `aries.yaml` 配置条目具体可以参考：https://github.com/zhaoyangkun/aries/blob/master/config/product.yaml
   
   > 可先将 `product.yaml` 所有内容复制到 `aries.yaml` 中再做修改。
   >
@@ -246,5 +246,3 @@ Aries 是基于 Gin + GORM + MySQL + Vue + H5 开发的现代化博客系统，�
       }
   }
 ```
-  
-  
