@@ -66,37 +66,23 @@ Aries 是基于 Gin + GORM + MySQL + Vue + H5 开发的现代化博客系统，�
 
 - 后台管理端
 
-  ![初始化配置](https://s1.ax1x.com/2020/09/10/wGcW80.png)
+  ![登录](https://img.rruu.net/image/60348af2d9f60)
 
-  ![登录](https://s1.ax1x.com/2020/09/10/wGcob4.png)
+  ![写文章](https://img.rruu.net/image/60348b5e446e8)
 
-  ![写文章](https://s1.ax1x.com/2020/09/10/wGcb5R.png)
-
-  ![设置](https://s1.ax1x.com/2020/09/10/wGcjxK.png)
-
-  ![文章列表](https://s1.ax1x.com/2020/09/10/wGczrD.png)
-
-  ![图片上传](https://s1.ax1x.com/2020/09/10/wGgCad.png)
-
-  ![附件列表](https://s1.ax1x.com/2020/09/10/wGgExf.png)
-
-  ![添加图库](https://s1.ax1x.com/2020/09/10/wGgZM8.png)
+  ![图片上传](https://img.rruu.net/image/60348c002bc59)
 
 - 博客展示端
 
-  ![首页](https://s1.ax1x.com/2020/09/10/wGglin.png)
+  ![首页](https://img.rruu.net/image/603488cd6a2bc)
 
-  ![文章详情](https://s1.ax1x.com/2020/09/10/wGgdo9.png)
+  ![文章详情页](https://img.rruu.net/image/603489685b350)
 
-  ![分类列表](https://s1.ax1x.com/2020/09/10/wGgyQK.png)
+  ![分类列表页](https://img.rruu.net/image/603489bb9682b)
 
-  ![标签列表](https://s1.ax1x.com/2020/09/10/wGg4JI.png)
+  ![友链页](https://img.rruu.net/image/60348a36545c7)
 
-  ![归档](https://s1.ax1x.com/2020/09/10/wGg7y8.png)
-
-  ![友链](https://s1.ax1x.com/2020/09/10/wGgLwQ.png)
-
-  ![相册](https://s1.ax1x.com/2020/09/10/wGgOoj.png)
+  ![图库页](https://img.rruu.net/image/60348a71b2cff)
 
 ### 如何在本地运行 Aries
 
