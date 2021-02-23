@@ -104,7 +104,9 @@
         </div>
     </div>
 
-    {{ template "comment" . }}
+    {{ if .article.IsAllowCommented }}
+        {{ template "comment" . }}
+    {{ end }}
 </main>
 
 

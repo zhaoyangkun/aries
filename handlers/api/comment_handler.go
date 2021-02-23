@@ -83,9 +83,6 @@ func (c *CommentHandler) GetCommentsByPage(ctx *gin.Context) {
 		}
 	}
 
-	for _, c := range list {
-		log.Logger.Sugar().Info("ChildComments: ", c.ChildComments)
-	}
 	ctx.JSON(http.StatusOK, utils.Result{
 		Code: utils.Success,
 		Msg:  "查询成功",
