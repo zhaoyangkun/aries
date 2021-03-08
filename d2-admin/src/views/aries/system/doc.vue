@@ -9,7 +9,7 @@ export default {
   name: 'doc',
   data () {
     return {
-      src: 'http://localhost:8088/swagger/index.html'
+      src: '/swagger/index.html'
     }
   }
 }
