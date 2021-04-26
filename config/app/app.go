@@ -14,6 +14,7 @@ import (
 	"html/template"
 	"log"
 	"reflect"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
@@ -23,7 +24,7 @@ import (
 	translations "github.com/go-playground/validator/v10/translations/zh"
 )
 
-// 初始化 gin
+// InitApp 初始化 gin
 func InitApp() *gin.Engine {
 	// 加载配置
 	s := setting.Setting{}
@@ -47,7 +48,8 @@ func InitApp() *gin.Engine {
 	if err != nil {
 		log.Panicln("初始化日志失败：", err.Error())
 	}
-	router.Use(middlewares.Logger(logger.Logger), middlewares.Recover(logger.Logger, true))
+	middlewares.InitBucket(time.Second*time.Duration(setting.Config.Server.LimitTime), setting.Config.Server.LimitCap)
+	router.Use(middlewares.Logger(logger.Logger), middlewares.Recover(logger.Logger, true), middlewares.Limiter())
 
 	// 配置表单校验
 	uni := ut.New(zh.New())
@@ -64,6 +66,7 @@ func InitApp() *gin.Engine {
 	blogSetting, _ := models.SysSettingItem{}.GetBySysSettingName("网站设置")
 	socialInfo, _ := models.SysSettingItem{}.GetBySysSettingName("社交信息")
 	setting.BlogVars.InitBlogVars(blogSetting, socialInfo)
+
 	// 初始化模板全局变量
 	handlers.InitTmplVars()
 
@@ -77,6 +80,7 @@ func InitApp() *gin.Engine {
 		"month":    utils.Month,
 		"day":      utils.Day,
 	})
+
 	// 加载静态资源和模板
 	router.Static("/static", fmt.Sprintf("./resources/themes/%s/static", setting.BlogVars.Theme))
 	router.Static("/admin", "./resources/dist")

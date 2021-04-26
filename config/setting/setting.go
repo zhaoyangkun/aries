@@ -10,23 +10,10 @@ import (
 
 	"github.com/88250/lute"
 	"github.com/gin-contrib/cache/persistence"
-	ut "github.com/go-playground/universal-translator"
 	"gopkg.in/yaml.v2"
 )
 
-// 翻译器
-var Trans ut.Translator
-
-// 全局配置
-var Config = &Setting{}
-
-// Lute
-var LuteEngine = &lute.Lute{}
-
-// Cache
-var Cache = &persistence.InMemoryStore{}
-
-// 博客全局变量
+// BlogVariable 博客全局变量
 type BlogVariable struct {
 	Theme        string
 	ContextPath  string
@@ -44,10 +31,7 @@ type BlogVariable struct {
 	Zhihu        string
 }
 
-// 博客全局变量
-var BlogVars BlogVariable
-
-// 总配置
+// Setting 总配置
 type Setting struct {
 	Server   server   `yaml:"server"`
 	Database database `yaml:"db"`
@@ -55,15 +39,17 @@ type Setting struct {
 	SMTP     smtp     `yaml:"smtp"`
 }
 
-// 项目配置结构
+// server 服务器配置
 type server struct {
 	Mode            string   `yaml:"mode"`              // 运行模式
 	Port            string   `yaml:"port"`              // 运行端口
 	TokenExpireTime int      `yaml:"token_expire_time"` // JWT token 过期时间
 	AllowedRefers   []string `yaml:"allowed_refers"`    // 允许的 referer
+	LimitTime       int64    `yaml:"limit_time"`        // 限流时间间隔
+	LimitCap        int64    `yaml:"limit_cap"`         // 间隔时间内最大访问次数
 }
 
-// 数据库配置结构
+// database 数据库配置
 type database struct {
 	Host        string `yaml:"host"`          // 主机地址
 	UserName    string `yaml:"user_name"`     // 用户名
@@ -75,6 +61,7 @@ type database struct {
 	MaxOpenConn int    `yaml:"max_open_conn"` // 最大打开连接数
 }
 
+// logger 日志
 type logger struct {
 	FileName   string `yaml:"file_name"`
 	MaxSize    int    `yaml:"max_size"`
@@ -92,7 +79,7 @@ type smtp struct {
 	Password string `yaml:"password"`
 }
 
-// 读取 yaml 配置文件
+// InitSetting 读取 yaml 配置文件
 func (s *Setting) InitSetting() {
 	// 获取当前项目根目录
 	rootPath, _ := os.Getwd()
@@ -116,15 +103,17 @@ func (s *Setting) InitSetting() {
 	}
 }
 
+// InitLute 初始化 markdown 引擎
 func (s *Setting) InitLute() {
 	LuteEngine = lute.New()
 }
 
+// InitCache 初始化缓存
 func (s *Setting) InitCache() {
 	Cache = persistence.NewInMemoryStore(time.Hour * 1)
 }
 
-// 配置博客全局变量
+// InitBlogVars 配置博客全局变量
 func (b *BlogVariable) InitBlogVars(siteSetting map[string]string, socialInfo map[string]string) {
 	if theme, ok := siteSetting["theme"]; ok {
 		b.Theme = theme

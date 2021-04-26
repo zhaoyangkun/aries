@@ -12,10 +12,10 @@ import (
 	"go.uber.org/zap/zapcore"
 )
 
-// 日志
+// Logger 日志
 var Logger *zap.Logger
 
-// 初始化日志
+// InitLogger 初始化日志
 func InitLogger(fileName, level, format string, maxSize, maxBackups, maxAge int) (err error) {
 	writeSyncer, err := getLogWriter(fileName, maxSize, maxBackups, maxAge)
 	if err != nil {

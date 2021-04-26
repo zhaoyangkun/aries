@@ -5,7 +5,7 @@ import (
 	"aries/models"
 )
 
-// 根据实体结构，反向生成数据表（自动迁移）
+// Migrate 根据实体结构，反向生成数据表（自动迁移）
 func Migrate() {
 	db.Db.AutoMigrate(
 		&models.Article{}, &models.Category{}, &models.Comment{},

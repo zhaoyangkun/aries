@@ -1,6 +1,6 @@
 module aries
 
-go 1.15
+go 1.16
 
 require (
 	github.com/88250/lute v1.6.3
@@ -24,6 +24,7 @@ require (
 	github.com/gorilla/sessions v1.2.1 // indirect
 	github.com/jinzhu/gorm v1.9.16
 	github.com/json-iterator/go v1.1.10 // indirect
+	github.com/juju/ratelimit v1.0.1
 	github.com/mailru/easyjson v0.7.6 // indirect
 	github.com/mojocn/base64Captcha v1.3.1
 	github.com/natefinch/lumberjack v2.0.0+incompatible

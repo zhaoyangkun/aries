@@ -21,14 +21,14 @@ var (
 	tags       []models.Tag
 )
 
-// 初始化模板全局变量
+// InitTmplVars 初始化模板全局变量
 func InitTmplVars() {
 	navs, _ = models.Nav{}.GetAll()
 	categories, _ = models.Category{}.GetAllByType(0)
 	tags, _ = models.Tag{}.GetAll()
 }
 
-// 首页
+// IndexTmpl 首页
 func (t *TmplHandler) IndexTmpl(ctx *gin.Context) {
 	page := ctx.Param("page")
 	pagination := utils.Pagination{}
@@ -86,7 +86,7 @@ func (t *TmplHandler) IndexTmpl(ctx *gin.Context) {
 	})
 }
 
-// 文章详情页
+// ArticleTmpl 文章详情页
 func (t *TmplHandler) ArticleTmpl(ctx *gin.Context) {
 	url := ctx.Param("url")
 
@@ -121,7 +121,7 @@ func (t *TmplHandler) ArticleTmpl(ctx *gin.Context) {
 	})
 }
 
-// 分类页
+// CategoryTmpl 分类页
 func (t *TmplHandler) CategoryTmpl(ctx *gin.Context) {
 	url := ctx.Param("url")
 	page := ctx.Param("page")
@@ -195,7 +195,7 @@ func (t *TmplHandler) CategoryTmpl(ctx *gin.Context) {
 	}
 }
 
-// 标签页
+// TagTmpl 标签页
 func (t *TmplHandler) TagTmpl(ctx *gin.Context) {
 	name := ctx.Param("name")
 	page := ctx.Param("page")
@@ -269,7 +269,7 @@ func (t *TmplHandler) TagTmpl(ctx *gin.Context) {
 	}
 }
 
-// 归档页
+// ArchiveTmpl 归档页
 func (t *TmplHandler) ArchiveTmpl(ctx *gin.Context) {
 	archives, _ := models.Archive{}.GetAll()
 	articles, _ := models.Article{}.GetAll()
@@ -285,7 +285,7 @@ func (t *TmplHandler) ArchiveTmpl(ctx *gin.Context) {
 	})
 }
 
-// 友链页
+// LinkTmpl 友链页
 func (t *TmplHandler) LinkTmpl(ctx *gin.Context) {
 	linkCategories, _ := models.Category{}.GetAllByType(1)
 	links, _ := models.Link{}.GetAll()
@@ -301,7 +301,7 @@ func (t *TmplHandler) LinkTmpl(ctx *gin.Context) {
 	})
 }
 
-// 日志页
+// JournalTmpl 日志页
 func (t *TmplHandler) JournalTmpl(ctx *gin.Context) {
 	journals, _ := models.Journal{}.GetAll()
 	users, _ := models.User{}.GetAll()
@@ -317,7 +317,7 @@ func (t *TmplHandler) JournalTmpl(ctx *gin.Context) {
 	})
 }
 
-// 图库
+// GalleryTmpl 图库
 func (t *TmplHandler) GalleryTmpl(ctx *gin.Context) {
 	photoCategories, _ := models.Category{}.GetGalleryCategories()
 	photos, _ := models.Gallery{}.GetAll()
@@ -332,7 +332,7 @@ func (t *TmplHandler) GalleryTmpl(ctx *gin.Context) {
 	})
 }
 
-// 自定义页
+// CustomTmpl 自定义页
 func (t *TmplHandler) CustomTmpl(ctx *gin.Context) {
 	url := ctx.Param("url")
 
@@ -359,7 +359,7 @@ func (t *TmplHandler) CustomTmpl(ctx *gin.Context) {
 	})
 }
 
-// 站点地图
+// SiteMapXml 站点地图
 func (t *TmplHandler) SiteMapXml(ctx *gin.Context) {
 	st := gositemap.NewSiteMap()
 	st.SetPretty(true)
@@ -377,7 +377,7 @@ func (t *TmplHandler) SiteMapXml(ctx *gin.Context) {
 	ctx.XML(http.StatusOK, st)
 }
 
-// 搜索
+// SearchTmpl 搜索
 func (t *TmplHandler) SearchTmpl(ctx *gin.Context) {
 	keyword := ctx.Query("keyword")
 	page := ctx.Param("page")

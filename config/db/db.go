@@ -11,7 +11,7 @@ import (
 	_ "github.com/jinzhu/gorm/dialects/mysql" // gorm mysql
 )
 
-// 数据库对象
+// Db 数据库对象
 var Db *gorm.DB
 
 // 获取数据库连接
@@ -27,7 +27,7 @@ func getDataSource() string {
 	return dataSource
 }
 
-// 初始化数据库连接
+// InitDb 初始化数据库连接
 func InitDb() {
 	var err error
 
