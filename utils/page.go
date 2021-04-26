@@ -11,7 +11,7 @@ var (
 	defaultCurrentPage uint = 1  // 默认页码
 )
 
-// 分页结构体
+// Pagination 分页结构体
 type Pagination struct {
 	Ok         bool        // 是否出错
 	Size       uint        `form:"size"` // 每页条数
@@ -21,7 +21,7 @@ type Pagination struct {
 	TotalPages uint        // 总页数
 }
 
-// 进行分页
+// ToPage 进行分页
 func ToPage(p *Pagination, db *gorm.DB, list interface{}) (uint, error) {
 	// 设置默认参数
 	if p.Size < 1 {
@@ -48,7 +48,7 @@ func ToPage(p *Pagination, db *gorm.DB, list interface{}) (uint, error) {
 	return total, err
 }
 
-// 封装分页数据
+// GetPageData 封装分页数据
 func GetPageData(list interface{}, total uint, page Pagination) gin.H {
 	// 计算总页数
 	if total%page.Size == 0 {

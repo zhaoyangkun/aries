@@ -7,7 +7,7 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
-// 菜单
+// Nav 菜单
 type Nav struct {
 	gorm.Model
 	ChildNavs   []*Nav `gorm:"ForeignKey:ParentNavId" json:"child_navs"`    // 子级菜单
@@ -19,19 +19,19 @@ type Nav struct {
 	Icon        string `gorm:"type:varchar(255);" json:"icon"`              // 图标
 }
 
-// 根据 OrderId 获取菜单
+// GetByOrderId 根据 OrderId 获取菜单
 func (Nav) GetByOrderId(orderId uint) (nav Nav, err error) {
 	err = db.Db.Where("`order_id` = ?", orderId).First(&nav).Error
 	return
 }
 
-// 根据名称获取菜单
+// GetByName 根据名称获取菜单
 func (Nav) GetByName(name string) (nav Nav, err error) {
 	err = db.Db.Where("`name` = ?", name).First(&nav).Error
 	return
 }
 
-// 获取所有菜单（子菜单包含在父菜单中）
+// GetAll 获取所有菜单（子菜单包含在父菜单中）
 func (Nav) GetAll() ([]Nav, error) {
 	var childNavs []Nav
 	var parentNavs []Nav
@@ -59,7 +59,7 @@ func (Nav) GetAll() ([]Nav, error) {
 	return parentNavs, nil
 }
 
-// 添加菜单
+// Create 添加菜单
 func (n *Nav) Create() error {
 	var maxOrderId *uint
 	err := db.Db.Raw("select MAX(`order_id`) `maxOrderId` from `navs`").
@@ -77,7 +77,7 @@ func (n *Nav) Create() error {
 	return db.Db.Create(&n).Error
 }
 
-// 修改菜单
+// Update 修改菜单
 func (n *Nav) Update() error {
 	return db.Db.Model(&Nav{}).Updates(&n).Error
 }
@@ -98,7 +98,7 @@ func (n *Nav) GetPre(navType string) (Nav, error) {
 	return preNav, err
 }
 
-// 获取后一个菜单
+// GetNext 获取后一个菜单
 func (n *Nav) GetNext(navType string) (Nav, error) {
 	nextNav := Nav{}
 	var err error
@@ -114,7 +114,7 @@ func (n *Nav) GetNext(navType string) (Nav, error) {
 	return nextNav, err
 }
 
-// 向上移动菜单
+// MoveUp 向上移动菜单
 func (n *Nav) MoveUp(preNav Nav) error {
 	return db.Db.Transaction(func(tx *gorm.DB) error {
 		err := db.Db.Model(&Nav{}).Where("`id` = ?", n.ID).Update("order_id", preNav.OrderId).Error
@@ -131,7 +131,7 @@ func (n *Nav) MoveUp(preNav Nav) error {
 	})
 }
 
-// 向下移动菜单
+// MoveDown 向下移动菜单
 func (n *Nav) MoveDown(nextNav Nav) error {
 	return db.Db.Transaction(func(tx *gorm.DB) error {
 		err := db.Db.Model(&Nav{}).Where("`id` = ?", n.ID).Update("order_id", nextNav.OrderId).Error
@@ -148,7 +148,7 @@ func (n *Nav) MoveDown(nextNav Nav) error {
 	})
 }
 
-// 删除菜单
+// DeleteById 删除菜单
 func (Nav) DeleteById(id string) error {
 	return db.Db.Transaction(func(tx *gorm.DB) error {
 		err := db.Db.Where("`id` = ?", id).Unscoped().Delete(&Nav{}).Error
@@ -165,7 +165,7 @@ func (Nav) DeleteById(id string) error {
 	})
 }
 
-// 批量删除菜单
+// MultiDelByIds 批量删除菜单
 func (Nav) MultiDelByIds(ids string) error {
 	idList := strings.Split(ids, ",")
 	return db.Db.Transaction(func(tx *gorm.DB) error {

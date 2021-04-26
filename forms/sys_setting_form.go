@@ -1,6 +1,6 @@
 package forms
 
-// 网站设置表单
+// SiteSettingForm 网站设置表单
 type SiteSettingForm struct {
 	SysId         string `json:"sys_id" label:"设置 ID"`
 	TypeName      string `json:"type_name" binding:"required,max=50" label:"设置类型名称"`
@@ -14,7 +14,7 @@ type SiteSettingForm struct {
 	FooterContent string `json:"footer_content" binding:"max=1000" label:"全局 footer"`
 }
 
-// SMTP 配置表单
+// EmailSettingForm SMTP 配置表单
 type EmailSettingForm struct {
 	SysId    string `json:"sys_id" label:"设置 ID"`
 	TypeName string `json:"type_name" binding:"required,max=50" label:"设置类型名称"`
@@ -25,7 +25,7 @@ type EmailSettingForm struct {
 	Sender   string `json:"sender" binding:"required,max=30" label:"发送人"`
 }
 
-// 发送邮件测试表单
+// EmailSendForm 发送邮件测试表单
 type EmailSendForm struct {
 	Sender       string `json:"sender" binding:"required,max=30" label:"发送人"`
 	ReceiveEmail string `json:"receive_email" binding:"required,max=30,email" label:"接收邮箱"`
@@ -33,27 +33,27 @@ type EmailSendForm struct {
 	Content      string `json:"content" binding:"required,max=1000" label:"邮件内容"`
 }
 
-// 图床设置表单
+// PicBedSettingForm 图床设置表单
 type PicBedSettingForm struct {
 	SysId       string `json:"sys_id"`
 	StorageType string `json:"storage_type"`
 }
 
-// sm.ms 表单
+// SmmsForm sm.ms 表单
 type SmmsForm struct {
 	SysId       string `json:"sys_id" label:"设置 ID"`
 	StorageType string `json:"storage_type" binding:"required,max=20" label:"设置类型名称"`
 	Token       string `json:"token" binding:"required,max=100"`
 }
 
-// imgbb 表单
+// ImgbbForm imgbb 表单
 type ImgbbForm struct {
 	SysId       string `json:"sys_id" label:"设置 ID"`
 	StorageType string `json:"storage_type" binding:"required,max=20" label:"设置类型名称"`
 	Token       string `json:"token" binding:"required,max=100"`
 }
 
-// 腾讯云 COS 表单
+// TencentCosForm 腾讯云 COS 表单
 type TencentCosForm struct {
 	SysId       string `json:"sys_id" label:"设置 ID"`
 	StorageType string `json:"storage_type" binding:"required,max=20" label:"设置类型名称"`

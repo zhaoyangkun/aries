@@ -17,6 +17,7 @@ import (
 type ArticleHandler struct {
 }
 
+// GetAllArticles
 // @Summary 获取所有文章
 // @Tags 文章
 // @version 1.0
@@ -43,6 +44,7 @@ func (a *ArticleHandler) GetAllArticles(ctx *gin.Context) {
 	})
 }
 
+// GetArticlesByPage
 // @Summary 分页获取文章
 // @Tags 文章
 // @version 1.0
@@ -78,6 +80,7 @@ func (a *ArticleHandler) GetArticlesByPage(ctx *gin.Context) {
 	})
 }
 
+// GetArticleById
 // @Summary 根据 ID 获取文章
 // @Tags 文章
 // @version 1.0
@@ -107,6 +110,7 @@ func (a *ArticleHandler) GetArticleById(ctx *gin.Context) {
 	})
 }
 
+// AddArticle
 // @Summary 添加文章
 // @Tags 文章
 // @version 1.0
@@ -156,6 +160,7 @@ func (a *ArticleHandler) AddArticle(ctx *gin.Context) {
 	})
 }
 
+// UpdateArticle
 // @Summary 修改文章
 // @Tags 文章
 // @version 1.0
@@ -207,6 +212,7 @@ func (a *ArticleHandler) UpdateArticle(ctx *gin.Context) {
 	})
 }
 
+// DeleteArticle
 // @Summary 删除文章
 // @Tags 文章
 // @version 1.0
@@ -238,6 +244,7 @@ func (a *ArticleHandler) DeleteArticle(ctx *gin.Context) {
 	})
 }
 
+// MultiDelArticles
 // @Summary 批量删除文章
 // @Tags 文章
 // @version 1.0
@@ -278,6 +285,7 @@ func (a *ArticleHandler) MultiDelArticles(ctx *gin.Context) {
 	})
 }
 
+// ImportArticlesFromFiles
 // @Summary 从文件导入文章
 // @Tags 文章
 // @version 1.0
@@ -379,6 +387,7 @@ func (a *ArticleHandler) ImportArticlesFromFiles(ctx *gin.Context) {
 	})
 }
 
+// MoveArticleUp
 // @Summary 向上移动文章
 // @Tags 文章
 // @version 1.0
@@ -427,6 +436,7 @@ func (a *ArticleHandler) MoveArticleUp(ctx *gin.Context) {
 	})
 }
 
+// MoveArticleDown
 // @Summary 向下移动文章
 // @Tags 文章
 // @version 1.0

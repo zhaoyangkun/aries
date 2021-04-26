@@ -7,7 +7,7 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
-// 系统设置条目
+// SysSettingItem 系统设置条目
 type SysSettingItem struct {
 	gorm.Model
 	SysId uint   `json:"sys_id"`                                 // 系统设置 ID
@@ -15,7 +15,7 @@ type SysSettingItem struct {
 	Val   string `gorm:"type:Text;not null;" json:"val"`         // 值
 }
 
-// 根据设置名称获取系统设置条目
+// GetBySysSettingName 根据设置名称获取系统设置条目
 func (SysSettingItem) GetBySysSettingName(settingName string) (map[string]string, error) {
 	var sysSetting SysSetting
 	var itemList []SysSettingItem
@@ -49,7 +49,7 @@ func (SysSettingItem) GetBySysSettingName(settingName string) (map[string]string
 	return result, err
 }
 
-// 批量创建设置条目
+// MultiCreateOrUpdate 批量创建设置条目
 func (SysSettingItem) MultiCreateOrUpdate(itemList []SysSettingItem) error {
 	// 开启事务
 	tx := db.Db.Begin()

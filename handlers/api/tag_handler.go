@@ -14,6 +14,7 @@ import (
 type TagHandler struct {
 }
 
+// GetAllTags
 // @Summary 获取所有标签
 // @Tags 标签
 // @version 1.0
@@ -40,6 +41,7 @@ func (t *TagHandler) GetAllTags(ctx *gin.Context) {
 	})
 }
 
+// GetTagsByPage
 // @Summary 分页获取标签
 // @Tags 标签
 // @version 1.0
@@ -72,6 +74,7 @@ func (t *TagHandler) GetTagsByPage(ctx *gin.Context) {
 	})
 }
 
+// GetTagById
 // @Summary 根据 ID 获取标签
 // @Tags 标签
 // @version 1.0
@@ -101,6 +104,7 @@ func (t *TagHandler) GetTagById(ctx *gin.Context) {
 	})
 }
 
+// AddTag
 // @Summary 添加标签
 // @Tags 标签
 // @version 1.0
@@ -152,6 +156,7 @@ func (t *TagHandler) AddTag(ctx *gin.Context) {
 	})
 }
 
+// UpdateTag
 // @Summary 修改标签
 // @Tags 标签
 // @version 1.0
@@ -203,6 +208,7 @@ func (t *TagHandler) UpdateTag(ctx *gin.Context) {
 	})
 }
 
+// DeleteTag
 // @Summary 删除标签
 // @Tags 标签
 // @version 1.0
@@ -234,6 +240,7 @@ func (t *TagHandler) DeleteTag(ctx *gin.Context) {
 	})
 }
 
+// MultiDelTags
 // @Summary 批量删除标签
 // @Tags 标签
 // @version 1.0

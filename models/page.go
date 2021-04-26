@@ -8,7 +8,7 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
-// 页面
+// Page 页面
 type Page struct {
 	gorm.Model
 	Title  string `gorm:"type:varchar(100);not null;" json:"title"` // 标题
@@ -17,28 +17,28 @@ type Page struct {
 	MDHtml string `gorm:"type:MediumText;not null;" json:"md_html"` // markdown渲染后页面内容
 }
 
-// 获取所有页面
+// GetAll 获取所有页面
 func (Page) GetAll() (list []Page, err error) {
 	err = db.Db.Find(&list).Error
 
 	return
 }
 
-//根据 ID获取页面
+// GetById 根据 ID获取页面
 func (Page) GetById(id uint) (page Page, err error) {
 	err = db.Db.Where("`id` = ?", id).First(&page).Error
 
 	return
 }
 
-// 根据 URL获取页面
+// GetByUrl 根据 URL获取页面
 func (Page) GetByUrl(url string) (p Page, err error) {
 	err = db.Db.Where("`url` = ?", url).First(&p).Error
 
 	return
 }
 
-// 分页获取页面
+// GetByPage 分页获取页面
 func (Page) GetByPage(page *utils.Pagination, key string) (list []Page, total uint, err error) {
 	query := db.Db.Order("`created_at` desc", true).Find(&list)
 
@@ -51,17 +51,17 @@ func (Page) GetByPage(page *utils.Pagination, key string) (list []Page, total ui
 	return
 }
 
-// 创建页面
+// Create 创建页面
 func (p *Page) Create() error {
 	return db.Db.Create(&p).Error
 }
 
-// 更新页面
+// Update 更新页面
 func (p *Page) Update() error {
 	return db.Db.Model(&Page{}).Updates(&p).Error
 }
 
-// 批量删除页面
+// MultiDelByIds 批量删除页面
 func (Page) MultiDelByIds(ids string) error {
 	idList := strings.Split(ids, ",")
 

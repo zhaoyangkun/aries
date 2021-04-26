@@ -15,6 +15,7 @@ import (
 type NavHandler struct {
 }
 
+// GetAllNavs
 // @Summary 获取所有菜单
 // @Tags 菜单
 // @version 1.0
@@ -41,6 +42,7 @@ func (n *NavHandler) GetAllNavs(ctx *gin.Context) {
 	})
 }
 
+// CreateNav
 // @Summary 添加菜单
 // @Tags 菜单
 // @version 1.0
@@ -90,6 +92,7 @@ func (n *NavHandler) CreateNav(ctx *gin.Context) {
 	})
 }
 
+// UpdateNav
 // @Summary 修改菜单
 // @Tags 菜单
 // @version 1.0
@@ -138,6 +141,7 @@ func (n *NavHandler) UpdateNav(ctx *gin.Context) {
 	})
 }
 
+// MoveNavUp
 // @Summary 向上移动菜单
 // @Tags 菜单
 // @version 1.0
@@ -202,6 +206,7 @@ func (n *NavHandler) MoveNavUp(ctx *gin.Context) {
 	})
 }
 
+// MoveNavDown
 // @Summary 向移下动菜单
 // @Tags 菜单
 // @version 1.0
@@ -266,6 +271,7 @@ func (n *NavHandler) MoveNavDown(ctx *gin.Context) {
 	})
 }
 
+// DeleteNav
 // @Summary 删除菜单
 // @Tags 菜单
 // @version 1.0
@@ -297,6 +303,7 @@ func (n *NavHandler) DeleteNav(ctx *gin.Context) {
 	})
 }
 
+// MultiDelNavs
 // @Summary 批量删除菜单
 // @Tags 菜单
 // @version 1.0

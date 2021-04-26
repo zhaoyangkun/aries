@@ -8,7 +8,7 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
-// 友情链接
+// Link 友情链接
 type Link struct {
 	gorm.Model
 	Category   Category `gorm:"ForeignKey:CategoryId" json:"category"`   // 分类
@@ -19,13 +19,13 @@ type Link struct {
 	Icon       string   `gorm:"type:varchar(255);not null;" json:"icon"` // 图标
 }
 
-// 获取所有友链
+// GetAll 获取所有友链
 func (Link) GetAll() (list []Link, err error) {
 	err = db.Db.Preload("Category").Order("category_id desc,created_at desc", true).Find(&list).Error
 	return
 }
 
-// 分页获取友链
+// GetByPage 分页获取友链
 func (Link) GetByPage(page *utils.Pagination, key string, categoryId uint) ([]Link, uint, error) {
 	var list []Link
 
@@ -44,19 +44,19 @@ func (Link) GetByPage(page *utils.Pagination, key string, categoryId uint) ([]Li
 	return list, total, err
 }
 
-// 根据 ID 获取友链
+// GetById 根据 ID 获取友链
 func (Link) GetById(id string) (link Link, err error) {
 	err = db.Db.Preload("Category").Where("`id` = ?", id).First(&link).Error
 	return
 }
 
-// 添加友链
+// Create 添加友链
 func (link *Link) Create() (err error) {
 	err = db.Db.Create(&link).Error
 	return
 }
 
-// 更新友链
+// Update 更新友链
 func (link *Link) Update() (err error) {
 	err = db.Db.Model(&Link{}).Where("`id` = ?", link.ID).
 		Updates(map[string]interface{}{
@@ -70,12 +70,12 @@ func (link *Link) Update() (err error) {
 	return
 }
 
-// 删除友链
+// DeleteById 删除友链
 func (Link) DeleteById(id string) error {
 	return db.Db.Where("`id` = ?", id).Unscoped().Delete(&Link{}).Error
 }
 
-// 批量删除友链
+// MultiDelByIds 批量删除友链
 func (Link) MultiDelByIds(ids string) error {
 	idList := strings.Split(ids, ",")
 	return db.Db.Where("`id` in (?)", idList).Unscoped().Delete(&Link{}).Error

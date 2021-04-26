@@ -13,7 +13,7 @@ import (
 type PageHandler struct {
 }
 
-// 获取所有页面
+// GetAllPages 获取所有页面
 func (p *PageHandler) GetAllPages(ctx *gin.Context) {
 	list, err := models.Page{}.GetAll()
 	if err != nil {
@@ -33,7 +33,7 @@ func (p *PageHandler) GetAllPages(ctx *gin.Context) {
 	})
 }
 
-// 分页获取页面
+// GetPagesByPage 分页获取页面
 func (p *PageHandler) GetPagesByPage(ctx *gin.Context) {
 	pageForm := forms.PageForm{}
 	_ = ctx.ShouldBindQuery(&pageForm)
@@ -56,7 +56,7 @@ func (p *PageHandler) GetPagesByPage(ctx *gin.Context) {
 	})
 }
 
-// 创建页面
+// CreatePage 创建页面
 func (p *PageHandler) CreatePage(ctx *gin.Context) {
 	addForm := forms.AddPageForm{}
 
@@ -88,7 +88,7 @@ func (p *PageHandler) CreatePage(ctx *gin.Context) {
 	})
 }
 
-// 修改页面
+// UpdatePage 修改页面
 func (p *PageHandler) UpdatePage(ctx *gin.Context) {
 	editForm := forms.EditPageForm{}
 
@@ -120,7 +120,7 @@ func (p *PageHandler) UpdatePage(ctx *gin.Context) {
 	})
 }
 
-// 批量删除页面
+// MultiDelPages 批量删除页面
 func (p *PageHandler) MultiDelPages(ctx *gin.Context) {
 	ids := ctx.Query("ids")
 	if ids == "" {

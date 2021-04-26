@@ -18,6 +18,7 @@ import (
 type SysSettingHandler struct {
 }
 
+// GetBlogVars
 // @Summary 获取博客全局变量
 // @Tags 系统设置
 // @version 1.0
@@ -33,6 +34,7 @@ func (s *SysSettingHandler) GetBlogVars(ctx *gin.Context) {
 	})
 }
 
+// GetSysSettingItem
 // @Summary 获取设置条目
 // @Tags 系统设置
 // @version 1.0
@@ -52,6 +54,7 @@ func (s *SysSettingHandler) GetSysSettingItem(ctx *gin.Context) {
 	})
 }
 
+// SaveSiteSetting
 // @Summary 保存网站配置信息
 // @Tags 系统设置
 // @version 1.0
@@ -122,6 +125,7 @@ func (s *SysSettingHandler) SaveSiteSetting(ctx *gin.Context) {
 	})
 }
 
+// SaveSMTPSetting
 // @Summary 保存 SMTP 服务配置信息
 // @Tags 系统设置
 // @version 1.0
@@ -189,6 +193,7 @@ func (s *SysSettingHandler) SaveSMTPSetting(ctx *gin.Context) {
 	})
 }
 
+// SaveSmmsSetting
 // @Summary 保存 sm.ms 配置信息
 // @Tags 系统设置
 // @version 1.0
@@ -304,6 +309,7 @@ func (s *SysSettingHandler) SaveSmmsSetting(ctx *gin.Context) {
 	})
 }
 
+// SaveImgbbSetting
 // @Summary 保存 imgbb 配置信息
 // @Tags 系统设置
 // @version 1.0
@@ -417,6 +423,7 @@ func (s *SysSettingHandler) SaveImgbbSetting(ctx *gin.Context) {
 	})
 }
 
+// SaveTencentCosSetting
 // @Summary 保存腾讯云 COS 配置信息
 // @Tags 系统设置
 // @version 1.0
@@ -531,6 +538,7 @@ func (s *SysSettingHandler) SaveTencentCosSetting(ctx *gin.Context) {
 	})
 }
 
+// SendTestEmail
 // @Summary 发送测试邮件
 // @Tags 系统设置
 // @version 1.0
@@ -613,6 +621,7 @@ func (s *SysSettingHandler) SendTestEmail(ctx *gin.Context) {
 	})
 }
 
+// GetAdminIndexData
 // @Summary 获取后台首页数据
 // @Tags 系统设置
 // @version 1.0
@@ -677,6 +686,7 @@ func (s *SysSettingHandler) GetAdminIndexData(ctx *gin.Context) {
 	})
 }
 
+// SaveCommentSetting
 // @Summary 保存评论配置信息
 // @Tags 系统设置
 // @version 1.0
@@ -743,6 +753,7 @@ func (s *SysSettingHandler) SaveCommentSetting(ctx *gin.Context) {
 	})
 }
 
+// SaveParamSetting
 // @Summary 保存参数配置
 // @Tags 系统设置
 // @version 1.0
@@ -809,6 +820,7 @@ func (s *SysSettingHandler) SaveParamSetting(ctx *gin.Context) {
 	})
 }
 
+// SaveSocialInfo
 // @Summary 保存社交信息
 // @Tags 系统设置
 // @version 1.0

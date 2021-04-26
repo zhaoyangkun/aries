@@ -15,6 +15,7 @@ import (
 type CategoryHandler struct {
 }
 
+// GetAllCategories
 // @Summary 获取所有分类
 // @Tags 分类
 // @version 1.0
@@ -55,6 +56,7 @@ func (c *CategoryHandler) GetAllCategories(ctx *gin.Context) {
 	})
 }
 
+// GetAllParentCategories
 // @Summary 获取所有父级分类
 // @Tags 分类
 // @version 1.0
@@ -95,6 +97,7 @@ func (c *CategoryHandler) GetAllParentCategories(ctx *gin.Context) {
 	})
 }
 
+// GetCategoriesByPage
 // @Summary 分页获取分类数据
 // @Tags 分类
 // @version 1.0
@@ -137,6 +140,7 @@ func (c *CategoryHandler) GetCategoriesByPage(ctx *gin.Context) {
 	})
 }
 
+// AddArticleCategory
 // @Summary 添加文章分类
 // @Tags 分类
 // @version 1.0
@@ -198,6 +202,7 @@ func (c *CategoryHandler) AddArticleCategory(ctx *gin.Context) {
 	})
 }
 
+// UpdateArticleCategory
 // @Summary 修改文章分类
 // @Tags 分类
 // @version 1.0
@@ -259,6 +264,7 @@ func (c *CategoryHandler) UpdateArticleCategory(ctx *gin.Context) {
 	})
 }
 
+// AddLinkCategory
 // @Summary 添加友链分类
 // @Tags 分类
 // @version 1.0
@@ -307,6 +313,7 @@ func (c *CategoryHandler) AddLinkCategory(ctx *gin.Context) {
 	})
 }
 
+// UpdateLinkCategory
 // @Summary 修改友链分类
 // @Tags 分类
 // @version 1.0
@@ -355,6 +362,7 @@ func (c *CategoryHandler) UpdateLinkCategory(ctx *gin.Context) {
 	})
 }
 
+// AddGalleryCategory
 // @Summary 添加图库分类
 // @Tags 分类
 // @version 1.0
@@ -403,6 +411,7 @@ func (c *CategoryHandler) AddGalleryCategory(ctx *gin.Context) {
 	})
 }
 
+// UpdateGalleryCategory
 // @Summary 修改图库分类
 // @Tags 分类
 // @version 1.0
@@ -451,6 +460,7 @@ func (c *CategoryHandler) UpdateGalleryCategory(ctx *gin.Context) {
 	})
 }
 
+// DeleteCategory
 // @Summary 删除分类
 // @Tags 分类
 // @version 1.0
@@ -491,6 +501,7 @@ func (c *CategoryHandler) DeleteCategory(ctx *gin.Context) {
 	})
 }
 
+// MultiDelCategories
 // @Summary 批量删除分类
 // @Tags 分类
 // @version 1.0

@@ -8,7 +8,7 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
-// 图库
+// Gallery 图库
 type Gallery struct {
 	gorm.Model
 	Category   Category `gorm:"ForeignKey:CategoryId"`                   // 分类
@@ -19,20 +19,20 @@ type Gallery struct {
 	Location   string   `gorm:"type:varchar(50);" json:"location"`       // 拍摄地点
 }
 
-// 获取所有图库
+// GetAll 获取所有图库
 func (Gallery) GetAll() (list []Gallery, err error) {
 	err = db.Db.Preload("Category").Order("created_at desc", true).Find(&list).Error
 
 	return
 }
 
-// 根据 ID 获取图库
+// GetById 根据 ID 获取图库
 func (Gallery) GetById(id uint) (gallery Gallery, err error) {
 	err = db.Db.Where("`id` = ?", id).First(&gallery).Error
 	return
 }
 
-// 分页获取图库
+// GetByPage 分页获取图库
 func (g Gallery) GetByPage(page *utils.Pagination, categoryId uint, key string) (list []Gallery, total uint, err error) {
 	query := db.Db.Preload("Category").Order("created_at desc", true).Find(&list)
 
@@ -49,17 +49,17 @@ func (g Gallery) GetByPage(page *utils.Pagination, categoryId uint, key string) 
 	return
 }
 
-// 创建图库
+// Create 创建图库
 func (g *Gallery) Create() error {
 	return db.Db.Create(&g).Error
 }
 
-// 更新图库
+// Update 更新图库
 func (g *Gallery) Update() error {
 	return db.Db.Model(&Gallery{}).Updates(&g).Error
 }
 
-// 批量删除图库
+// MultiDelByIds 批量删除图库
 func (Gallery) MultiDelByIds(ids string) error {
 	idList := strings.Split(ids, ",")
 

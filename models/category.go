@@ -9,7 +9,7 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
-// 分类
+// Category 分类
 type Category struct {
 	gorm.Model
 	Children []*Category `gorm:"ForeignKey:ParentId" json:"children"`            // 子级分类列表
@@ -20,7 +20,7 @@ type Category struct {
 	Count    uint        `gorm:"type:int;default:0;" json:"count"`               // 文章数量
 }
 
-// 根据类别获取所有分类
+// GetAllByType 根据类别获取所有分类
 func (category Category) GetAllByType(categoryType uint) ([]Category, error) {
 	var categories []Category
 	var children []Category
@@ -52,14 +52,14 @@ func (category Category) GetAllByType(categoryType uint) ([]Category, error) {
 	return categories, err
 }
 
-// 获取有图库的分类
+// GetGalleryCategories 获取有图库的分类
 func (category Category) GetGalleryCategories() (list []Category, err error) {
 	err = db.Db.Where("`id` in (select `category_id` from `galleries` group by `category_id`)").Find(&list).Error
 
 	return
 }
 
-// 获取分类数据（分页 +　搜索）
+// GetByPage 获取分类数据（分页 +　搜索）
 func (category Category) GetByPage(page *utils.Pagination, key string, categoryType uint) ([]Category, uint, error) {
 	var list []Category // 保存结果集
 	var children []Category
@@ -97,30 +97,30 @@ func (category Category) GetByPage(page *utils.Pagination, key string, categoryT
 	return list, total, err
 }
 
-// 获取所有父类
+// GetAllParents 获取所有父类
 func (category Category) GetAllParents(categoryType uint) (list []Category, err error) {
 	err = db.Db.Where("`parent_id` = 0 and `type` = ?", categoryType).Find(&list).Error
 	return
 }
 
-// 根据分类名称获取分类
+// GetByName 根据分类名称获取分类
 func (Category) GetByName(name string, categoryType uint) (category Category, err error) {
 	err = db.Db.Where("`name` = ? and `type` = ?", name, categoryType).First(&category).Error
 	return
 }
 
-// 根据 URL 获取分类
+// GetByUrl 根据 URL 获取分类
 func (Category) GetByUrl(url string) (category Category, err error) {
 	err = db.Db.Where("`url` = ?", url).First(&category).Error
 	return
 }
 
-// 添加分类
+// Create 添加分类
 func (category *Category) Create() error {
 	return db.Db.Create(&category).Error
 }
 
-// 修改分类
+// Update 修改分类
 func (category *Category) Update() error {
 	// 使用 map 来更新，避免 gorm 默认不更新值为 nil, false, 0 的字段
 	return db.Db.Model(&category).
@@ -132,7 +132,7 @@ func (category *Category) Update() error {
 		}).Error
 }
 
-// 删除分类
+// DeleteById 删除分类
 func (category Category) DeleteById(id uint) error {
 	tx := db.Db.Begin()
 	defer func() {
@@ -166,7 +166,7 @@ func (category Category) DeleteById(id uint) error {
 	return tx.Commit().Error
 }
 
-// 批量删除分类
+// MultiDelByIds 批量删除分类
 func (category Category) MultiDelByIds(ids string) error {
 	tx := db.Db.Begin()
 	defer func() {

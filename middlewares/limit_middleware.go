@@ -9,10 +9,12 @@ import (
 
 var bucket *ratelimit.Bucket
 
+// InitBucket 初始化 Bucket
 func InitBucket(fillInternal time.Duration, capacity int64) {
 	bucket = ratelimit.NewBucket(fillInternal, capacity)
 }
 
+// Limiter 限流中间件
 func Limiter() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		if bucket.TakeAvailable(1) < 1 {

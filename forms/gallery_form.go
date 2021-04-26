@@ -7,14 +7,14 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
-// 图库分页表单
+// GalleryPageForm 图库分页表单
 type GalleryPageForm struct {
 	CategoryId uint   `form:"category_id"` // 分类 ID
 	Key        string `form:"key"`         // 关键词
 	utils.Pagination
 }
 
-// 添加图库表单
+// AddGalleryForm 添加图库表单
 type AddGalleryForm struct {
 	CategoryId uint   `json:"category_id" label:"分类 ID"`
 	URL        string `binding:"required,max=255,url" json:"url" label:"图片地址"`

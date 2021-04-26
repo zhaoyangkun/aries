@@ -14,6 +14,7 @@ import (
 type GalleryHandler struct {
 }
 
+// GetAllGalleries
 // @Summary 获取所有图库
 // @Tags 图库
 // @version 1.0
@@ -40,6 +41,7 @@ func (g *GalleryHandler) GetAllGalleries(ctx *gin.Context) {
 	})
 }
 
+// GetGalleryById
 // @Summary 根据 ID 获取图库
 // @Tags 图库
 // @version 1.0
@@ -79,6 +81,7 @@ func (g *GalleryHandler) GetGalleryById(ctx *gin.Context) {
 	})
 }
 
+// GetGalleriesByPage
 // @Summary 分页获取图库
 // @Tags 图库
 // @version 1.0
@@ -112,6 +115,7 @@ func (g *GalleryHandler) GetGalleriesByPage(ctx *gin.Context) {
 	})
 }
 
+// CreateGallery
 // @Summary 创建图库
 // @Tags 图库
 // @version 1.0
@@ -148,6 +152,7 @@ func (g *GalleryHandler) CreateGallery(ctx *gin.Context) {
 	})
 }
 
+// UpdateGallery
 // @Summary 修改图库
 // @Tags 图库
 // @version 1.0
@@ -184,6 +189,7 @@ func (g *GalleryHandler) UpdateGallery(ctx *gin.Context) {
 	})
 }
 
+// MultiDelGalleries
 // @Summary 批量删除图库
 // @Tags 图库
 // @version 1.0

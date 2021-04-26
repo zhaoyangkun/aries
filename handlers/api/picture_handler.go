@@ -41,6 +41,7 @@ var (
 type PictureHandler struct {
 }
 
+// GetPicturesByPage
 // @Summary 分页获取图片
 // @Tags 图床
 // @version 1.0
@@ -76,6 +77,7 @@ func (p *PictureHandler) GetPicturesByPage(ctx *gin.Context) {
 	})
 }
 
+// UploadImgToAttachment
 // @Summary 上传图片到附件
 // @Tags 图床
 // @version 1.0
@@ -189,6 +191,7 @@ func (p *PictureHandler) UploadImgToAttachment(ctx *gin.Context) {
 	})
 }
 
+// MultiDelPictures
 // @Summary 批量删除图片
 // @Tags 图床
 // @version 1.0

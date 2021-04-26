@@ -15,6 +15,7 @@ import (
 type CommentHandler struct {
 }
 
+// GetAllComments
 // @Summary 获取所有评论
 // @Tags 评论
 // @version 1.0
@@ -41,6 +42,7 @@ func (c *CommentHandler) GetAllComments(ctx *gin.Context) {
 	})
 }
 
+// GetCommentsByPage
 // @Summary 分页获取评论
 // @Tags 评论
 // @version 1.0
@@ -98,6 +100,7 @@ func (c *CommentHandler) GetCommentsByPage(ctx *gin.Context) {
 	})
 }
 
+// AddComment
 // @Summary 发表评论
 // @Tags 评论
 // @version 1.0
@@ -214,6 +217,7 @@ func (c *CommentHandler) AddComment(ctx *gin.Context) {
 	})
 }
 
+// UpdateComment
 // @Summary 修改评论
 // @Tags 评论
 // @version 1.0
@@ -249,6 +253,7 @@ func (c *CommentHandler) UpdateComment(ctx *gin.Context) {
 	})
 }
 
+// DeleteComment
 // @Summary 删除评论
 // @Tags 评论
 // @version 1.0
@@ -277,6 +282,7 @@ func (c *CommentHandler) DeleteComment(ctx *gin.Context) {
 	})
 }
 
+// MultiDelComments
 // @Summary 批量删除评论
 // @Tags 评论
 // @version 1.0

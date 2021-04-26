@@ -13,6 +13,7 @@ import (
 type LinkHandler struct {
 }
 
+// GetAllLinks
 // @Summary 获取所有友链
 // @Tags 友链
 // @version 1.0
@@ -39,6 +40,7 @@ func (l *LinkHandler) GetAllLinks(ctx *gin.Context) {
 	})
 }
 
+// GetLinksByPage
 // @Summary 分页获取友链
 // @Tags 友链
 // @version 1.0
@@ -69,6 +71,7 @@ func (l *LinkHandler) GetLinksByPage(ctx *gin.Context) {
 	})
 }
 
+// CreateLink
 // @Summary 添加友链
 // @Tags 友链
 // @version 1.0
@@ -106,6 +109,7 @@ func (l *LinkHandler) CreateLink(ctx *gin.Context) {
 	})
 }
 
+// UpdateLink
 // @Summary 修改友链
 // @Tags 友链
 // @version 1.0
@@ -143,6 +147,7 @@ func (l *LinkHandler) UpdateLink(ctx *gin.Context) {
 	})
 }
 
+// DeleteLink
 // @Summary 删除友链
 // @Tags 友链
 // @version 1.0
@@ -172,6 +177,7 @@ func (l *LinkHandler) DeleteLink(ctx *gin.Context) {
 	})
 }
 
+// MultiDelLinks
 // @Summary 删除友链
 // @Tags 友链
 // @version 1.0

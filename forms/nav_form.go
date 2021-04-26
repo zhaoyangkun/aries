@@ -6,7 +6,7 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
-// 添加菜单表单
+// NavAddForm 添加菜单表单
 type NavAddForm struct {
 	ParentNavId uint   `json:"parent_nav_id" label:"父级菜单 ID"`
 	OpenType    uint   `json:"open_type" binding:"max=1" label:"打开方式"`
@@ -15,7 +15,7 @@ type NavAddForm struct {
 	Icon        string `json:"icon" binding:"max=255" label:"图标"`
 }
 
-// 修改菜单表单
+// NavEditForm 修改菜单表单
 type NavEditForm struct {
 	ID          uint   `json:"id" binding:"required" label:"ID"`
 	ParentNavId uint   `json:"parent_nav_id" label:"父级菜单 ID"`
@@ -25,7 +25,7 @@ type NavEditForm struct {
 	Icon        string `json:"icon" binding:"max=255" label:"图标"`
 }
 
-// 绑定添加菜单表单到菜单实体
+// BindToModel 绑定添加菜单表单到菜单实体
 func (form NavAddForm) BindToModel() models.Nav {
 	return models.Nav{
 		ParentNavId: form.ParentNavId,
@@ -36,7 +36,7 @@ func (form NavAddForm) BindToModel() models.Nav {
 	}
 }
 
-// 绑定修改菜单表单到菜单实体
+// BindToModel 绑定修改菜单表单到菜单实体
 func (form NavEditForm) BindToModel() models.Nav {
 	return models.Nav{
 		Model:       gorm.Model{ID: form.ID},

@@ -33,7 +33,7 @@ func transTagName(libTans, err interface{}) string {
 	return ""
 }
 
-// 获取表单错误
+// GetFormError 获取表单错误
 func GetFormError(err error) string {
 	// 翻译表单错误
 	if errs, ok := err.(validator.ValidationErrors); ok {
@@ -43,7 +43,7 @@ func GetFormError(err error) string {
 	return "数据类型转换错误"
 }
 
-// 判断字符串数组是否包含某个元素
+// IsContain 判断字符串数组是否包含某个元素
 func IsContain(itemList []string, item string) bool {
 	for _, val := range itemList {
 		if item == val {

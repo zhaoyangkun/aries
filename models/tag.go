@@ -8,7 +8,7 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
-// 标签
+// Tag 标签
 type Tag struct {
 	gorm.Model
 	ArticleList []Article `gorm:"many2many:tag_article" json:"article_list"` // 文章列表
@@ -16,7 +16,7 @@ type Tag struct {
 	Count       uint      `gorm:"type:int;default:0;" json:"count"`          // 文章数量
 }
 
-// 获取所有标签
+// GetAll 获取所有标签
 func (Tag) GetAll() ([]Tag, error) {
 	var list []Tag
 	err := db.Db.Preload("ArticleList").Find(&list).Error
@@ -24,7 +24,7 @@ func (Tag) GetAll() ([]Tag, error) {
 	return list, err
 }
 
-// 根据主键获取标签
+// GetById 根据主键获取标签
 func (Tag) GetById(id string) (Tag, error) {
 	var t Tag
 	err := db.Db.Where("`id` = ?", id).First(&t).Error
@@ -32,13 +32,13 @@ func (Tag) GetById(id string) (Tag, error) {
 	return t, err
 }
 
-// 根据名称获取标签
+// GetByName 根据名称获取标签
 func (Tag) GetByName(name string) (tag Tag, err error) {
 	err = db.Db.Where("`name` = ?", name).First(&tag).Error
 	return
 }
 
-// 分页获取标签
+// GetByPage 分页获取标签
 func (tag Tag) GetByPage(page *utils.Pagination, key string) ([]Tag, uint, error) {
 	var list []Tag
 
@@ -54,17 +54,17 @@ func (tag Tag) GetByPage(page *utils.Pagination, key string) ([]Tag, uint, error
 	return list, total, err
 }
 
-// 添加标签
+// Create 添加标签
 func (tag *Tag) Create() error {
 	return db.Db.Create(tag).Error
 }
 
-// 更新标签
+// Update 更新标签
 func (tag *Tag) Update() error {
 	return db.Db.Model(&Tag{}).Updates(tag).Error
 }
 
-// 删除标签
+// DeleteById 删除标签
 func (Tag) DeleteById(id string) error {
 	// 开启事务
 	tx := db.Db.Begin()
@@ -94,7 +94,7 @@ func (Tag) DeleteById(id string) error {
 	return tx.Commit().Error
 }
 
-// 批量删除标签
+// MultiDelByIds 批量删除标签
 func (Tag) MultiDelByIds(ids string) error {
 	// 开始事务
 	tx := db.Db.Begin()

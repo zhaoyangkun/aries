@@ -4,7 +4,7 @@ import (
 	"aries/models"
 )
 
-// 登录表单
+// LoginForm 登录表单
 type LoginForm struct {
 	Username   string `json:"username" binding:"required,min=3,max=30" label:"用户名"`   // 用户名
 	Pwd        string `json:"pwd" binding:"required,min=6,max=20" label:"密码"`         // 密码
@@ -12,7 +12,7 @@ type LoginForm struct {
 	CaptchaVal string `json:"captcha_val" binding:"required,min=4,max=4" label:"验证码"` // 验证码
 }
 
-// 注册表单
+// RegisterForm 注册表单
 type RegisterForm struct {
 	Username  string `json:"username" binding:"required,min=3,max=30" label:"用户名"`
 	Pwd       string `json:"pwd" binding:"required,min=6,max=20" label:"密码"`
@@ -22,12 +22,12 @@ type RegisterForm struct {
 	SiteUrl   string `json:"site_url" binding:"required,max=255,url" label:"网站地址"`
 }
 
-// 忘记密码表单
+// ForgetPwdForm 忘记密码表单
 type ForgetPwdForm struct {
 	Email string `json:"email" binding:"required,max=30,email" label:"邮箱"`
 }
 
-// 重置密码表单
+// ResetPwdForm 重置密码表单
 type ResetPwdForm struct {
 	Email      string `json:"email" binding:"required,max=30,email" label:"邮箱"`
 	Pwd        string `json:"pwd" binding:"required,min=6,max=20" label:"密码"`
@@ -35,7 +35,7 @@ type ResetPwdForm struct {
 	VerifyCode string `json:"verify_code" binding:"required,min=6,max=6" label:"验证码"`
 }
 
-// 绑定登录表单到实体结构
+// BindToModel 绑定登录表单到实体结构
 func (form LoginForm) BindToModel() models.User {
 	return models.User{
 		Username: form.Username,
@@ -43,7 +43,7 @@ func (form LoginForm) BindToModel() models.User {
 	}
 }
 
-// 绑定注册表单到实体结构
+// BindToModel 绑定注册表单到实体结构
 func (form RegisterForm) BindToModel() models.User {
 	return models.User{
 		Username: form.Username,

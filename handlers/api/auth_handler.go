@@ -18,6 +18,7 @@ import (
 type AuthHandler struct {
 }
 
+// Register
 // @Summary 注册
 // @Tags 授权
 // @version 1.0
@@ -110,6 +111,7 @@ func (a *AuthHandler) Register(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, result)
 }
 
+// Login
 // @Summary 登录
 // @Tags 授权
 // @version 1.0
@@ -187,6 +189,7 @@ func (a *AuthHandler) Login(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, result) // 返回 json
 }
 
+// CreateCaptcha
 // @Summary 创建验证码
 // @Tags 授权
 // @version 1.0
@@ -218,6 +221,7 @@ func (a *AuthHandler) CreateCaptcha(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, result) // 返回 json 数据
 }
 
+// ForgetPwd
 // @Summary 忘记密码
 // @Tags 授权
 // @version 1.0
@@ -297,6 +301,7 @@ func (a *AuthHandler) ForgetPwd(ctx *gin.Context) {
 	})
 }
 
+// ResetPwd
 // @Summary 重置密码
 // @Tags 授权
 // @version 1.0

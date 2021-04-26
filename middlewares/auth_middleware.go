@@ -7,7 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-//  JWT 权限校验中间件
+// JWTAuth JWT 权限校验中间件
 func JWTAuth() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		token := ctx.Request.Header.Get("token") // 从请求体头部获取 token

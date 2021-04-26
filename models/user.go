@@ -7,7 +7,7 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
-// 用户
+// User 用户
 type User struct {
 	gorm.Model
 	Username  string `gorm:"type:varchar(30);not null;" json:"username"`  // 用户名
@@ -18,7 +18,7 @@ type User struct {
 	Signature string `gorm:"type:varchar(255);" json:"signature"`         // 个性签名
 }
 
-// 获取所有用户
+// GetAll 获取所有用户
 func (user User) GetAll() ([]User, error) {
 	var users []User
 	err := db.Db.Find(&users).Error
@@ -26,7 +26,7 @@ func (user User) GetAll() ([]User, error) {
 	return users, err
 }
 
-// 根据用户名和密码获取用户
+// GetByUsername 根据用户名和密码获取用户
 func (user User) GetByUsername() (User, error) {
 	var u User
 	err := db.Db.Where("`username` = ? or `email` = ?", user.Username, user.Username).
@@ -43,7 +43,7 @@ func (user User) GetByEmail() (User, error) {
 	return u, err
 }
 
-// 创建用户
+// Create 创建用户
 func (user User) Create() error {
 	hashedPwd, err := utils.EncryptPwd(user.Pwd) // 加密密码
 	if err != nil {
@@ -55,7 +55,7 @@ func (user User) Create() error {
 	return db.Db.Create(&user).Error
 }
 
-// 更新用户
+// Update 更新用户
 func (user User) Update() error {
 	return db.Db.Model(&User{}).Updates(map[string]interface{}{
 		"username":  user.Username,
@@ -66,7 +66,7 @@ func (user User) Update() error {
 	}).Error
 }
 
-// 修改密码
+// UpdatePwd 修改密码
 func (user User) UpdatePwd() error {
 	hashedPwd, err := utils.EncryptPwd(user.Pwd) // 加密密码
 	if err != nil {

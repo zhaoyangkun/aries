@@ -9,14 +9,14 @@ const (
 	ServerError  = 104 // 服务器错误
 )
 
-// RestFulApi 返回信息结构
+// Result RestFulApi 返回信息结构
 type Result struct {
 	Code int         `json:"code" example:"100"` // 状态码
 	Msg  string      `json:"msg" example:"密码错误"` // 提示
 	Data interface{} `json:"data"`               // 数据
 }
 
-// 令牌结构
+// Token 令牌结构
 type Token struct {
 	Token string `json:"token"` // 令牌
 	//RefreshToken string `json:"refresh_token"`
@@ -25,7 +25,7 @@ type Token struct {
 	UserImg  string `json:"user_img"` // 头像
 }
 
-// 验证码结构
+// Captcha 验证码结构
 type Captcha struct {
 	Id     string `json:"id"`
 	ImgUrl string `json:"img_url"`

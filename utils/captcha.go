@@ -4,7 +4,7 @@ import (
 	"github.com/mojocn/base64Captcha"
 )
 
-// 验证码结构体
+// CaptchaConfig 验证码结构体
 type CaptchaConfig struct {
 	Id            string                       `json:"id"`
 	CaptchaType   string                       `json:"captcha_type"`
@@ -18,7 +18,7 @@ type CaptchaConfig struct {
 
 var store = base64Captcha.DefaultMemStore
 
-// 生成验证码
+// GenerateCaptcha 生成验证码
 func GenerateCaptcha(captcha *CaptchaConfig) (string, error) {
 	var driver base64Captcha.Driver
 
@@ -51,7 +51,7 @@ func GenerateCaptcha(captcha *CaptchaConfig) (string, error) {
 	return b64s, nil
 }
 
-// 校验验证码
+// CaptchaVerify 校验验证码
 func CaptchaVerify(captcha *CaptchaConfig) bool {
 	return store.Verify(captcha.Id, captcha.VerifyValue, false)
 }

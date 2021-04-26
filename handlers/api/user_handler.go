@@ -13,6 +13,7 @@ import (
 type UserHandler struct {
 }
 
+// GetAllUsers
 // @Summary 获取所有用户
 // @Tags 用户
 // @version 1.0
@@ -39,6 +40,7 @@ func (u *UserHandler) GetAllUsers(ctx *gin.Context) {
 	})
 }
 
+// UpdateUser
 // @Summary 更新用户信息
 // @Tags 用户
 // @version 1.0
@@ -76,6 +78,7 @@ func (u *UserHandler) UpdateUser(ctx *gin.Context) {
 	})
 }
 
+// UpdateUserPwd
 // @Summary 修改密码
 // @Tags 用户
 // @version 1.0

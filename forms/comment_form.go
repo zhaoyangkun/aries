@@ -7,7 +7,7 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
-// 评论分页表单
+// CommentPageForm 评论分页表单
 type CommentPageForm struct {
 	Key              string `form:"key"`        // 关键词
 	Type             uint   `form:"type"`       // 类型
@@ -18,7 +18,7 @@ type CommentPageForm struct {
 	utils.Pagination        // 分页结构
 }
 
-// 添加评论表单
+// CommentAddForm 添加评论表单
 type CommentAddForm struct {
 	AdminUserId     uint   `json:"admin_user_id" label:"博主 ID"`                            // 博主 ID
 	ArticleId       uint   `json:"article_id" label:"文章 ID"`                               // 文章 ID
@@ -37,7 +37,7 @@ type CommentAddForm struct {
 	IsChecked       bool   `json:"is_checked"`                                             // 是否通过审核
 }
 
-// 修改评论表单
+// CommentEditForm 修改评论表单
 type CommentEditForm struct {
 	ID              uint   `json:"id" binding:"required" label:"ID"`                       // ID
 	AdminUserId     uint   `json:"admin_user_id" label:"博主 ID"`                            // 博主 ID
@@ -56,7 +56,7 @@ type CommentEditForm struct {
 	IsChecked       bool   `json:"is_checked"`                                             // 是否通过审核
 }
 
-// 绑定添加评论表单数据到实体结构
+// BindToModel 绑定添加评论表单数据到实体结构
 func (form CommentAddForm) BindToModel() models.Comment {
 	return models.Comment{
 		AdminUserId:     form.AdminUserId,
@@ -77,7 +77,7 @@ func (form CommentAddForm) BindToModel() models.Comment {
 	}
 }
 
-// 绑定修改评论表单数据到实体结构
+// BindToModel 绑定修改评论表单数据到实体结构
 func (form CommentEditForm) BindToModel() models.Comment {
 	return models.Comment{
 		Model:           gorm.Model{ID: form.ID},

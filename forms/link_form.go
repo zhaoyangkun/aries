@@ -7,14 +7,14 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
-// 友链分页表单
+// LinkPageForm 友链分页表单
 type LinkPageForm struct {
 	Key              string `form:"key"`         // 关键词
 	CategoryId       uint   `form:"category_id"` // 分类 ID
 	utils.Pagination        // 分页结构
 }
 
-// 添加友链表单
+// LinkAddForm 添加友链表单
 type LinkAddForm struct {
 	CategoryId uint   `json:"category_id" label:"分类 ID"`
 	Name       string `json:"name" binding:"required,max=100" label:"网站名称"`

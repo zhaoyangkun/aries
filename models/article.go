@@ -11,7 +11,7 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
-// 文章
+// Article 文章
 type Article struct {
 	gorm.Model
 	User             User     `gorm:"ForeignKey:UserId;not null;" json:"user"`             // 用户
@@ -36,13 +36,13 @@ type Article struct {
 	VisitCount       uint     `gorm:"type:int;default:0;" json:"visit_count"`              // 浏览数
 }
 
-// 归档
+// Archive 归档
 type Archive struct {
 	Year  int `json:"year"`
 	Month int `json:"month"`
 }
 
-// 获取文章总数
+// GetCount 获取文章总数
 func (Article) GetCount() (int, error) {
 	count := 0
 	err := db.Db.Model(&Article{}).Count(&count).Error
@@ -50,7 +50,7 @@ func (Article) GetCount() (int, error) {
 	return count, err
 }
 
-// 获取最近发布的文章
+// GetLatest 获取最近发布的文章
 func (Article) GetLatest(limit uint) (list []Article, err error) {
 	err = db.Db.Order("created_at desc", true).Limit(limit).
 		Where("is_published = 1 and is_recycled = 0").Find(&list).Error
@@ -58,7 +58,7 @@ func (Article) GetLatest(limit uint) (list []Article, err error) {
 	return
 }
 
-// 获取所有文章
+// GetAll 获取所有文章
 func (Article) GetAll() (list []Article, err error) {
 	err = db.Db.Preload("Category").Preload("TagList").
 		Order("created_at desc", true).
@@ -67,7 +67,7 @@ func (Article) GetAll() (list []Article, err error) {
 	return
 }
 
-// 根据 ID 获取文章
+// GetById 根据 ID 获取文章
 func (Article) GetById(id string) (article Article, err error) {
 	err = db.Db.Preload("Category").Preload("TagList").
 		Where("`id` = ?", id).First(&article).Error
@@ -75,7 +75,7 @@ func (Article) GetById(id string) (article Article, err error) {
 	return
 }
 
-// 根据分类名获取文章
+// GetByCategoryUrl 根据分类名获取文章
 func (Article) GetByCategoryUrl(page *utils.Pagination, url string) (list []Article, name string, total uint, err error) {
 	category, err := Category{}.GetByUrl(url)
 	if err != nil {
@@ -91,7 +91,7 @@ func (Article) GetByCategoryUrl(page *utils.Pagination, url string) (list []Arti
 	return
 }
 
-// 根据标签名获取文章
+// GetByTagName 根据标签名获取文章
 func (Article) GetByTagName(page *utils.Pagination, tagName string) (list []Article, total uint, err error) {
 	limit := page.Size
 	offset := (page.Page - 1) * page.Size
@@ -116,7 +116,7 @@ func (Article) GetByTagName(page *utils.Pagination, tagName string) (list []Arti
 	return
 }
 
-// 获取上一篇文章
+// GetPrevious 获取上一篇文章
 func (Article) GetPrevious(orderId uint, isTop bool, ignore bool) (article Article, err error) {
 	if ignore {
 		if isTop {
@@ -150,7 +150,7 @@ func (Article) GetPrevious(orderId uint, isTop bool, ignore bool) (article Artic
 	return
 }
 
-// 获取下一篇文章
+// GetNext 获取下一篇文章
 func (Article) GetNext(orderId uint, isTop bool, ignore bool) (article Article, err error) {
 	if ignore {
 		if isTop {
@@ -183,7 +183,7 @@ func (Article) GetNext(orderId uint, isTop bool, ignore bool) (article Article, 
 	return
 }
 
-// 分页获取文章
+// GetByPage 分页获取文章
 func (Article) GetByPage(page *utils.Pagination, key string, state uint,
 	categoryId uint) ([]Article, uint, error) {
 	var list []Article
@@ -225,13 +225,13 @@ func (Article) GetByPage(page *utils.Pagination, key string, state uint,
 	return list, total, err
 }
 
-// 根据 Url 获取文章
+// GetByUrl 根据 Url 获取文章
 func (Article) GetByUrl(url string) (article Article, err error) {
 	err = db.Db.Preload("Category").Preload("TagList").Where("`url` = ?", url).First(&article).Error
 	return
 }
 
-// 添加文章
+// Create 添加文章
 func (article Article) Create(tagIds string) error {
 	// 若摘要为空，截取文章前 100 个字作为摘要
 	if article.Summary == "" {
@@ -338,7 +338,7 @@ func (article Article) Create(tagIds string) error {
 	return tx.Commit().Error
 }
 
-// 更新文章
+// Update 更新文章
 func (article Article) Update(tagIds string) error {
 	// 若摘要为空，截取文章前 100 个字作为摘要
 	if article.Summary == "" {
@@ -466,13 +466,13 @@ func (article Article) Update(tagIds string) error {
 	return tx.Commit().Error
 }
 
-// 更新访问量
+// UpdateVisitCount 更新访问量
 func (article Article) UpdateVisitCount() error {
 	return db.Db.Model(&Article{}).Where("id = ?", article.ID).
 		Update("visit_count", article.VisitCount+1).Error
 }
 
-// 将文章加入回收站或恢复
+// RecycleOrRecover 将文章加入回收站或恢复
 func (article Article) RecycleOrRecover() (err error) {
 	err = db.Db.Model(&Article{}).Where("`id` = ?", article.ID).
 		Updates(map[string]interface{}{
@@ -481,7 +481,7 @@ func (article Article) RecycleOrRecover() (err error) {
 	return
 }
 
-// 向上移动文章
+// MoveUp 向上移动文章
 func (article Article) MoveUp(currId, preId, currOrderId, preOrderId uint) error {
 	// 执行事务
 	return db.Db.Transaction(func(tx *gorm.DB) error {
@@ -502,7 +502,7 @@ func (article Article) MoveUp(currId, preId, currOrderId, preOrderId uint) error
 	})
 }
 
-// 向下移动文章
+// MoveDown 向下移动文章
 func (article Article) MoveDown(currId, nextId, currOrderId, nextOrderId uint) error {
 	// 执行事务
 	return db.Db.Transaction(func(tx *gorm.DB) error {
@@ -523,7 +523,7 @@ func (article Article) MoveDown(currId, nextId, currOrderId, nextOrderId uint) e
 	})
 }
 
-// 删除文章
+// DeleteById 删除文章
 func (Article) DeleteById(id string) error {
 	// 开始事务
 	tx := db.Db.Begin()
@@ -569,7 +569,7 @@ func (Article) DeleteById(id string) error {
 	return tx.Commit().Error
 }
 
-// 批量删除文章
+// MultiDelByIds 批量删除文章
 func (Article) MultiDelByIds(ids string) error {
 	// 开始事务
 	tx := db.Db.Begin()
@@ -617,7 +617,7 @@ func (Article) MultiDelByIds(ids string) error {
 	return tx.Commit().Error
 }
 
-// 从文件导入文章
+// SaveFromFile 从文件导入文章
 func (article Article) SaveFromFile() (err error) {
 	user := User{}
 
@@ -634,7 +634,7 @@ func (article Article) SaveFromFile() (err error) {
 	return
 }
 
-// 归档
+// GetAll 归档
 func (Archive) GetAll() (list []Archive, err error) {
 	err = db.Db.Raw("select year(a.created_at) `year`, month(a.created_at) `month`" +
 		" from articles a" +

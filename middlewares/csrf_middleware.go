@@ -13,7 +13,7 @@ import (
 // 无需 csrfToken 验证的请求方法
 var allowedMethods = []string{"GET", "HEAD", "OPTIONS", "TRACE"}
 
-// csrf 校验中间件
+// Csrf 校验 csrf 中间件
 func Csrf() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		if verifyCsrfToken(ctx) {
@@ -31,7 +31,7 @@ func Csrf() gin.HandlerFunc {
 	}
 }
 
-//创建 csrfToken
+// CreateCsrfToken 创建 csrfToken
 func CreateCsrfToken(ctx *gin.Context) (csrfToken string) {
 	session := sessions.Default(ctx)
 	csrfToken = utils.GetSessionStr(session, "csrfToken")
@@ -46,7 +46,7 @@ func CreateCsrfToken(ctx *gin.Context) (csrfToken string) {
 	return
 }
 
-//校验 csrfToken
+// 校验 csrfToken
 func verifyCsrfToken(ctx *gin.Context) bool {
 	// 请求方法无需校验 csrfToken
 	if utils.IsContain(allowedMethods, ctx.Request.Method) {

@@ -30,12 +30,12 @@ func Year(datetime time.Time) int {
 	return datetime.Year()
 }
 
-// 获取月份
+// Month 获取月份
 func Month(datetime time.Time) int {
 	return int(datetime.Month())
 }
 
-// 获取日
+// Day 获取日
 func Day(datetime time.Time) int {
 	return int(datetime.Day())
 }

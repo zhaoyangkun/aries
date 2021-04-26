@@ -9,7 +9,7 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
-// 评论
+// Comment 评论
 type Comment struct {
 	gorm.Model
 	AdminUserId     uint      `json:"admin_user_id"`                                    // 博主 ID
@@ -35,14 +35,14 @@ type Comment struct {
 	IsChecked       bool      `gorm:"type:bool;default:false" json:"is_checked"`      // 是否通过审核
 }
 
-// 获取评论数量
+// GetCount 获取评论数量
 func (Comment) GetCount() (int, error) {
 	count := 0
 	err := db.Db.Model(&Comment{}).Count(&count).Error
 	return count, err
 }
 
-// 获取能显示的评论数量
+// GetDisCount 获取能显示的评论数量
 func (Comment) GetDisCount(pageId uint, articleId uint) (uint, error) {
 	count := uint(0)
 	query := db.Db.Model(&Comment{}).Where("is_checked = 1 and is_recycled = 0")
@@ -59,27 +59,27 @@ func (Comment) GetDisCount(pageId uint, articleId uint) (uint, error) {
 	return count, err
 }
 
-// 获取最近发表的评论
+// GetLatest 获取最近发表的评论
 func (Comment) GetLatest(limit uint) (list []Comment, err error) {
 	err = db.Db.Preload("Article").Order("created_at desc", true).
 		Limit(limit).Find(&list).Error
 	return
 }
 
-// 获取所有评论
+// GetAll 获取所有评论
 func (Comment) GetAll() (list []Comment, err error) {
 	err = db.Db.Preload("Article").
 		Order("created_at desc", true).Find(&list).Error
 	return
 }
 
-// 根据 ID 获取评论
+// GetById 根据 ID 获取评论
 func (Comment) GetById(id uint) (comment Comment, err error) {
 	err = db.Db.Where("`id` = ?", id).First(&comment).Error
 	return
 }
 
-// 分页获取评论
+// GetByPage 分页获取评论
 func (Comment) GetByPage(page *utils.Pagination, key string, articleId, pageId, commentType, state, isParent uint) (list []Comment,
 	total uint, err error) {
 	query := db.Db.Preload("Article").
@@ -152,13 +152,13 @@ func (Comment) GetByPage(page *utils.Pagination, key string, articleId, pageId, 
 	return
 }
 
-// 创建评论
+// Create 创建评论
 func (comment *Comment) Create() error {
 	comment.MDContent = setting.LuteEngine.MarkdownStr("", comment.Content)
 	return db.Db.Create(&comment).Error
 }
 
-// 更新评论
+// Update 更新评论
 func (comment Comment) Update() error {
 	comment.MDContent = setting.LuteEngine.MarkdownStr("", comment.Content)
 
@@ -171,12 +171,12 @@ func (comment Comment) Update() error {
 		}).Error
 }
 
-// 删除评论
+// DeleteById 删除评论
 func (Comment) DeleteById(id string) error {
 	return db.Db.Where("`id` = ?", id).Unscoped().Delete(&Comment{}).Error
 }
 
-// 批量删除评论
+// MultiDelByIds 批量删除评论
 func (Comment) MultiDelByIds(ids string) error {
 	idList := strings.Split(ids, ",")
 	return db.Db.Where("`id` in (?)", idList).Unscoped().Delete(&Comment{}).Error

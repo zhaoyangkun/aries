@@ -8,7 +8,7 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
-// 图片
+// Picture 图片
 type Picture struct {
 	gorm.Model
 	StorageType string `gorm:"type:varchar(20);not null" json:"storage_type"` // 存储类型
@@ -18,14 +18,14 @@ type Picture struct {
 	Size        uint   `gorm:"int(6)" json:"size"`                            // 空间大小（KB）
 }
 
-// 获取所有图片
+// GetAll 获取所有图片
 func (Picture) GetAll() (list []Picture, err error) {
 	err = db.Db.Find(&list).Error
 
 	return
 }
 
-// 分页获取图片
+// GetByPage 分页获取图片
 func (Picture) GetByPage(page *utils.Pagination, key string, storageType string) (list []Picture, total uint, err error) {
 	query := db.Db.Model(&Picture{}).Order("created_at desc", true)
 
@@ -43,12 +43,12 @@ func (Picture) GetByPage(page *utils.Pagination, key string, storageType string)
 	return
 }
 
-// 创建图片
+// Create 创建图片
 func (p *Picture) Create() error {
 	return db.Db.Create(&p).Error
 }
 
-// 批量删除图片
+// MultiDelByIds 批量删除图片
 func (Picture) MultiDelByIds(ids string) error {
 	idList := strings.Split(ids, ",")
 	return db.Db.Where("`id` in (?)", idList).Unscoped().Delete(&Picture{}).Error

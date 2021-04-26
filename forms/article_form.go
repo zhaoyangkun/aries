@@ -7,7 +7,7 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
-// 文章分页表单
+// ArticlePageForm 文章分页表单
 type ArticlePageForm struct {
 	Key              string `form:"key"`         // 关键词
 	State            uint   `form:"state"`       // 状态
@@ -15,7 +15,7 @@ type ArticlePageForm struct {
 	utils.Pagination        // 分页结构
 }
 
-// 添加文章表单
+// ArticleAddForm 添加文章表单
 type ArticleAddForm struct {
 	UserId           uint   `json:"user_id" binding:"required" label:"用户 ID"`                         // 用户 ID
 	CategoryId       uint   `json:"category_id" label:"分类 ID"`                                        // 分类 ID
@@ -35,7 +35,7 @@ type ArticleAddForm struct {
 	Keywords         string `json:"keywords" label:"SEO 关键词"`                                         // SEO 关键词
 }
 
-// 修改文章表单
+// ArticleEditForm 修改文章表单
 type ArticleEditForm struct {
 	ID               uint   `json:"id" binding:"required" label:"ID"`                     // ID
 	UserId           uint   `json:"user_id" binding:"required" label:"用户 ID"`             // 用户 ID
@@ -56,14 +56,14 @@ type ArticleEditForm struct {
 	Keywords         string `json:"keywords" label:"SEO 关键词"`                             // SEO 关键词
 }
 
-// 文章排序表单
+// ArticleOrderForm 文章排序表单
 type ArticleOrderForm struct {
 	ID      uint `json:"id" binding:"required" label:"ID"`
 	OrderId uint `json:"order_id" binding:"required" label:"排序 ID"`
 	IsTop   bool `json:"is_top" label:"是否置顶"`
 }
 
-// 绑定添加文章表单数据到实体结构
+// BindToModel 绑定添加文章表单数据到实体结构
 func (form ArticleAddForm) BindToModel() models.Article {
 	return models.Article{
 		UserId:           form.UserId,
@@ -84,7 +84,7 @@ func (form ArticleAddForm) BindToModel() models.Article {
 	}
 }
 
-// 绑定修改文章表单数据到实体结构
+// BindToModel 绑定修改文章表单数据到实体结构
 func (form ArticleEditForm) BindToModel() models.Article {
 	return models.Article{
 		Model:            gorm.Model{ID: form.ID},
@@ -106,7 +106,7 @@ func (form ArticleEditForm) BindToModel() models.Article {
 	}
 }
 
-// 绑定文章排序表单数据到文章实体
+// BindToModel 绑定文章排序表单数据到文章实体
 func (form ArticleOrderForm) BindToModel() models.Article {
 	return models.Article{
 		Model:   gorm.Model{ID: form.ID},

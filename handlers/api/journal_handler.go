@@ -14,6 +14,7 @@ import (
 type JournalHandler struct {
 }
 
+// GetAllJournals
 // @Summary 获取所有日志
 // @Tags 日志
 // @version 1.0
@@ -40,6 +41,7 @@ func (j *JournalHandler) GetAllJournals(ctx *gin.Context) {
 	})
 }
 
+// GetJournalById
 // @Summary 根据 ID 获取日志
 // @Tags 日志
 // @version 1.0
@@ -79,6 +81,7 @@ func (j *JournalHandler) GetJournalById(ctx *gin.Context) {
 	})
 }
 
+// GetJournalsByPage
 // @Summary 分页获取日志
 // @Tags 日志
 // @version 1.0
@@ -111,6 +114,7 @@ func (j *JournalHandler) GetJournalsByPage(ctx *gin.Context) {
 	})
 }
 
+// CreateJournal
 // @Summary 创建日志
 // @Tags 日志
 // @version 1.0
@@ -147,6 +151,7 @@ func (j *JournalHandler) CreateJournal(ctx *gin.Context) {
 	})
 }
 
+// UpdateJournal
 // @Summary 更新日志
 // @Tags 日志
 // @version 1.0
@@ -183,6 +188,7 @@ func (j *JournalHandler) UpdateJournal(ctx *gin.Context) {
 	})
 }
 
+// MultiDelJournals
 // @Summary 批量删除日志
 // @Tags 日志
 // @version 1.0
