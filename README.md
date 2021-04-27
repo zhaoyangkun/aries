@@ -191,8 +191,8 @@ Aries 是基于 Gin + GORM + MySQL + Vue + H5 开发的现代化博客系统，�
 
   ```shell
   docker run -p 8088:8088 --name aries --restart=always --network=host \
-  -v ~/.aries:/root/.aries \
-  -v ~/.aries/themes:/src/aries/resources/themes \
+  -v ~/.aries/aries.yaml:/root/.aries/aries.yaml \
+  -v ~/.aries/aries.log:/root/.aries/aries.log \
   -d zhaoyangkun/aries
   ```
 
