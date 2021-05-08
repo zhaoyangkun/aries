@@ -28,7 +28,7 @@
     "nprogress": "^0.2.0",
     "screenfull": "^5.0.2",
     "sortablejs": "^1.10.1",
-    "ua-parser-js": "^0.7.20",
+    "ua-parser-js": "^0.7.24",
     "vditor": "^3.4.6",
     "vue": "^2.6.11",
     "vue-clipboard2": "^0.3.1",
