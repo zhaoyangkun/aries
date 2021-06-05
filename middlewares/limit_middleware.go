@@ -1,6 +1,7 @@
 package middlewares
 
 import (
+	"aries/utils"
 	"github.com/gin-gonic/gin"
 	"github.com/juju/ratelimit"
 	"net/http"
@@ -18,7 +19,11 @@ func InitBucket(fillInternal time.Duration, capacity int64) {
 func Limiter() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		if bucket.TakeAvailable(1) < 1 {
-			ctx.JSON(http.StatusOK, "您的访问过于频繁！")
+			ctx.JSON(http.StatusOK, utils.Result{
+				Code: utils.Forbidden,
+				Msg:  "您的访问过于频繁！",
+				Data: nil,
+			})
 			ctx.Abort()
 			return
 		}

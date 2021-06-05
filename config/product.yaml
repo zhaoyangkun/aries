@@ -4,8 +4,8 @@ server:
   port: "8088"                                # 端口
   token_expire_time: 18000                    # JWT token 过期时间（单位：秒）
   allowed_refers: [ "localhost", "127.0.0.1" ]  # 允许的 referer
-  limit_time: 1                                 # 限流时间间隔
-  limit_cap: 10                                 # 间隔时间内最大访问次数
+  limit_time: 5                                 # 限流时间间隔
+  limit_cap: 50                                 # 间隔时间内最大访问次数
 # 数据库配置
 db:
   host: "127.0.0.1"           # 主机地址
