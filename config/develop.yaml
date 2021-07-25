@@ -10,7 +10,7 @@ server:
 db:
   host: "127.0.0.1"       # 主机地址
   user_name: "root"       # 用户名
-  password: "19960331"    # 密码
+  password: "123456"    # 密码
   database: "aries"       # 数据库名
   port: "3306"            # 端口
   time_zone: "Local"      # 时区

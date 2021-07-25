@@ -66,7 +66,7 @@ type logger struct {
 	FileName   string `yaml:"file_name"`
 	MaxSize    int    `yaml:"max_size"`
 	MaxAge     int    `yaml:"max_age"`
-	MaxBackups int    `yam:"max_backups"`
+	MaxBackups int    `yaml:"max_backups"`
 	Level      string `yaml:"level"`
 	Format     string `yaml:"format"`
 }
