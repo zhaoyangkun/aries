@@ -3,6 +3,7 @@ package log
 import (
 	"aries/config/setting"
 	"aries/utils"
+	"log"
 	"os"
 	"path/filepath"
 	"time"
@@ -62,7 +63,11 @@ func getLogWriter(fileName string, maxSize, maxBackups, maxAge int) (zapcore.Wri
 	if setting.Config.Server.Mode == "debug" {
 		filePath = filepath.Join("./log", fileName)
 	} else {
-		filePath = filepath.Join("/root", ".aries", fileName)
+		homeDir, err := os.UserHomeDir()
+		if err != nil {
+			log.Panicln("获取用户主目录失败：", err.Error())
+		}
+		filePath = filepath.Join(homeDir, ".aries", fileName)
 	}
 
 	if !utils.FileIsExists(filePath) {
