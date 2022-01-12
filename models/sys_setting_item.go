@@ -24,16 +24,16 @@ func (SysSettingItem) GetBySysSettingName(settingName string) (map[string]string
 
 	if settingName != "" {
 		err = db.Db.Where("`name` = ?", settingName).First(&sysSetting).Error
-		if err != nil {
+		if err != nil && !gorm.IsRecordNotFoundError(err) {
 			return result, err
 		}
 		err = db.Db.Where("`sys_id` = ?", sysSetting.ID).Find(&itemList).Error
-		if err != nil {
+		if err != nil && !gorm.IsRecordNotFoundError(err) {
 			return result, err
 		}
 	} else {
 		err = db.Db.Find(&itemList).Error
-		if err != nil {
+		if err != nil && !gorm.IsRecordNotFoundError(err) {
 			return result, err
 		}
 	}

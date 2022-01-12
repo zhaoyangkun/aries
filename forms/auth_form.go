@@ -20,6 +20,7 @@ type RegisterForm struct {
 	Email     string `json:"email" binding:"required,max=30,email" label:"邮箱"`
 	SiteName  string `json:"site_name" binding:"required,max=50" label:"网站名称"`
 	SiteUrl   string `json:"site_url" binding:"required,max=255,url" label:"网站地址"`
+	ThemeName string `json:"theme_name" binding:"required,max=100" label:"主题"`
 }
 
 // ForgetPwdForm 忘记密码表单

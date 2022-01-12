@@ -24,6 +24,7 @@ func (a *ApiRouter) InitApiRouter(rootPath string, router *gin.Engine) {
 	journalHandler := api.JournalHandler{}
 	galleryHandler := api.GalleryHandler{}
 	pageHandler := api.PageHandler{}
+	themeHandler := api.ThemeHandler{}
 
 	authApiRouter := router.Group(rootPath)
 	{
@@ -162,5 +163,12 @@ func (a *ApiRouter) InitApiRouter(rootPath string, router *gin.Engine) {
 		pageApiRouter.POST("/pages", pageHandler.CreatePage)
 		pageApiRouter.PUT("/pages", pageHandler.UpdatePage)
 		pageApiRouter.DELETE("/pages", pageHandler.MultiDelPages)
+	}
+
+	themeApiRouter := router.Group(rootPath)
+	{
+		themeApiRouter.GET("/all_themes", themeHandler.GetAllThemes)
+		themeApiRouter.GET("/themes/:name", themeHandler.GetThemeByName)
+		themeApiRouter.POST("/themes", themeHandler.EnableTheme, middlewares.JWTAuth())
 	}
 }

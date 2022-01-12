@@ -22,6 +22,9 @@ type User struct {
 func (user User) GetAll() ([]User, error) {
 	var users []User
 	err := db.Db.Find(&users).Error
+	if gorm.IsRecordNotFoundError(err) {
+		err = nil
+	}
 
 	return users, err
 }
@@ -31,14 +34,20 @@ func (user User) GetByUsername() (User, error) {
 	var u User
 	err := db.Db.Where("`username` = ? or `email` = ?", user.Username, user.Username).
 		First(&u).Error
+	if gorm.IsRecordNotFoundError(err) {
+		err = nil
+	}
 
 	return u, err
 }
 
-// 根据邮箱获取用户
+// GetByEmail 根据邮箱获取用户
 func (user User) GetByEmail() (User, error) {
 	u := User{}
 	err := db.Db.Where("`email` = ?", user.Email).First(&u).Error
+	if gorm.IsRecordNotFoundError(err) {
+		err = nil
+	}
 
 	return u, err
 }

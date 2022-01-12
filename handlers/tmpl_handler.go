@@ -62,7 +62,7 @@ func (t *TmplHandler) IndexTmpl(ctx *gin.Context) {
 		}
 		pagination.Size = uint(s)
 	} else {
-		pagination.Size = 12
+		pagination.Size = 10
 	}
 
 	articles, total, _ := models.Article{}.GetByPage(&pagination, "", 1, 0)
@@ -83,6 +83,9 @@ func (t *TmplHandler) IndexTmpl(ctx *gin.Context) {
 		"currentPage": int(pagination.Page),
 		"pages":       pages,
 		"subTitle":    "",
+		"pageSize":    pagination.Size,
+		"totalCount":  total,
+		"totalPages":  totalPages,
 	})
 }
 
@@ -125,52 +128,71 @@ func (t *TmplHandler) ArticleTmpl(ctx *gin.Context) {
 func (t *TmplHandler) CategoryTmpl(ctx *gin.Context) {
 	url := ctx.Param("url")
 	page := ctx.Param("page")
-
 	pagination := utils.Pagination{}
+	var p = uint64(1)
+	var err error
+
+	//// 解决路由冲突
+	//matchResult, _ := regexp.MatchString(`p/\d+`, url)
+	//if matchResult {
+	//	page = url[2:]
+	//}
+	if page != "" {
+		p, err = strconv.ParseUint(page, 10, 0)
+		if err != nil {
+			ctx.HTML(http.StatusOK, "error.tmpl", gin.H{
+				"blogVars": setting.BlogVars,
+				"code":     "400",
+				"msg":      "请求错误",
+			})
+			return
+		}
+	}
+	pagination.Page = uint(p)
+
+	paramSetting, _ := models.SysSettingItem{}.GetBySysSettingName("参数设置")
+	if size, ok := paramSetting["index_page_size"]; ok {
+		s, err := strconv.ParseUint(size, 10, 0)
+		if err != nil {
+			log.Logger.Sugar().Error("error: ", err.Error())
+			ctx.HTML(http.StatusOK, "error.tmpl", gin.H{
+				"blogVars": setting.BlogVars,
+				"code":     "500",
+				"msg":      "服务器内部发生了错误",
+			})
+			return
+		}
+		pagination.Size = uint(s)
+	} else {
+		pagination.Size = 3
+	}
 
 	if url == "" {
+		articles, total, _ := models.Article{}.GetByPage(&pagination, "", 1, 0)
+		pageData := utils.GetPageData(articles, total, pagination)
+
+		var pages []int
+		totalPages := pageData["total_pages"].(uint)
+		for i := 1; i <= int(totalPages); i++ {
+			pages = append(pages, i)
+		}
+
 		ctx.HTML(http.StatusOK, "category-list.tmpl", gin.H{
-			"blogVars":   setting.BlogVars,
-			"navs":       navs,
-			"categories": categories,
-			"tags":       tags,
-			"subTitle":   "分类列表",
+			"blogVars":     setting.BlogVars,
+			"navs":         navs,
+			"categories":   categories,
+			"tags":         tags,
+			"articles":     articles,
+			"categoryName": "",
+			"categoryUrl":  url,
+			"currentPage":  int(pagination.Page),
+			"pages":        pages,
+			"subTitle":     "分裂列表",
+			"pageSize":     pagination.Size,
+			"totalCount":   total,
+			"totalPages":   totalPages,
 		})
 	} else {
-		var p = uint64(1)
-		var err error
-
-		if page != "" {
-			p, err = strconv.ParseUint(page, 10, 0)
-			if err != nil {
-				ctx.HTML(http.StatusOK, "error.tmpl", gin.H{
-					"blogVars": setting.BlogVars,
-					"code":     "400",
-					"msg":      "请求错误",
-				})
-				return
-			}
-		}
-
-		pagination.Page = uint(p)
-
-		paramSetting, _ := models.SysSettingItem{}.GetBySysSettingName("参数设置")
-		if size, ok := paramSetting["index_page_size"]; ok {
-			s, err := strconv.ParseUint(size, 10, 0)
-			if err != nil {
-				log.Logger.Sugar().Error("error: ", err.Error())
-				ctx.HTML(http.StatusOK, "error.tmpl", gin.H{
-					"blogVars": setting.BlogVars,
-					"code":     "500",
-					"msg":      "服务器内部发生了错误",
-				})
-				return
-			}
-			pagination.Size = uint(s)
-		} else {
-			pagination.Size = 12
-		}
-
 		articles, name, total, _ := models.Article{}.GetByCategoryUrl(&pagination, url)
 		pageData := utils.GetPageData(articles, total, pagination)
 
@@ -180,7 +202,7 @@ func (t *TmplHandler) CategoryTmpl(ctx *gin.Context) {
 			pages = append(pages, i)
 		}
 
-		ctx.HTML(http.StatusOK, "category.tmpl", gin.H{
+		ctx.HTML(http.StatusOK, "category-list.tmpl", gin.H{
 			"blogVars":     setting.BlogVars,
 			"navs":         navs,
 			"categories":   categories,
@@ -191,6 +213,9 @@ func (t *TmplHandler) CategoryTmpl(ctx *gin.Context) {
 			"currentPage":  int(pagination.Page),
 			"pages":        pages,
 			"subTitle":     name,
+			"pageSize":     pagination.Size,
+			"totalCount":   total,
+			"totalPages":   totalPages,
 		})
 	}
 }
@@ -199,54 +224,66 @@ func (t *TmplHandler) CategoryTmpl(ctx *gin.Context) {
 func (t *TmplHandler) TagTmpl(ctx *gin.Context) {
 	name := ctx.Param("name")
 	page := ctx.Param("page")
-
 	pagination := utils.Pagination{}
+	var p = uint64(1)
+	var err error
+
+	if page != "" {
+		p, err = strconv.ParseUint(page, 10, 0)
+		if err != nil {
+			ctx.HTML(http.StatusOK, "error.tmpl", gin.H{
+				"blogVars": setting.BlogVars,
+				"code":     "400",
+				"msg":      "请求错误",
+			})
+			return
+		}
+	}
+	pagination.Page = uint(p)
+
+	paramSetting, _ := models.SysSettingItem{}.GetBySysSettingName("参数设置")
+	if size, ok := paramSetting["index_page_size"]; ok {
+		s, err := strconv.ParseUint(size, 10, 0)
+		if err != nil {
+			log.Logger.Sugar().Error("error: ", err.Error())
+			ctx.HTML(http.StatusOK, "error.tmpl", gin.H{
+				"blogVars": setting.BlogVars,
+				"code":     "500",
+				"msg":      "服务器内部发生了错误",
+			})
+			return
+		}
+		pagination.Size = uint(s)
+	} else {
+		pagination.Size = 10
+	}
 
 	if name == "" {
+		articles, total, _ := models.Article{}.GetByPage(&pagination, "", 1, 0)
+		pageData := utils.GetPageData(articles, total, pagination)
+
+		var pages []int
+		totalPages := pageData["total_pages"].(uint)
+		for i := 1; i <= int(totalPages); i++ {
+			pages = append(pages, i)
+		}
+
 		ctx.HTML(http.StatusOK, "tag-list.tmpl", gin.H{
-			"blogVars":   setting.BlogVars,
-			"navs":       navs,
-			"categories": categories,
-			"tags":       tags,
-			"subTitle":   "标签列表",
+			"blogVars":    setting.BlogVars,
+			"navs":        navs,
+			"categories":  categories,
+			"tags":        tags,
+			"articles":    articles,
+			"tagName":     name,
+			"currentPage": int(pagination.Page),
+			"pages":       pages,
+			"subTitle":    name,
+			"pageSize":    pagination.Size,
+			"totalCount":  total,
+			"totalPages":  totalPages,
 		})
 	} else {
-		var p = uint64(1)
-		var err error
-
-		if page != "" {
-			p, err = strconv.ParseUint(page, 10, 0)
-			if err != nil {
-				ctx.HTML(http.StatusOK, "error.tmpl", gin.H{
-					"blogVars": setting.BlogVars,
-					"code":     "400",
-					"msg":      "请求错误",
-				})
-				return
-			}
-		}
-
-		pagination.Page = uint(p)
-
-		paramSetting, _ := models.SysSettingItem{}.GetBySysSettingName("参数设置")
-		if size, ok := paramSetting["index_page_size"]; ok {
-			s, err := strconv.ParseUint(size, 10, 0)
-			if err != nil {
-				log.Logger.Sugar().Error("error: ", err.Error())
-				ctx.HTML(http.StatusOK, "error.tmpl", gin.H{
-					"blogVars": setting.BlogVars,
-					"code":     "500",
-					"msg":      "服务器内部发生了错误",
-				})
-				return
-			}
-			pagination.Size = uint(s)
-		} else {
-			pagination.Size = 12
-		}
-
 		articles, total, _ := models.Article{}.GetByTagName(&pagination, name)
-
 		pageData := utils.GetPageData(articles, total, pagination)
 
 		var pages []int
@@ -265,6 +302,9 @@ func (t *TmplHandler) TagTmpl(ctx *gin.Context) {
 			"currentPage": int(pagination.Page),
 			"pages":       pages,
 			"subTitle":    name,
+			"pageSize":    pagination.Size,
+			"totalCount":  total,
+			"totalPages":  totalPages,
 		})
 	}
 }
@@ -393,7 +433,6 @@ func (t *TmplHandler) SearchTmpl(ctx *gin.Context) {
 			})
 			return
 		}
-
 		pagination.Page = uint(p)
 	}
 	articles, total, _ := models.Article{}.GetByPage(&pagination, keyword, 5, 0)
@@ -415,5 +454,8 @@ func (t *TmplHandler) SearchTmpl(ctx *gin.Context) {
 		"pages":       pages,
 		"subTitle":    "关于「" + keyword + "」的搜索结果",
 		"keyword":     keyword,
+		"pageSize":    pagination.Size,
+		"totalCount":  total,
+		"totalPages":  totalPages,
 	})
 }

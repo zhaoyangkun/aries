@@ -20,6 +20,9 @@ type Tag struct {
 func (Tag) GetAll() ([]Tag, error) {
 	var list []Tag
 	err := db.Db.Preload("ArticleList").Find(&list).Error
+	if gorm.IsRecordNotFoundError(err) {
+		err = nil
+	}
 
 	return list, err
 }
@@ -28,6 +31,9 @@ func (Tag) GetAll() ([]Tag, error) {
 func (Tag) GetById(id string) (Tag, error) {
 	var t Tag
 	err := db.Db.Where("`id` = ?", id).First(&t).Error
+	if gorm.IsRecordNotFoundError(err) {
+		err = nil
+	}
 
 	return t, err
 }
@@ -35,6 +41,10 @@ func (Tag) GetById(id string) (Tag, error) {
 // GetByName 根据名称获取标签
 func (Tag) GetByName(name string) (tag Tag, err error) {
 	err = db.Db.Where("`name` = ?", name).First(&tag).Error
+	if gorm.IsRecordNotFoundError(err) {
+		err = nil
+	}
+
 	return
 }
 
@@ -50,6 +60,9 @@ func (tag Tag) GetByPage(page *utils.Pagination, key string) ([]Tag, uint, error
 	}
 
 	total, err := utils.ToPage(page, query, &list)
+	if gorm.IsRecordNotFoundError(err) {
+		err = nil
+	}
 
 	return list, total, err
 }

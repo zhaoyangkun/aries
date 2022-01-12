@@ -1,0 +1,33 @@
+{{ define "script" }}
+    <!--全局JS-->
+    <script type="text/javascript" src="{{ .blogVars.ContextPath }}/static/js/jquery-3.4.1.min.js"></script>
+    <script type="text/javascript" src="{{ .blogVars.ContextPath }}/static/js/sweetalert.min.js"></script>
+    <script type="text/javascript" src="{{ .blogVars.ContextPath }}/static/js/pace.min.js"></script>
+    <script type="text/javascript" src="{{ .blogVars.ContextPath }}/static/js/base.js"></script>
+    {{/*        <script type="text/javascript" src="{{ .blogVars.ContextPath }}/static/js/d-audio.js"></script>*/}}
+    <script type="text/javascript" src="{{ .blogVars.ContextPath }}/static/js/myPagination.js"></script>
+    <script type="text/javascript">
+        // 音乐插件
+        // const myAudio = new Daudio({
+        //     ele: '#d-audio',
+        //     src: 'https://zhaoyangkun.gitee.io/blog-static/music/迷人的危险.mp3',
+        //     imageurl: 'https://zhaoyangkun.gitee.io/blog-static/img/dance_flow.jpg',
+        //     name: '迷人的危险',
+        //     singer: 'dance flow',
+        //     // 是否显示进度信息
+        //     showprogress: true,
+        //     // 是否循环
+        //     loop: true,
+        //     // '' 就是默认状态， cricle则是初始化就是圆形且可以旋转
+        //     initstate: 'cricle',
+        //     next: function () {
+        //     },
+        //     ended: function () {
+        //     }
+        // });
+        // myAudio.play();
+
+        // 图片懒加载
+        const lazyImage = new LazyImage('.lazy-image');
+    </script>
+{{ end }}

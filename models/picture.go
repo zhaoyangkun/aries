@@ -39,6 +39,9 @@ func (Picture) GetByPage(page *utils.Pagination, key string, storageType string)
 
 	// 分页
 	total, err = utils.ToPage(page, query, &list)
+	if gorm.IsRecordNotFoundError(err) {
+		err = nil
+	}
 
 	return
 }

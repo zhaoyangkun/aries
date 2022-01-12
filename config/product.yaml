@@ -28,5 +28,5 @@ logger:
 smtp:
   address: "smtp.qq.com"       # 协议地址
   port: 465                    # 端口
-  account: ""                  # 帐号
+  account: ""                  # 账号
   password: ""                 # 密码

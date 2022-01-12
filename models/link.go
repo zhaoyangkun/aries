@@ -22,6 +22,10 @@ type Link struct {
 // GetAll 获取所有友链
 func (Link) GetAll() (list []Link, err error) {
 	err = db.Db.Preload("Category").Order("category_id desc,created_at desc", true).Find(&list).Error
+	if gorm.IsRecordNotFoundError(err) {
+		err = nil
+	}
+
 	return
 }
 
@@ -40,6 +44,9 @@ func (Link) GetByPage(page *utils.Pagination, key string, categoryId uint) ([]Li
 	}
 
 	total, err := utils.ToPage(page, query, &list)
+	if gorm.IsRecordNotFoundError(err) {
+		err = nil
+	}
 
 	return list, total, err
 }
@@ -47,6 +54,10 @@ func (Link) GetByPage(page *utils.Pagination, key string, categoryId uint) ([]Li
 // GetById 根据 ID 获取友链
 func (Link) GetById(id string) (link Link, err error) {
 	err = db.Db.Preload("Category").Where("`id` = ?", id).First(&link).Error
+	if gorm.IsRecordNotFoundError(err) {
+		err = nil
+	}
+
 	return
 }
 

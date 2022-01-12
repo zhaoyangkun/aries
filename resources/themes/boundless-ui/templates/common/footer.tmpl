@@ -1,0 +1,27 @@
+{{ define "footer" }}
+    <!--尾部-->
+    <footer class="footer">
+        <div class="footer-line">
+            <div class="icon-center">
+                <span class="icon-box">
+                    <a id="github-icon" target="_blank"
+                       href="https://github.com/{{ .blogVars.Github }}"
+                       class="foot-icon"></a>
+                </span>
+                <span class="icon-box">
+                        <a id="qq-icon" target="_blank"
+                           href="tencent://Message/?Uin={{ .blogVars.QQ }}&amp;websiteName=q-zone.qq.com&amp;Menu=yes"
+                           class="foot-icon"></a>
+                </span>
+            </div>
+        </div>
+        {{ safe .blogVars.GlobalFooter }}
+        <div class="footer-line">
+            Powerde By <a href="https://github.com/zhaoyangkun/Boundless-UI"
+                          target="_blank">BoundlessUI</a> • © 2021
+        </div>
+        <div class="footer-line">
+            {{ .blogVars.RecordNumber }} <a href="{{ .blogVars.ContextPath }}/sitemap.xml" target="_blank">站点地图</a>
+        </div>
+    </footer>
+{{ end }}

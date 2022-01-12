@@ -27,7 +27,7 @@ func (category Category) GetAllByType(categoryType uint) ([]Category, error) {
 
 	// 查询子分类
 	err := db.Db.Where("`parent_id` > 0").Find(&children).Error
-	if err != nil {
+	if err != nil && !gorm.IsRecordNotFoundError(err) {
 		return categories, err
 	}
 
@@ -36,6 +36,9 @@ func (category Category) GetAllByType(categoryType uint) ([]Category, error) {
 		err = db.Db.Where("`type` = ?", categoryType).Find(&categories).Error
 	} else {
 		err = db.Db.Find(&categories).Error
+	}
+	if err != nil && !gorm.IsRecordNotFoundError(err) {
+		return categories, err
 	}
 
 	// 将子分类并入父分类
@@ -55,6 +58,9 @@ func (category Category) GetAllByType(categoryType uint) ([]Category, error) {
 // GetGalleryCategories 获取有图库的分类
 func (category Category) GetGalleryCategories() (list []Category, err error) {
 	err = db.Db.Where("`id` in (select `category_id` from `galleries` group by `category_id`)").Find(&list).Error
+	if gorm.IsRecordNotFoundError(err) {
+		err = nil
+	}
 
 	return
 }
@@ -66,7 +72,7 @@ func (category Category) GetByPage(page *utils.Pagination, key string, categoryT
 
 	// 查询子分类
 	err := db.Db.Where("`parent_id` > 0").Find(&children).Error
-	if err != nil {
+	if err != nil && !gorm.IsRecordNotFoundError(err) {
 		return list, 0, err
 	}
 
@@ -81,6 +87,9 @@ func (category Category) GetByPage(page *utils.Pagination, key string, categoryT
 
 	// 分页
 	total, err := utils.ToPage(page, query, &list)
+	if err != nil && !gorm.IsRecordNotFoundError(err) {
+		return list, 0, err
+	}
 
 	// 将子类并入父类
 	for i := range list {
@@ -100,18 +109,30 @@ func (category Category) GetByPage(page *utils.Pagination, key string, categoryT
 // GetAllParents 获取所有父类
 func (category Category) GetAllParents(categoryType uint) (list []Category, err error) {
 	err = db.Db.Where("`parent_id` = 0 and `type` = ?", categoryType).Find(&list).Error
+	if gorm.IsRecordNotFoundError(err) {
+		err = nil
+	}
+
 	return
 }
 
 // GetByName 根据分类名称获取分类
 func (Category) GetByName(name string, categoryType uint) (category Category, err error) {
 	err = db.Db.Where("`name` = ? and `type` = ?", name, categoryType).First(&category).Error
+	if gorm.IsRecordNotFoundError(err) {
+		err = nil
+	}
+
 	return
 }
 
 // GetByUrl 根据 URL 获取分类
 func (Category) GetByUrl(url string) (category Category, err error) {
 	err = db.Db.Where("`url` = ?", url).First(&category).Error
+	if gorm.IsRecordNotFoundError(err) {
+		err = nil
+	}
+
 	return
 }
 

@@ -62,6 +62,10 @@ func InitApp() *gin.Engine {
 		})
 	}
 
+	// 读取主题配置文件
+	themeInfo := models.ThemeInfo{}
+	themeInfo.ReadThemeInfo()
+
 	// 配置博客全局变量
 	blogSetting, _ := models.SysSettingItem{}.GetBySysSettingName("网站设置")
 	socialInfo, _ := models.SysSettingItem{}.GetBySysSettingName("社交信息")
@@ -82,8 +86,8 @@ func InitApp() *gin.Engine {
 	})
 
 	// 加载静态资源和模板
-	router.Static("/static", fmt.Sprintf("./resources/themes/%s/static", setting.BlogVars.Theme))
 	router.Static("/admin", "./resources/dist")
+	router.Static("/static", fmt.Sprintf("./resources/themes/%s/static", setting.BlogVars.Theme))
 	router.LoadHTMLGlob(fmt.Sprintf("./resources/themes/%s/templates/**/*", setting.BlogVars.Theme))
 
 	// 加载路由

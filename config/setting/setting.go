@@ -110,6 +110,7 @@ func (s *Setting) InitSetting() {
 // InitLute 初始化 markdown 引擎
 func (s *Setting) InitLute() {
 	LuteEngine = lute.New()
+	LuteEngine.SetCodeSyntaxHighlight(true)
 }
 
 // InitCache 初始化缓存
@@ -119,10 +120,12 @@ func (s *Setting) InitCache() {
 
 // InitBlogVars 配置博客全局变量
 func (b *BlogVariable) InitBlogVars(siteSetting map[string]string, socialInfo map[string]string) {
-	if theme, ok := siteSetting["theme"]; ok {
+	if theme, ok := siteSetting["theme_name"]; ok {
 		b.Theme = theme
 	} else {
-		b.Theme = "xue"
+		// 默认主题
+		//b.Theme = "xue"
+		b.Theme = "boundless-ui"
 	}
 	if contextPath, ok := siteSetting["site_url"]; ok {
 		b.ContextPath = contextPath

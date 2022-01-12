@@ -7,8 +7,8 @@ import (
 
 // 分页默认参数
 var (
-	defaultPageSize    uint = 10 // 默认每页条数
-	defaultCurrentPage uint = 1  // 默认页码
+	defaultPageSize    uint = 3 // 默认每页条数
+	defaultCurrentPage uint = 1 // 默认页码
 )
 
 // Pagination 分页结构体

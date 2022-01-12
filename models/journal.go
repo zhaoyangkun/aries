@@ -18,6 +18,9 @@ type Journal struct {
 // GetAll 获取所有日志
 func (Journal) GetAll() (list []Journal, err error) {
 	err = db.Db.Order("created_at desc", true).Where("is_secret = false").Find(&list).Error
+	if gorm.IsRecordNotFoundError(err) {
+		err = nil
+	}
 
 	return
 }
@@ -25,6 +28,9 @@ func (Journal) GetAll() (list []Journal, err error) {
 // GetById 根据 ID 获取日志
 func (Journal) GetById(id uint) (journal Journal, err error) {
 	err = db.Db.Where("`id` = ?", id).First(&journal).Error
+	if gorm.IsRecordNotFoundError(err) {
+		err = nil
+	}
 
 	return
 }
@@ -38,6 +44,9 @@ func (Journal) GetByPage(page *utils.Pagination, key string) (list []Journal, to
 	}
 
 	total, err = utils.ToPage(page, query, &list)
+	if gorm.IsRecordNotFoundError(err) {
+		err = nil
+	}
 
 	return
 }

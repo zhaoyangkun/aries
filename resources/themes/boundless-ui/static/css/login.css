@@ -1,0 +1,323 @@
+@charset "UTF-8";
+
+.inp-input {
+    border: #CCCCCC solid 1px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    font-family: "Microsoft Yahei", "微软雅黑", verdana, serif;
+}
+
+html {
+    font-size: 100px;
+}
+
+
+a {
+    text-decoration: none;
+}
+
+input {
+    border: 0;
+    outline: none;
+    background-color: rgba(0, 0, 0, 0);
+}
+
+.main {
+    min-height: 550px;
+    width: 100%;
+    display: inline-block;
+}
+
+.form {
+    width: 350px;
+    font-size: 18px;
+    box-shadow: 0 0 10px #A6A6A6;
+    background: #fff;
+    z-index: 999;
+    position: relative;
+    margin: 25px auto;
+    /*top: 50%;*/
+    /*left: 50%;*/
+    /*margin-top: -300px; !* 元素高度的一半 *!*/
+    /*margin-left: -175px; !* 元素宽度的一半 *!*/
+    border-radius: 10px;
+}
+
+.not-on {
+    border-bottom: 2px solid #ECECEC;
+}
+
+.on {
+    border-bottom: 2px solid #007aff;
+    color: #007aff;
+}
+
+#landing, #registered {
+    float: left;
+    text-align: center;
+    width: 50%;
+    padding: 15px 0;
+    /*color: #545454;*/
+    display: inline-block;
+}
+
+#forgetPwd {
+    float: left;
+    text-align: center;
+    width: 100%;
+    padding: 20px 0;
+    color: #0e90d2;
+    display: inline-block;
+    font-size: 20px;
+}
+
+/*.tab-a {*/
+/*    border-bottom: #ECECEC solid 1px;*/
+/*}*/
+#landing-content {
+    clear: both;
+}
+
+.error {
+    margin-bottom: 10px;
+    width: 100%;
+    line-height: 20px;
+    display: block;
+    color: red;
+    font-size: 15px;
+}
+
+.inp {
+    height: 30px;
+    margin: 0 auto 40px auto;
+    width: 50%;
+}
+
+
+.auth-inp {
+    margin-top: 15px;
+    padding-bottom: 5px;
+    height: 51px;
+    width: 100%;
+}
+
+.auth-inp #icon-box {
+    height: 50px;
+    width: 50px;
+    margin: 0 auto;
+}
+
+.auth-inp .git-icon {
+    height: 50px;
+    width: 50px;
+    /*margin: 5px;*/
+    display: block;
+    background-image: url("../img/github.svg");
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+}
+
+
+.auth-inp .tips {
+    display: none;
+    margin-left: 200px;
+    margin-top: -40px;
+    height: 20px;
+    line-height: 20px;
+    position: absolute;
+}
+
+
+.tips p {
+    padding: 5px;
+    color: #ffffff;
+    background-color: #0e90d2;
+    font-size: 12px;
+}
+
+.inp input {
+    text-align: center;
+    height: 30px;
+    width: 100%;
+    margin: 0 auto;
+    transition: all 0.3s ease-in-out;
+}
+
+.inp input:focus {
+    border: #007aff solid 1px;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(102, 175, 233, .6);
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(102, 175, 233, 0.6);
+}
+
+.login {
+    border: 1px solid #A6A6A6;
+    background-color: #ECECEC;
+    color: #a6a6a6;
+    height: 30px;
+    width: 50%;
+    text-align: center;
+    font-size: 13px;
+    margin: 0 25%;
+    line-height: 30px;
+    transition: all 0.3s ease-in-out;
+}
+
+.login:hover {
+    background: #007aff;
+    color: #fff;
+}
+
+#bottom {
+    margin-top: 25px;
+    padding-bottom: 15px;
+    overflow: hidden;
+    width: 100%;
+    height: 30px;
+}
+
+#bottom > a {
+    color: #666666;
+    transition: ease-in-out 0.6s;
+    font-size: 15px;
+}
+
+#bottom > a:hover {
+    color: #007aff;
+}
+
+#registeredtxt {
+    float: left;
+    margin-left: 80px;
+}
+
+#forgotpassword {
+    float: right;
+    margin-right: 80px;
+}
+
+#photo {
+    border-radius: 80px;
+    border: 1px solid #ccc;
+    height: 80px;
+    width: 80px;
+    margin: 0 auto;
+    overflow: hidden;
+    clear: both;
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+#photo > img:hover {
+    -webkit-transform: rotateZ(360deg);
+    -moz-transform: rotateZ(360deg);
+    -o-transform: rotateZ(360deg);
+    -ms-transform: rotateZ(360deg);
+    transform: rotateZ(360deg);
+}
+
+#photo > img {
+    height: 80px;
+    width: 80px;
+    -webkit-background-size: 220px 220px;
+    border-radius: 60px;
+    -webkit-transition: -webkit-transform 1s linear;
+    -moz-transition: -moz-transform 1s linear;
+    -o-transition: -o-transform 1s linear;
+    -ms-transition: -ms-transform 1s linear;
+}
+
+
+#registered-content {
+    margin-top: 28px;
+    /*display: none;*/
+}
+
+.fix {
+    clear: both;
+}
+
+.code-box {
+    height: 40px;
+    margin: 0 auto;
+    margin-bottom: 30px;
+    width: 50%;
+}
+
+.code-box img {
+    width: 100%;
+    height: 40px;
+}
+
+
+#send-code {
+    margin-bottom: 30px;
+    background-color: dodgerblue;
+    color: white;
+}
+
+
+/*响应式尺寸*/
+
+@media (max-width: 768px) {
+    .form {
+        width: 94%
+    }
+
+    .inp {
+        width: 60%;
+    }
+
+    .code-box {
+        width: 60%;
+    }
+
+    #login {
+        width: 60%;
+        margin: 0 20%;
+    }
+
+    #register {
+        width: 60%;
+        margin: 0 20%;
+    }
+
+    #send-code {
+        width: 60%;
+        margin-left: 20%;
+    }
+
+
+    .auth-inp .tips {
+        margin-left: 57%;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+    .form {
+        width: 350px;
+    }
+
+    .auth-inp .tips {
+        margin-left: 200px;
+    }
+}
+
+@media (max-width: 480px) {
+    .form {
+        width: 94%;
+    }
+}
+
+
+/*@media (min-width: 992px) {
+
+}
+
+@media (min-width: 1200px) {
+
+}*/
+
+

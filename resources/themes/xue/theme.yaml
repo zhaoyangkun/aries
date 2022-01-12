@@ -1,10 +1,10 @@
 id: "xue"
-name: "雪"
+name: "xue"
 author:
   name: "躲雨の屋檐"
   website: "https://cangmang.xyz/"
-  head_img: ""
+  head_img: "https://b3logfile.com/avatar/1564022649893_1609852959761.jpeg"
 desc: "大道至简"
-image: ""
+image: "https://s4.ax1x.com/2021/12/18/TA4KT1.png"
 repo: "https://github.com/zhaoyangkun/aries"
-version: 1.0
+version: "1.0"

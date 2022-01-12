@@ -63,6 +63,9 @@ func (Comment) GetDisCount(pageId uint, articleId uint) (uint, error) {
 func (Comment) GetLatest(limit uint) (list []Comment, err error) {
 	err = db.Db.Preload("Article").Order("created_at desc", true).
 		Limit(limit).Find(&list).Error
+	if gorm.IsRecordNotFoundError(err) {
+		err = nil
+	}
 	return
 }
 
@@ -70,12 +73,20 @@ func (Comment) GetLatest(limit uint) (list []Comment, err error) {
 func (Comment) GetAll() (list []Comment, err error) {
 	err = db.Db.Preload("Article").
 		Order("created_at desc", true).Find(&list).Error
+	if gorm.IsRecordNotFoundError(err) {
+		err = nil
+	}
+
 	return
 }
 
 // GetById 根据 ID 获取评论
 func (Comment) GetById(id uint) (comment Comment, err error) {
 	err = db.Db.Where("`id` = ?", id).First(&comment).Error
+	if gorm.IsRecordNotFoundError(err) {
+		err = nil
+	}
+
 	return
 }
 
@@ -124,7 +135,7 @@ func (Comment) GetByPage(page *utils.Pagination, key string, articleId, pageId, 
 	rows, err := db.Db.Raw("select c.*, p.nick_name from comments c" +
 		" left join comments p on p.id = c.parent_comment_id" +
 		" where c.parent_comment_id > 0 and c.is_checked = 1 and c.is_recycled = 0").Rows()
-	if err != nil {
+	if err != nil && !gorm.IsRecordNotFoundError(err) {
 		return
 	}
 	defer rows.Close()

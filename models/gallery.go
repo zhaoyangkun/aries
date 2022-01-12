@@ -22,6 +22,9 @@ type Gallery struct {
 // GetAll 获取所有图库
 func (Gallery) GetAll() (list []Gallery, err error) {
 	err = db.Db.Preload("Category").Order("created_at desc", true).Find(&list).Error
+	if gorm.IsRecordNotFoundError(err) {
+		err = nil
+	}
 
 	return
 }
@@ -29,6 +32,10 @@ func (Gallery) GetAll() (list []Gallery, err error) {
 // GetById 根据 ID 获取图库
 func (Gallery) GetById(id uint) (gallery Gallery, err error) {
 	err = db.Db.Where("`id` = ?", id).First(&gallery).Error
+	if gorm.IsRecordNotFoundError(err) {
+		err = nil
+	}
+
 	return
 }
 
@@ -45,6 +52,9 @@ func (g Gallery) GetByPage(page *utils.Pagination, categoryId uint, key string) 
 	}
 
 	total, err = utils.ToPage(page, query, &list)
+	if gorm.IsRecordNotFoundError(err) {
+		err = nil
+	}
 
 	return
 }

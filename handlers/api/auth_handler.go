@@ -83,8 +83,13 @@ func (a *AuthHandler) Register(ctx *gin.Context) {
 		Key:   "site_name",
 		Val:   regForm.SiteName,
 	}
+	themeNameItem := models.SysSettingItem{
+		SysId: sysSetting.ID,
+		Key:   "theme_name",
+		Val:   regForm.ThemeName,
+	}
 
-	itemList := []models.SysSettingItem{typeItem, siteNameItem, siteUrlItem}
+	itemList := []models.SysSettingItem{typeItem, siteNameItem, siteUrlItem, themeNameItem}
 	err := models.SysSettingItem{}.MultiCreateOrUpdate(itemList)
 	if err != nil {
 		log.Logger.Sugar().Error("error: ", err.Error())
@@ -93,6 +98,10 @@ func (a *AuthHandler) Register(ctx *gin.Context) {
 		ctx.JSON(http.StatusOK, result)
 		return
 	}
+	_ = models.Theme{ThemeInfo: models.ThemeInfo{ThemeName: regForm.ThemeName}}.EnableTheme()
+	blogSetting, _ := models.SysSettingItem{}.GetBySysSettingName("网站设置")
+	socialInfo, _ := models.SysSettingItem{}.GetBySysSettingName("社交信息")
+	setting.BlogVars.InitBlogVars(blogSetting, socialInfo)
 
 	indexNav := models.Nav{Name: "首页", Url: "/"}
 	_ = indexNav.Create()

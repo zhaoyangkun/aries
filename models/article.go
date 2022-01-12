@@ -40,6 +40,7 @@ type Article struct {
 type Archive struct {
 	Year  int `json:"year"`
 	Month int `json:"month"`
+	Count int `json:"count"`
 }
 
 // GetCount 获取文章总数
@@ -54,6 +55,9 @@ func (Article) GetCount() (int, error) {
 func (Article) GetLatest(limit uint) (list []Article, err error) {
 	err = db.Db.Order("created_at desc", true).Limit(limit).
 		Where("is_published = 1 and is_recycled = 0").Find(&list).Error
+	if gorm.IsRecordNotFoundError(err) {
+		err = nil
+	}
 
 	return
 }
@@ -63,6 +67,9 @@ func (Article) GetAll() (list []Article, err error) {
 	err = db.Db.Preload("Category").Preload("TagList").
 		Order("created_at desc", true).
 		Where("is_published = 1 and is_recycled = 0").Find(&list).Error
+	if gorm.IsRecordNotFoundError(err) {
+		err = nil
+	}
 
 	return
 }
@@ -71,6 +78,9 @@ func (Article) GetAll() (list []Article, err error) {
 func (Article) GetById(id string) (article Article, err error) {
 	err = db.Db.Preload("Category").Preload("TagList").
 		Where("`id` = ?", id).First(&article).Error
+	if gorm.IsRecordNotFoundError(err) {
+		err = nil
+	}
 
 	return
 }
@@ -87,6 +97,9 @@ func (Article) GetByCategoryUrl(page *utils.Pagination, url string) (list []Arti
 	query := db.Db.Model(&Article{}).
 		Where("is_published = 1 and is_recycled = 0 and category_id = ?", category.ID)
 	total, err = utils.ToPage(page, query, &list)
+	if gorm.IsRecordNotFoundError(err) {
+		err = nil
+	}
 
 	return
 }
@@ -104,7 +117,7 @@ func (Article) GetByTagName(page *utils.Pagination, tagName string) (list []Arti
 	err = db.Db.Raw("select count(`id`) from `articles` where `id` in "+
 		"(select `article_id` from `tag_article` "+
 		"where is_published = 1 and is_recycled = 0 and `tag_id` = ?)", tag.ID).Row().Scan(&total)
-	if err != nil {
+	if err != nil && !gorm.IsRecordNotFoundError(err) {
 		return
 	}
 
@@ -112,6 +125,9 @@ func (Article) GetByTagName(page *utils.Pagination, tagName string) (list []Arti
 		"(select `article_id` from `tag_article` "+
 		"where is_published = 1 and is_recycled = 0 and `tag_id` = ?) "+
 		"limit ? offset ?", tag.ID, limit, offset).Scan(&list).Error
+	if err != nil && !gorm.IsRecordNotFoundError(err) {
+		return
+	}
 
 	return
 }
@@ -133,6 +149,9 @@ func (Article) GetPrevious(orderId uint, isTop bool, ignore bool) (article Artic
 					" order by `order_id` desc limit 1").Scan(&article).Error
 			}
 		}
+		if err != nil && !gorm.IsRecordNotFoundError(err) {
+			return
+		}
 
 		return
 	}
@@ -145,6 +164,9 @@ func (Article) GetPrevious(orderId uint, isTop bool, ignore bool) (article Artic
 		err = db.Db.Raw("select * from `articles`"+
 			" where is_published = 1 and is_recycled = 0 and `order_id` < ? and is_top = 0"+
 			" order by `order_id` desc limit 1", orderId).Scan(&article).Error
+	}
+	if err != nil && !gorm.IsRecordNotFoundError(err) {
+		return
 	}
 
 	return
@@ -188,7 +210,7 @@ func (Article) GetByPage(page *utils.Pagination, key string, state uint,
 	categoryId uint) ([]Article, uint, error) {
 	var list []Article
 
-	query := db.Db.Preload("Category").Preload("TagList").
+	query := db.Db.Preload("User").Preload("Category").Preload("TagList").
 		Model(&Article{}).Order("is_top desc,order_id asc,created_at desc", true)
 
 	if key != "" {
@@ -233,6 +255,9 @@ func (Article) GetByUrl(url string) (article Article, err error) {
 
 // Create 添加文章
 func (article Article) Create(tagIds string) error {
+	// markdown 渲染
+	article.MDContent = setting.LuteEngine.MarkdownStr("", article.Content)
+
 	// 若摘要为空，截取文章前 100 个字作为摘要
 	if article.Summary == "" {
 		content := []rune(utils.GetHtmlContent(article.MDContent))
@@ -340,6 +365,9 @@ func (article Article) Create(tagIds string) error {
 
 // Update 更新文章
 func (article Article) Update(tagIds string) error {
+	// markdown 渲染
+	article.MDContent = setting.LuteEngine.MarkdownStr("", article.Content)
+
 	// 若摘要为空，截取文章前 100 个字作为摘要
 	if article.Summary == "" {
 		content := []rune(utils.GetHtmlContent(article.MDContent))
@@ -636,7 +664,7 @@ func (article Article) SaveFromFile() (err error) {
 
 // GetAll 归档
 func (Archive) GetAll() (list []Archive, err error) {
-	err = db.Db.Raw("select year(a.created_at) `year`, month(a.created_at) `month`" +
+	err = db.Db.Raw("select year(a.created_at) `year`, month(a.created_at) `month`, count(*) `count`" +
 		" from articles a" +
 		" group by `year`, `month`" +
 		" order by `year` desc, `month` desc").Scan(&list).Error

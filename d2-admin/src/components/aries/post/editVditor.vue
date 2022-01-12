@@ -124,6 +124,7 @@ export default {
     },
     // 获取 HTML
     getHTML () {
+      // 获取 markdown 的 HTML 内容
       return this.contentEditor.getHTML()
     },
     // 设置编辑器文本

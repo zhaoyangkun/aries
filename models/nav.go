@@ -22,12 +22,20 @@ type Nav struct {
 // GetByOrderId 根据 OrderId 获取菜单
 func (Nav) GetByOrderId(orderId uint) (nav Nav, err error) {
 	err = db.Db.Where("`order_id` = ?", orderId).First(&nav).Error
+	if gorm.IsRecordNotFoundError(err) {
+		err = nil
+	}
+
 	return
 }
 
 // GetByName 根据名称获取菜单
 func (Nav) GetByName(name string) (nav Nav, err error) {
 	err = db.Db.Where("`name` = ?", name).First(&nav).Error
+	if gorm.IsRecordNotFoundError(err) {
+		err = nil
+	}
+
 	return
 }
 
@@ -38,13 +46,13 @@ func (Nav) GetAll() ([]Nav, error) {
 
 	err := db.Db.Where("parent_nav_id > 0").Order("order_id ASC", true).
 		Find(&childNavs).Error
-	if err != nil {
+	if err != nil && !gorm.IsRecordNotFoundError(err) {
 		return parentNavs, err
 	}
 
 	err = db.Db.Where("parent_nav_id = 0").Order("order_id ASC", true).
 		Find(&parentNavs).Error
-	if err != nil {
+	if err != nil && !gorm.IsRecordNotFoundError(err) {
 		return parentNavs, err
 	}
 
@@ -64,7 +72,7 @@ func (n *Nav) Create() error {
 	var maxOrderId *uint
 	err := db.Db.Raw("select MAX(`order_id`) `maxOrderId` from `navs`").
 		Row().Scan(&maxOrderId)
-	if err != nil {
+	if err != nil && !gorm.IsRecordNotFoundError(err) {
 		return err
 	}
 
@@ -82,7 +90,7 @@ func (n *Nav) Update() error {
 	return db.Db.Model(&Nav{}).Updates(&n).Error
 }
 
-// 获取前一个菜单
+// GetPre 获取前一个菜单
 func (n *Nav) GetPre(navType string) (Nav, error) {
 	preNav := Nav{}
 	var err error
@@ -93,6 +101,9 @@ func (n *Nav) GetPre(navType string) (Nav, error) {
 	} else {
 		err = db.Db.Where("`parent_nav_id` > 0 and `order_id` < ?", n.OrderId).
 			Order("order_id DESC", true).First(&preNav).Error
+	}
+	if gorm.IsRecordNotFoundError(err) {
+		err = nil
 	}
 
 	return preNav, err
@@ -109,6 +120,9 @@ func (n *Nav) GetNext(navType string) (Nav, error) {
 	} else {
 		err = db.Db.Where("`parent_nav_id` > 0 and `order_id` > ?", n.OrderId).
 			Order("order_id ASC", true).First(&nextNav).Error
+	}
+	if gorm.IsRecordNotFoundError(err) {
+		err = nil
 	}
 
 	return nextNav, err

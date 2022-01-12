@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+    {{ template "head" . }}
+    <link rel="stylesheet" href="{{ .blogVars.ContextPath }}/static/css/myPagination.css">
+    <link rel="stylesheet" href="{{ .blogVars.ContextPath }}/static/css/index.css">
+</head>
+<body>
+<!--PC导航栏-->
+<nav class="nav-bar-holder">
+    <div class="nav-bar" id="nav-bar">
+        <div class="logo-box">
+            <a href="{{ .blogVars.ContextPath }}" class="blog-title ta-c">
+                <img style="vertical-align: top;" alt="logo" src="{{ .blogVars.SiteLogo }}"/>
+            </a>
+        </div>
+        <div class="nb-a-holder" id="home">
+            <a id="active" class="nb-a ta-c" href="{{ .blogVars.ContextPath }}">首页</a>
+        </div>
+        <div class="nb-a-holder"><a class="nb-a ta-c" href="{{ .blogVars.ContextPath }}/categories">分类</a></div>
+        <div class="nb-a-holder"><a class="nb-a ta-c" href="{{ .blogVars.ContextPath }}/tags">标签墙</a></div>
+        <div class="nb-a-holder"><a class="nb-a ta-c" href="{{ .blogVars.ContextPath }}/archives">归档</a></div>
+        <div class="nb-a-holder"><a class="nb-a ta-c" href="{{ .blogVars.ContextPath }}/links">友情链接</a></div>
+        <!--搜索框-->
+        <div id="search-nb">
+                <span class="search-s fl">
+                    <label for="search-input"></label>
+                    <input class="fl" type="text" id="search-input" placeholder="请输入关键字">
+                    <a class="search-icon fl" onclick="search_by_key()" href="javascript:void(0);"></a>
+                </span>
+        </div>
+        {{/*                <div class="nb-a-holder-last">
+                    <div class="nb-a-holder-small">
+                        <a class="a-login" href="login.html">登录</a>
+                    </div>
+                    <div class="nb-a-holder-small">
+                        <a class="a-login" href="register.html">注册</a>
+                    </div>
+                </div>*/}}
+    </div>
+</nav>
+<!--mobile导航栏-->
+<nav class="mobile-nav">
+    <div class="logo-box">
+        <a href="{{ .blogVars.ContextPath }}" class="blog-title ta-c">
+            <img style="vertical-align: top;" alt="logo"
+                 src="{{ .blogVars.SiteLogo }}"/></a>
+    </div>
+    <a id="mobile_cate" style="background-image: url('{{ .blogVars.ContextPath }}/static/img/cate.svg')"
+       href="javascript:void(0);"></a>
+</nav>
+<ul id="nav-m-list">
+    <li id="cancel-li"><a class="fr" id="cancel" href="javascript:void(0);"></a></li>
+    <li id="m-img-li">
+        <img id="m-img" alt="{{ .blogVars.SiteName }}" src="{{ .blogVars.SiteLogo }}">
+    </li>
+    <li>
+            <span class="search-s fl">
+                <label for="search-input-m"></label><input class="fl" type="text" id="search-input-m" placeholder="关键词">
+                <a class="search-icon fl" onclick="m_search()" href="javascript:void(0);"></a>
+            </span>
+    </li>
+    <li><a class="w-h-100 fl" href="{{ .blogVars.ContextPath }}">首页</a></li>
+    <li><a class="w-h-100 fl" href="{{ .blogVars.ContextPath }}/categories">分类</a></li>
+    <li><a class="w-h-100 fl" href="{{ .blogVars.ContextPath }}/tags">标签墙</a></li>
+    <li><a class="w-h-100 fl" href="{{ .blogVars.ContextPath }}/archives">归档</a></li>
+    <li><a class="w-h-100 fl" href="{{ .blogVars.ContextPath }}/links">友情链接</a></li>
+</ul>
+{{/*    <div id="d-audio" class="d-audio"*/}}
+{{/*         style="width: 150px; z-index: 99; position: fixed; bottom: 5px; left: 5px;"></div>*/}}
+
+<!--主体-->
+<div class="big-container" id="particles-js">
+    <article class="article">
+        <!--左容器-->
+        <div class="left-holder">
+            <!--文章内容-->
+            <div id="article-holder" style="width: 100%; float: left">
+                {{ range $article := .articles  }}
+                    <div class="article-box">
+                        <div class="ab-content">
+                            <a href="{{ $.blogVars.ContextPath }}/articles/{{ $article.URL }}"
+                               class="article-img-box">
+                                <img class="lazy-image article-img"
+                                     data-src="{{ $article.Img }}" alt="" src="">
+                            </a>
+                            <div class="article-title">
+                                <a href="{{ $.blogVars.ContextPath }}/articles/{{ $article.URL }}">{{ $article.Title }}</a>
+                            </div>
+                            <div class="article-cate">
+                                {{ range $tag := $article.TagList }}
+                                    <a href="{{ $.blogVars.ContextPath }}/tags/{{ $tag.Name }}">{{ $tag.Name }}</a>
+                                {{ end }}
+                            </div>
+                            <div class="article-detail-box c-666">{{ $article.Summary }}</div>
+                            <span class="article-tail-box">
+                                    <i class="fl"
+                                       style="background-image: url('{{ $.blogVars.ContextPath }}/static/img/read-index.svg')"></i>
+                                    <span class="read-number c-999 fl">{{ $article.VisitCount }}</span>
+                                    <i class="fl"
+                                       style="background-image: url('{{ $.blogVars.ContextPath }}/static/img/comment-index.svg')"></i>
+                                    <span class="comment-number c-999 fl">{{ $article.CommentCount }}</span>
+                                    <span class="article-date c-999">{{ $article.CreatedAt.Format "2006-01-02" }}</span>
+                                    <span class="article-author one-line-overflow c-999">{{ $article.User.Username }}</span>
+                                </span>
+                        </div>
+                    </div>
+                {{ end }}
+            </div>
+            <!--分页指示器-->
+            <div id="pagination" class="pagination fl"></div>
+        </div>
+
+        <!--右容器-->
+        {{/*            <div class="right-holder">
+                <!--个人介绍-->
+                <div class="column-container">
+                    <ul class="column_box" id="like-box">
+                        <li class="column-title">
+                            <span class="at-sort b-b-ece fl">
+                                <a class="at-sort-comment-a c-666 fl">个人介绍</a>
+                            </span>
+                        </li>
+                        <li class="person-img-li">
+                            <img alt="头像" id="person-img"
+                                 src="">
+                        </li>
+                        <li class="person-intro-detail gradient-text">
+                            <h1>欢迎光临我的博客</h1>
+                        </li>
+                        <li class="person-intro-detail">
+                            <h3>网站简介：基于 Go + Vue 的极简主义博客</h3>
+                        </li>
+                        <li class="person-intro-detail">
+                            <h3>所在地：上海</h3>
+                        </li>
+                        <li class="person-intro-detail">
+                            <h3>爱好：编程，音乐</h3>
+                        </li>
+                        <li class="person-intro-detail">
+                            <h3>网站环境：Docker + Go + Mysql + Vue</h3>
+                        </li>
+                    </ul>
+                </div>
+                <!--猜你喜欢-->
+                <div class="column-container">
+                    <ul class="column_box" id="like-box">
+                        <li class="column-title">
+                            <span class="at-sort b-b-ece fl"><a class="at-sort-comment-a c-666 fl">猜你喜欢</a></span>
+                        </li>
+                        <li class="column-category">
+                            <a href="article.html">栈和队列</a>
+                        </li>
+                        <li class="column-category">
+                            <a href="article.html">栈和队列</a>
+                        </li>
+                        <li class="column-category">
+                            <a href="article.html">栈和队列</a>
+                        </li>
+                        <li class="column-category">
+                            <a href="article.html">栈和队列</a>
+                        </li>
+                        <li class="column-category">
+                            <a href="article.html">栈和队列</a>
+                        </li>
+                        <li class="column-category">
+                            <a href="article.html">栈和队列</a>
+                        </li>
+                    </ul>
+                </div>
+                <!--点击排行-->
+                <div class="column-container">
+                    <ul class="column_box" id="like-box">
+                        <li class="column-title">
+                    <span class="at-sort b-b-ece fl">
+                        <a class="at-sort-comment-a c-666 fl">点击排行</a>
+                    </span>
+                        </li>
+                        <li class="column-category">
+                            <a href="article.html">极简的个人博客模板，支持响应式布局</a>
+                        </li>
+                        <li class="column-category">
+                            <a href="article.html">极简的个人博客模板，支持响应式布局</a>
+                        </li>
+                        <li class="column-category">
+                            <a href="article.html">极简的个人博客模板，支持响应式布局</a>
+                        </li>
+                        <li class="column-category">
+                            <a href="article.html">极简的个人博客模板，支持响应式布局</a>
+                        </li>
+                        <li class="column-category">
+                            <a href="article.html">极简的个人博客模板，支持响应式布局</a>
+                        </li>
+                        <li class="column-category">
+                            <a href="article.html">极简的个人博客模板，支持响应式布局</a>
+                        </li>
+                        <li class="column-category">
+                            <a href="article.html">极简的个人博客模板，支持响应式布局</a>
+                        </li>
+                        <li class="column-category">
+                            <a href="article.html">极简的个人博客模板，支持响应式布局</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>*/}}
+    </article>
+</div>
+
+{{ template "footer" . }}
+
+{{ template "script" . }}
+
+<script type="text/javascript">
+    // 分页
+    const pagination = new myPagination({
+        id: 'pagination',
+        curPage: {{ .currentPage }}, // 初始页码
+        pageTotal: {{ .totalPages }}, // 总页数
+        pageAmount: {{ .pageSize }}, // 每页多少条
+        dataTotal: {{ .totalCount }}, // 总共多少条数据
+        pageSize: 3, // 可选,分页个数
+        //showPageTotalFlag: true, // 是否显示数据统计
+        //showSkipInputFlag: true, // 是否支持跳转
+        getPage: function (page) {
+            location.href = "{{ .blogVars.ContextPath }}/p/" + page;
+        }
+    });
+</script>
+</body>
+</html>

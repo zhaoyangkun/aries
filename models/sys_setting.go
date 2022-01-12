@@ -16,6 +16,10 @@ type SysSetting struct {
 // GetByName 根据名称获取系统设置
 func (SysSetting) GetByName(name string) (s SysSetting, err error) {
 	err = db.Db.Where("`name` = ?", name).First(&s).Error
+	if gorm.IsRecordNotFoundError(err) {
+		err = nil
+	}
+
 	return
 }
 
