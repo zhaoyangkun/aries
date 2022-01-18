@@ -1,39 +1,41 @@
-<!DOCTYPE html>
-<html lang="zh-cmn-Hans">
-{{ template "head" . }}
-<body>
-{{ template "menu" . }}
+{{ define "xue/tag-list.tmpl" }}
+    <!DOCTYPE html>
+    <html lang="zh-cmn-Hans">
+    {{ template "xue/head" . }}
+    <body>
+    {{ template "xue/menu" . }}
 
-<main class="mx-auto home-page" id="container">
-    <header class="bg-cover post-cover">
-        <div class="cover-bg">
-            <img src="https://cdn.jsdelivr.net/gh/keepli/image@2.0/header/2.0/header-12.jpg" class="z-auto"
-                 alt="{{ .subTitle }}">
-        </div>
-        <div class="cover-content flex justify-center">
-            <!-- 封面内容 -->
-            <div class="inner flex flex-col justify-center">
-                <p class="cover-title text-base md:text-4xl lg:text-4xl xl:text-5xl">{{ .subTitle }}</p>
+    <main class="mx-auto home-page" id="container">
+        <header class="bg-cover post-cover">
+            <div class="cover-bg">
+                <img src="https://cdn.jsdelivr.net/gh/keepli/image@2.0/header/2.0/header-12.jpg" class="z-auto"
+                     alt="{{ .subTitle }}">
             </div>
+            <div class="cover-content flex justify-center">
+                <!-- 封面内容 -->
+                <div class="inner flex flex-col justify-center">
+                    <p class="cover-title text-base md:text-4xl lg:text-4xl xl:text-5xl">{{ .subTitle }}</p>
+                </div>
+            </div>
+        </header>
+        <div class="container mx-auto px-4 mt-16 max-w-6xl tracking-wider md:leading-relaxed sm:leading-normal ct-container cn-pd content-container cloud">
+            <h2>标签</h2>
+            <p class="flex flex-row justify-start flex-wrap">
+                {{ range $tag := .tags }}
+                    <a href="{{ $.blogVars.ContextPath }}/tags/{{ $tag.Name }}"
+                       class="post-tag mt-2 mb-2 mr-2">{{ $tag.Name }}
+                        <span class="tag-length">{{ $tag.Count }}</span>
+                    </a>
+                {{ end }}
+            </p>
+            <h2 style="margin-bottom: 0;">云</h2>
+            <div id="tagCloud" class="card-content jqcloud jqcloud-hg"></div>
         </div>
-    </header>
-    <div class="container mx-auto px-4 mt-16 max-w-6xl tracking-wider md:leading-relaxed sm:leading-normal ct-container cn-pd content-container cloud">
-        <h2>标签</h2>
-        <p class="flex flex-row justify-start flex-wrap">
-            {{ range $tag := .tags }}
-                <a href="{{ $.blogVars.ContextPath }}/tags/{{ $tag.Name }}"
-                   class="post-tag mt-2 mb-2 mr-2">{{ $tag.Name }}
-                    <span class="tag-length">{{ $tag.Count }}</span>
-                </a>
-            {{ end }}
-        </p>
-        <h2 style="margin-bottom: 0;">云</h2>
-        <div id="tagCloud" class="card-content jqcloud jqcloud-hg"></div>
-    </div>
-</main>
+    </main>
 
-{{ template "footer" . }}
+    {{ template "xue/footer" . }}
 
-{{ template "script" . }}
-</body>
-</html>
+    {{ template "xue/script" . }}
+    </body>
+    </html>
+{{ end }}

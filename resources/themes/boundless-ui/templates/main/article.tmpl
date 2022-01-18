@@ -1,37 +1,41 @@
-<!DOCTYPE html>
-<html lang="zh-cmn-Hans">
-<head>
-    {{ template "head" . }}
-    <link rel="stylesheet" href="{{ .blogVars.ContextPath }}/static/css/article-detail.css">
-    <link rel="stylesheet" href="{{ .blogVars.ContextPath }}/static/css/github.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css"
-          integrity="sha384-R4558gYOUz8mP9YWpZJjofhk+zx0AS11p36HnD2ZKj/6JR5z27gSSULCNHIRReVs" crossorigin="anonymous">
-</head>
-<body>
-<!--PC导航栏-->
-<nav class="nav-bar-holder">
-    <div class="nav-bar" id="nav-bar">
-        <div class="logo-box">
-            <a href="{{ .blogVars.ContextPath }}" class="blog-title ta-c">
-                <img style="vertical-align: top;" alt="logo" src="{{ .blogVars.SiteLogo }}"/>
-            </a>
-        </div>
-        <div class="nb-a-holder" id="home">
-            <a class="nb-a ta-c" href="{{ .blogVars.ContextPath }}">首页</a>
-        </div>
-        <div class="nb-a-holder"><a class="nb-a ta-c" href="{{ .blogVars.ContextPath }}/categories">分类</a></div>
-        <div class="nb-a-holder"><a class="nb-a ta-c" href="{{ .blogVars.ContextPath }}/tags">标签墙</a></div>
-        <div class="nb-a-holder"><a class="nb-a ta-c" href="{{ .blogVars.ContextPath }}/archives">归档</a></div>
-        <div class="nb-a-holder"><a class="nb-a ta-c" href="{{ .blogVars.ContextPath }}/links">友情链接</a></div>
-        <!--搜索框-->
-        <div id="search-nb">
+{{ define "boundless-ui/article.tmpl" }}
+    <!DOCTYPE html>
+    <html lang="zh-cmn-Hans">
+    <head>
+        {{ template "boundless-ui/head" . }}
+        <link rel="stylesheet"
+              href="{{ .blogVars.ContextPath }}/resources/themes/{{ .blogVars.Theme }}/static/css/article-detail.css">
+        <link rel="stylesheet"
+              href="{{ .blogVars.ContextPath }}/resources/themes/{{ .blogVars.Theme }}/static/css/github.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css"
+              integrity="sha384-R4558gYOUz8mP9YWpZJjofhk+zx0AS11p36HnD2ZKj/6JR5z27gSSULCNHIRReVs"
+              crossorigin="anonymous">
+    </head>
+    <body>
+    <!--PC导航栏-->
+    <nav class="nav-bar-holder">
+        <div class="nav-bar" id="nav-bar">
+            <div class="logo-box">
+                <a href="{{ .blogVars.ContextPath }}" class="blog-title ta-c">
+                    <img style="vertical-align: top;" alt="logo" src="{{ .blogVars.SiteLogo }}"/>
+                </a>
+            </div>
+            <div class="nb-a-holder" id="home">
+                <a class="nb-a ta-c" href="{{ .blogVars.ContextPath }}">首页</a>
+            </div>
+            <div class="nb-a-holder"><a class="nb-a ta-c" href="{{ .blogVars.ContextPath }}/categories">分类</a></div>
+            <div class="nb-a-holder"><a class="nb-a ta-c" href="{{ .blogVars.ContextPath }}/tags">标签墙</a></div>
+            <div class="nb-a-holder"><a class="nb-a ta-c" href="{{ .blogVars.ContextPath }}/archives">归档</a></div>
+            <div class="nb-a-holder"><a class="nb-a ta-c" href="{{ .blogVars.ContextPath }}/links">友情链接</a></div>
+            <!--搜索框-->
+            <div id="search-nb">
                 <span class="search-s fl">
                     <label for="search-input"></label>
                     <input class="fl" type="text" id="search-input" placeholder="请输入关键字">
                     <a class="search-icon fl" onclick="search_by_key()" href="javascript:void(0);"></a>
                 </span>
-        </div>
-        {{/*                <div class="nb-a-holder-last">
+            </div>
+            {{/*                <div class="nb-a-holder-last">
                     <div class="nb-a-holder-small">
                         <a class="a-login" href="login.html">登录</a>
                     </div>
@@ -39,118 +43,120 @@
                         <a class="a-login" href="register.html">注册</a>
                     </div>
                 </div>*/}}
-    </div>
-</nav>
-<!--mobile导航栏-->
-<nav class="mobile-nav">
-    <div class="logo-box">
-        <a href="{{ .blogVars.ContextPath }}" class="blog-title ta-c">
-            <img style="vertical-align: top;" alt="logo"
-                 src="{{ .blogVars.SiteLogo }}"/></a>
-    </div>
-    <a id="mobile_cate" style="background-image: url('{{ .blogVars.ContextPath }}/static/img/cate.svg')"
-       href="javascript:void(0);"></a>
-</nav>
-<ul id="nav-m-list">
-    <li id="cancel-li"><a class="fr" id="cancel" href="javascript:void(0);"></a></li>
-    <li id="m-img-li">
-        <img id="m-img" alt="{{ .blogVars.SiteName }}" src="{{ .blogVars.SiteLogo }}">
-    </li>
-    <li>
+        </div>
+    </nav>
+    <!--mobile导航栏-->
+    <nav class="mobile-nav">
+        <div class="logo-box">
+            <a href="{{ .blogVars.ContextPath }}" class="blog-title ta-c">
+                <img style="vertical-align: top;" alt="logo"
+                     src="{{ .blogVars.SiteLogo }}"/></a>
+        </div>
+        <a id="mobile_cate"
+           style="background-image: url('{{ .blogVars.ContextPath }}/resources/themes/{{ .blogVars.Theme }}/static/img/cate.svg')"
+           href="javascript:void(0);"></a>
+    </nav>
+    <ul id="nav-m-list">
+        <li id="cancel-li"><a class="fr" id="cancel" href="javascript:void(0);"></a></li>
+        <li id="m-img-li">
+            <img id="m-img" alt="{{ .blogVars.SiteName }}" src="{{ .blogVars.SiteLogo }}">
+        </li>
+        <li>
             <span class="search-s fl">
                 <label for="search-input-m"></label><input class="fl" type="text" id="search-input-m" placeholder="关键词">
                 <a class="search-icon fl" onclick="m_search()" href="javascript:void(0);"></a>
             </span>
-    </li>
-    <li><a class="w-h-100 fl" href="{{ .blogVars.ContextPath }}">首页</a></li>
-    <li><a class="w-h-100 fl" href="{{ .blogVars.ContextPath }}/categories">分类</a></li>
-    <li><a class="w-h-100 fl" href="{{ .blogVars.ContextPath }}/tags">标签墙</a></li>
-    <li><a class="w-h-100 fl" href="{{ .blogVars.ContextPath }}/archives">归档</a></li>
-    <li><a class="w-h-100 fl" href="{{ .blogVars.ContextPath }}/links">友情链接</a></li>
-</ul>
-{{/*    <div id="d-audio" class="d-audio"*/}}
-{{/*         style="width: 150px; z-index: 99; position: fixed; bottom: 5px; left: 5px;"></div>*/}}
+        </li>
+        <li><a class="w-h-100 fl" href="{{ .blogVars.ContextPath }}">首页</a></li>
+        <li><a class="w-h-100 fl" href="{{ .blogVars.ContextPath }}/categories">分类</a></li>
+        <li><a class="w-h-100 fl" href="{{ .blogVars.ContextPath }}/tags">标签墙</a></li>
+        <li><a class="w-h-100 fl" href="{{ .blogVars.ContextPath }}/archives">归档</a></li>
+        <li><a class="w-h-100 fl" href="{{ .blogVars.ContextPath }}/links">友情链接</a></li>
+    </ul>
+    {{/*    <div id="d-audio" class="d-audio"*/}}
+    {{/*         style="width: 150px; z-index: 99; position: fixed; bottom: 5px; left: 5px;"></div>*/}}
 
-<!--文章目录-->
-{{/*<div class="toc" style="display: block;">*/}}
-{{/*    <ul>*/}}
-{{/*        <li>*/}}
-{{/*            <a href="#_1" id="toc-a-on">二. 栈和队列</a>*/}}
-{{/*            <ul>*/}}
-{{/*                <li><a href="#1">1. 栈</a>*/}}
-{{/*                    <ul>*/}}
-{{/*                        <li><a href="#1_1">(1) 概念</a></li>*/}}
-{{/*                        <li><a href="#2">(2) 数据结构</a></li>*/}}
-{{/*                    </ul>*/}}
-{{/*                </li>*/}}
-{{/*                <li><a href="#2_1">2. 队列</a>*/}}
-{{/*                    <ul>*/}}
-{{/*                        <li><a href="#1_2">(1) 概念</a></li>*/}}
-{{/*                        <li><a href="#2_2">(2) 数据结构</a></li>*/}}
-{{/*                    </ul>*/}}
-{{/*                </li>*/}}
-{{/*            </ul>*/}}
-{{/*        </li>*/}}
-{{/*    </ul>*/}}
-{{/*</div>*/}}
+    <!--文章目录-->
+    {{/*<div class="toc" style="display: block;">*/}}
+    {{/*    <ul>*/}}
+    {{/*        <li>*/}}
+    {{/*            <a href="#_1" id="toc-a-on">二. 栈和队列</a>*/}}
+    {{/*            <ul>*/}}
+    {{/*                <li><a href="#1">1. 栈</a>*/}}
+    {{/*                    <ul>*/}}
+    {{/*                        <li><a href="#1_1">(1) 概念</a></li>*/}}
+    {{/*                        <li><a href="#2">(2) 数据结构</a></li>*/}}
+    {{/*                    </ul>*/}}
+    {{/*                </li>*/}}
+    {{/*                <li><a href="#2_1">2. 队列</a>*/}}
+    {{/*                    <ul>*/}}
+    {{/*                        <li><a href="#1_2">(1) 概念</a></li>*/}}
+    {{/*                        <li><a href="#2_2">(2) 数据结构</a></li>*/}}
+    {{/*                    </ul>*/}}
+    {{/*                </li>*/}}
+    {{/*            </ul>*/}}
+    {{/*        </li>*/}}
+    {{/*    </ul>*/}}
+    {{/*</div>*/}}
 
-<!--主体-->
-<section class="main">
-    <label for="article_id"></label><input id="article_id" name="article_id" value="55" hidden="">
-    <label for="user_id"></label><input id="user_id" name="user_id"
-                                        value=""
-                                        hidden="">
-    <div class="left-box">
-        <div id="outerdiv">
-            <div id="innerdiv" style="position:absolute;">
-                <img alt="" id="bigimg" style="box-shadow: 0 0 10px rgba(0,0,0,0.38)" src="">
+    <!--主体-->
+    <section class="main">
+        <label for="article_id"></label><input id="article_id" name="article_id" value="55" hidden="">
+        <label for="user_id"></label><input id="user_id" name="user_id"
+                                            value=""
+                                            hidden="">
+        <div class="left-box">
+            <div id="outerdiv">
+                <div id="innerdiv" style="position:absolute;">
+                    <img alt="" id="bigimg" style="box-shadow: 0 0 10px rgba(0,0,0,0.38)" src="">
+                </div>
             </div>
+            <!--文章内容-->
+            <div class="article-container">
+                <div class="article-content markdown-body">
+                    <h1 style="margin: 10px 0">{{ .article.Title }}</h1>
+                    {{ safe .article.MDContent }}
+                </div>
+                <div class="prev-next">
+                    {{ if .preArticle.Title }}
+                        <div class="p-div">
+                            <span class="fl">上一篇：</span>
+                            <a class="one-line-overflow fl"
+                               href="{{ .blogVars.ContextPath }}/articles/{{ .preArticle.URL }}"
+                               id="prev-a">{{ .preArticle.Title }}</a>
+                        </div>
+                    {{ end }}
+                    {{ if .nextArticle.Title }}
+                        <div class="p-div">
+                            <span class="fl">下一篇：</span>
+                            <a class="one-line-overflow fl"
+                               href="{{ .blogVars.ContextPath }}/articles/{{ .nextArticle.URL }}"
+                               id="prev-a">{{ .nextArticle.Title }}</a>
+                        </div>
+                    {{ end }}
+                </div>
+            </div>
+
+            {{ if .article.IsAllowCommented }}
+                {{ template "boundless-ui/comment" . }}
+            {{ end }}
         </div>
-        <!--文章内容-->
-        <div class="article-container">
-            <div class="article-content markdown-body">
-                <h1 style="margin: 10px 0">{{ .article.Title }}</h1>
-                {{ safe .article.MDContent }}
-            </div>
-            <div class="prev-next">
-                {{ if .preArticle.Title }}
-                    <div class="p-div">
-                        <span class="fl">上一篇：</span>
-                        <a class="one-line-overflow fl"
-                           href="{{ .blogVars.ContextPath }}/articles/{{ .preArticle.URL }}"
-                           id="prev-a">{{ .preArticle.Title }}</a>
-                    </div>
-                {{ end }}
-                {{ if .nextArticle.Title }}
-                    <div class="p-div">
-                        <span class="fl">下一篇：</span>
-                        <a class="one-line-overflow fl"
-                           href="{{ .blogVars.ContextPath }}/articles/{{ .nextArticle.URL }}"
-                           id="prev-a">{{ .nextArticle.Title }}</a>
-                    </div>
-                {{ end }}
-            </div>
-        </div>
+    </section>
 
-        {{ if .article.IsAllowCommented }}
-            {{ template "comment" . }}
-        {{ end }}
-    </div>
-</section>
+    {{ template "boundless-ui/footer" . }}
 
-{{ template "footer" . }}
+    {{ template "boundless-ui/script" . }}
 
-{{ template "script" . }}
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js"
+            integrity="sha384-z1fJDqw8ZApjGO3/unPWUPsIymfsJmyrDVWC8Tv/a1HeOtGmkwNd/7xUS0Xcnvsx"
+            crossorigin="anonymous"></script>
 
-<script src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js"
-        integrity="sha384-z1fJDqw8ZApjGO3/unPWUPsIymfsJmyrDVWC8Tv/a1HeOtGmkwNd/7xUS0Xcnvsx"
-        crossorigin="anonymous"></script>
-
-<script type="text/javascript">
-    const math_list = document.getElementsByClassName("vditor-math");
-    for (let math of math_list) {
-        katex.render(math.innerText, math);
-    }
-</script>
-</body>
-</html>
+    <script type="text/javascript">
+        const math_list = document.getElementsByClassName("vditor-math");
+        for (let math of math_list) {
+            katex.render(math.innerText, math);
+        }
+    </script>
+    </body>
+    </html>
+{{ end }}

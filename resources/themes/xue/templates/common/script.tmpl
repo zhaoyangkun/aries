@@ -1,4 +1,4 @@
-{{ define "script" }}
+{{ define "xue/script" }}
     <script src="//cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js"></script>
     <!-- markdown 插件 -->
     <script src="//cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
@@ -72,7 +72,7 @@
         }
     </script>
 
-    <script src="{{ .blogVars.ContextPath }}/static/js/main.js"></script>
+    <script src="{{ .blogVars.ContextPath }}/resources/themes/{{ .blogVars.Theme }}/static/js/main.js"></script>
 
     <script src="//cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.js"></script>
     <script src="//cdn.jsdelivr.net/npm/meting@2/dist/Meting.min.js"></script>
@@ -91,7 +91,7 @@
     </script>
 
     <script type="text/javascript">
-        const loading = "{{ .blogVars.ContextPath }}/static/img/loading.svg";
+        const loading = "{{ .blogVars.ContextPath }}/resources/themes/{{ .blogVars.Theme }}/static/img/loading.svg";
         let photoList = "https://cdn.jsdelivr.net/gh/keepli/image@1.0/img/1.0/img-1.jpg;"
             + " https://cdn.jsdelivr.net/gh/keepli/image@1.0/img/1.0/img-2.jpg;"
             + " https://cdn.jsdelivr.net/gh/keepli/image@1.0/img/1.0/img-3.jpg;"

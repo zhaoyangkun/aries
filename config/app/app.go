@@ -10,7 +10,6 @@ import (
 	"aries/models"
 	"aries/routers"
 	"aries/utils"
-	"fmt"
 	"html/template"
 	"log"
 	"reflect"
@@ -86,9 +85,13 @@ func InitApp() *gin.Engine {
 	})
 
 	// 加载静态资源和模板
+	themes, _ := models.Theme{}.GetAll()
+	for _, theme := range themes {
+		router.Static("/resources/themes/"+theme.ThemeName+"/static",
+			"./resources/themes/"+theme.ThemeName+"/static")
+	}
 	router.Static("/admin", "./resources/dist")
-	router.Static("/static", fmt.Sprintf("./resources/themes/%s/static", setting.BlogVars.Theme))
-	router.LoadHTMLGlob(fmt.Sprintf("./resources/themes/%s/templates/**/*", setting.BlogVars.Theme))
+	router.LoadHTMLGlob("./resources/themes/**/templates/**/*.tmpl")
 
 	// 加载路由
 	apiRouter := routers.ApiRouter{}

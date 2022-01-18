@@ -1,4 +1,4 @@
-{{ define "head" }}
+{{ define "xue/head" }}
     <head>
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -21,8 +21,10 @@
               href="//cdn.jsdelivr.net/gh/Sanarous/files@master/font-awesome-animation.min.css">
         <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css">
         <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/highlight.js@10.1.2/styles/atom-one-dark.min.css">
-        <link rel="stylesheet" href="{{ .blogVars.ContextPath }}/static/css/style.min.css">
-        <link rel="stylesheet" href="{{ .blogVars.ContextPath }}/static/css/idea.css">
+        <link rel="stylesheet"
+              href="{{ .blogVars.ContextPath }}/resources/themes/{{ .blogVars.Theme }}/static/css/style.min.css">
+        <link rel="stylesheet"
+              href="{{ .blogVars.ContextPath }}/resources/themes/{{ .blogVars.Theme }}/static/css/idea.css">
         <style type="text/css">
             :root {
                 --base-bg-color: #fff;

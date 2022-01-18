@@ -1,106 +1,56 @@
-{{ define "comment" }}
-    <!--评论-->
-    <div class="comment-container" style="margin-top: 20px; margin-bottom: 10px">
-        <div class="sort-box">
-                <span class="at-sort-s fl"><a style="box-sizing: content-box;"
-                                              class="at-sort-comment-a c-666">评论</a></span>
-            <span class="location fl c-666"><a class="at-sort-detail c-666"></a> </span>
-        </div>
-        <div class="total-count">
-            共 <span id="comment-count">3</span> 条评论
-        </div>
-        <div class="comment-item">
-            <div class="user-img-box">
-                <img src="../img/user.jpeg" id="user-img" alt="">
-            </div>
-            <div class="comment-box">
-                <div class="user-info">
-                    <span class="user-name">admin</span>
-                    <span class="publish-time">2019-08-27 00:02:57</span>
-                </div>
+{{ define "boundless-ui/comment" }}
+    <link rel="stylesheet"
+          href="//cdn.jsdelivr.net/gh/zhaoyangkun/aries/resources/themes/xue/static/css/aries-comment.css">
+    <style>
+        .vditor-ir pre.vditor-reset {
+            background-color: var(--panel-background-color) !important;
+        }
 
-                <div class="reply-box">
-                    <div class="user-info">
-                        <span class="reply-user-name">引用 @abcde</span>
-                        <span class="publish-time">2019-08-27 00:01:43</span>
-                    </div>
-                    <div class="comment-content c-666" style="padding-bottom: 5px; padding-left: 10px">
-                        <p>? ? ?</p>
-                    </div>
-                </div>
-                <div class="comment-content c-666">
-                    <p>谢谢?</p>
-                </div>
-                <div class="icon-line">
-                    <a href="javascript:void(0)" class="comment-icon"
-                       style="background-image: url('https://zhaoyangkun.gitee.io/blog-static/img/comment.svg');"
-                       onclick="show_reply(this)"></a>
-                    <span class="reply_count c-666">0</span>
-                    <a href="javascript:void(0)" class="liked-icon"
-                       style="background-image: url('https://zhaoyangkun.gitee.io/blog-static/img/liked.svg');"
-                       onclick="like_comment(30)"></a>
-                    <span class="liked_count c-666">0</span>
-                </div>
-                <div class="reply-holder" style="display: none;">
-                    <input class="reply-btn" type="button" onclick="reply_comment(this,30,22,41)" value="回复">
-                </div>
-            </div>
-        </div>
-        <div class="comment-item">
-            <div class="user-img-box">
-                <img src="../img/user.jpeg" id="user-img" alt="">
-            </div>
-            <div class="comment-box">
-                <div class="user-info">
-                    <span class="user-name">admin</span>
-                    <span class="publish-time">2019-08-27 00:02:11</span>
-                </div>
-
-                <div class="comment-content c-666">
-                    <p>虽然没什么人访问，但我初心还在。</p>
-                </div>
-                <div class="icon-line">
-                    <a href="javascript:void(0)" class="comment-icon"
-                       style="background-image: url('https://zhaoyangkun.gitee.io/blog-static/img/comment.svg');"
-                       onclick="show_reply(this)"></a>
-                    <span class="reply_count c-666">0</span>
-                    <a href="javascript:void(0)" class="liked-icon"
-                       style="background-image: url('https://zhaoyangkun.gitee.io/blog-static/img/liked.svg');"
-                       onclick="like_comment(29)"></a>
-                    <span class="liked_count c-666">0</span>
-                </div>
-                <div class="reply-holder" style="display: none;">
-                    <input class="reply-btn" type="button" onclick="reply_comment(this,29,22,41)" value="回复">
-                </div>
-            </div>
-        </div>
-        <div class="comment-item">
-            <div class="user-img-box">
-                <img src="https://zhaoyangkun.gitee.io/blog-static/img/person.svg" id="user-img" alt="">
-            </div>
-            <div class="comment-box">
-                <div class="user-info">
-                    <span class="user-name">abcde</span>
-                    <span class="publish-time">2019-08-27 00:01:43</span>
-                </div>
-
-                <div class="comment-content c-666">
-                    <p>? ? ?</p>
-                </div>
-                <div class="icon-line">
-                    <a href="javascript:void(0)" class="comment-icon"
-                       style="background-image: url('https://zhaoyangkun.gitee.io/blog-static/img/comment.svg');"
-                       onclick="show_reply(this)"></a>
-                    <span class="reply_count c-666">1</span>
-                    <a href="javascript:void(0)" class="liked-icon"
-                       style="background-image: url('https://zhaoyangkun.gitee.io/blog-static/img/liked.svg');"
-                       onclick="like_comment(28)"></a>
-                    <span class="liked_count c-666">1</span>
-                </div>
-                <div class="reply-holder" style="display: none;">
-                    <input class="reply-btn" type="button" onclick="reply_comment(this,28,27,41)" value="回复">
-                </div>
-            </div>
-        </div>
+        .ant-pagination {
+            text-align: center;
+        }
+    </style>
+    <div id="aries-comment" style="margin-top: 30px">
+        <Comment :article_id="article_id" :page_id="page_id" :comment_type="comment_type"></Comment>
     </div>
+    <script type="text/javascript">
+        function loadScripts(urls, path) {
+            return new Promise(function (resolve) {
+                urls.forEach(function (src, i) {
+                    let script = document.createElement('script');
+                    script.type = 'text/javascript';
+                    script.src = (path || "") + src;
+                    script.async = false;
+
+                    // If last script, bind the callback event to resolve
+                    if (i === urls.length - 1) {
+                        // Multiple binding for browser compatibility
+                        script.onreadystatechange = resolve;
+                        script.onload = resolve;
+                    }
+
+                    // Fire the loading
+                    document.body.appendChild(script);
+                });
+            });
+        }
+
+        function renderComment() {
+            new Vue({
+                el: "#aries-comment",
+                data() {
+                    return {
+                        article_id: {{ .articleID }},
+                        page_id: {{ .pageID }},
+                        comment_type: {{ .commentType }},
+                    }
+                }
+            });
+        }
+
+        loadScripts([
+            "//cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.min.js",
+            "//cdn.jsdelivr.net/gh/zhaoyangkun/aries/resources/themes/xue/static/js/aries-comment.js",
+        ]).then(renderComment);
+    </script>
 {{ end }}

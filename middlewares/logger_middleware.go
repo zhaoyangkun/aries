@@ -2,6 +2,7 @@ package middlewares
 
 import (
 	"aries/config/setting"
+	"aries/utils"
 	"net"
 	"net/http"
 	"net/http/httputil"
@@ -49,25 +50,25 @@ func Logger(logger *zap.Logger) gin.HandlerFunc {
 		if !strings.Contains(path, "/api") && !strings.Contains(path, "/static") {
 			switch status {
 			case 400:
-				ctx.HTML(http.StatusOK, "error.tmpl", gin.H{
+				ctx.HTML(http.StatusOK, utils.GetTheme()+"error.tmpl", gin.H{
 					"blogVars": setting.BlogVars,
 					"code":     "400",
 					"msg":      "请求错误",
 				})
 			case 403:
-				ctx.HTML(http.StatusOK, "error.tmpl", gin.H{
+				ctx.HTML(http.StatusOK, utils.GetTheme()+"error.tmpl", gin.H{
 					"blogVars": setting.BlogVars,
 					"code":     "403",
 					"msg":      "您无权访问该页面",
 				})
 			case 404:
-				ctx.HTML(http.StatusOK, "error.tmpl", gin.H{
+				ctx.HTML(http.StatusOK, utils.GetTheme()+"error.tmpl", gin.H{
 					"blogVars": setting.BlogVars,
 					"code":     "404",
 					"msg":      "您访问的页面不存在",
 				})
 			case 500:
-				ctx.HTML(http.StatusOK, "error.tmpl", gin.H{
+				ctx.HTML(http.StatusOK, utils.GetTheme()+"error.tmpl", gin.H{
 					"blogVars": setting.BlogVars,
 					"code":     "500",
 					"msg":      "服务器内部发生了错误",

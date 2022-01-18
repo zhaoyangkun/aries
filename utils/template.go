@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"aries/config/setting"
 	"html/template"
 	"time"
 )
@@ -38,4 +39,9 @@ func Month(datetime time.Time) int {
 // Day 获取日
 func Day(datetime time.Time) int {
 	return int(datetime.Day())
+}
+
+// GetTheme 获取主题
+func GetTheme() string {
+	return setting.BlogVars.Theme + "/"
 }

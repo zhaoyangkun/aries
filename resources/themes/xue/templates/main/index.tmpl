@@ -1,97 +1,100 @@
-<!DOCTYPE html>
-<html lang="zh-cmn-Hans">
-{{ template "head" . }}
-<body>
-{{ template "menu" . }}
+{{ define "xue/index.tmpl" }}
+    <!DOCTYPE html>
+    <html lang="zh-cmn-Hans">
+    {{ template "xue/head" . }}
+    <body>
+    {{ template "xue/menu" . }}
 
-<main class="mx-auto home-page" id="container">
-    <header class="bg-cover home-cover" id="homeHeader">
-        <div class="cover-bg">
-            <img src="https://cdn.jsdelivr.net/gh/keepli/image@2.0/header/2.0/header-2.jpg"
-                 alt="{{ .blogVars.SiteName }}">
-        </div>
-        <div class="cover-content index flex justify-center">
-            <!-- 封面内容 -->
-            <h2 class="cover-title text-left md:text-4xl lg:text-4xl xl:text-5xl">{{ .blogVars.SiteName }}</h2>
-            <p class="slogan text-center" id="slogan"></p>
-            <a class="arrow-down" href="javascript:" onClick="scollTo()">
-                <span class="screen-reader-text">Scroll Down</span>
-            </a>
-        </div>
-    </header>
-    <div class="container mx-auto px-4 content-container postList mx-850">
-        <h3><i class="iconfont icon-new list-brands"></i>最新文章</h3>
-        <div class="posts mt-4 pagination-container" id="pageContainer">
-            <ul class="posts-list">
-                {{ range $article := .articles }}
-                    <li class="post">
-                        <div class="post-time-img">
-                            <div class="post-date">
-                                {{ day $article.CreatedAt }}<span>{{ $article.CreatedAt.Format "2006年01月" }}</span>
+    <main class="mx-auto home-page" id="container">
+        <header class="bg-cover home-cover" id="homeHeader">
+            <div class="cover-bg">
+                <img src="https://cdn.jsdelivr.net/gh/keepli/image@2.0/header/2.0/header-2.jpg"
+                     alt="{{ .blogVars.SiteName }}">
+            </div>
+            <div class="cover-content index flex justify-center">
+                <!-- 封面内容 -->
+                <h2 class="cover-title text-left md:text-4xl lg:text-4xl xl:text-5xl">{{ .blogVars.SiteName }}</h2>
+                <p class="slogan text-center" id="slogan"></p>
+                <a class="arrow-down" href="javascript:" onClick="scollTo()">
+                    <span class="screen-reader-text">Scroll Down</span>
+                </a>
+            </div>
+        </header>
+        <div class="container mx-auto px-4 content-container postList mx-850">
+            <h3><i class="iconfont icon-new list-brands"></i>最新文章</h3>
+            <div class="posts mt-4 pagination-container" id="pageContainer">
+                <ul class="posts-list">
+                    {{ range $article := .articles }}
+                        <li class="post">
+                            <div class="post-time-img">
+                                <div class="post-date">
+                                    {{ day $article.CreatedAt }}<span>{{ $article.CreatedAt.Format "2006年01月" }}</span>
+                                </div>
+                                <div class="post-preview">
+                                    <a href="{{ $.blogVars.ContextPath }}/articles/{{ $article.URL }}">
+                                        <img class="lazyload img-random"
+                                             src="{{ $article.Img }}" data-src="{{ $article.Img }}"
+                                             index="0" alt="{{ $article.Title }}"/>
+                                    </a>
+                                </div>
                             </div>
-                            <div class="post-preview">
-                                <a href="{{ $.blogVars.ContextPath }}/articles/{{ $article.URL }}">
-                                    <img class="lazyload img-random"
-                                         src="{{ $article.Img }}" data-src="{{ $article.Img }}"
-                                         index="0" alt="{{ $article.Title }}"/>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="post-content has-category ">
-                            <div class="post-meta">
-                                {{ range $tag := $article.TagList }}
-                                    <span class="post-categories">
+                            <div class="post-content has-category ">
+                                <div class="post-meta">
+                                    {{ range $tag := $article.TagList }}
+                                        <span class="post-categories">
                                       <i class="fas fa-folder-open"></i>{{ $tag.Name }}
                                     </span>
-                                {{ end }}
-                            </div>
-                            <h2>
-                                <a href="{{ $.blogVars.ContextPath }}/articles/{{ $article.URL }}" rel="bookmark">
-                                    {{ if $article.IsTop }}
-                                        <i class="iconfont icon-zhiding zhiding"></i>
                                     {{ end }}
-                                    {{ $article.Title }}
+                                </div>
+                                <h2>
+                                    <a href="{{ $.blogVars.ContextPath }}/articles/{{ $article.URL }}" rel="bookmark">
+                                        {{ if $article.IsTop }}
+                                            <i class="iconfont icon-zhiding zhiding"></i>
+                                        {{ end }}
+                                        {{ $article.Title }}
+                                    </a>
+                                </h2>
+                                <p>{{ $article.Summary }}</p>
+                                <a class="post-more-link"
+                                   href="{{ $.blogVars.ContextPath }}/articles/{{ $article.URL }}">
+                                    <span class="text">查看全文</span>
                                 </a>
-                            </h2>
-                            <p>{{ $article.Summary }}</p>
-                            <a class="post-more-link" href="{{ $.blogVars.ContextPath }}/articles/{{ $article.URL }}">
-                                <span class="text">查看全文</span>
-                            </a>
-                        </div>
+                            </div>
+                        </li>
+                    {{ end }}
+                </ul>
+            </div>
+            <nav class="pagination flex flex-row justify-center mt-8" role="navigation" aria-label="pagination">
+                <ul class="pagination-list flex flex-row " id="pagination">
+                    <li class="pagination-previous {{ if le .currentPage 1 }}is-invisible{{ end }}">
+                        <a class="pagination-circle" href="{{ .blogVars.ContextPath }}/p/{{ subtract .currentPage 1 }}">
+                            <span class="iconfont icon-left"></span>
+                        </a>
                     </li>
-                {{ end }}
-            </ul>
+                    {{ range $page := .pages }}
+                        <li>
+                            {{ if eq $.currentPage $page }}
+                                <a class="pagination-circle is-current" href="javascript:void(0);">{{ $page }}</a>
+                            {{ else }}
+                                <a class="pagination-circle"
+                                   href="{{ $.blogVars.ContextPath }}/p/{{ $page }}">{{ $page }}</a>
+                            {{ end }}
+                        </li>
+                    {{ end }}
+                    {{ $totalPage := len .pages }}
+                    <li class="pagination-next {{ if ge .currentPage $totalPage }}is-invisible{{ end }}">
+                        <a class="pagination-circle" href="{{ $.blogVars.ContextPath }}/p/{{ add .currentPage 1 }}">
+                            <span class="iconfont icon-right"></span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
         </div>
-        <nav class="pagination flex flex-row justify-center mt-8" role="navigation" aria-label="pagination">
-            <ul class="pagination-list flex flex-row " id="pagination">
-                <li class="pagination-previous {{ if le .currentPage 1 }}is-invisible{{ end }}">
-                    <a class="pagination-circle" href="{{ .blogVars.ContextPath }}/p/{{ subtract .currentPage 1 }}">
-                        <span class="iconfont icon-left"></span>
-                    </a>
-                </li>
-                {{ range $page := .pages }}
-                    <li>
-                        {{ if eq $.currentPage $page }}
-                            <a class="pagination-circle is-current" href="javascript:void(0);">{{ $page }}</a>
-                        {{ else }}
-                            <a class="pagination-circle"
-                               href="{{ $.blogVars.ContextPath }}/p/{{ $page }}">{{ $page }}</a>
-                        {{ end }}
-                    </li>
-                {{ end }}
-                {{ $totalPage := len .pages }}
-                <li class="pagination-next {{ if ge .currentPage $totalPage }}is-invisible{{ end }}">
-                    <a class="pagination-circle" href="{{ $.blogVars.ContextPath }}/p/{{ add .currentPage 1 }}">
-                        <span class="iconfont icon-right"></span>
-                    </a>
-                </li>
-            </ul>
-        </nav>
-    </div>
-</main>
+    </main>
 
-{{ template "footer" . }}
+    {{ template "xue/footer" . }}
 
-{{ template "script" . }}
-</body>
-</html>
+    {{ template "xue/script" . }}
+    </body>
+    </html>
+{{ end }}

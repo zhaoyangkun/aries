@@ -1,62 +1,64 @@
-<!DOCTYPE html>
-<html lang="zh-cmn-Hans">
-{{ template "head" . }}
-<body>
-{{ template "menu" . }}
+{{ define "xue/journal.tmpl" }}
+    <!DOCTYPE html>
+    <html lang="zh-cmn-Hans">
+    {{ template "xue/head" . }}
+    <body>
+    {{ template "xue/menu" . }}
 
-<main class="mx-auto home-page" id="container">
-    <header class="bg-cover post-cover">
-        <div class="cover-bg">
-            <img src="https://cdn.jsdelivr.net/gh/keepli/image@2.0/header/2.0/header-7.jpg" class="z-auto"
-                 alt="{{ .subTitle }}">
-        </div>
-        <div class="cover-content flex justify-center">
-            <!-- 封面内容 -->
-            <div class="inner flex flex-col justify-center">
-                <p class="cover-title text-base md:text-4xl lg:text-4xl xl:text-5xl">{{ .subTitle }}</p>
+    <main class="mx-auto home-page" id="container">
+        <header class="bg-cover post-cover">
+            <div class="cover-bg">
+                <img src="https://cdn.jsdelivr.net/gh/keepli/image@2.0/header/2.0/header-7.jpg" class="z-auto"
+                     alt="{{ .subTitle }}">
             </div>
-        </div>
-    </header>
-    <div class="container mx-auto px-4 mt-16 max-w-6xl tracking-wider md:leading-relaxed sm:leading-normal
+            <div class="cover-content flex justify-center">
+                <!-- 封面内容 -->
+                <div class="inner flex flex-col justify-center">
+                    <p class="cover-title text-base md:text-4xl lg:text-4xl xl:text-5xl">{{ .subTitle }}</p>
+                </div>
+            </div>
+        </header>
+        <div class="container mx-auto px-4 mt-16 max-w-6xl tracking-wider md:leading-relaxed sm:leading-normal
                 ct-container cn-pd content-container is-container" id="moreContainer">
-        <div id="ziyan-list">
-            <div style="position: relative">
-                {{ range $journal := .journals }}
-                    <div class="ziyan" style="transform-origin: center top;">
-                        <div class="ziyan-content">
-                            <div class="ziyan-header">
-                                <span class="ziyan-username">{{ $.user.Nickname }}</span>
-                                <span class="is-verified-badge"></span>
-                                <span class="ziyan-text">·</span>
-                                <span class="ziyan-date time-ago"
-                                      time="2020-10-13 11:24:56">{{ $journal.CreatedAt.Format "2006-01-02 15:04" }}</span>
-                            </div>
-                            <div class="ziyan-body markdown-body md-content">
-                                <p>{{ $journal.Content }}</p>
+            <div id="ziyan-list">
+                <div style="position: relative">
+                    {{ range $journal := .journals }}
+                        <div class="ziyan" style="transform-origin: center top;">
+                            <div class="ziyan-content">
+                                <div class="ziyan-header">
+                                    <span class="ziyan-username">{{ $.user.Nickname }}</span>
+                                    <span class="is-verified-badge"></span>
+                                    <span class="ziyan-text">·</span>
+                                    <span class="ziyan-date time-ago"
+                                          time="2020-10-13 11:24:56">{{ $journal.CreatedAt.Format "2006-01-02 15:04" }}</span>
+                                </div>
+                                <div class="ziyan-body markdown-body md-content">
+                                    <p>{{ $journal.Content }}</p>
 
-                            </div>
-                            <div class="ziyan-footer" style="display: none">
-                                <a class="ziyan-icon ziyan-reaction  ">
-                                    <div class="is-icon-reaction-wrap">
-                                        <span class="iconfont icon-like"></span>
-                                    </div>
-                                    <span class="is-reaction-count">0</span>
-                                </a>
+                                </div>
+                                <div class="ziyan-footer" style="display: none">
+                                    <a class="ziyan-icon ziyan-reaction  ">
+                                        <div class="is-icon-reaction-wrap">
+                                            <span class="iconfont icon-like"></span>
+                                        </div>
+                                        <span class="is-reaction-count">0</span>
+                                    </a>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                {{ end }}
+                    {{ end }}
+                </div>
             </div>
         </div>
-    </div>
-    <div class="container mx-auto px-4 content-container mx-850">
-        <nav class="pagination flex flex-row justify-center mt-8" role="navigation" aria-label="pagination">
-        </nav>
-    </div>
-</main>
+        <div class="container mx-auto px-4 content-container mx-850">
+            <nav class="pagination flex flex-row justify-center mt-8" role="navigation" aria-label="pagination">
+            </nav>
+        </div>
+    </main>
 
-{{ template "footer" . }}
+    {{ template "xue/footer" . }}
 
-{{ template "script" . }}
-</body>
-</html>
+    {{ template "xue/script" . }}
+    </body>
+    </html>
+{{ end }}

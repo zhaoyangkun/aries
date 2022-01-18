@@ -38,7 +38,7 @@ func (t *TmplHandler) IndexTmpl(ctx *gin.Context) {
 	if page != "" {
 		p, err := strconv.ParseUint(page, 10, 0)
 		if err != nil {
-			ctx.HTML(http.StatusOK, "error.tmpl", gin.H{
+			ctx.HTML(http.StatusOK, utils.GetTheme()+"error.tmpl", gin.H{
 				"blogVars": setting.BlogVars,
 				"code":     "400",
 				"msg":      "请求错误",
@@ -53,7 +53,7 @@ func (t *TmplHandler) IndexTmpl(ctx *gin.Context) {
 		s, err := strconv.ParseUint(size, 10, 0)
 		if err != nil {
 			log.Logger.Sugar().Error("error: ", err.Error())
-			ctx.HTML(http.StatusOK, "error.tmpl", gin.H{
+			ctx.HTML(http.StatusOK, utils.GetTheme()+"error.tmpl", gin.H{
 				"blogVars": setting.BlogVars,
 				"code":     "500",
 				"msg":      "服务器内部发生了错误",
@@ -74,7 +74,7 @@ func (t *TmplHandler) IndexTmpl(ctx *gin.Context) {
 		pages = append(pages, i)
 	}
 
-	ctx.HTML(http.StatusOK, "index.tmpl", gin.H{
+	ctx.HTML(http.StatusOK, utils.GetTheme()+"index.tmpl", gin.H{
 		"blogVars":    setting.BlogVars,
 		"navs":        navs,
 		"categories":  categories,
@@ -95,10 +95,18 @@ func (t *TmplHandler) ArticleTmpl(ctx *gin.Context) {
 
 	article, _ := models.Article{}.GetByUrl(url)
 	if article.Title == "" {
-		ctx.HTML(http.StatusOK, "error.tmpl", gin.H{
+		ctx.HTML(http.StatusOK, utils.GetTheme()+"error.tmpl", gin.H{
 			"blogVars": setting.BlogVars,
 			"code":     "400",
 			"msg":      "请求错误",
+		})
+		return
+	}
+	if article.Pwd != "" {
+		ctx.HTML(http.StatusOK, utils.GetTheme()+"error.tmpl", gin.H{
+			"blogVars": setting.BlogVars,
+			"code":     "403",
+			"msg":      "该文章已被加密，仅博主可以访问",
 		})
 		return
 	}
@@ -108,7 +116,7 @@ func (t *TmplHandler) ArticleTmpl(ctx *gin.Context) {
 	nextArticle, _ := models.Article{}.GetNext(article.OrderId, article.IsTop, true)
 	users, _ := models.User{}.GetAll()
 
-	ctx.HTML(http.StatusOK, "article.tmpl", gin.H{
+	ctx.HTML(http.StatusOK, utils.GetTheme()+"article.tmpl", gin.H{
 		"blogVars":    setting.BlogVars,
 		"navs":        navs,
 		"categories":  categories,
@@ -140,7 +148,7 @@ func (t *TmplHandler) CategoryTmpl(ctx *gin.Context) {
 	if page != "" {
 		p, err = strconv.ParseUint(page, 10, 0)
 		if err != nil {
-			ctx.HTML(http.StatusOK, "error.tmpl", gin.H{
+			ctx.HTML(http.StatusOK, utils.GetTheme()+"error.tmpl", gin.H{
 				"blogVars": setting.BlogVars,
 				"code":     "400",
 				"msg":      "请求错误",
@@ -155,7 +163,7 @@ func (t *TmplHandler) CategoryTmpl(ctx *gin.Context) {
 		s, err := strconv.ParseUint(size, 10, 0)
 		if err != nil {
 			log.Logger.Sugar().Error("error: ", err.Error())
-			ctx.HTML(http.StatusOK, "error.tmpl", gin.H{
+			ctx.HTML(http.StatusOK, utils.GetTheme()+"error.tmpl", gin.H{
 				"blogVars": setting.BlogVars,
 				"code":     "500",
 				"msg":      "服务器内部发生了错误",
@@ -177,7 +185,7 @@ func (t *TmplHandler) CategoryTmpl(ctx *gin.Context) {
 			pages = append(pages, i)
 		}
 
-		ctx.HTML(http.StatusOK, "category-list.tmpl", gin.H{
+		ctx.HTML(http.StatusOK, utils.GetTheme()+"category-list.tmpl", gin.H{
 			"blogVars":     setting.BlogVars,
 			"navs":         navs,
 			"categories":   categories,
@@ -202,7 +210,7 @@ func (t *TmplHandler) CategoryTmpl(ctx *gin.Context) {
 			pages = append(pages, i)
 		}
 
-		ctx.HTML(http.StatusOK, "category-list.tmpl", gin.H{
+		ctx.HTML(http.StatusOK, utils.GetTheme()+"category-list.tmpl", gin.H{
 			"blogVars":     setting.BlogVars,
 			"navs":         navs,
 			"categories":   categories,
@@ -231,7 +239,7 @@ func (t *TmplHandler) TagTmpl(ctx *gin.Context) {
 	if page != "" {
 		p, err = strconv.ParseUint(page, 10, 0)
 		if err != nil {
-			ctx.HTML(http.StatusOK, "error.tmpl", gin.H{
+			ctx.HTML(http.StatusOK, utils.GetTheme()+"error.tmpl", gin.H{
 				"blogVars": setting.BlogVars,
 				"code":     "400",
 				"msg":      "请求错误",
@@ -246,7 +254,7 @@ func (t *TmplHandler) TagTmpl(ctx *gin.Context) {
 		s, err := strconv.ParseUint(size, 10, 0)
 		if err != nil {
 			log.Logger.Sugar().Error("error: ", err.Error())
-			ctx.HTML(http.StatusOK, "error.tmpl", gin.H{
+			ctx.HTML(http.StatusOK, utils.GetTheme()+"error.tmpl", gin.H{
 				"blogVars": setting.BlogVars,
 				"code":     "500",
 				"msg":      "服务器内部发生了错误",
@@ -268,7 +276,7 @@ func (t *TmplHandler) TagTmpl(ctx *gin.Context) {
 			pages = append(pages, i)
 		}
 
-		ctx.HTML(http.StatusOK, "tag-list.tmpl", gin.H{
+		ctx.HTML(http.StatusOK, utils.GetTheme()+"tag-list.tmpl", gin.H{
 			"blogVars":    setting.BlogVars,
 			"navs":        navs,
 			"categories":  categories,
@@ -292,7 +300,7 @@ func (t *TmplHandler) TagTmpl(ctx *gin.Context) {
 			pages = append(pages, i)
 		}
 
-		ctx.HTML(http.StatusOK, "tag.tmpl", gin.H{
+		ctx.HTML(http.StatusOK, utils.GetTheme()+"tag.tmpl", gin.H{
 			"blogVars":    setting.BlogVars,
 			"navs":        navs,
 			"categories":  categories,
@@ -314,7 +322,7 @@ func (t *TmplHandler) ArchiveTmpl(ctx *gin.Context) {
 	archives, _ := models.Archive{}.GetAll()
 	articles, _ := models.Article{}.GetAll()
 
-	ctx.HTML(http.StatusOK, "archive.tmpl", gin.H{
+	ctx.HTML(http.StatusOK, utils.GetTheme()+"archive.tmpl", gin.H{
 		"blogVars":   setting.BlogVars,
 		"navs":       navs,
 		"categories": categories,
@@ -330,7 +338,7 @@ func (t *TmplHandler) LinkTmpl(ctx *gin.Context) {
 	linkCategories, _ := models.Category{}.GetAllByType(1)
 	links, _ := models.Link{}.GetAll()
 
-	ctx.HTML(http.StatusOK, "link.tmpl", gin.H{
+	ctx.HTML(http.StatusOK, utils.GetTheme()+"link.tmpl", gin.H{
 		"blogVars":       setting.BlogVars,
 		"navs":           navs,
 		"categories":     categories,
@@ -346,7 +354,7 @@ func (t *TmplHandler) JournalTmpl(ctx *gin.Context) {
 	journals, _ := models.Journal{}.GetAll()
 	users, _ := models.User{}.GetAll()
 
-	ctx.HTML(http.StatusOK, "journal.tmpl", gin.H{
+	ctx.HTML(http.StatusOK, utils.GetTheme()+"journal.tmpl", gin.H{
 		"blogVars":   setting.BlogVars,
 		"navs":       navs,
 		"categories": categories,
@@ -362,7 +370,7 @@ func (t *TmplHandler) GalleryTmpl(ctx *gin.Context) {
 	photoCategories, _ := models.Category{}.GetGalleryCategories()
 	photos, _ := models.Gallery{}.GetAll()
 
-	ctx.HTML(http.StatusOK, "photo.tmpl", gin.H{
+	ctx.HTML(http.StatusOK, utils.GetTheme()+"photo.tmpl", gin.H{
 		"blogVars":        setting.BlogVars,
 		"navs":            navs,
 		"categories":      categories,
@@ -378,7 +386,7 @@ func (t *TmplHandler) CustomTmpl(ctx *gin.Context) {
 
 	page, _ := models.Page{}.GetByUrl(url)
 	if page.Title == "" {
-		ctx.HTML(http.StatusOK, "error.tmpl", gin.H{
+		ctx.HTML(http.StatusOK, utils.GetTheme()+"error.tmpl", gin.H{
 			"blogVars": setting.BlogVars,
 			"code":     "400",
 			"msg":      "请求错误",
@@ -386,7 +394,7 @@ func (t *TmplHandler) CustomTmpl(ctx *gin.Context) {
 		return
 	}
 
-	ctx.HTML(http.StatusOK, "custom.tmpl", gin.H{
+	ctx.HTML(http.StatusOK, utils.GetTheme()+"custom.tmpl", gin.H{
 		"blogVars":    setting.BlogVars,
 		"navs":        navs,
 		"categories":  categories,
@@ -426,7 +434,7 @@ func (t *TmplHandler) SearchTmpl(ctx *gin.Context) {
 	if page != "" {
 		p, err := strconv.ParseUint(page, 10, 0)
 		if err != nil {
-			ctx.HTML(http.StatusOK, "error.tmpl", gin.H{
+			ctx.HTML(http.StatusOK, utils.GetTheme()+"error.tmpl", gin.H{
 				"blogVars": setting.BlogVars,
 				"code":     "400",
 				"msg":      "请求错误",
@@ -444,7 +452,7 @@ func (t *TmplHandler) SearchTmpl(ctx *gin.Context) {
 		pages = append(pages, i)
 	}
 
-	ctx.HTML(http.StatusOK, "search.tmpl", gin.H{
+	ctx.HTML(http.StatusOK, utils.GetTheme()+"search.tmpl", gin.H{
 		"blogVars":    setting.BlogVars,
 		"navs":        navs,
 		"categories":  categories,

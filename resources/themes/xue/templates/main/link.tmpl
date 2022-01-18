@@ -1,52 +1,54 @@
-<!DOCTYPE html>
-<html lang="zh-cmn-Hans">
-{{ template "head" . }}
-<body>
-{{ template "menu" . }}
+{{ define "xue/link.tmpl" }}
+    <!DOCTYPE html>
+    <html lang="zh-cmn-Hans">
+    {{ template "xue/head" . }}
+    <body>
+    {{ template "xue/menu" . }}
 
-<main class="mx-auto home-page" id="container">
-    <header class="bg-cover post-cover" id="postHeader">
-        <div class="cover-bg">
-            <img src="https://cdn.jsdelivr.net/gh/keepli/image@2.0/header/2.0/header-8.jpg"
-                 class="z-auto" alt="{{ .subTitle }}">
-        </div>
-        <div class="cover-content post-cover-content flex justify-center">
-            <!-- 封面内容 -->
-            <div class="inner flex flex-col justify-center">
-                <p class="post-title cover-title text-base lg:text-4xl xl:text-5xl md:text-3xl">{{ .subTitle }}</p>
+    <main class="mx-auto home-page" id="container">
+        <header class="bg-cover post-cover" id="postHeader">
+            <div class="cover-bg">
+                <img src="https://cdn.jsdelivr.net/gh/keepli/image@2.0/header/2.0/header-8.jpg"
+                     class="z-auto" alt="{{ .subTitle }}">
             </div>
-        </div>
-    </header>
+            <div class="cover-content post-cover-content flex justify-center">
+                <!-- 封面内容 -->
+                <div class="inner flex flex-col justify-center">
+                    <p class="post-title cover-title text-base lg:text-4xl xl:text-5xl md:text-3xl">{{ .subTitle }}</p>
+                </div>
+            </div>
+        </header>
 
-    <div class="container mx-auto px-4 mt-16 max-w-6xl tracking-wider md:leading-relaxed sm:leading-normal ct-container cn-pd content-container">
-        {{ range $category := .linkCategories }}
-            <h2 class="w-full m-4 text-3xl">{{ $category.Name }}</h2>
-            <div class="flex flex-row flex-wrap grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1">
-                {{ range $link := $.links }}
-                    {{ if eq $link.CategoryId $category.ID }}
-                        <a class="lk-card-im card-item-vel block" href="{{ $link.Url }}" target="_blank"
-                           onfocus="this.blur();">
-                            <div class="media">
-                                <div class="media-left">
-                                    <figure class="image is-64x64">
-                                        <img src="{{ $link.Icon }}" alt="{{ $link.Name }}">
-                                    </figure>
+        <div class="container mx-auto px-4 mt-16 max-w-6xl tracking-wider md:leading-relaxed sm:leading-normal ct-container cn-pd content-container">
+            {{ range $category := .linkCategories }}
+                <h2 class="w-full m-4 text-3xl">{{ $category.Name }}</h2>
+                <div class="flex flex-row flex-wrap grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1">
+                    {{ range $link := $.links }}
+                        {{ if eq $link.CategoryId $category.ID }}
+                            <a class="lk-card-im card-item-vel block" href="{{ $link.Url }}" target="_blank"
+                               onfocus="this.blur();">
+                                <div class="media">
+                                    <div class="media-left">
+                                        <figure class="image is-64x64">
+                                            <img src="{{ $link.Icon }}" alt="{{ $link.Name }}">
+                                        </figure>
+                                    </div>
+                                    <div class="media-content">
+                                        <p class="lk-title">{{ $link.Name }}</p>
+                                        <p class="lk-desc">{{ $link.Desc }}</p>
+                                    </div>
                                 </div>
-                                <div class="media-content">
-                                    <p class="lk-title">{{ $link.Name }}</p>
-                                    <p class="lk-desc">{{ $link.Desc }}</p>
-                                </div>
-                            </div>
-                        </a>
+                            </a>
+                        {{ end }}
                     {{ end }}
-                {{ end }}
-            </div>
-        {{ end }}
-    </div>
-</main>
+                </div>
+            {{ end }}
+        </div>
+    </main>
 
-{{ template "footer" . }}
+    {{ template "xue/footer" . }}
 
-{{ template "script" . }}
-</body>
-</html>
+    {{ template "xue/script" . }}
+    </body>
+    </html>
+{{ end }}

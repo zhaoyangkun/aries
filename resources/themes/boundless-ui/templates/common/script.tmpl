@@ -1,11 +1,16 @@
-{{ define "script" }}
+{{ define "boundless-ui/script" }}
     <!--全局JS-->
-    <script type="text/javascript" src="{{ .blogVars.ContextPath }}/static/js/jquery-3.4.1.min.js"></script>
-    <script type="text/javascript" src="{{ .blogVars.ContextPath }}/static/js/sweetalert.min.js"></script>
-    <script type="text/javascript" src="{{ .blogVars.ContextPath }}/static/js/pace.min.js"></script>
-    <script type="text/javascript" src="{{ .blogVars.ContextPath }}/static/js/base.js"></script>
-    {{/*        <script type="text/javascript" src="{{ .blogVars.ContextPath }}/static/js/d-audio.js"></script>*/}}
-    <script type="text/javascript" src="{{ .blogVars.ContextPath }}/static/js/myPagination.js"></script>
+    <script type="text/javascript"
+            src="{{ .blogVars.ContextPath }}/resources/themes/{{ .blogVars.Theme }}/static/js/jquery-3.4.1.min.js"></script>
+    <script type="text/javascript"
+            src="{{ .blogVars.ContextPath }}/resources/themes/{{ .blogVars.Theme }}/static/js/sweetalert.min.js"></script>
+    <script type="text/javascript"
+            src="{{ .blogVars.ContextPath }}/resources/themes/{{ .blogVars.Theme }}/static/js/pace.min.js"></script>
+    <script type="text/javascript"
+            src="{{ .blogVars.ContextPath }}/resources/themes/{{ .blogVars.Theme }}/static/js/base.js"></script>
+    {{/*        <script type="text/javascript" src="{{ .blogVars.ContextPath }}/resources/themes/{{ .blogVars.Theme }}/static/js/d-audio.js"></script>*/}}
+    <script type="text/javascript"
+            src="{{ .blogVars.ContextPath }}/resources/themes/{{ .blogVars.Theme }}/static/js/myPagination.js"></script>
     <script type="text/javascript">
         // 音乐插件
         // const myAudio = new Daudio({

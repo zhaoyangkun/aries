@@ -1,62 +1,65 @@
-<!DOCTYPE html>
-<html lang="zh-cmn-Hans">
-{{ template "head" . }}
-<body>
-{{ template "menu" . }}
+{{ define "xue/photo.tmpl" }}
+    <!DOCTYPE html>
+    <html lang="zh-cmn-Hans">
+    {{ template "xue/head" . }}
+    <body>
+    {{ template "xue/menu" . }}
 
-<main class="mx-auto home-page" id="container">
-    <header class="bg-cover post-cover">
-        <div class="cover-bg">
-            <img src="https://cdn.jsdelivr.net/gh/keepli/image@2.0/header/2.0/header-9.jpg" class="z-auto" alt="{{ .subTitle }}">
-        </div>
-        <div class="cover-content flex justify-center">
-            <!-- 封面内容 -->
-            <div class="inner flex flex-col justify-center">
-                <p class="cover-title text-base md:text-4xl lg:text-4xl xl:text-5xl">{{ .subTitle }}</p>
+    <main class="mx-auto home-page" id="container">
+        <header class="bg-cover post-cover">
+            <div class="cover-bg">
+                <img src="https://cdn.jsdelivr.net/gh/keepli/image@2.0/header/2.0/header-9.jpg" class="z-auto"
+                     alt="{{ .subTitle }}">
             </div>
-        </div>
-    </header>
-    <div class="container mx-auto px-4 mt-16 tracking-wider md:leading-relaxed sm:leading-normal cn-pd photos-page content-container">
-        <div class="photos-box article-content" id="gallery-content">
-            <nav id="gallery-filter">
-                <ul>
-                    <li>
-                        <a href="javascript:void(0);" data-filter="*" class="active">全部</a>
-                    </li>
-                    {{ range $category := .photoCategories }}
+            <div class="cover-content flex justify-center">
+                <!-- 封面内容 -->
+                <div class="inner flex flex-col justify-center">
+                    <p class="cover-title text-base md:text-4xl lg:text-4xl xl:text-5xl">{{ .subTitle }}</p>
+                </div>
+            </div>
+        </header>
+        <div class="container mx-auto px-4 mt-16 tracking-wider md:leading-relaxed sm:leading-normal cn-pd photos-page content-container">
+            <div class="photos-box article-content" id="gallery-content">
+                <nav id="gallery-filter">
+                    <ul>
                         <li>
-                            <a href="javascript:void(0);" data-filter=".{{ $category.Name }}"
-                               class="">{{ $category.Name }}</a>
+                            <a href="javascript:void(0);" data-filter="*" class="active">全部</a>
                         </li>
+                        {{ range $category := .photoCategories }}
+                            <li>
+                                <a href="javascript:void(0);" data-filter=".{{ $category.Name }}"
+                                   class="">{{ $category.Name }}</a>
+                            </li>
+                        {{ end }}
+                    </ul>
+                </nav>
+                <div class="gallery masonry-gallery" style="position: relative; height: 554.125px;">
+                    {{ range $k, $photo := $.photos }}
+                        <figure class="gallery-item col-3 {{ $photo.Category.Name }}"
+                                style="position: absolute; left: 0px; top: 0px;">
+                            <header class="gallery-icon">
+                                <a data-fancybox="gallery" href="javascript:void(0);">
+                                    <img class="lazyload" src="{{ $.blogVars.ContextPath }}/static/img/loading.svg"
+                                         data-src="{{ $photo.URL }}" alt="{{ $photo.Name }}">
+                                </a>
+                            </header>
+                            <figcaption class="gallery-caption">
+                                <div class="entry-summary">
+                                    <h3>{{ $photo.Name }}</h3>
+                                    <p>{{ $photo.Desc }}</p>
+                                </div>
+                            </figcaption>
+                            <p class="name" style="display: none">{{ $photo.Name }}</p>
+                        </figure>
                     {{ end }}
-                </ul>
-            </nav>
-            <div class="gallery masonry-gallery" style="position: relative; height: 554.125px;">
-                {{ range $k, $photo := $.photos }}
-                    <figure class="gallery-item col-3 {{ $photo.Category.Name }}"
-                            style="position: absolute; left: 0px; top: 0px;">
-                        <header class="gallery-icon">
-                            <a data-fancybox="gallery" href="javascript:void(0);">
-                                <img class="lazyload" src="{{ $.blogVars.ContextPath }}/static/img/loading.svg"
-                                     data-src="{{ $photo.URL }}" alt="{{ $photo.Name }}">
-                            </a>
-                        </header>
-                        <figcaption class="gallery-caption">
-                            <div class="entry-summary">
-                                <h3>{{ $photo.Name }}</h3>
-                                <p>{{ $photo.Desc }}</p>
-                            </div>
-                        </figcaption>
-                        <p class="name" style="display: none">{{ $photo.Name }}</p>
-                    </figure>
-                {{ end }}
+                </div>
             </div>
         </div>
-    </div>
-</main>
+    </main>
 
-{{ template "footer" . }}
+    {{ template "xue/footer" . }}
 
-{{ template "script" . }}
-</body>
-</html>
+    {{ template "xue/script" . }}
+    </body>
+    </html>
+{{ end }}

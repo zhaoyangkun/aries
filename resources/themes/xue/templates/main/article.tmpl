@@ -1,117 +1,119 @@
-<!DOCTYPE html>
-<html lang="zh-cmn-Hans">
-{{ template "head" . }}
-<body>
-{{ template "menu" . }}
+{{ define "xue/article.tmpl" }}
+    <!DOCTYPE html>
+    <html lang="zh-cmn-Hans">
+    {{ template "xue/head" . }}
+    <body>
+    {{ template "xue/menu" . }}
 
-<main class="mx-auto home-page" id="container">
-    <header class="bg-cover post-cover" id="postHeader">
-        <div class="cover-bg">
-            <img src="{{ .article.Img }}" class="z-auto lazyload img-random"
-                 alt="{{ .subTitle }}"
-                 data-loaded="true">
-        </div>
-        <div class="cover-content post-cover-content flex justify-center">
-            <!-- 封面内容 -->
-            <div class="inner flex flex-col justify-center">
-                <p class="post-title cover-title text-base lg:text-4xl xl:text-5xl md:text-3xl">{{ .subTitle }}</p>
-                <div class="post-meta">
-                    <div class="post-meta-wrap">
-                        <img class="author-avatar"
-                             srcset="{{ .user.UserImg }}"
-                             src="{{ .user.UserImg }}" alt="">
-                        <span class="post-author">{{ .article.VisitCount }} 次访问</span>
-                        <time class="published" datetime="2020-10-30">
-                            发布: {{ .article.CreatedAt.Format "2006-01-02" }}</time>
-                        <time class="published" datetime="2020-11-01">
-                            最后编辑: {{ .article.UpdatedAt.Format "2006-01-02" }}</time>
-                    </div>
-                    <div class="text-center post-categories">
-                        <span class="iconfont icon-folder"> </span>
+    <main class="mx-auto home-page" id="container">
+        <header class="bg-cover post-cover" id="postHeader">
+            <div class="cover-bg">
+                <img src="{{ .article.Img }}" class="z-auto lazyload img-random"
+                     alt="{{ .subTitle }}"
+                     data-loaded="true">
+            </div>
+            <div class="cover-content post-cover-content flex justify-center">
+                <!-- 封面内容 -->
+                <div class="inner flex flex-col justify-center">
+                    <p class="post-title cover-title text-base lg:text-4xl xl:text-5xl md:text-3xl">{{ .subTitle }}</p>
+                    <div class="post-meta">
+                        <div class="post-meta-wrap">
+                            <img class="author-avatar"
+                                 srcset="{{ .user.UserImg }}"
+                                 src="{{ .user.UserImg }}" alt="">
+                            <span class="post-author">{{ .article.VisitCount }} 次访问</span>
+                            <time class="published" datetime="2020-10-30">
+                                发布: {{ .article.CreatedAt.Format "2006-01-02" }}</time>
+                            <time class="published" datetime="2020-11-01">
+                                最后编辑: {{ .article.UpdatedAt.Format "2006-01-02" }}</time>
+                        </div>
+                        <div class="text-center post-categories">
+                            <span class="iconfont icon-folder"> </span>
 
-                        <a href="{{ .blogVars.ContextPath }}/categories/{{ .article.Category.Url }}"
-                           class="post-category">
-                            · {{ .article.Category.Name }}
-                        </a>
+                            <a href="{{ .blogVars.ContextPath }}/categories/{{ .article.Category.Url }}"
+                               class="post-category">
+                                · {{ .article.Category.Name }}
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </header>
+        </header>
 
-    <div class="article-content content-container" id="gallery-content">
-        {{/*        <div id="original" style="display: none">{{ .article.Content }}</div>*/}}
-        <div class="container mx-auto px-4 md-content mt-8 max-w-6xl tracking-wider md:leading-relaxed sm:leading-normal cn-pd ct-container"
-             id="write">
-            {{ safe .article.MDContent }}
-        </div>
-        <div id="tocFlag"></div>
-        <aside id="toc" class="toc"></aside>
-    </div>
-
-    <div class="container mx-auto px-4 mt-8 max-w-6xl tracking-wider md:leading-relaxed sm:leading-normal  cn-pd ct-container coffee-tags">
-        <blockquote class="post-copyright">
-            <p>
-                <b>Copyright: </b> 采用 <a href="https://creativecommons.org/licenses/by/4.0/"
-                                         target="_blank"
-                                         rel="external nofollow">知识共享署名4.0</a> 国际许可协议进行许可</p>
-            <p>
-                <b>Links: </b><a href="{{ .blogVars.ContextPath }}/articles/{{ .article.URL }}">
-                    {{ .blogVars.ContextPath }}/articles/{{ .article.URL }}</a></p>
-        </blockquote>
-    </div>
-
-
-    <div class="container mx-auto px-4 mt-8 pb-4 max-w-6xl tracking-wider md:leading-relaxed sm:leading-normal cn-pd coffee-tags ct-container">
-        <p class="flex flex-row justify-start flex-wrap">
-            {{ range $tag := .article.TagList }}
-                <a href="{{ $.blogVars.ContextPath }}/tags/{{ $tag.Name }}" class="post-tag mt-2 mb-2 mr-2">
-                    #&nbsp;{{ $tag.Name }}
-                </a>
-            {{ end }}
-        </p>
-        <hr class="mt-4" style="background-color: rgba(96, 125, 139, .05); size: 2px;">
-    </div>
-
-    <!-- 上一篇和下一篇 -->
-    <div class="container mx-auto mt-4 pb-8  ct-container">
-        <div class="entry-navigation">
-            <div class="nav previous">
-                {{ if .preArticle.Title }}
-                    <img class="lazyload" index="544"
-                         src="{{ .blogVars.ContextPath }}/static/img/loading.svg"
-                         data-src="{{ .preArticle.Img }}"
-                         alt="{{ .preArticle.Title }}">
-                    <span>上一篇</span>
-                    <h4 class="entry-title">{{ .preArticle.Title }}</h4>
-                    <a class="u-permalink"
-                       href="{{ .blogVars.ContextPath }}/articles/{{ .preArticle.URL }}"></a>
-                {{ end }}
+        <div class="article-content content-container" id="gallery-content">
+            {{/*        <div id="original" style="display: none">{{ .article.Content }}</div>*/}}
+            <div class="container mx-auto px-4 md-content mt-8 max-w-6xl tracking-wider md:leading-relaxed sm:leading-normal cn-pd ct-container"
+                 id="write">
+                {{ safe .article.MDContent }}
             </div>
+            <div id="tocFlag"></div>
+            <aside id="toc" class="toc"></aside>
+        </div>
 
-            <div class="nav next">
-                {{ if .nextArticle.Title }}
-                    <img class="lazyload" index="51"
-                         src="{{ .blogVars.ContextPath }}/static/img/loading.svg"
-                         data-src="{{ .nextArticle.Img }}"
-                         alt="{{ .nextArticle.Title }}">
-                    <span>下一篇</span>
-                    <h4 class="entry-title">{{ .nextArticle.Title }}</h4>
-                    <a class="u-permalink"
-                       href="{{ .blogVars.ContextPath }}/articles/{{ .nextArticle.URL }}"></a>
+        <div class="container mx-auto px-4 mt-8 max-w-6xl tracking-wider md:leading-relaxed sm:leading-normal  cn-pd ct-container coffee-tags">
+            <blockquote class="post-copyright">
+                <p>
+                    <b>Copyright: </b> 采用 <a href="https://creativecommons.org/licenses/by/4.0/"
+                                             target="_blank"
+                                             rel="external nofollow">知识共享署名4.0</a> 国际许可协议进行许可</p>
+                <p>
+                    <b>Links: </b><a href="{{ .blogVars.ContextPath }}/articles/{{ .article.URL }}">
+                        {{ .blogVars.ContextPath }}/articles/{{ .article.URL }}</a></p>
+            </blockquote>
+        </div>
+
+
+        <div class="container mx-auto px-4 mt-8 pb-4 max-w-6xl tracking-wider md:leading-relaxed sm:leading-normal cn-pd coffee-tags ct-container">
+            <p class="flex flex-row justify-start flex-wrap">
+                {{ range $tag := .article.TagList }}
+                    <a href="{{ $.blogVars.ContextPath }}/tags/{{ $tag.Name }}" class="post-tag mt-2 mb-2 mr-2">
+                        #&nbsp;{{ $tag.Name }}
+                    </a>
                 {{ end }}
+            </p>
+            <hr class="mt-4" style="background-color: rgba(96, 125, 139, .05); size: 2px;">
+        </div>
+
+        <!-- 上一篇和下一篇 -->
+        <div class="container mx-auto mt-4 pb-8  ct-container">
+            <div class="entry-navigation">
+                <div class="nav previous">
+                    {{ if .preArticle.Title }}
+                        <img class="lazyload" index="544"
+                             src="{{ .blogVars.ContextPath }}/resources/themes/{{ .blogVars.Theme }}/static/img/loading.svg"
+                             data-src="{{ .preArticle.Img }}"
+                             alt="{{ .preArticle.Title }}">
+                        <span>上一篇</span>
+                        <h4 class="entry-title">{{ .preArticle.Title }}</h4>
+                        <a class="u-permalink"
+                           href="{{ .blogVars.ContextPath }}/articles/{{ .preArticle.URL }}"></a>
+                    {{ end }}
+                </div>
+
+                <div class="nav next">
+                    {{ if .nextArticle.Title }}
+                        <img class="lazyload" index="51"
+                             src="{{ .blogVars.ContextPath }}/resources/themes/{{ .blogVars.Theme }}/static/img/loading.svg"
+                             data-src="{{ .nextArticle.Img }}"
+                             alt="{{ .nextArticle.Title }}">
+                        <span>下一篇</span>
+                        <h4 class="entry-title">{{ .nextArticle.Title }}</h4>
+                        <a class="u-permalink"
+                           href="{{ .blogVars.ContextPath }}/articles/{{ .nextArticle.URL }}"></a>
+                    {{ end }}
+                </div>
             </div>
         </div>
-    </div>
 
-    {{ if .article.IsAllowCommented }}
-        {{ template "comment" . }}
-    {{ end }}
-</main>
+        {{ if .article.IsAllowCommented }}
+            {{ template "xue/comment" . }}
+        {{ end }}
+    </main>
 
 
-{{ template "footer" . }}
+    {{ template "xue/footer" . }}
 
-{{ template "script" . }}
-</body>
-</html>
+    {{ template "xue/script" . }}
+    </body>
+    </html>
+{{ end }}

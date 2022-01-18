@@ -1,36 +1,38 @@
-<!DOCTYPE html>
-<html lang="zh-cmn-Hans">
-{{ template "head" . }}
-<body>
-{{ template "menu" . }}
+{{ define "xue/archive.tmpl" }}
+    <!DOCTYPE html>
+    <html lang="zh-cmn-Hans">
+    {{ template "xue/head" . }}
+    <body>
+    {{ template "xue/menu" . }}
 
-<main class="mx-auto home-page" id="container">
-    <header class="bg-cover post-cover">
-        <div class="cover-bg">
-            <img src="https://cdn.jsdelivr.net/gh/keepli/image@2.0/header/2.0/header-13.jpg" class="z-auto" alt="{{ .subTitle }}">
-        </div>
-        <div class="cover-content flex justify-center">
-            <!-- 封面内容 -->
-            <div class="inner flex flex-col justify-center">
-                <p class="cover-title text-base md:text-4xl lg:text-4xl xl:text-5xl">{{ .subTitle }}</p>
+    <main class="mx-auto home-page" id="container">
+        <header class="bg-cover post-cover">
+            <div class="cover-bg">
+                <img src="https://cdn.jsdelivr.net/gh/keepli/image@2.0/header/2.0/header-13.jpg" class="z-auto"
+                     alt="{{ .subTitle }}">
             </div>
-        </div>
-    </header>
-    <div class="container mx-auto px-4 mt-16 max-w-6xl tracking-wider md:leading-relaxed sm:leading-normal ct-container cn-pd content-container"
-         id="pageContainer">
-        {{ range $i, $archive := .archives }}
-            <section class="arch-year">
-                {{ if gt $i 0 }}
-                    {{ $preArchive := index $.archives (subtract $i 1) }}
-                    {{ if ne $archive.Year $preArchive.Year }}
+            <div class="cover-content flex justify-center">
+                <!-- 封面内容 -->
+                <div class="inner flex flex-col justify-center">
+                    <p class="cover-title text-base md:text-4xl lg:text-4xl xl:text-5xl">{{ .subTitle }}</p>
+                </div>
+            </div>
+        </header>
+        <div class="container mx-auto px-4 mt-16 max-w-6xl tracking-wider md:leading-relaxed sm:leading-normal ct-container cn-pd content-container"
+             id="pageContainer">
+            {{ range $i, $archive := .archives }}
+                <section class="arch-year">
+                    {{ if gt $i 0 }}
+                        {{ $preArchive := index $.archives (subtract $i 1) }}
+                        {{ if ne $archive.Year $preArchive.Year }}
+                            <h1 class="year-title bg-fff relative">{{ $archive.Year }}</h1>
+                        {{ end }}
+                    {{ else }}
                         <h1 class="year-title bg-fff relative">{{ $archive.Year }}</h1>
                     {{ end }}
-                {{ else }}
-                    <h1 class="year-title bg-fff relative">{{ $archive.Year }}</h1>
-                {{ end }}
-                <div class="relative pl-12">
-                    <header class="absolute mh-hd bg-fff af-bg-fff mh-bg "> {{ $archive.Month }} 月</header>
-                    <span class="">
+                    <div class="relative pl-12">
+                        <header class="absolute mh-hd bg-fff af-bg-fff mh-bg "> {{ $archive.Month }} 月</header>
+                        <span class="">
                         {{ range $article := $.articles }}
                             {{ if eq (year $article.CreatedAt) $archive.Year }}
                                 {{ if eq (month $article.CreatedAt) $archive.Month }}
@@ -43,14 +45,15 @@
                             {{end}}
                         {{ end }}
                         </span>
-                </div>
-            </section>
-        {{ end }}
-    </div>
-</main>
+                    </div>
+                </section>
+            {{ end }}
+        </div>
+    </main>
 
-{{ template "footer" . }}
+    {{ template "xue/footer" . }}
 
-{{ template "script" . }}
-</body>
-</html>
+    {{ template "xue/script" . }}
+    </body>
+    </html>
+{{ end }}
