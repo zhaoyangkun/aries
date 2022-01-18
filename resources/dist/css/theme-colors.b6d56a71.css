@@ -23,6 +23,7 @@
 .d2-contentmenu-list .d2-contentmenu-item:hover{background:#ecf5ff;color:#66b1ff}
 .d2-panel-search-item.can-hover:hover .d2-panel-search-item__icon .d2-panel-search-item__icon-box i[data-v-75955f2e]{color:#409eff}
 .img_checked[data-v-1c7b6e78]{border:2px solid #409eff}
+.theme_enabled[data-v-4ded74bf]{border:2px solid #409eff}
 .el-pagination button:hover:not(:disabled){color:#409eff}
 .el-pagination__sizes .el-input .el-input__inner:hover{border-color:#409eff}
 .el-pagination.is-background .el-pager li:not(.disabled):hover{color:#409eff}
