@@ -87,12 +87,12 @@ func (s *Setting) InitSetting() {
 	rootPath = strings.Replace(rootPath, "test", "", -1)
 	// 拼接配置文件访问路径
 	yamlPath := filepath.Join(rootPath, "config", "develop.yaml") // 开发环境
-	// homeDir, err := os.UserHomeDir()
-	// if err != nil {
-	// 	log.Panicln("获取用户主目录失败：", err.Error())
-	// }
-	// yamlPath := filepath.Join(homeDir, ".aries", "aries.yaml") // 生产环境
-	// log.Println("配置文件路径：", yamlPath)
+	//homeDir, err := os.UserHomeDir()
+	//if err != nil {
+	//	log.Panicln("获取用户主目录失败：", err.Error())
+	//}
+	//yamlPath := filepath.Join(homeDir, ".aries", "aries.yaml") // 生产环境
+	log.Println("配置文件路径：", yamlPath)
 
 	// 读取配置文件
 	yamlFile, err := ioutil.ReadFile(yamlPath)
