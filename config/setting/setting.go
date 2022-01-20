@@ -134,9 +134,10 @@ func (b *BlogVariable) InitBlogVars(siteSetting map[string]string, socialInfo ma
 	} else {
 		b.ContextPath = ""
 	}
-	if Config.Server.Mode == gin.DebugMode || Config.Server.Mode == gin.TestMode { // 开发环境使用本地静态资源
+	// 开发环境使用本地静态资源，生产环境使用 CDN
+	if Config.Server.Mode == gin.DebugMode || Config.Server.Mode == gin.TestMode {
 		b.StaticRootPath = b.ContextPath
-	} else { // 生产环境使用 CDN
+	} else {
 		b.StaticRootPath = "https://cdn.jsdelivr.net/gh/zhaoyangkun/aries"
 	}
 	if siteName, ok := siteSetting["site_name"]; ok {
