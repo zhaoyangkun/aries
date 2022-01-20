@@ -80,7 +80,7 @@
                 <div class="nav previous">
                     {{ if .preArticle.Title }}
                         <img class="lazyload" index="544"
-                             src="{{ .blogVars.ContextPath }}/resources/themes/{{ .blogVars.Theme }}/static/img/loading.svg"
+                             src="{{ .blogVars.StaticRootPath }}/resources/themes/{{ .blogVars.Theme }}/static/img/loading.svg"
                              data-src="{{ .preArticle.Img }}"
                              alt="{{ .preArticle.Title }}">
                         <span>上一篇</span>
@@ -93,7 +93,7 @@
                 <div class="nav next">
                     {{ if .nextArticle.Title }}
                         <img class="lazyload" index="51"
-                             src="{{ .blogVars.ContextPath }}/resources/themes/{{ .blogVars.Theme }}/static/img/loading.svg"
+                             src="{{ .blogVars.StaticRootPath }}/resources/themes/{{ .blogVars.Theme }}/static/img/loading.svg"
                              data-src="{{ .nextArticle.Img }}"
                              alt="{{ .nextArticle.Title }}">
                         <span>下一篇</span>

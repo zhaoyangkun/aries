@@ -9,17 +9,19 @@
     <link rel="shortcut icon" href="{{ .blogVars.SiteLogo }}">
     <title>{{ if .subTitle }}{{ .subTitle }} - {{ end }}{{ .blogVars.SiteName }}</title>
     <!--全局 CSS-->
-    <link rel="stylesheet" href="{{ .blogVars.ContextPath }}/resources/themes/{{ .blogVars.Theme }}/static/css/global.css">
-    <link rel="stylesheet" href="{{ .blogVars.ContextPath }}/resources/themes/{{ .blogVars.Theme }}/static/css/pace-theme-flash.css">
-    {{/*            <link rel="stylesheet" href="{{ .blogVars.ContextPath }}/resources/themes/{{ .blogVars.Theme }}/static/css/d-audio.css">*/}}
-    {{/*    <link rel="stylesheet" href="{{ .blogVars.ContextPath }}/resources/themes/{{ .blogVars.Theme }}/static/css/myPagination.css">*/}}
-    {{/*    <link rel="stylesheet" href="{{ .blogVars.ContextPath }}/resources/themes/{{ .blogVars.Theme }}/static/css/index.css">*/}}
-    {{/*    <link rel="stylesheet" href="{{ .blogVars.ContextPath }}/resources/themes/{{ .blogVars.Theme }}/static/css/article-detail.css">*/}}
-    {{/*    <link rel="stylesheet" href="{{ .blogVars.ContextPath }}/resources/themes/{{ .blogVars.Theme }}/static/css/github.css">*/}}
-    {{/*    <link rel="stylesheet" href="{{ .blogVars.ContextPath }}/resources/themes/{{ .blogVars.Theme }}/static/css/link.css">*/}}
+    <link rel="stylesheet"
+          href="{{ .blogVars.StaticRootPath }}/resources/themes/{{ .blogVars.Theme }}/static/css/global.css">
+    <link rel="stylesheet"
+          href="{{ .blogVars.StaticRootPath }}/resources/themes/{{ .blogVars.Theme }}/static/css/pace-theme-flash.css">
+    {{/*            <link rel="stylesheet" href="{{ .blogVars.StaticRootPath }}/resources/themes/{{ .blogVars.Theme }}/static/css/d-audio.css">*/}}
+    {{/*    <link rel="stylesheet" href="{{ .blogVars.StaticRootPath }}/resources/themes/{{ .blogVars.Theme }}/static/css/myPagination.css">*/}}
+    {{/*    <link rel="stylesheet" href="{{ .blogVars.StaticRootPath }}/resources/themes/{{ .blogVars.Theme }}/static/css/index.css">*/}}
+    {{/*    <link rel="stylesheet" href="{{ .blogVars.StaticRootPath }}/resources/themes/{{ .blogVars.Theme }}/static/css/article-detail.css">*/}}
+    {{/*    <link rel="stylesheet" href="{{ .blogVars.StaticRootPath }}/resources/themes/{{ .blogVars.Theme }}/static/css/github.css">*/}}
+    {{/*    <link rel="stylesheet" href="{{ .blogVars.StaticRootPath }}/resources/themes/{{ .blogVars.Theme }}/static/css/link.css">*/}}
     <style rel="stylesheet">
         .lazy-image {
-            background: url('{{ .blogVars.ContextPath }}/resources/themes/{{ .blogVars.Theme }}/static/img/loading.gif') no-repeat center;
+            background: url('{{ .blogVars.StaticRootPath }}/resources/themes/{{ .blogVars.Theme }}/static/img/loading.gif') no-repeat center;
             background-size: 26% 35%;
             height: 100%;
             width: 100%;

@@ -4,7 +4,7 @@
     <head>
         {{ template "boundless-ui/head" . }}
         <link rel="stylesheet"
-              href="{{ .blogVars.ContextPath }}/resources/themes/{{ .blogVars.Theme }}/static/css/link.css">
+              href="{{ .blogVars.StaticRootPath }}/resources/themes/{{ .blogVars.Theme }}/static/css/link.css">
     </head>
     <body>
     <!--PC导航栏-->
@@ -50,7 +50,7 @@
                      src="{{ .blogVars.SiteLogo }}"/></a>
         </div>
         <a id="mobile_cate"
-           style="background-image: url('{{ .blogVars.ContextPath }}/resources/themes/{{ .blogVars.Theme }}/static/img/cate.svg')"
+           style="background-image: url('{{ .blogVars.StaticRootPath }}/resources/themes/{{ .blogVars.Theme }}/static/img/cate.svg')"
            href="javascript:void(0);"></a>
     </nav>
     <ul id="nav-m-list">

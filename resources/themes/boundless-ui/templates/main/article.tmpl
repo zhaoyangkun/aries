@@ -4,9 +4,9 @@
     <head>
         {{ template "boundless-ui/head" . }}
         <link rel="stylesheet"
-              href="{{ .blogVars.ContextPath }}/resources/themes/{{ .blogVars.Theme }}/static/css/article-detail.css">
+              href="{{ .blogVars.StaticRootPath }}/resources/themes/{{ .blogVars.Theme }}/static/css/article-detail.css">
         <link rel="stylesheet"
-              href="{{ .blogVars.ContextPath }}/resources/themes/{{ .blogVars.Theme }}/static/css/github.css">
+              href="{{ .blogVars.StaticRootPath }}/resources/themes/{{ .blogVars.Theme }}/static/css/github.css">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css"
               integrity="sha384-R4558gYOUz8mP9YWpZJjofhk+zx0AS11p36HnD2ZKj/6JR5z27gSSULCNHIRReVs"
               crossorigin="anonymous">
@@ -53,7 +53,7 @@
                      src="{{ .blogVars.SiteLogo }}"/></a>
         </div>
         <a id="mobile_cate"
-           style="background-image: url('{{ .blogVars.ContextPath }}/resources/themes/{{ .blogVars.Theme }}/static/img/cate.svg')"
+           style="background-image: url('{{ .blogVars.StaticRootPath }}/resources/themes/{{ .blogVars.Theme }}/static/img/cate.svg')"
            href="javascript:void(0);"></a>
     </nav>
     <ul id="nav-m-list">

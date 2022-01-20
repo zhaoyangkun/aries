@@ -1,6 +1,7 @@
 package setting
 
 import (
+	"github.com/gin-gonic/gin"
 	"io/ioutil"
 	"log"
 	"os"
@@ -15,20 +16,21 @@ import (
 
 // BlogVariable 博客全局变量
 type BlogVariable struct {
-	Theme        string
-	ContextPath  string
-	SiteName     string
-	SiteDesc     string
-	SiteKeywords string
-	SiteLogo     string
-	RecordNumber string
-	GlobalHeader string
-	GlobalFooter string
-	QQ           string
-	Wechat       string
-	Github       string
-	Weibo        string
-	Zhihu        string
+	Theme          string
+	ContextPath    string
+	StaticRootPath string
+	SiteName       string
+	SiteDesc       string
+	SiteKeywords   string
+	SiteLogo       string
+	RecordNumber   string
+	GlobalHeader   string
+	GlobalFooter   string
+	QQ             string
+	Wechat         string
+	Github         string
+	Weibo          string
+	Zhihu          string
 }
 
 // Setting 总配置
@@ -124,13 +126,18 @@ func (b *BlogVariable) InitBlogVars(siteSetting map[string]string, socialInfo ma
 		b.Theme = theme
 	} else {
 		// 默认主题
-		//b.Theme = "xue"
-		b.Theme = "boundless-ui"
+		b.Theme = "xue"
+		//b.Theme = "boundless-ui"
 	}
 	if contextPath, ok := siteSetting["site_url"]; ok {
 		b.ContextPath = contextPath
 	} else {
 		b.ContextPath = ""
+	}
+	if Config.Server.Mode == gin.DebugMode || Config.Server.Mode == gin.ReleaseMode { // 开发环境使用本地静态资源
+		b.StaticRootPath = b.ContextPath
+	} else { // 生产环境使用 CDN
+		b.StaticRootPath = "https://cdn.jsdelivr.net/gh/zhaoyangkun/aries"
 	}
 	if siteName, ok := siteSetting["site_name"]; ok {
 		b.SiteName = siteName

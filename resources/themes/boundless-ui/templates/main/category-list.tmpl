@@ -3,8 +3,10 @@
     <html lang="zh-cmn-Hans">
     <head>
         {{ template "boundless-ui/head" . }}
-        <link rel="stylesheet" href="{{ .blogVars.ContextPath }}/resources/themes/{{ .blogVars.Theme }}/static/css/myPagination.css">
-        <link rel="stylesheet" href="{{ .blogVars.ContextPath }}/resources/themes/{{ .blogVars.Theme }}/static/css/index.css">
+        <link rel="stylesheet"
+              href="{{ .blogVars.StaticRootPath }}/resources/themes/{{ .blogVars.Theme }}/static/css/myPagination.css">
+        <link rel="stylesheet"
+              href="{{ .blogVars.StaticRootPath }}/resources/themes/{{ .blogVars.Theme }}/static/css/index.css">
     </head>
     <body>
     <!--PC导航栏-->
@@ -48,7 +50,8 @@
                 <img style="vertical-align: top;" alt="logo"
                      src="{{ .blogVars.SiteLogo }}"/></a>
         </div>
-        <a id="mobile_cate" style="background-image: url('{{ .blogVars.ContextPath }}/resources/themes/{{ .blogVars.Theme }}/static/img/cate.svg')"
+        <a id="mobile_cate"
+           style="background-image: url('{{ .blogVars.StaticRootPath }}/resources/themes/{{ .blogVars.Theme }}/static/img/cate.svg')"
            href="javascript:void(0);"></a>
     </nav>
     <ul id="nav-m-list">
@@ -118,10 +121,10 @@
                                 <div class="article-detail-box c-666">{{ $article.Summary }}</div>
                                 <span class="article-tail-box">
                                     <i class="fl"
-                                       style="background-image: url('{{ $.blogVars.ContextPath }}/resources/themes/{{ $.blogVars.Theme }}/static/img/read-index.svg')"></i>
+                                       style="background-image: url('{{ $.blogVars.StaticRootPath }}/resources/themes/{{ $.blogVars.Theme }}/static/img/read-index.svg')"></i>
                                     <span class="read-number c-999 fl">{{ $article.VisitCount }}</span>
                                     <i class="fl"
-                                       style="background-image: url('{{ $.blogVars.ContextPath }}/resources/themes/{{ $.blogVars.Theme }}/static/img/comment-index.svg')"></i>
+                                       style="background-image: url('{{ $.blogVars.StaticRootPath }}/resources/themes/{{ $.blogVars.Theme }}/static/img/comment-index.svg')"></i>
                                     <span class="comment-number c-999 fl">{{ $article.CommentCount }}</span>
                                     <span class="article-date c-999">{{ $article.CreatedAt.Format "2006-01-02" }}</span>
                                     <span class="article-author one-line-overflow c-999">{{ $article.User.Username }}</span>

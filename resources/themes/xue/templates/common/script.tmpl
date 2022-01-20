@@ -1,16 +1,16 @@
 {{ define "xue/script" }}
-    <script src="//cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js"></script>
     <!-- markdown 插件 -->
-    <script src="//cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <!--图片预览插件-->
-    <script src="//cdn.jsdelivr.net/npm/viewerjs@1.5.0/dist/viewer.min.js"></script>
-    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.0.0/build/highlight.min.js"></script>
-    <script src="//cdn.jsdelivr.net/gh/xzzai/static@master/js/linesNumber.js"></script>
-    <script src="//cdn.jsdelivr.net/gh/xzzai/static@master/js/highlight.lang.js"></script>
-    <script src="//cdn.jsdelivr.net/npm/tocbot@4.11.2/dist/tocbot.min.js"></script>
-    <script src="//cdn.jsdelivr.net/npm/isotope-layout@3.0.6/dist/isotope.pkgd.min.js"></script>
-    <script src="//cdn.jsdelivr.net/gh/xzzai/static@master/js/moon.js"></script>
-    <script src="//cdn.jsdelivr.net/gh/hshanx/static@master/js/simply-nav.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/viewerjs@1.5.0/dist/viewer.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.0.0/build/highlight.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/xzzai/static@master/js/linesNumber.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/xzzai/static@master/js/highlight.lang.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tocbot@4.11.2/dist/tocbot.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/isotope-layout@3.0.6/dist/isotope.pkgd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/xzzai/static@master/js/moon.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/hshanx/static@master/js/simply-nav.js" defer></script>
     <script type="text/javascript">
         let openKatex = true;
         const katex_config = {
@@ -72,12 +72,12 @@
         }
     </script>
 
-    <script src="{{ .blogVars.ContextPath }}/resources/themes/{{ .blogVars.Theme }}/static/js/main.js"></script>
+    <script src="{{ .blogVars.StaticRootPath }}/resources/themes/{{ .blogVars.Theme }}/static/js/main.js"></script>
 
-    <script src="//cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.js"></script>
-    <script src="//cdn.jsdelivr.net/npm/meting@2/dist/Meting.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/meting@2/dist/Meting.min.js"></script>
 
-    <script defer src="//cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.js"
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.js"
             integrity="sha384-g7c+Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI+sEnkvrMWph2EDg4"
             crossorigin="anonymous"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/contrib/auto-render.min.js"
@@ -91,7 +91,7 @@
     </script>
 
     <script type="text/javascript">
-        const loading = "{{ .blogVars.ContextPath }}/resources/themes/{{ .blogVars.Theme }}/static/img/loading.svg";
+        const loading = "{{ .blogVars.StaticRootPath }}/resources/themes/{{ .blogVars.Theme }}/static/img/loading.svg";
         let photoList = "https://cdn.jsdelivr.net/gh/keepli/image@1.0/img/1.0/img-1.jpg;"
             + " https://cdn.jsdelivr.net/gh/keepli/image@1.0/img/1.0/img-2.jpg;"
             + " https://cdn.jsdelivr.net/gh/keepli/image@1.0/img/1.0/img-3.jpg;"
@@ -129,8 +129,8 @@
         show_date_time();
     </script>
 
-    <script src="//cdn.jsdelivr.net/gh/xzzai/static@master/js/jquery.pjax.js"></script>
-    <script src="//cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/xzzai/static@master/js/jquery.pjax.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js"></script>
     <script type="text/javascript">
         $(document).pjax('a[href]:not([href^="#"]):not([data-not-pjax]):not([target^="_blank"]), form',
             '#container', {fragment: '#container', timeout: 8000});
@@ -178,7 +178,7 @@
             if ($('#container').find('.jqcloud').length > 0) {
                 if (typeof $.fn.jQCloud !== 'function') {
                     $.getScript(
-                        '//cdn.jsdelivr.net/gh/xzzai/static@master/js/jqcloud-1.0.4.min.js',
+                        'https://cdn.jsdelivr.net/gh/xzzai/static@master/js/jqcloud-1.0.4.min.js',
                         function () {
                             renderTagCloud();
                             renderCategoryCloud();
