@@ -195,7 +195,7 @@ func (t *TmplHandler) CategoryTmpl(ctx *gin.Context) {
 			"categoryUrl":  url,
 			"currentPage":  int(pagination.Page),
 			"pages":        pages,
-			"subTitle":     "分裂列表",
+			"subTitle":     "分类列表",
 			"pageSize":     pagination.Size,
 			"totalCount":   total,
 			"totalPages":   totalPages,
@@ -210,7 +210,7 @@ func (t *TmplHandler) CategoryTmpl(ctx *gin.Context) {
 			pages = append(pages, i)
 		}
 
-		ctx.HTML(http.StatusOK, utils.GetTheme()+"category-list.tmpl", gin.H{
+		ctx.HTML(http.StatusOK, utils.GetTheme()+"category.tmpl", gin.H{
 			"blogVars":     setting.BlogVars,
 			"navs":         navs,
 			"categories":   categories,
@@ -285,7 +285,7 @@ func (t *TmplHandler) TagTmpl(ctx *gin.Context) {
 			"tagName":     name,
 			"currentPage": int(pagination.Page),
 			"pages":       pages,
-			"subTitle":    name,
+			"subTitle":    "标签列表",
 			"pageSize":    pagination.Size,
 			"totalCount":  total,
 			"totalPages":  totalPages,
