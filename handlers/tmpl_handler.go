@@ -25,7 +25,7 @@ var (
 func InitTmplVars() {
 	navs, _ = models.Nav{}.GetAll()
 	categories, _ = models.Category{}.GetAllByType(0)
-	tags, _ = models.Tag{}.GetAll()
+	tags, _ = models.Tag{}.GetAllWithNoArticle()
 }
 
 // IndexTmpl 首页

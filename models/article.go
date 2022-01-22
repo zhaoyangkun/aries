@@ -241,7 +241,8 @@ func (Article) GetByPage(page *utils.Pagination, key string, state uint,
 	if categoryId > 0 {
 		query = query.Where("category_id = ?", categoryId)
 	}
-
+	query = query.Select([]string{"id", "created_at", "user_id", "category_id", "order_id", "is_top", "is_recycled",
+		"is_published", "pwd", "url", "title", "summary", "img", "comment_count", "visit_count"})
 	total, err := utils.ToPage(page, query, &list)
 
 	return list, total, err
@@ -501,11 +502,9 @@ func (article Article) UpdateVisitCount() error {
 }
 
 // RecycleOrRecover 将文章加入回收站或恢复
-func (article Article) RecycleOrRecover() (err error) {
-	err = db.Db.Model(&Article{}).Where("`id` = ?", article.ID).
-		Updates(map[string]interface{}{
-			"is_recycled": !article.IsRecycled,
-		}).Error
+func (article Article) RecycleOrRecover(id string) (err error) {
+	err = db.Db.Exec("update articles set is_recycled = !is_recycled where id = ?", id).Error
+
 	return
 }
 

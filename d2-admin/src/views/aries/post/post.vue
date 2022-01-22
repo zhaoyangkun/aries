@@ -318,10 +318,12 @@ import { addTag, getAllTags } from '@/api/aries/tag'
 import {
   addPost,
   deletePost,
+  getPostById,
   getPostsByPage,
   importPostFromFiles,
   movePostDown,
   movePostUp,
+  recycleOrRecoverPost,
   updatePost
 } from '@/api/aries/post'
 
@@ -644,14 +646,20 @@ export default {
       // 清空表单提示信息
       this.clearValidate('editForm')
       // 初始化表单数据
-      const tagIds = []
-      row.tag_list.forEach((tag) => {
-        tagIds.push(tag.ID)
-      })
-      this.editForm = { ...row }
-      this.editForm.category_id = this.editForm.category_id === 0 ? null : this.editForm.category_id
-      this.$set(this.editForm, 'selectTagIds', tagIds)
-      this.editImageSrc = this.editForm.img
+      getPostById(row.ID)
+        .then(res => {
+          // this.editForm = { ...row }
+          this.editForm = res.data
+          this.editForm.category_id = this.editForm.category_id === 0 ? null : this.editForm.category_id
+          const tagIds = []
+          this.editForm.tag_list.forEach((tag) => {
+            tagIds.push(tag.ID)
+          })
+          this.$set(this.editForm, 'selectTagIds', tagIds)
+          this.editImageSrc = this.editForm.img
+        })
+        .catch(() => {
+        })
     },
     // 打开导入文章弹窗
     openUploadDialog () {
@@ -747,7 +755,7 @@ export default {
           .then(() => {
             row.is_recycled = !row.is_recycled
             setTimeout(() => {
-              updatePost(row)
+              recycleOrRecoverPost(row.ID)
                 .then(() => {
                   this.$message.success('恢复成功')
                   this.fetchPageData()
@@ -767,7 +775,7 @@ export default {
           .then(() => {
             row.is_recycled = !row.is_recycled
             setTimeout(() => {
-              updatePost(row)
+              recycleOrRecoverPost(row.ID)
                 .then(() => {
                   this.$message.success('成功加入回收站')
                   this.fetchPageData()
@@ -962,6 +970,7 @@ export default {
 :focus {
   outline: 0;
 }
+
 .operation-box {
   padding: 0;
 }

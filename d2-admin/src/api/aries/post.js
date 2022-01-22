@@ -26,6 +26,14 @@ export function addPost (data) {
   })
 }
 
+// 回收或恢复文章
+export function recycleOrRecoverPost (id) {
+  return request({
+    url: `/articles/recycle/${id}`,
+    method: 'patch'
+  })
+}
+
 // 从文件导入文章
 export function importPostFromFiles (data) {
   return request({

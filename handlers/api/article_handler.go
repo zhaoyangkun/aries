@@ -387,6 +387,36 @@ func (a *ArticleHandler) ImportArticlesFromFiles(ctx *gin.Context) {
 	})
 }
 
+// RecycleOrRecoverArticle
+// @Summary 回收或恢复文章
+// @Tags 文章
+// @version 1.0
+// @Accept application/json
+// @Param id path int true "id"
+// @Success 100 object utils.Result 成功
+// @Failure 103/104 object utils.Result 失败
+// @Router /api/articles/recycle/{id} [patch]
+func (a *ArticleHandler) RecycleOrRecoverArticle(ctx *gin.Context) {
+	id := ctx.Param("id")
+
+	err := models.Article{}.RecycleOrRecover(id)
+	if err != nil {
+		log.Logger.Sugar().Error("error: ", err.Error())
+		ctx.JSON(http.StatusOK, utils.Result{
+			Code: utils.ServerError,
+			Msg:  "服务器端错误",
+			Data: nil,
+		})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, utils.Result{
+		Code: utils.Success,
+		Msg:  "操作成功",
+		Data: nil,
+	})
+}
+
 // MoveArticleUp
 // @Summary 向上移动文章
 // @Tags 文章

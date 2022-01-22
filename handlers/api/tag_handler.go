@@ -23,7 +23,7 @@ type TagHandler struct {
 // @Failure 103/104 object utils.Result 失败
 // @Router /api/v1/all_tags [get]
 func (t *TagHandler) GetAllTags(ctx *gin.Context) {
-	list, err := models.Tag{}.GetAll()
+	list, err := models.Tag{}.GetAllWithNoArticle()
 	if err != nil {
 		log.Logger.Sugar().Error("Error: ", err.Error())
 		ctx.JSON(http.StatusOK, utils.Result{

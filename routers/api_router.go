@@ -52,6 +52,7 @@ func (a *ApiRouter) InitApiRouter(rootPath string, router *gin.Engine) {
 		ArticleApiRouter.DELETE("/articles/:id", articleHandler.DeleteArticle)
 		ArticleApiRouter.DELETE("/articles", articleHandler.MultiDelArticles)
 		ArticleApiRouter.POST("/articles/files", articleHandler.ImportArticlesFromFiles)
+		ArticleApiRouter.PATCH("/articles/recycle/:id", articleHandler.RecycleOrRecoverArticle)
 		ArticleApiRouter.PATCH("/articles/up", articleHandler.MoveArticleUp)
 		ArticleApiRouter.PATCH("/articles/down", articleHandler.MoveArticleDown)
 	}

@@ -27,6 +27,17 @@ func (Tag) GetAll() ([]Tag, error) {
 	return list, err
 }
 
+// GetAllWithNoArticle 获取所有标签，不包含文章列表
+func (Tag) GetAllWithNoArticle() ([]Tag, error) {
+	var list []Tag
+	err := db.Db.Find(&list).Error
+	if gorm.IsRecordNotFoundError(err) {
+		err = nil
+	}
+
+	return list, err
+}
+
 // GetById 根据主键获取标签
 func (Tag) GetById(id string) (Tag, error) {
 	var t Tag
@@ -52,8 +63,7 @@ func (Tag) GetByName(name string) (tag Tag, err error) {
 func (tag Tag) GetByPage(page *utils.Pagination, key string) ([]Tag, uint, error) {
 	var list []Tag
 
-	query := db.Db.Preload("ArticleList").Model(&Tag{}).
-		Order("created_at desc", true)
+	query := db.Db.Model(&Tag{}).Order("created_at desc", true)
 
 	if key != "" {
 		query = query.Where("`name` like concat('%',?,'%')", key)
