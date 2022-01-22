@@ -16,7 +16,7 @@ Aries 是基于 Gin + GORM + MySQL + Vue + H5 开发的现代化博客系统，�
 
 ### 预览
 
-预览地址：[https://aries.cangmang.xyz/](https://aries.cangmang.xyz/)
+预览地址：[https://cangmang.xyz/](https://cangmang.xyz/)
 
 ### 功能特性
 
