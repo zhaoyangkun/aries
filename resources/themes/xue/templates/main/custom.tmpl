@@ -24,7 +24,11 @@
             {{ safe .page.MDHtml }}
         </div>
 
-        {{ template "xue/comment" . }}
+        {{ if eq .commentPlugInSetting.plug_in "local-comment" }}
+            {{ template "xue/comment" . }}
+        {{ else if eq .commentPlugInSetting.plug_in "twikoo-comment" }}
+            {{ template "xue/tcomment" . }}
+        {{ end }}
     </main>
 
     {{ template "xue/footer" . }}

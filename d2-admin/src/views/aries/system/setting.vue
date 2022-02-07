@@ -183,22 +183,58 @@
       </el-tab-pane>
 
       <el-tab-pane label="评论设置" style="width: 500px">
-        <el-form ref="commentForm" :model="commentForm" :rules="commentFormRules" label-width="130px">
+        <el-form :model="commentPlugInForm" :rules="commentPlugInFormRules" ref="commentPlugInForm" label-width="130px">
+          <el-form-item label="评论组件" prop="plug_in">
+            <el-select size="small" v-model="commentPlugInForm.plug_in" placeholder="请选择评论组件"
+                       @change="commentPlugInSelectChange">
+              <el-option
+                v-for="item in commentPlugIns"
+                :value="item.value"
+                :key="item.value"
+                :label="item.name">
+              </el-option>
+            </el-select>
+          </el-form-item>
+        </el-form>
+
+        <el-form ref="localCommentForm" :model="localCommentForm" :rules="localCommentFormRules"
+                 v-show="commentPlugInForm.plug_in==='local-comment'" label-width="130px">
           <el-form-item label="评论功能" prop="is_on">
-            <el-switch size="small" active-value="1" inactive-value="0" v-model="commentForm.is_on"></el-switch>
+            <el-switch size="small" active-value="1" inactive-value="0" v-model="localCommentForm.is_on"></el-switch>
           </el-form-item>
           <el-form-item label="评论审核" prop="is_review_on">
-            <el-switch size="small" active-value="1" inactive-value="0" v-model="commentForm.is_review_on"></el-switch>
+            <el-switch size="small" active-value="1" inactive-value="0" v-model="localCommentForm.is_review_on"></el-switch>
           </el-form-item>
           <el-form-item label="回复后邮件通知" prop="is_reply_on">
-            <el-switch size="small" active-value="1" inactive-value="0" v-model="commentForm.is_reply_on"></el-switch>
+            <el-switch size="small" active-value="1" inactive-value="0" v-model="localCommentForm.is_reply_on"></el-switch>
           </el-form-item>
           <el-form-item label="每页评论个数" prop="page_size">
-            <el-input size="small" v-model="commentForm.page_size" type="number" autocomplete="off"></el-input>
+            <el-input size="small" v-model="localCommentForm.page_size" type="number" autocomplete="off"></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button size="small" type="primary" :loading="btn.commentSaveLoading"
-                       @click="saveCommentForm">保存
+            <el-button size="small" type="primary" :loading="btn.localCommentSaveLoading"
+                       @click="saveLocalCommentForm">保存
+            </el-button>
+          </el-form-item>
+        </el-form>
+
+        <el-form ref="twikooForm" :model="twikooForm" v-show="commentPlugInForm.plug_in==='twikoo-comment'"
+                 :rules="twikooFormRules" label-width="130px">
+          <el-form-item label="环境 id" prop="env_id">
+            <el-input size="small" type="text" v-model="twikooForm.env_id" placeholder="env ID"></el-input>
+          </el-form-item>
+          <el-form-item label="区域" prop="region">
+            <el-input size="small" type="text" v-model="twikooForm.region" placeholder="region"></el-input>
+          </el-form-item>
+          <el-form-item label="路径" prop="path">
+            <el-input size="small" type="text" v-model="twikooForm.path" placeholder="path"></el-input>
+          </el-form-item>
+          <el-form-item label="语言" prop="lang">
+            <el-input size="small" type="text" v-model="twikooForm.lang" placeholder="lang"></el-input>
+          </el-form-item>
+          <el-form-item>
+            <el-button size="small" type="primary" :loading="btn.twikooSaveLoading"
+                       @click="saveTwikooForm">保存
             </el-button>
           </el-form-item>
         </el-form>
@@ -254,15 +290,15 @@
 <script>
 import {
   getSysSettingItem,
-  saveCommentSetting,
+  saveLocalCommentSetting,
   saveImgbbSetting,
   saveParamSetting,
   saveSiteSetting,
   saveSmmsSetting,
   saveSMTPSetting,
-  saveTencentCosSetting,
   saveSocialInfo,
-  sendTestEmail
+  saveTencentCosSetting,
+  sendTestEmail, saveTwikooSetting
 } from '@/api/aries/sys'
 
 export default {
@@ -286,6 +322,10 @@ export default {
         { name: '深圳金融', value: 'ap-shenzhen-fsi' },
         { name: '上海金融', value: 'ap-shanghai-fsi' },
         { name: '北京金融', value: 'ap-beijing-fsi' }
+      ],
+      commentPlugIns: [
+        { name: '本地评论组件', value: 'local-comment' },
+        { name: 'twikoo 评论组件', value: 'twikoo-comment' }
       ],
       siteForm: {
         sys_id: null,
@@ -338,13 +378,24 @@ export default {
         folder_path: '',
         img_process: ''
       },
-      commentForm: {
+      commentPlugInForm: {
+        plug_in: 'local-comment'
+      },
+      localCommentForm: {
         sys_id: '',
-        type_name: '评论设置',
+        plug_in: 'local-comment',
         is_on: '1',
         is_review_on: '1',
         is_reply_on: '0',
         page_size: '10'
+      },
+      twikooForm: {
+        sys_id: '',
+        plug_in: 'twikoo-comment',
+        env_id: '',
+        region: '',
+        path: 'window.location.pathname',
+        lang: 'zh-CN'
       },
       paramForm: {
         sys_id: '',
@@ -472,12 +523,22 @@ export default {
           { max: 255, message: '上传目录长度不能超过 255 ', trigger: 'blur' }
         ]
       },
-      commentFormRules: {
+      commentPlugInFormRules: {
+        plug_in: [
+          { required: true, message: '请选择评论组件', trigger: 'blur' }
+        ]
+      },
+      localCommentFormRules: {
         is_on: [
           { required: true, message: '请选择是否开启评论功能', trigger: 'blur' }
         ],
         is_review_on: [
           { required: true, message: '请选择是否开启评论审核功能', trigger: 'blur' }
+        ]
+      },
+      twikooFormRules: {
+        env_id: [
+          { required: true, message: '请输入环境 id', trigger: 'blur' }
         ]
       },
       paramFormRules: {},
@@ -486,7 +547,8 @@ export default {
         smtpSaveLoading: false,
         emailSendLoading: false,
         bedSaveLoading: false,
-        commentSaveLoading: false,
+        localCommentSaveLoading: false,
+        twikooSaveLoading: false,
         paramSaveLoading: false,
         socialSaveLoading: false
       },
@@ -506,7 +568,7 @@ export default {
       } else if (tab.label === '图床设置') {
         this.initPicBedSetting()
       } else if (tab.label === '评论设置') {
-        this.getSysSetItem(tab.label, 'commentForm')
+        this.initCommentSetting()
       } else if (tab.label === '参数设置') {
         this.getSysSetItem(tab.label, 'paramForm')
       } else if (tab.label === '社交信息') {
@@ -529,6 +591,11 @@ export default {
       await this.getSysSetItem('图床设置', 'storageForm')
       await this.storageTypeSelectChange()
     },
+    // 初始化评论配置
+    async initCommentSetting () {
+      await this.getSysSetItem('评论组件设置', 'commentPlugInForm')
+      await this.commentPlugInSelectChange()
+    },
     // 图床类型切换
     async storageTypeSelectChange () {
       switch (this.storageForm.storage_type) {
@@ -541,6 +608,16 @@ export default {
         case 'cos':
           await this.getSysSetItem('cos', 'tencentCosForm')
           break
+      }
+    },
+    // 评论组件切换
+    async commentPlugInSelectChange () {
+      switch (this.commentPlugInForm.plug_in) {
+        case 'local-comment':
+          await this.getSysSetItem('local-comment', 'localCommentForm')
+          break
+        case 'twikoo-comment':
+          await this.getSysSetItem('twikoo-comment', 'twikooForm')
       }
     },
     // 保存网站设置
@@ -651,19 +728,36 @@ export default {
       })
     },
     // 保存评论设置
-    saveCommentForm () {
-      this.$refs.commentForm.validate(valid => {
+    saveLocalCommentForm () {
+      this.$refs.localCommentForm.validate(valid => {
         if (valid) {
-          this.btn.commentSaveLoading = true
+          this.btn.localCommentSaveLoading = true
           setTimeout(() => {
-            saveCommentSetting(this.commentForm)
+            saveLocalCommentSetting(this.localCommentForm)
               .then(res => {
                 this.$message.success(res.msg)
-                this.getSysSetItem('评论设置', 'commentForm')
+                this.getSysSetItem('local-comment', 'localCommentForm')
               })
               .catch(() => {
               })
-            this.btn.commentSaveLoading = false
+            this.btn.localCommentSaveLoading = false
+          }, 300)
+        }
+      })
+    },
+    saveTwikooForm () {
+      this.$refs.twikooForm.validate(valid => {
+        if (valid) {
+          this.btn.twikooSaveLoading = true
+          setTimeout(() => {
+            saveTwikooSetting(this.twikooForm)
+              .then(res => {
+                this.$message.success(res.msg)
+                this.getSysSetItem('twikoo-comment', 'twikooForm')
+              })
+              .catch(() => {
+              })
+            this.btn.twikooSaveLoading = false
           }, 300)
         }
       })

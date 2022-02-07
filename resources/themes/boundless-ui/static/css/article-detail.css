@@ -605,8 +605,8 @@ li {
 
     .left-box {
         width: 96%;
-        margin: 0 2%;
-        float: left;
+        margin: 0 auto;
+        /*float: left;*/
     }
 
     /*.location {*/

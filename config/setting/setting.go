@@ -135,7 +135,7 @@ func (b *BlogVariable) InitBlogVars(siteSetting map[string]string, socialInfo ma
 		b.ContextPath = ""
 	}
 	// 开发环境使用本地静态资源，生产环境使用 CDN
-	if Config.Server.Mode == gin.DebugMode || Config.Server.Mode == gin.TestMode {
+	if Config.Server.Mode == gin.DebugMode {
 		b.StaticRootPath = b.ContextPath
 	} else {
 		b.StaticRootPath = "https://cdn.jsdelivr.net/gh/zhaoyangkun/aries"

@@ -25,6 +25,6 @@ func (SysSetting) GetByName(name string) (s SysSetting, err error) {
 
 // Create 创建系统设置
 func (s *SysSetting) Create() (err error) {
-	err = db.Db.Create(s).Error
+	err = db.Db.Create(&s).Error
 	return
 }

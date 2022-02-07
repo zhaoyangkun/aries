@@ -116,19 +116,24 @@ func (t *TmplHandler) ArticleTmpl(ctx *gin.Context) {
 	nextArticle, _ := models.Article{}.GetNext(article.OrderId, article.IsTop, true)
 	users, _ := models.User{}.GetAll()
 
+	commentPlugInSetting, _ := models.SysSettingItem{}.GetBySysSettingName("评论组件设置")
+	commentSetting, _ := models.SysSettingItem{}.GetBySysSettingName(commentPlugInSetting["plug_in"])
+
 	ctx.HTML(http.StatusOK, utils.GetTheme()+"article.tmpl", gin.H{
-		"blogVars":    setting.BlogVars,
-		"navs":        navs,
-		"categories":  categories,
-		"tags":        tags,
-		"article":     article,
-		"preArticle":  preArticle,
-		"nextArticle": nextArticle,
-		"user":        users[0],
-		"subTitle":    article.Title,
-		"articleID":   article.ID,
-		"pageID":      0,
-		"commentType": 1,
+		"blogVars":             setting.BlogVars,
+		"navs":                 navs,
+		"categories":           categories,
+		"tags":                 tags,
+		"article":              article,
+		"preArticle":           preArticle,
+		"nextArticle":          nextArticle,
+		"user":                 users[0],
+		"subTitle":             article.Title,
+		"articleID":            article.ID,
+		"pageID":               0,
+		"commentType":          1,
+		"commentPlugInSetting": commentPlugInSetting,
+		"commentSetting":       commentSetting,
 	})
 }
 
@@ -394,16 +399,21 @@ func (t *TmplHandler) CustomTmpl(ctx *gin.Context) {
 		return
 	}
 
+	commentPlugInSetting, _ := models.SysSettingItem{}.GetBySysSettingName("评论组件设置")
+	commentSetting, _ := models.SysSettingItem{}.GetBySysSettingName(commentPlugInSetting["plug_in"])
+
 	ctx.HTML(http.StatusOK, utils.GetTheme()+"custom.tmpl", gin.H{
-		"blogVars":    setting.BlogVars,
-		"navs":        navs,
-		"categories":  categories,
-		"tags":        tags,
-		"page":        page,
-		"subTitle":    page.Title,
-		"articleID":   0,
-		"pageID":      page.ID,
-		"commentType": 4,
+		"blogVars":             setting.BlogVars,
+		"navs":                 navs,
+		"categories":           categories,
+		"tags":                 tags,
+		"page":                 page,
+		"subTitle":             page.Title,
+		"articleID":            0,
+		"pageID":               page.ID,
+		"commentType":          4,
+		"commentPlugInSetting": commentSetting,
+		"commentSetting":       commentSetting,
 	})
 }
 

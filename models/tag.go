@@ -79,7 +79,7 @@ func (tag Tag) GetByPage(page *utils.Pagination, key string) ([]Tag, uint, error
 
 // Create 添加标签
 func (tag *Tag) Create() error {
-	return db.Db.Create(tag).Error
+	return db.Db.Create(&tag).Error
 }
 
 // Update 更新标签

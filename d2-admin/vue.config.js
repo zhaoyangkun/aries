@@ -1,4 +1,5 @@
-const CompressionWebpackPlugin = require('compression-webpack-plugin')
+// const CompressionWebpackPlugin = require('compression-webpack-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const VueFilenameInjector = require('@d2-projects/vue-filename-injector')
 const ThemeColorReplacer = require('webpack-theme-color-replacer')
 const forElementUI = require('webpack-theme-color-replacer/forElementUI')
@@ -13,7 +14,8 @@ process.env.VUE_APP_VERSION = require('./package.json').version
 process.env.VUE_APP_BUILD_TIME = require('dayjs')().format('YYYY-M-D HH:mm:ss')
 
 // 基础路径 注意发布之前要先修改这里
-const publicPath = process.env.VUE_APP_PUBLIC_PATH || '/' // 开发环境
+const publicPath = process.env.NODE_ENV === 'development' ? process.env.VUE_APP_PUBLIC_PATH || '/' : './'
+// const publicPath = process.env.VUE_APP_PUBLIC_PATH || '/' // 开发环境
 // const publicPath = './' // 生产环境
 
 // 设置不参与构建的库
@@ -54,28 +56,44 @@ module.exports = {
     disableHostCheck: process.env.NODE_ENV === 'development' // 关闭 host check，方便使用 ngrok 之类的内网转发工具
   },
   css: {
+    extract: process.env.NODE_ENV === 'development' ? false : {
+      filename: 'css/[name].css',
+      chunkFilename: 'css/[name].css',
+      allChunks: false
+    },
     loaderOptions: {
       // 设置 scss 公用变量文件
       sass: {
         prependData: '@import \'~@/assets/style/public.scss\';'
       }
-    }
+    },
+    requireModuleExtension: true // 启用 CSS modules for all css / pre-processor files.
   },
   pages,
+  filenameHashing: false,
   configureWebpack: config => {
     const configNew = {}
     if (process.env.NODE_ENV === 'production') {
       configNew.externals = externals
       configNew.plugins = [
-        // gzip
-        new CompressionWebpackPlugin({
-          filename: '[path].gz[query]',
-          test: new RegExp('\\.(' + ['js', 'css'].join('|') + ')$'),
-          threshold: 10240,
-          minRatio: 0.8,
-          deleteOriginalAssets: false
+        // // gzip
+        // new CompressionWebpackPlugin({
+        //   filename: '[path].gz[query]',
+        //   test: new RegExp('\\.(' + ['js', 'css'].join('|') + ')$'),
+        //   threshold: 10240,
+        //   minRatio: 0.8,
+        //   deleteOriginalAssets: false
+        // }),
+        new MiniCssExtractPlugin({
+          filename: 'css/[name].css',
+          chunkFilename: 'css/[id].css',
+          ignoreOrder: false // 允许删除关于冲突顺序的警告
         })
       ]
+      configNew.output = {
+        filename: 'js/[name].js',
+        chunkFilename: 'js/[name].js'
+      }
     }
     return configNew
   },
@@ -109,7 +127,8 @@ module.exports = {
     config
       .plugin('theme-color-replacer')
       .use(ThemeColorReplacer, [{
-        fileName: 'css/theme-colors.[contenthash:8].css',
+        // fileName: 'css/theme-colors.[contenthash:8].css',
+        fileName: 'css/theme-colors.css',
         matchColors: [
           ...forElementUI.getElementUISeries(process.env.VUE_APP_ELEMENT_COLOR) // Element-ui主色系列
         ],

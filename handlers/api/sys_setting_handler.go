@@ -237,6 +237,7 @@ func (s *SysSettingHandler) SaveSmmsSetting(ctx *gin.Context) {
 		sysId, _ := strconv.Atoi(picBedSettingItems["sys_id"])
 		picBedSetting.ID = uint(sysId)
 	}
+	log.Logger.Sugar().Info("picBedSetting: ", picBedSetting)
 
 	if sysId == 0 {
 		if err := smmsSetting.Create(); err != nil {
@@ -686,7 +687,7 @@ func (s *SysSettingHandler) GetAdminIndexData(ctx *gin.Context) {
 	})
 }
 
-// SaveCommentSetting
+// SaveLocalCommentSetting
 // @Summary 保存评论配置信息
 // @Tags 系统设置
 // @version 1.0
@@ -694,10 +695,10 @@ func (s *SysSettingHandler) GetAdminIndexData(ctx *gin.Context) {
 // @Param settingForm body forms.CommentSettingForm true "评论配置表单"
 // @Success 100 object utils.Result 成功
 // @Failure 103/104 object utils.Result 失败
-// @Router /api/v1/sys_setting/comment [post]
-func (s *SysSettingHandler) SaveCommentSetting(ctx *gin.Context) {
-	settingForm := forms.CommentSettingForm{}
-	if err := ctx.ShouldBindJSON(&settingForm); err != nil {
+// @Router /sys_setting/comment/local [post]
+func (s *SysSettingHandler) SaveLocalCommentSetting(ctx *gin.Context) {
+	localCommentForm := forms.LocalCommentSettingForm{}
+	if err := ctx.ShouldBindJSON(&localCommentForm); err != nil {
 		ctx.JSON(http.StatusOK, utils.Result{
 			Code: utils.RequestError,
 			Msg:  utils.GetFormError(err),
@@ -706,14 +707,34 @@ func (s *SysSettingHandler) SaveCommentSetting(ctx *gin.Context) {
 		return
 	}
 
-	sysId, _ := strconv.ParseUint(settingForm.SysId, 10, 0)
-	sysSetting := models.SysSetting{
+	sysId, _ := strconv.ParseUint(localCommentForm.SysId, 10, 0)
+	localCommentSetting := models.SysSetting{
 		Model: gorm.Model{ID: uint(sysId)},
-		Name:  settingForm.TypeName,
+		Name:  localCommentForm.PlugIn,
+	}
+	commentPlugInSetting := models.SysSetting{
+		Name: "评论组件设置",
 	}
 
+	commentPlugInSettingItems, _ := models.SysSettingItem{}.GetBySysSettingName("评论组件设置")
+	if len(commentPlugInSettingItems) == 0 {
+		if err := commentPlugInSetting.Create(); err != nil {
+			log.Logger.Sugar().Error("error: ", err.Error())
+			ctx.JSON(http.StatusOK, utils.Result{
+				Code: utils.ServerError,
+				Msg:  "服务器端错误",
+				Data: nil,
+			})
+			return
+		}
+	} else {
+		sysId, _ := strconv.Atoi(commentPlugInSettingItems["sys_id"])
+		commentPlugInSetting.ID = uint(sysId)
+	}
+	log.Logger.Sugar().Info("commentPlugInSetting: ", commentPlugInSetting)
+
 	if sysId == 0 {
-		if err := sysSetting.Create(); err != nil {
+		if err := localCommentSetting.Create(); err != nil {
 			log.Logger.Sugar().Error("error: ", err.Error())
 			ctx.JSON(http.StatusOK, utils.Result{
 				Code: utils.ServerError,
@@ -723,12 +744,18 @@ func (s *SysSettingHandler) SaveCommentSetting(ctx *gin.Context) {
 			return
 		}
 	}
-	t := reflect.TypeOf(settingForm)
-	v := reflect.ValueOf(settingForm)
+
+	CommentPlugInForm := forms.CommentPlugInForm{
+		SysId:  strconv.Itoa(int(commentPlugInSetting.ID)),
+		PlugIn: "local-comment",
+	}
+
+	t := reflect.TypeOf(CommentPlugInForm)
+	v := reflect.ValueOf(CommentPlugInForm)
 	var itemList []models.SysSettingItem
 	for i := 0; i < t.NumField(); i++ {
 		item := models.SysSettingItem{
-			SysId: sysSetting.ID,
+			SysId: commentPlugInSetting.ID,
 			Key:   t.Field(i).Tag.Get("json"),
 			Val:   v.Field(i).Interface().(string),
 		}
@@ -736,6 +763,146 @@ func (s *SysSettingHandler) SaveCommentSetting(ctx *gin.Context) {
 	}
 
 	err := models.SysSettingItem{}.MultiCreateOrUpdate(itemList)
+	if err != nil {
+		log.Logger.Sugar().Error("error: ", err.Error())
+		ctx.JSON(http.StatusOK, utils.Result{
+			Code: utils.ServerError,
+			Msg:  "服务器端错误",
+			Data: nil,
+		})
+		return
+	}
+
+	localCommentForm.SysId = strconv.Itoa(int(localCommentSetting.ID))
+	t = reflect.TypeOf(localCommentForm)
+	v = reflect.ValueOf(localCommentForm)
+	itemList = []models.SysSettingItem{}
+	for i := 0; i < t.NumField(); i++ {
+		item := models.SysSettingItem{
+			SysId: localCommentSetting.ID,
+			Key:   t.Field(i).Tag.Get("json"),
+			Val:   v.Field(i).Interface().(string),
+		}
+		itemList = append(itemList, item)
+	}
+
+	err = models.SysSettingItem{}.MultiCreateOrUpdate(itemList)
+	if err != nil {
+		log.Logger.Sugar().Error("error: ", err.Error())
+		ctx.JSON(http.StatusOK, utils.Result{
+			Code: utils.ServerError,
+			Msg:  "服务器端错误",
+			Data: nil,
+		})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, utils.Result{
+		Code: utils.Success,
+		Msg:  "保存成功",
+		Data: nil,
+	})
+}
+
+// SaveTwikooSetting
+// @Summary 保存 Twikoo 配置信息
+// @Tags 系统设置
+// @version 1.0
+// @Accept application/json
+// @Param settingForm body forms.TwikooForm true "Twikoo 配置表单"
+// @Success 100 object utils.Result 成功
+// @Failure 103/104 object utils.Result 失败
+// @Router /api/v1/sys_setting/comment/twikoo [post]
+func (s *SysSettingHandler) SaveTwikooSetting(ctx *gin.Context) {
+	twikooSettingForm := forms.TwikooSettingForm{}
+	if err := ctx.ShouldBindJSON(&twikooSettingForm); err != nil {
+		ctx.JSON(http.StatusOK, utils.Result{
+			Code: utils.RequestError,
+			Msg:  utils.GetFormError(err),
+			Data: nil,
+		})
+		return
+	}
+
+	sysId, _ := strconv.ParseUint(twikooSettingForm.SysId, 10, 0)
+	commentPlugInSetting := models.SysSetting{
+		Name: "评论组件设置",
+	}
+	twikooSetting := models.SysSetting{
+		Model: gorm.Model{ID: uint(sysId)},
+		Name:  twikooSettingForm.PlugIn,
+	}
+
+	commentPlugInSettingItems, _ := models.SysSettingItem{}.GetBySysSettingName("评论组件设置")
+	if len(commentPlugInSettingItems) == 0 { // 若不存在评论组件设置数据，则创建
+		if err := commentPlugInSetting.Create(); err != nil {
+			log.Logger.Sugar().Error("error: ", err.Error())
+			ctx.JSON(http.StatusOK, utils.Result{
+				Code: utils.ServerError,
+				Msg:  "服务器端错误",
+				Data: nil,
+			})
+			return
+		}
+	} else {
+		sysId, _ := strconv.Atoi(commentPlugInSettingItems["sys_id"])
+		commentPlugInSetting.ID = uint(sysId)
+	}
+
+	if sysId == 0 { // 不存在 twikoo 设置数据，则创建
+		if err := twikooSetting.Create(); err != nil {
+			log.Logger.Sugar().Error("error: ", err.Error())
+			ctx.JSON(http.StatusOK, utils.Result{
+				Code: utils.ServerError,
+				Msg:  "服务器端错误",
+				Data: nil,
+			})
+			return
+		}
+	}
+
+	// 保存评论组件相关设置
+	commentPlugInForm := forms.CommentPlugInForm{
+		SysId:  strconv.Itoa(int(commentPlugInSetting.ID)),
+		PlugIn: "twikoo-comment",
+	}
+	t := reflect.TypeOf(commentPlugInForm)
+	v := reflect.ValueOf(commentPlugInForm)
+	var itemList []models.SysSettingItem
+	for i := 0; i < t.NumField(); i++ {
+		item := models.SysSettingItem{
+			SysId: commentPlugInSetting.ID,
+			Key:   t.Field(i).Tag.Get("json"),
+			Val:   v.Field(i).Interface().(string),
+		}
+		itemList = append(itemList, item)
+	}
+
+	err := models.SysSettingItem{}.MultiCreateOrUpdate(itemList)
+	if err != nil {
+		log.Logger.Sugar().Error("error: ", err.Error())
+		ctx.JSON(http.StatusOK, utils.Result{
+			Code: utils.ServerError,
+			Msg:  "服务器端错误",
+			Data: nil,
+		})
+		return
+	}
+
+	// 保存 twikoo 评论组件相关设置
+	t = reflect.TypeOf(twikooSettingForm)
+	v = reflect.ValueOf(twikooSettingForm)
+	itemList = []models.SysSettingItem{}
+	for i := 0; i < t.NumField(); i++ {
+		item := models.SysSettingItem{
+			SysId: twikooSetting.ID,
+			Key:   t.Field(i).Tag.Get("json"),
+			Val:   v.Field(i).Interface().(string),
+		}
+		itemList = append(itemList, item)
+	}
+
+	err = models.SysSettingItem{}.MultiCreateOrUpdate(itemList)
 	if err != nil {
 		log.Logger.Sugar().Error("error: ", err.Error())
 		ctx.JSON(http.StatusOK, utils.Result{

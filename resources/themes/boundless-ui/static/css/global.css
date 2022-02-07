@@ -74,7 +74,8 @@ input {
 }
 
 .nav-bar .nb-a-holder {
-    width: 120px;
+    /*width: 120px;*/
+    width: 100px;
     height: 100%;
     float: left;
 }
@@ -117,7 +118,8 @@ input {
 .nb-a {
     display: inline-block;
     height: 58px;
-    width: 120px;
+    /*width: 120px;*/
+    width: 100px;
     float: left;
     line-height: 60px;
     font-size: 16px;

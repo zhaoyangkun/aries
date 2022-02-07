@@ -78,10 +78,19 @@ export function saveTencentCosSetting (data) {
   })
 }
 
-// 保存评论配置
-export function saveCommentSetting (data) {
+// 保存本地评论配置
+export function saveLocalCommentSetting (data) {
   return request({
-    url: '/sys_setting/comment',
+    url: '/sys_setting/comment/local',
+    method: 'post',
+    data: data
+  })
+}
+
+// 保存 Twikoo 组件设置
+export function saveTwikooSetting (data) {
+  return request({
+    url: '/sys_setting/comment/twikoo',
     method: 'post',
     data: data
   })

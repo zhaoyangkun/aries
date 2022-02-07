@@ -66,17 +66,33 @@ type TencentCosForm struct {
 	ImgProcess  string `json:"img_process" binding:"max=255" label:"图片处理"`
 }
 
-// 评论设置表单
-type CommentSettingForm struct {
+// CommentPlugInForm 评论组件表单
+type CommentPlugInForm struct {
+	SysId  string `json:"sys_id" label:"设置 ID"`
+	PlugIn string `json:"plug_in" label:"评论组件"`
+}
+
+// LocalCommentSettingForm 本地评论设置表单
+type LocalCommentSettingForm struct {
 	SysId      string `json:"sys_id" label:"设置 ID"`
-	TypeName   string `json:"type_name" label:"设置类型名称"`
+	PlugIn     string `json:"plug_in" label:"评论组件"`
 	IsOn       string `json:"is_on" binding:"required" label:"是否开启评论"`
 	IsReviewOn string `json:"is_review_on" binding:"required" label:"是否开启评论审核"`
 	IsReplyOn  string `json:"is_reply_on" label:"是否开启邮箱回复"`
 	PageSize   string `json:"page_size" label:"每页评论条数"`
 }
 
-// 参数设置表单
+// TwikooSettingForm twikoo 评论组件设置表单
+type TwikooSettingForm struct {
+	SysId  string `json:"sys_id" label:"设置 ID"`
+	PlugIn string `json:"plug_in" label:"评论组件"`
+	EnvId  string `json:"env_id" binding:"required" label:"环境 ID"`
+	Region string `json:"region" label:"区域"`
+	Path   string `json:"path" label:"文章 URL 路径"`
+	Lang   string `json:"lang" label:"语言"`
+}
+
+// ParamSettingForm 参数设置表单
 type ParamSettingForm struct {
 	SysId           string `json:"sys_id" label:"设置 ID"`
 	TypeName        string `json:"type_name" label:"设置类型名称"`
@@ -85,7 +101,7 @@ type ParamSettingForm struct {
 	SiteMapPageSize string `json:"site_map_page_size" label:"站点地图每页条数"`
 }
 
-// 社交信息
+// SocialInfoForm 社交信息
 type SocialInfoForm struct {
 	SysId    string `json:"sys_id" label:"设置 ID"`
 	TypeName string `json:"type_name" label:"设置类型名称"`
