@@ -41,6 +41,7 @@ module.exports = {
   // 根据你的实际情况更改这里
   publicPath,
   lintOnSave: true,
+  filenameHashing: false,
   devServer: {
     proxy: {
       '/api': {
@@ -70,7 +71,6 @@ module.exports = {
     requireModuleExtension: true // 启用 CSS modules for all css / pre-processor files.
   },
   pages,
-  filenameHashing: false,
   configureWebpack: config => {
     const configNew = {}
     if (process.env.NODE_ENV === 'production') {

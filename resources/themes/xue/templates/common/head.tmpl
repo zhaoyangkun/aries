@@ -25,7 +25,7 @@
               href="{{ .blogVars.StaticRootPath }}/resources/themes/{{ .blogVars.Theme }}/static/css/style.min.css">
         <link rel="stylesheet"
               href="{{ .blogVars.StaticRootPath }}/resources/themes/{{ .blogVars.Theme }}/static/css/idea.css">
-        <style type="text/css">
+        <style>
             :root {
                 --base-bg-color: #fff;
                 --header-bg-color: #fff;
@@ -67,11 +67,15 @@
                 --monospace: "Lucida Console", Consolas, "Courier", monospace;
             }
 
-
             @media only screen and (min-width: 861px) {
                 .home-cover {
                     height: 100vh !important;
                 }
+            }
+
+            .highlight-chroma {
+                padding: 0 0.5em;
+                font-size: 1em;
             }
         </style>
         {{ safe .blogVars.GlobalHeader }}
