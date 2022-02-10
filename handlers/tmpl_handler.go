@@ -3,9 +3,11 @@ package handlers
 import (
 	"aries/config/setting"
 	"aries/log"
+	"aries/middlewares"
 	"aries/models"
 	"aries/utils"
 	"github.com/douyacun/gositemap"
+	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"strconv"
@@ -103,12 +105,17 @@ func (t *TmplHandler) ArticleTmpl(ctx *gin.Context) {
 		return
 	}
 	if article.Pwd != "" {
-		ctx.HTML(http.StatusOK, utils.GetTheme()+"error.tmpl", gin.H{
-			"blogVars": setting.BlogVars,
-			"code":     "403",
-			"msg":      "该文章已被加密，仅博主可以访问",
-		})
-		return
+		session := sessions.Default(ctx)
+		flag := session.Get("article-" + strconv.Itoa(int(article.ID)))
+		if flag == nil { // 未输入过密码，跳转到密码页面
+			ctx.HTML(http.StatusOK, utils.GetTheme()+"pwd.tmpl", gin.H{
+				"articleId": article.ID,
+				"csrfToken": middlewares.CreateCsrfToken(ctx),
+				"blogVars":  setting.BlogVars,
+				"subTitle":  "私密文章",
+			})
+			return
+		}
 	}
 
 	_ = article.UpdateVisitCount()

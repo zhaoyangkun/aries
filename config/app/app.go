@@ -10,6 +10,8 @@ import (
 	"aries/models"
 	"aries/routers"
 	"aries/utils"
+	"github.com/gin-contrib/sessions"
+	"github.com/gin-contrib/sessions/cookie"
 	"html/template"
 	"log"
 	"reflect"
@@ -48,8 +50,9 @@ func InitApp() *gin.Engine {
 		log.Panicln("初始化日志失败：", err.Error())
 	}
 	middlewares.InitBucket(time.Second*time.Duration(setting.Config.Server.LimitTime), setting.Config.Server.LimitCap)
-	router.Use(middlewares.Logger(logger.Logger), middlewares.Recover(logger.Logger, true), middlewares.Limiter())
-
+	store := cookie.NewStore([]byte("secret-aries-store"))
+	router.Use(middlewares.Logger(logger.Logger), middlewares.Recover(logger.Logger, true),
+		middlewares.Limiter(), sessions.Sessions("mySession", store))
 	// 配置表单校验
 	uni := ut.New(zh.New())
 	setting.Trans, _ = uni.GetTranslator("zh")

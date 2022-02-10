@@ -6,7 +6,9 @@
     <meta name="keywords" content="{{ .blogVars.SiteKeywords }}">
     <meta name="description" content="{{ .blogVars.SiteDesc }}">
     {{/*        <meta name="author" content="{{ .blogVars.SiteLogo }}">*/}}
-    <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+    <link rel="preconnect" href="https://unpkg.com">
+    <link rel="preconnect" href="https://cdn.jsdelivr.net">
+    <link rel="preconnect" href="https://lf26-cdn-tos.bytecdntp.com">
     <link rel="shortcut icon" href="{{ .blogVars.SiteLogo }}">
     <title>{{ if .subTitle }}{{ .subTitle }} - {{ end }}{{ .blogVars.SiteName }}</title>
     <!--全局 CSS-->
@@ -22,7 +24,7 @@
     {{/*    <link rel="stylesheet" href="{{ .blogVars.StaticRootPath }}/resources/themes/{{ .blogVars.Theme }}/static/css/link.css">*/}}
     <style rel="stylesheet">
         .lazy-image {
-            background: url('{{ .blogVars.StaticRootPath }}/resources/themes/{{ .blogVars.Theme }}/static/img/loading.gif') no-repeat center;
+            background: url('{{ .blogVars.StaticRootPath }}/resources/themes/boundless-ui/static/img/loading.gif') no-repeat center;
             background-size: 26% 35%;
             height: 100%;
             width: 100%;

@@ -63,6 +63,12 @@ type ArticleOrderForm struct {
 	IsTop   bool `json:"is_top" label:"是否置顶"`
 }
 
+// ArticlePwdForm 文章密码表单
+type ArticlePwdForm struct {
+	ArticleId string `form:"article_id" binding:"required" label:"文章 ID"`
+	Pwd       string `form:"pwd" binding:"required" label:"密码"`
+}
+
 // BindToModel 绑定添加文章表单数据到实体结构
 func (form ArticleAddForm) BindToModel() models.Article {
 	return models.Article{

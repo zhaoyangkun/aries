@@ -4,6 +4,7 @@ import (
 	"aries/config/setting"
 	"aries/utils"
 	"net/http"
+	"strings"
 	"time"
 
 	"github.com/gin-contrib/sessions"
@@ -20,12 +21,12 @@ func Csrf() gin.HandlerFunc {
 			ctx.Next()
 		} else {
 			result := utils.Result{
-				Code: http.StatusForbidden,
+				Code: utils.Forbidden,
 				Msg:  "Csrf Forbidden",
 				Data: nil,
 			}
 
-			ctx.JSON(result.Code, result)
+			ctx.JSON(http.StatusOK, result)
 			ctx.Abort()
 		}
 	}
@@ -54,6 +55,12 @@ func verifyCsrfToken(ctx *gin.Context) bool {
 	}
 
 	referer := ctx.Request.Referer()
+	if strings.Contains(referer, "localhost") || strings.Contains(referer, "127.0.0.1") {
+		referer = "127.0.0.1"
+	} else {
+		referer = strings.Replace(referer, "//", "/", 1)
+		referer = strings.Split(referer, "/")[1]
+	}
 
 	// 校验 Referer
 	if !utils.IsContain(setting.Config.Server.AllowedRefers, referer) {

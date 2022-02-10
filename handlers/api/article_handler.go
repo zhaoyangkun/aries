@@ -6,6 +6,7 @@ import (
 	"aries/log"
 	"aries/models"
 	"aries/utils"
+	"github.com/gin-contrib/sessions"
 	"io/ioutil"
 
 	"net/http"
@@ -511,6 +512,55 @@ func (a *ArticleHandler) MoveArticleDown(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, utils.Result{
 		Code: utils.Success,
 		Msg:  "向下移动成功",
+		Data: nil,
+	})
+}
+
+// CheckArticlePwd
+// @Summary 校验文章密码
+// @Tags 文章
+// @version 1.0
+// @Accept application/x-www-form-urlencoded
+// @Param oderForm body forms.ArticlePwdForm true "文章密码表单"
+// @Success 100 object utils.Result 成功
+// @Failure 103/104 object utils.Result 失败
+// @Router /api/v1/articles/check [post]
+func (a *ArticleHandler) CheckArticlePwd(ctx *gin.Context) {
+	pwdForm := forms.ArticlePwdForm{}
+	if err := ctx.ShouldBind(&pwdForm); err != nil {
+		ctx.JSON(http.StatusOK, utils.Result{
+			Code: utils.RequestError,
+			Msg:  utils.GetFormError(err),
+			Data: nil,
+		})
+		return
+	}
+
+	article, err := models.Article{}.GetById(pwdForm.ArticleId)
+	if err != nil {
+		log.Logger.Sugar().Error("error: ", err.Error())
+		ctx.JSON(http.StatusOK, utils.Result{
+			Code: utils.ServerError,
+			Msg:  "服务器端错误",
+			Data: nil,
+		})
+		return
+	}
+
+	if utils.VerifyPwd(article.Pwd, pwdForm.Pwd) {
+		session := sessions.Default(ctx)
+		session.Set("article-"+pwdForm.ArticleId, true)
+		_ = session.Save()
+		ctx.JSON(http.StatusOK, utils.Result{
+			Code: utils.Success,
+			Msg:  "OK",
+			Data: nil,
+		})
+		return
+	}
+	ctx.JSON(http.StatusOK, utils.Result{
+		Code: utils.RequestError,
+		Msg:  "密码错误",
 		Data: nil,
 	})
 }

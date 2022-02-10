@@ -1,0 +1,69 @@
+{{ define "boundless-ui/pwd.tmpl" }}
+    <!DOCTYPE html>
+    <html lang="zh-cmn-Hans">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+        <meta name="keywords" content="{{ .blogVars.SiteKeywords }}">
+        <meta name="description" content="{{ .blogVars.SiteDesc }}">
+        <link rel="shortcut icon" href="{{ .blogVars.SiteLogo }}">
+        <link rel="preconnect" href="https://lf26-cdn-tos.bytecdntp.com">
+        <title>{{ if .subTitle }}{{ .subTitle }} - {{ end }}{{ .blogVars.SiteName }}</title>
+        <link rel="stylesheet"
+              href="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/semantic-ui/2.4.1/semantic.min.css">
+    </head>
+
+    <body>
+    <div class="ui three column stackable grid container" style="margin-top: 10rem;">
+        <div class="column centered">
+            <div class="ui negative message hidden">
+                <i class="close icon"></i>
+                <p id="error-msg"></p>
+            </div>
+            <form id="form" class="ui form attached fluid segment">
+                <div class="field">
+                    <input name="csrfToken" value="{{ .csrfToken }}" hidden>
+                    <input name="article_id" id="article_id" value="{{ .articleId }}" hidden>
+                    <label>密码</label>
+                    <input name="pwd" id="pwd" type="password" placeholder="该文章已被加密，请输入密码">
+                </div>
+                <button id="confirm-btn" class="ui blue submit button" type="button">确定</button>
+            </form>
+        </div>
+    </div>
+    <script src="https://lf9-cdn-tos.bytecdntp.com/cdn/expire-1-M/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://lf9-cdn-tos.bytecdntp.com/cdn/expire-1-M/semantic-ui/2.4.1/semantic.min.js"></script>
+    <script>
+        $('.message .close').on('click', function () {
+            $(this).closest('.message').transition('fade');
+        });
+
+        $("#confirm-btn").click(function () {
+            $("#form").addClass("loading");
+            setTimeout(() => {
+                $.ajax({
+                    url: "/api/v1/articles/check",
+                    type: "POST",
+                    dataType: 'JSON',
+                    data: $("#form").serialize(),
+                    success: (res) => {
+                        if (res.code === 100) {
+                            $(".message").addClass("hidden");
+                            window.location.reload();
+                        } else {
+                            $("#error-msg").text(res.msg);
+                            $(".message").removeClass("hidden");
+                        }
+                    },
+                    error: (err) => {
+                        console.log(err.responseJSON);
+                    }
+                })
+                $("#form").removeClass("loading");
+            }, 300)
+        });
+    </script>
+    </body>
+    </html>
+{{ end }}

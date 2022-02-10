@@ -221,7 +221,7 @@ func (Article) GetByPage(page *utils.Pagination, key string, state uint,
 		switch state {
 		// 已发布
 		case 1:
-			query = query.Where("is_published = 1 and is_recycled = 0 and pwd = ''")
+			query = query.Where("is_published = 1 and is_recycled = 0")
 		// 回收站
 		case 2:
 			query = query.Where("is_recycled = 1")

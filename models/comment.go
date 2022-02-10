@@ -93,8 +93,7 @@ func (Comment) GetById(id uint) (comment Comment, err error) {
 // GetByPage 分页获取评论
 func (Comment) GetByPage(page *utils.Pagination, key string, articleId, pageId, commentType, state, isParent uint) (list []Comment,
 	total uint, err error) {
-	query := db.Db.Preload("Article").
-		Order("created_at desc", true).Find(&list)
+	query := db.Db.Preload("Article").Order("created_at desc", true).Find(&list)
 
 	if articleId > 0 {
 		query = query.Where("article_id = ?", articleId)

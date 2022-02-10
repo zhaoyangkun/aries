@@ -23,6 +23,9 @@ func Logger(logger *zap.Logger) gin.HandlerFunc {
 		method := ctx.Request.Method
 		path := ctx.Request.URL.Path
 		ip := ctx.ClientIP()
+		if ip == "::1" {
+			ip = "127.0.0.1"
+		}
 		query := ctx.Request.URL.RawQuery
 		if query != "" {
 			query = "?" + query

@@ -42,19 +42,20 @@ func (a *ApiRouter) InitApiRouter(rootPath string, router *gin.Engine) {
 		userApiRouter.PUT("/users/pwd", userHandler.UpdateUserPwd)
 	}
 
-	ArticleApiRouter := router.Group(rootPath, middlewares.JWTAuth())
+	ArticleApiRouter := router.Group(rootPath)
 	{
-		ArticleApiRouter.GET("/all_articles", articleHandler.GetAllArticles)
-		ArticleApiRouter.GET("/articles/:id", articleHandler.GetArticleById)
-		ArticleApiRouter.GET("/articles", articleHandler.GetArticlesByPage)
-		ArticleApiRouter.POST("/articles", articleHandler.AddArticle)
-		ArticleApiRouter.PUT("/articles", articleHandler.UpdateArticle)
-		ArticleApiRouter.DELETE("/articles/:id", articleHandler.DeleteArticle)
-		ArticleApiRouter.DELETE("/articles", articleHandler.MultiDelArticles)
-		ArticleApiRouter.POST("/articles/files", articleHandler.ImportArticlesFromFiles)
-		ArticleApiRouter.PATCH("/articles/recycle/:id", articleHandler.RecycleOrRecoverArticle)
-		ArticleApiRouter.PATCH("/articles/up", articleHandler.MoveArticleUp)
-		ArticleApiRouter.PATCH("/articles/down", articleHandler.MoveArticleDown)
+		ArticleApiRouter.GET("/all_articles", middlewares.JWTAuth(), articleHandler.GetAllArticles)
+		ArticleApiRouter.GET("/articles/:id", middlewares.JWTAuth(), articleHandler.GetArticleById)
+		ArticleApiRouter.GET("/articles", middlewares.JWTAuth(), articleHandler.GetArticlesByPage)
+		ArticleApiRouter.POST("/articles", middlewares.JWTAuth(), articleHandler.AddArticle)
+		ArticleApiRouter.PUT("/articles", middlewares.JWTAuth(), articleHandler.UpdateArticle)
+		ArticleApiRouter.DELETE("/articles/:id", middlewares.JWTAuth(), articleHandler.DeleteArticle)
+		ArticleApiRouter.DELETE("/articles", middlewares.JWTAuth(), articleHandler.MultiDelArticles)
+		ArticleApiRouter.POST("/articles/files", middlewares.JWTAuth(), articleHandler.ImportArticlesFromFiles)
+		ArticleApiRouter.PATCH("/articles/recycle/:id", middlewares.JWTAuth(), articleHandler.RecycleOrRecoverArticle)
+		ArticleApiRouter.PATCH("/articles/up", middlewares.JWTAuth(), articleHandler.MoveArticleUp)
+		ArticleApiRouter.PATCH("/articles/down", middlewares.JWTAuth(), articleHandler.MoveArticleDown)
+		ArticleApiRouter.POST("/articles/check", middlewares.Csrf(), articleHandler.CheckArticlePwd)
 	}
 
 	categoryApiRouter := router.Group(rootPath, middlewares.JWTAuth())
@@ -88,9 +89,9 @@ func (a *ApiRouter) InitApiRouter(rootPath string, router *gin.Engine) {
 		commentRouter.GET("/all_comments", commentHandler.GetAllComments)
 		commentRouter.GET("/comments", commentHandler.GetCommentsByPage)
 		commentRouter.POST("/comments", commentHandler.AddComment)
-		commentRouter.PUT("/comments", commentHandler.UpdateComment, middlewares.JWTAuth())
-		commentRouter.DELETE("/comments/:id", commentHandler.DeleteComment, middlewares.JWTAuth())
-		commentRouter.DELETE("/comments", commentHandler.MultiDelComments, middlewares.JWTAuth())
+		commentRouter.PUT("/comments", middlewares.JWTAuth(), commentHandler.UpdateComment)
+		commentRouter.DELETE("/comments/:id", middlewares.JWTAuth(), commentHandler.DeleteComment)
+		commentRouter.DELETE("/comments", middlewares.JWTAuth(), commentHandler.MultiDelComments)
 	}
 
 	linkApiRouter := router.Group(rootPath, middlewares.JWTAuth())
@@ -171,6 +172,6 @@ func (a *ApiRouter) InitApiRouter(rootPath string, router *gin.Engine) {
 	{
 		themeApiRouter.GET("/all_themes", themeHandler.GetAllThemes)
 		themeApiRouter.GET("/themes/:name", themeHandler.GetThemeByName)
-		themeApiRouter.POST("/themes", themeHandler.EnableTheme, middlewares.JWTAuth())
+		themeApiRouter.POST("/themes", middlewares.JWTAuth(), themeHandler.EnableTheme)
 	}
 }
