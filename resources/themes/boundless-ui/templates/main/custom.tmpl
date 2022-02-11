@@ -7,7 +7,7 @@
               href="{{ .blogVars.StaticRootPath }}/resources/themes/{{ .blogVars.Theme }}/static/css/article-detail.css">
         <link rel="stylesheet"
               href="{{ .blogVars.StaticRootPath }}/resources/themes/{{ .blogVars.Theme }}/static/css/github.css">
-        <link rel="stylesheet" href="https://unpkg.com/katex@0.15.1/dist/katex.min.css" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdn.staticfile.org/KaTeX/0.15.1/katex.min.css" crossorigin="anonymous">
     </head>
     <body>
     {{ template "boundless-ui/nav" . }}
@@ -72,7 +72,7 @@
 
     {{ template "boundless-ui/script" . }}
 
-    <script src="https://unpkg.com/katex@0.15.1/dist/katex.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.staticfile.org/KaTeX/0.15.1/katex.min.js" crossorigin="anonymous"></script>
 
     <script type="text/javascript">
         const math_list = document.getElementsByClassName("vditor-math");

@@ -8,10 +8,9 @@
         <meta name="keywords" content="{{ .blogVars.SiteKeywords }}">
         <meta name="description" content="{{ .blogVars.SiteDesc }}">
         <link rel="shortcut icon" href="{{ .blogVars.SiteLogo }}">
-        <link rel="preconnect" href="https://lf26-cdn-tos.bytecdntp.com">
+        <link rel="preconnect" href="https://cdn.staticfile.org">
         <title>{{ if .subTitle }}{{ .subTitle }} - {{ end }}{{ .blogVars.SiteName }}</title>
-        <link rel="stylesheet"
-              href="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/semantic-ui/2.4.1/semantic.min.css">
+        <link rel="stylesheet" href="https://cdn.staticfile.org/semantic-ui/2.4.1/semantic.min.css">
     </head>
 
     <body>
@@ -32,14 +31,24 @@
             </form>
         </div>
     </div>
-    <script src="https://lf9-cdn-tos.bytecdntp.com/cdn/expire-1-M/jquery/3.1.1/jquery.min.js"></script>
-    <script src="https://lf9-cdn-tos.bytecdntp.com/cdn/expire-1-M/semantic-ui/2.4.1/semantic.min.js"></script>
+    <script src="https://cdn.staticfile.org/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/semantic-ui/2.4.1/semantic.min.js"></script>
     <script>
+        $(document).keyup(function (e) {
+            let key = e.which;
+            if (key === 13) { // 监听回车事件
+                submitPwdForm();
+            }
+        });
         $('.message .close').on('click', function () {
             $(this).closest('.message').transition('fade');
         });
 
         $("#confirm-btn").click(function () {
+            submitPwdForm();
+        });
+
+        function submitPwdForm() {
             $("#form").addClass("loading");
             setTimeout(() => {
                 $.ajax({
@@ -62,7 +71,7 @@
                 })
                 $("#form").removeClass("loading");
             }, 300)
-        });
+        }
     </script>
     </body>
     </html>

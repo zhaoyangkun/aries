@@ -1,14 +1,14 @@
 {{ define "xue/script" }}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
     <!-- markdown 插件 -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/4.0.2/marked.min.js"></script>
+    <script src="https://cdn.staticfile.org/marked/4.0.2/marked.min.js"></script>
     <!--图片预览插件-->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/viewerjs/1.5.0/viewer.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/highlight.min.js"></script>
+    <script src="https://cdn.staticfile.org/viewerjs/1.5.0/viewer.min.js"></script>
+    <script src="https://cdn.staticfile.org/highlight.js/10.0.0/highlight.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/xzzai/static@master/js/linesNumber.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/xzzai/static@master/js/highlight.lang.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.11.2/tocbot.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.6/isotope.pkgd.min.js"></script>
+    <script src="https://cdn.staticfile.org/tocbot/4.11.2/tocbot.min.js"></script>
+    <script src="https://cdn.staticfile.org/jquery.isotope/3.0.6/isotope.pkgd.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/xzzai/static@master/js/moon.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/hshanx/static@master/js/simply-nav.js" defer></script>
     <script type="text/javascript">
@@ -74,36 +74,35 @@
 
     <script src="{{ .blogVars.StaticRootPath }}/resources/themes/{{ .blogVars.Theme }}/static/js/main.js"></script>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/aplayer/1.10.1/APlayer.min.js"></script>
+    {{/*    <script src="https://cdn.staticfile.org/aplayer/1.10.1/APlayer.min.js"></script>*/}}
     <script src="https://unpkg.com/meting@2.0.1/dist/Meting.min.js"></script>
 
-    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/katex.min.js"
+    <script defer src="https://cdn.staticfile.org/KaTeX/0.12.0/katex.min.js"
             crossorigin="anonymous"></script>
-    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/contrib/auto-render.min.js"
+    <script defer src="https://cdn.staticfile.org/KaTeX/0.12.0/contrib/auto-render.min.js"
             crossorigin="anonymous"></script>
 
     <script type="text/javascript">
-        // console.clear();
-        // console.log("%c 有朋自远方来, 不亦说乎.", "background:#24272A; color:#ffffff", "");
+        console.clear();
         console.log("%c Github %c", "background:#24272A; color:#ffffff", "", "https://github.com/zhaoyangkun/aries");
     </script>
 
     <script type="text/javascript">
         const loading = "{{ .blogVars.StaticRootPath }}/resources/themes/{{ .blogVars.Theme }}/static/img/loading.svg";
-        let photoList = "https://cdn.jsdelivr.net/gh/keepli/image@1.0/img/1.0/img-1.jpg;"
-            + " https://cdn.jsdelivr.net/gh/keepli/image@1.0/img/1.0/img-2.jpg;"
-            + " https://cdn.jsdelivr.net/gh/keepli/image@1.0/img/1.0/img-3.jpg;"
-            + " https://cdn.jsdelivr.net/gh/keepli/image@1.0/img/1.0/img-4.jpg;"
-        let photos = []
-        if (photoList && photoList.trim() !== '') {
-            if (photoList.endsWith(';')) {
-                photoList = photoList.substring(0, photoList.length - 1);
-            }
-            photos = photoList.split(";");
-        }
+        /*        let photoList = "https://cdn.jsdelivr.net/gh/keepli/image@1.0/img/1.0/img-1.jpg;"
+                    + " https://cdn.jsdelivr.net/gh/keepli/image@1.0/img/1.0/img-2.jpg;"
+                    + " https://cdn.jsdelivr.net/gh/keepli/image@1.0/img/1.0/img-3.jpg;"
+                    + " https://cdn.jsdelivr.net/gh/keepli/image@1.0/img/1.0/img-4.jpg;"
+                let photos = []
+                if (photoList && photoList.trim() !== '') {
+                    if (photoList.endsWith(';')) {
+                        photoList = photoList.substring(0, photoList.length - 1);
+                    }
+                    photos = photoList.split(";");
+                }*/
     </script>
 
-    <script type="text/javascript">
+    {{/*    <script type="text/javascript">
         // 建站时间统计
         function show_date_time() {
             if ($("#span_dt_dt").length > 0) {
@@ -125,10 +124,10 @@
         }
 
         show_date_time();
-    </script>
+    </script>*/}}
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.pjax/2.0.1/jquery.pjax.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+    <script src="https://cdn.staticfile.org/jquery.pjax/2.0.1/jquery.pjax.min.js"></script>
+    <script src="https://cdn.staticfile.org/nprogress/0.2.0/nprogress.min.js"></script>
     <script type="text/javascript">
         $(document).pjax('a[href]:not([href^="#"]):not([data-not-pjax]):not([target^="_blank"]), form',
             '#container', {fragment: '#container', timeout: 8000});
@@ -176,7 +175,7 @@
             if ($('#container').find('.jqcloud').length > 0) {
                 if (typeof $.fn.jQCloud !== 'function') {
                     $.getScript(
-                        'https://cdnjs.cloudflare.com/ajax/libs/jqcloud/1.0.4/jqcloud.min.js',
+                        'https://cdn.staticfile.org/jqcloud/1.0.4/jqcloud.min.js',
                         function () {
                             renderTagCloud();
                             renderCategoryCloud();
