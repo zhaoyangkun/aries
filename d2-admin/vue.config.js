@@ -1,5 +1,4 @@
 // const CompressionWebpackPlugin = require('compression-webpack-plugin')
-const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const VueFilenameInjector = require('@d2-projects/vue-filename-injector')
 const ThemeColorReplacer = require('webpack-theme-color-replacer')
 const forElementUI = require('webpack-theme-color-replacer/forElementUI')
@@ -14,7 +13,7 @@ process.env.VUE_APP_VERSION = require('./package.json').version
 process.env.VUE_APP_BUILD_TIME = require('dayjs')().format('YYYY-M-D HH:mm:ss')
 
 // 基础路径 注意发布之前要先修改这里
-const publicPath = process.env.NODE_ENV === 'development' ? process.env.VUE_APP_PUBLIC_PATH || '/' : './'
+const publicPath = process.env.NODE_ENV === 'development' ? process.env.VUE_APP_PUBLIC_PATH || '/' : 'https://cdn.jsdelivr.net/gh/zhaoyangkun/aries/resources/dist/'
 // const publicPath = process.env.VUE_APP_PUBLIC_PATH || '/' // 开发环境
 // const publicPath = './' // 生产环境
 
@@ -58,7 +57,7 @@ module.exports = {
   },
   css: {
     extract: process.env.NODE_ENV === 'development' ? false : {
-      filename: 'css/[name].css',
+      filename: 'css/admin.css',
       chunkFilename: 'css/[name].css',
       allChunks: false
     },
@@ -84,14 +83,9 @@ module.exports = {
         //   minRatio: 0.8,
         //   deleteOriginalAssets: false
         // }),
-        new MiniCssExtractPlugin({
-          filename: 'css/[name].css',
-          chunkFilename: 'css/[id].css',
-          ignoreOrder: false // 允许删除关于冲突顺序的警告
-        })
       ]
       configNew.output = {
-        filename: 'js/[name].js',
+        filename: 'js/admin.js',
         chunkFilename: 'js/[name].js'
       }
     }
@@ -99,6 +93,8 @@ module.exports = {
   },
   // 默认设置: https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-service/lib/config/base.js
   chainWebpack: config => {
+    // 关闭代码分离，只生成一个js文件和css文件
+    config.optimization.delete('splitChunks')
     /**
      * 添加 CDN 参数到 htmlWebpackPlugin 配置中
      * 已适配多页

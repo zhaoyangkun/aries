@@ -35,6 +35,11 @@ type Comment struct {
 	IsChecked       bool      `gorm:"type:bool;default:false" json:"is_checked"`      // 是否通过审核
 }
 
+type CommentTitle struct {
+	Comment
+	ArticleTitle string `json:"article_title"`
+}
+
 // GetCount 获取评论数量
 func (Comment) GetCount() (int, error) {
 	count := 0
@@ -91,9 +96,11 @@ func (Comment) GetById(id uint) (comment Comment, err error) {
 }
 
 // GetByPage 分页获取评论
-func (Comment) GetByPage(page *utils.Pagination, key string, articleId, pageId, commentType, state, isParent uint) (list []Comment,
+func (Comment) GetByPage(page *utils.Pagination, key string, articleId, pageId, commentType, state, isParent uint) (list []CommentTitle,
 	total uint, err error) {
-	query := db.Db.Preload("Article").Order("created_at desc", true).Find(&list)
+	query := db.Db.Table("comments").Select("comments.*, articles.title article_title").
+		Joins("left join articles on articles.id=comments.article_id").
+		Order("created_at desc", true).Find(&list)
 
 	if articleId > 0 {
 		query = query.Where("article_id = ?", articleId)

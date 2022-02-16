@@ -116,7 +116,7 @@ export default {
         },
         {
           title: '所属文章',
-          key: 'article.title',
+          key: 'article_title',
           width: '180'
         },
         {

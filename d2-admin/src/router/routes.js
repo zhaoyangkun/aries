@@ -1,7 +1,55 @@
 import layoutHeaderAside from '@/layout/header-aside'
 
-// 由于懒加载页面太多的话会造成webpack热更新太慢，所以开发环境不使用懒加载，只有生产环境使用懒加载
-const _import = require('@/libs/util.import.' + process.env.NODE_ENV)
+import Index from '@/views/aries/system/index'
+
+import PostCategory from '@/views/aries/category/postCategory'
+
+import Tag from '@/views/aries/tag/tag'
+
+import Post from '@/views/aries/post/post'
+
+import Comment from '@/views/aries/comment/comment'
+
+import Page from '@/views/aries/page/page'
+
+import Journal from '@/views/aries/page/journal'
+
+import Gallery from '@/views/aries/page/gallery'
+
+import User from '@/views/aries/user/user'
+
+import Setting from '@/views/aries/system/setting'
+
+import Links from '@/views/aries/link/links'
+
+import LinkCategory from '@/views/aries/category/linkCategory'
+
+import Navs from '@/views/aries/nav/navs'
+
+import Attachment from '@/views/aries/system/attachment'
+
+import Theme from '@/views/aries/theme/theme'
+
+import Doc from '@/views/aries/system/doc'
+
+import Log from '@/views/system/log'
+
+import Refresh from '@/views/system/function/refresh'
+
+import Redirect from '@/views/system/function/redirect'
+
+import Login from '@/views/aries/auth/login'
+
+import Register from '@/views/aries/auth/register'
+
+import ForgetPwd from '@/views/aries/auth/forgetPwd'
+
+import ResetPwd from '@/views/aries/auth/resetPwd'
+
+import Error404 from '@/views/system/error/404'
+
+// 由于懒加载页面太多的话会造成 webpack 热更新太慢，所以开发环境不使用懒加载，只有生产环境使用懒加载
+// const _import = require('@/libs/util.import.' + process.env.NODE_ENV)
 
 /**
  * 在主框架内显示
@@ -20,7 +68,7 @@ const frameIn = [
           title: '首页',
           auth: true
         },
-        component: _import('aries/system/index')
+        component: Index
       },
       {
         path: 'post/category',
@@ -29,7 +77,7 @@ const frameIn = [
           title: '文章分类',
           auth: true
         },
-        component: _import('aries/category/postCategory')
+        component: PostCategory
       },
       {
         path: 'tag',
@@ -38,7 +86,7 @@ const frameIn = [
           title: '标签',
           auth: true
         },
-        component: _import('aries/tag/tag')
+        component: Tag
       },
       {
         path: 'post',
@@ -47,7 +95,7 @@ const frameIn = [
           title: '文章',
           auth: true
         },
-        component: _import('aries/post/post')
+        component: Post
       },
       {
         path: 'comment',
@@ -56,7 +104,7 @@ const frameIn = [
           title: '评论',
           auth: true
         },
-        component: _import('aries/comment/comment')
+        component: Comment
       },
       {
         path: 'page',
@@ -65,7 +113,7 @@ const frameIn = [
           title: '页面',
           auth: true
         },
-        component: _import('aries/page/page')
+        component: Page
       },
       {
         path: 'page/journal',
@@ -74,7 +122,7 @@ const frameIn = [
           title: '日志',
           auth: true
         },
-        component: _import('aries/page/journal')
+        component: Journal
       },
       {
         path: 'page/gallery',
@@ -83,7 +131,7 @@ const frameIn = [
           title: '图库',
           auth: true
         },
-        component: _import('aries/page/gallery')
+        component: Gallery
       },
       {
         path: 'user',
@@ -92,7 +140,7 @@ const frameIn = [
           title: '用户信息',
           auth: true
         },
-        component: _import('aries/user/user')
+        component: User
       },
       {
         path: 'setting',
@@ -101,7 +149,7 @@ const frameIn = [
           title: '设置',
           auth: true
         },
-        component: _import('aries/system/setting')
+        component: Setting
       },
       {
         path: 'link',
@@ -110,7 +158,7 @@ const frameIn = [
           title: '友链',
           auth: true
         },
-        component: _import('aries/link/links')
+        component: Links
       },
       {
         path: 'link/category',
@@ -119,7 +167,7 @@ const frameIn = [
           title: '友链分类',
           auth: true
         },
-        component: _import('aries/category/linkCategory')
+        component: LinkCategory
       },
       {
         path: 'nav',
@@ -128,7 +176,7 @@ const frameIn = [
           title: '菜单',
           auth: true
         },
-        component: _import('aries/nav/navs')
+        component: Navs
       },
       {
         path: 'attachment',
@@ -137,7 +185,7 @@ const frameIn = [
           title: '附件',
           auth: true
         },
-        component: _import('aries/system/attachment')
+        component: Attachment
       },
       {
         path: 'theme',
@@ -146,7 +194,7 @@ const frameIn = [
           title: '主题',
           auth: true
         },
-        component: _import('aries/theme/theme')
+        component: Theme
       },
       {
         path: 'doc',
@@ -155,7 +203,7 @@ const frameIn = [
           title: 'API 文档',
           auth: true
         },
-        component: _import('aries/system/doc')
+        component: Doc
       },
       // 系统 前端日志
       {
@@ -165,21 +213,21 @@ const frameIn = [
           title: '前端日志',
           auth: true
         },
-        component: _import('system/log')
+        component: Log
       },
       // 刷新页面 必须保留
       {
         path: 'refresh',
         name: 'refresh',
         hidden: true,
-        component: _import('system/function/refresh')
+        component: Refresh
       },
       // 页面重定向 必须保留
       {
         path: 'redirect/:route*',
         name: 'redirect',
         hidden: true,
-        component: _import('system/function/redirect')
+        component: Redirect
       }
     ]
   }
@@ -197,7 +245,7 @@ const frameOut = [
       title: '登录',
       auth: false // 表明无需登录验证
     },
-    component: _import('aries/auth/login')
+    component: Login
   },
   // 注册
   {
@@ -207,7 +255,7 @@ const frameOut = [
       title: '初始化配置',
       auth: false // 表明无需登录验证
     },
-    component: _import('aries/auth/register')
+    component: Register
   },
   // 忘记密码
   {
@@ -217,7 +265,7 @@ const frameOut = [
       title: '忘记密码',
       auth: false // 表明无需登录验证
     },
-    component: _import('aries/auth/forgetPwd')
+    component: ForgetPwd
   },
   // 重置密码
   {
@@ -227,7 +275,7 @@ const frameOut = [
       title: '忘记密码',
       auth: false // 表明无需登录验证
     },
-    component: _import('aries/auth/resetPwd')
+    component: ResetPwd
   }
 ]
 
@@ -238,7 +286,7 @@ const errorPage = [
   {
     path: '*',
     name: '404',
-    component: _import('system/error/404')
+    component: Error404
   }
 ]
 
