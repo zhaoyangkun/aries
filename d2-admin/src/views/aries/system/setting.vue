@@ -203,10 +203,12 @@
             <el-switch size="small" active-value="1" inactive-value="0" v-model="localCommentForm.is_on"></el-switch>
           </el-form-item>
           <el-form-item label="评论审核" prop="is_review_on">
-            <el-switch size="small" active-value="1" inactive-value="0" v-model="localCommentForm.is_review_on"></el-switch>
+            <el-switch size="small" active-value="1" inactive-value="0"
+                       v-model="localCommentForm.is_review_on"></el-switch>
           </el-form-item>
           <el-form-item label="回复后邮件通知" prop="is_reply_on">
-            <el-switch size="small" active-value="1" inactive-value="0" v-model="localCommentForm.is_reply_on"></el-switch>
+            <el-switch size="small" active-value="1" inactive-value="0"
+                       v-model="localCommentForm.is_reply_on"></el-switch>
           </el-form-item>
           <el-form-item label="每页评论个数" prop="page_size">
             <el-input size="small" v-model="localCommentForm.page_size" type="number" autocomplete="off"></el-input>
@@ -220,6 +222,12 @@
 
         <el-form ref="twikooForm" :model="twikooForm" v-show="commentPlugInForm.plug_in==='twikoo-comment'"
                  :rules="twikooFormRules" label-width="130px">
+          <el-form-item label="Twikoo 部署教程:">
+            <label style="color: gray">
+              <a style="color: dodgerblue" href="https://twikoo.js.org/quick-start.html"
+                             target="_blank">https://twikoo.js.org/quick-start.html</a>
+            </label>
+          </el-form-item>
           <el-form-item label="环境 id" prop="env_id">
             <el-input size="small" type="text" v-model="twikooForm.env_id" placeholder="env ID"></el-input>
           </el-form-item>
@@ -290,15 +298,16 @@
 <script>
 import {
   getSysSettingItem,
-  saveLocalCommentSetting,
   saveImgbbSetting,
+  saveLocalCommentSetting,
   saveParamSetting,
   saveSiteSetting,
   saveSmmsSetting,
   saveSMTPSetting,
   saveSocialInfo,
   saveTencentCosSetting,
-  sendTestEmail, saveTwikooSetting
+  saveTwikooSetting,
+  sendTestEmail
 } from '@/api/aries/sys'
 
 export default {
