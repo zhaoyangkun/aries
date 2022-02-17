@@ -6,6 +6,10 @@
         <d2-icon name="power-off" class="d2-mr-5"/>
         注销
       </el-dropdown-item>
+      <el-dropdown-item @click.native="toIndex">
+        <d2-icon name="book" class="d2-mr-5"/>
+        博客首页
+      </el-dropdown-item>
     </el-dropdown-menu>
   </el-dropdown>
 </template>
@@ -29,6 +33,10 @@ export default {
       this.logout({
         confirm: true
       })
+    },
+    toIndex () {
+      const url = process.env.NODE_ENV === 'production' ? '/' : 'http://localhost:8088'
+      window.open(url)
     }
   }
 }
