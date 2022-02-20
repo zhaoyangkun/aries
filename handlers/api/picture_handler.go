@@ -154,12 +154,13 @@ func (p *PictureHandler) UploadImgToAttachment(ctx *gin.Context) {
 		return
 	}
 
+	imgUrl := ""
 	for _, file := range files {
 		switch picBedSetting["storage_type"] {
 		case "sm.ms":
-			_, err = uploadToSmms(file, imgSetting["token"])
+			imgUrl, err = uploadToSmms(file, imgSetting["token"])
 		case "imgbb":
-			_, err = uploadToImgbb(file, imgSetting["token"])
+			imgUrl, err = uploadToImgbb(file, imgSetting["token"])
 		case "cos":
 			filePath, fileName, err := saveFile(file, ctx)
 			if err != nil {
@@ -171,7 +172,7 @@ func (p *PictureHandler) UploadImgToAttachment(ctx *gin.Context) {
 				})
 				return
 			}
-			_, err = uploadToTencentCOS(filePath, fileName, file.Size, imgSetting)
+			imgUrl, err = uploadToTencentCOS(filePath, fileName, file.Size, imgSetting)
 		}
 		if err != nil {
 			log.Logger.Sugar().Error("图片上传失败：", err.Error())
@@ -187,7 +188,7 @@ func (p *PictureHandler) UploadImgToAttachment(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, utils.Result{
 		Code: utils.Success,
 		Msg:  "上传成功",
-		Data: nil,
+		Data: gin.H{"imgUrl": imgUrl},
 	})
 }
 

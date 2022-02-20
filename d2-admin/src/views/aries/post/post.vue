@@ -640,15 +640,14 @@ export default {
       this.resetForm('addForm')
     },
     // 打开编辑文章弹窗
-    openEditDialog (row) {
+    openEditDialog (id) {
       // 显示弹窗
       this.dialogOptions.editVisible = true
       // 清空表单提示信息
       this.clearValidate('editForm')
       // 初始化表单数据
-      getPostById(row.ID)
+      getPostById(id)
         .then(res => {
-          // this.editForm = { ...row }
           this.editForm = res.data
           this.editForm.category_id = this.editForm.category_id === 0 ? null : this.editForm.category_id
           const tagIds = []
@@ -657,6 +656,7 @@ export default {
           })
           this.$set(this.editForm, 'selectTagIds', tagIds)
           this.editImageSrc = this.editForm.img
+          this.$refs.editEditor.setContent(this.editForm.content)
         })
         .catch(() => {
         })

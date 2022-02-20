@@ -123,7 +123,7 @@ function createRequestFunction (service) {
         // 返回数据类型
         Accept: 'application/json'
       },
-      timeout: 20000,
+      timeout: 50000,
       baseURL: process.env.VUE_APP_API,
       data: {}
     }

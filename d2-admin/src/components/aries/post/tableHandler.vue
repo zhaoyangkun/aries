@@ -2,7 +2,7 @@
   <div>
     <el-tooltip content="编辑" placement="top-start" v-if="!scope.row.is_recycled">
       <el-button size="small" icon="el-icon-edit"
-                 @click="openEditDialog(scope.row)"></el-button>
+                 @click="openEditDialog(scope.row.ID)"></el-button>
     </el-tooltip>
     <el-tooltip content="向上" placement="top-start" v-if="!scope.row.is_recycled">
       <el-button size="small" icon="el-icon-top" @click="handleMoveUp(scope.row,scope.$index)"></el-button>

@@ -261,10 +261,6 @@ export default {
       this.fetchPageData()
       this.fileList = []
     },
-    // // 图片删除
-    // handleRemove (file, fileList) {
-    //   console.log(file, fileList)
-    // },
     // 上传前
     handleBeforeUpload (file) {
       const fileType = this.getFileType(file.name)
