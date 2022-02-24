@@ -137,7 +137,7 @@ function m_search() {
         swal("请输入关键词！");
         return;
     }
-    location.href = "/search?keyword=" + $("#search-input").val();
+    location.href = "/search?keyword=" + $("#search-input-m").val();
 }
 
 $(".nb-a").hover(
