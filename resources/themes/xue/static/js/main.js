@@ -166,7 +166,7 @@ function removeScrollTocFixed() {
 function loadCodeLineNumber() {
     if (enableLineNumber) {
         $('.md-content  pre>code[class*="language-"]').each(function (i, block) {
-            lineNumbersBlock(block);
+            hljs.lineNumbersBlock(block);
         })
     }
 
@@ -270,7 +270,7 @@ function toggleWeChat() {
 
 function scollTo() {
     const postHeight = $('#homeHeader').height();
-    window.scroll({top: postHeight, behavior: 'smooth'});
+    window.scroll({ top: postHeight, behavior: 'smooth' });
 }
 
 function generateId() {
@@ -488,7 +488,7 @@ function formatContent() {
  * @constructor
  */
 function HTMLDecode(text) {
-    const arrEntities = {lt: '<', gt: '>', nbsp: ' ', amp: '&', quot: '"'};
+    const arrEntities = { lt: '<', gt: '>', nbsp: ' ', amp: '&', quot: '"' };
     return text.replace(/&(lt|gt|nbsp|amp|quot);/gi, function (all, t) {
         return arrEntities[t];
     })
@@ -498,13 +498,13 @@ function HTMLDecode(text) {
  * 右下角按钮相关
  */
 function smoothBack2Top() {
-    window.scroll({top: 0, behavior: 'smooth'});
+    window.scroll({ top: 0, behavior: 'smooth' });
 }
 
 function smoothBack2Bottom() {
     const offsetHeight = document.documentElement.offsetHeight;
     const scrollHeight = document.documentElement.scrollHeight;
-    window.scroll({top: scrollHeight - offsetHeight, behavior: 'smooth'});
+    window.scroll({ top: scrollHeight - offsetHeight, behavior: 'smooth' });
 }
 
 function ckBack2Top() {

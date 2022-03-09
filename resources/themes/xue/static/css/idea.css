@@ -28,7 +28,7 @@ pre table.hljs-ln tr, pre table.hljs-ln thead {
     color: #6A8759 !important;
 }
 
-.night.night p code,
+/* .night.night p code,
 .night.night ol code,
 .night.night ul code,
 .night.night h1 code,
@@ -36,5 +36,5 @@ pre table.hljs-ln tr, pre table.hljs-ln thead {
 .night.night h3 code,
 .night.night h4 code,
 .night.night h5 code {
-    /*background: #3d3c29 !important;*/
-}
+    background: #3d3c29 !important;
+} */
