@@ -138,11 +138,16 @@ func (b *BlogVariable) InitBlogVars(siteSetting map[string]string, socialInfo ma
 	} else {
 		b.ContextPath = ""
 	}
-	// 开发环境使用本地静态资源，生产环境使用 CDN
-	if Config.Server.Mode == gin.DebugMode {
-		b.StaticRootPath = b.ContextPath
+	// 若用户已经设置静态资源根路径，使用用户设置
+	if staticRoot, ok := siteSetting["static_root"]; ok {
+		b.StaticRootPath = staticRoot
 	} else {
-		b.StaticRootPath = "https://cdn.jsdelivr.net/gh/zhaoyangkun/aries"
+		// 若用户未设置静态资源根路径，在测试环境下使用本地资源路径，生产环境下使用 cdn
+		if Config.Server.Mode == gin.DebugMode {
+			b.StaticRootPath = b.ContextPath
+		} else {
+			b.StaticRootPath = "https://cdn.jsdelivr.net/gh/zhaoyangkun/aries"
+		}
 	}
 	if siteName, ok := siteSetting["site_name"]; ok {
 		b.SiteName = siteName

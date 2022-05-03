@@ -88,8 +88,17 @@ func (a *AuthHandler) Register(ctx *gin.Context) {
 		Key:   "theme_name",
 		Val:   regForm.ThemeName,
 	}
+	staticRootVal := regForm.SiteUrl
+	if setting.Config.Server.Mode == gin.ReleaseMode {
+		staticRootVal = "https://cdn.jsdelivr.net/gh/zhaoyangkun/aries"
+	}
+	staticRootItem := models.SysSettingItem{
+		SysId: sysSetting.ID,
+		Key:   "static_root",
+		Val:   staticRootVal,
+	}
 
-	itemList := []models.SysSettingItem{typeItem, siteNameItem, siteUrlItem, themeNameItem}
+	itemList := []models.SysSettingItem{typeItem, siteNameItem, siteUrlItem, themeNameItem, staticRootItem}
 	err := models.SysSettingItem{}.MultiCreateOrUpdate(itemList)
 	if err != nil {
 		log.Logger.Sugar().Error("error: ", err.Error())

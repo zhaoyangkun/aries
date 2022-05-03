@@ -16,6 +16,10 @@
             <el-input size="small" v-model="siteForm.site_url" type="text" autocomplete="off"
                       placeholder="网站地址"></el-input>
           </el-form-item>
+          <el-form-item label="静态资源根路径" prop="static_root">
+            <el-input size="small" v-model="siteForm.static_root" type="text" autocomplete="off"
+                      placeholder="静态资源根路径"></el-input>
+          </el-form-item>
           <el-form-item label="Logo" prop="site_logo">
             <el-input size="small" v-model="siteForm.site_logo" type="text" autocomplete="off"
                       placeholder="图标地址"></el-input>
@@ -225,7 +229,7 @@
           <el-form-item label="Twikoo 部署教程:">
             <label style="color: gray">
               <a style="color: dodgerblue" href="https://twikoo.js.org/quick-start.html"
-                             target="_blank">https://twikoo.js.org/quick-start.html</a>
+                 target="_blank">https://twikoo.js.org/quick-start.html</a>
             </label>
           </el-form-item>
           <el-form-item label="环境 id" prop="env_id">
@@ -342,6 +346,7 @@ export default {
         site_name: '',
         site_desc: '',
         site_url: '',
+        static_root: '',
         site_logo: '',
         seo_key_words: '',
         record_number: '',
@@ -431,6 +436,10 @@ export default {
           { required: true, message: '请输入网站地址', trigger: 'blur' },
           { max: 255, message: '网站地址长度不能超过 255', trigger: 'blur' },
           { type: 'url', message: '请输入正确的 URL', trigger: 'blur' }
+        ],
+        static_root: [
+          { max: 255, message: '静态资源根目录长度不能超过 255', trigger: 'blur' },
+          { type: 'url', message: '静态资源根目录必须为有效的 URL', trigger: 'blur' }
         ],
         site_desc: [
           { max: 255, message: '网站描述长度不能超过 255', trigger: 'blur' }

@@ -80,6 +80,16 @@ func (s *SysSettingHandler) SaveSiteSetting(ctx *gin.Context) {
 		Name:  settingForm.TypeName,
 	}
 	if sysId == 0 {
+		staticRootVal := settingForm.SiteUrl
+		if setting.Config.Server.Mode == gin.ReleaseMode {
+			staticRootVal = "https://cdn.jsdelivr.net/gh/zhaoyangkun/aries"
+		}
+		staticRootItem := models.SysSettingItem{
+			SysId: sysSetting.ID,
+			Key:   "static_root",
+			Val:   staticRootVal,
+		}
+		sysSetting.Items = append(sysSetting.Items, staticRootItem)
 		if err := sysSetting.Create(); err != nil {
 			log.Logger.Sugar().Error("error: ", err.Error())
 			ctx.JSON(http.StatusOK, utils.Result{

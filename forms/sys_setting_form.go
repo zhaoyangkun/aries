@@ -7,6 +7,7 @@ type SiteSettingForm struct {
 	SiteName      string `json:"site_name" binding:"required,max=50" label:"网站名称"`
 	SiteDesc      string `json:"site_desc" binding:"max=255" label:"网站描述"`
 	SiteUrl       string `json:"site_url" binding:"required,max=255,url" label:"网站地址"`
+	StaticRoot    string `json:"static_root" binding:"max=255,url" label:"静态路径"`
 	SiteLogo      string `json:"site_logo" binding:"max=255" label:"Logo"`
 	SeoKeyWords   string `json:"seo_key_words" binding:"max=255" label:"SEO 关键词"`
 	RecordNumber  string `json:"record_number" binding:"max=255" label:"备案号"`
