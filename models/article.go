@@ -497,8 +497,9 @@ func (article Article) Update(tagIds string) error {
 
 // UpdateVisitCount 更新访问量
 func (article Article) UpdateVisitCount() error {
+	// 使用 UpdateColumn 函数来更新单个字段，避免 gorm 自动更新 updated_at 字段
 	return db.Db.Model(&Article{}).Where("id = ?", article.ID).
-		Update("visit_count", article.VisitCount+1).Error
+		UpdateColumn("visit_count", article.VisitCount+1).Error
 }
 
 // RecycleOrRecover 将文章加入回收站或恢复
