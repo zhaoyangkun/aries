@@ -1,4 +1,6 @@
-### 项目介绍
+# Aries
+
+## 项目介绍
 
 > 已实现**主题管理**基本功能，可进行主题切换，目前有两款主题 xue 和 boundless-ui，暂不支持主题设置和主题编辑功能！
 
@@ -14,11 +16,11 @@ Aries 是基于 Gin + GORM + MySQL + Vue + H5 开发的现代化博客系统，�
 - 数据库层没有设置物理外键，所有外键操作都在业务层处理。
 - 评论功能通过**评论组件**方式实现。
 
-### 预览
+## 预览
 
 预览地址：[https://cangmang.xyz/](https://cangmang.xyz/)
 
-### 功能特性
+## 功能特性
 
 1. 文章
 
@@ -68,7 +70,7 @@ Aries 是基于 Gin + GORM + MySQL + Vue + H5 开发的现代化博客系统，�
    - 评论设置
    - 参数设置
 
-### 部分截图
+## 部分截图
 
 - 后台管理端
 
@@ -92,7 +94,7 @@ Aries 是基于 Gin + GORM + MySQL + Vue + H5 开发的现代化博客系统，�
 
   ![友链页](https://s2.loli.net/2022/01/19/4xqB6yQWnL1OEDG.png)
 
-### 如何在本地运行 Aries
+## 如何在本地运行 Aries
 
 - 运行环境：
 
@@ -111,6 +113,7 @@ Aries 是基于 Gin + GORM + MySQL + Vue + H5 开发的现代化博客系统，�
   ```shell
   git clone https://github.com/zhaoyangkun/aries.git
   ```
+
 - 新建名称为 **aries** 的数据库，注意字符集为 **utf8mb4**，字符编码为 **utf8mb4_general_ci**。
 - 修改项目目录下 `config/develop.yaml` 配置文件中的数据库连接密码：
 
@@ -132,31 +135,36 @@ Aries 是基于 Gin + GORM + MySQL + Vue + H5 开发的现代化博客系统，�
     max_idle_conn: 10       # 最大空闲连接数
     max_open_conn: 20       # 最大打开连接数
   ```
+
 - 进入项目根目录，安装 `gin` 项目相关依赖：
 
   ```shell
   go mod download
   go get -u github.com/swaggo/swag/cmd/swag
   ```
+
 - 进入项目根目录，启动 `gin` 项目：
 
   ```shell
   go run main.go
   ```
+
 - 进入项目中的 `d2-admin` 目录，安装 `npm` 依赖：
 
   ```shell
   npm install
   ```
+
 - 待 `npm` 依赖安装完毕后，启动 `Vue` 项目：
 
   ```shell
   npm run serve
   ```
+
 - 待 `gin` 和 `Vue` 项目启动完毕后，在浏览器中访问 `http://localhost:8080` 即可进入后台管理。
 - 在浏览器中访问 `http://127.0.0.1:8088` 可进入博客展示端。
 
-### 部署
+## 部署
 
 > 仅支持 `docker` 部署，需要具备一定的 `linux` 基础。
 >
@@ -168,11 +176,13 @@ Aries 是基于 Gin + GORM + MySQL + Vue + H5 开发的现代化博客系统，�
   ```shell
   mkdir ~/.aries
   ```
+
 - 创建配置文件 `aries.yaml`：
 
   ```shell
   touch ~/.aries/aries.yaml
   ```
+
   `aries.yaml` 配置条目具体可以参考：[https://github.com/zhaoyangkun/aries/blob/master/config/product.yaml](https://github.com/zhaoyangkun/aries/blob/master/config/product.yaml)
 
   > 可先将 `product.yaml` 所有内容复制到 `aries.yaml` 中再做修改。
@@ -188,6 +198,7 @@ Aries 是基于 Gin + GORM + MySQL + Vue + H5 开发的现代化博客系统，�
   ```shell
   docker pull zhaoyangkun/aries
   ```
+
 - 运行容器：
 
   ```shell
@@ -196,6 +207,7 @@ Aries 是基于 Gin + GORM + MySQL + Vue + H5 开发的现代化博客系统，�
   -v ~/.aries/aries.log:/root/.aries/aries.log \
   -d zhaoyangkun/aries
   ```
+
 - 反向代理：
 
   推荐使用 `nginx` ，由于 `aries` 默认运行在 `8088` 端口上，需要在云服务器**安全组**开放 `8088` 端口，同时 `nginx` 反代 `8088` 端口到 `80` 端口，这里给出一段 `nginx`配置文件的示例：
