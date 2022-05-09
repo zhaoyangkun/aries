@@ -93,7 +93,7 @@ func InitApp() *gin.Engine {
 		router.Static("/resources/themes/"+theme.ThemeName+"/static",
 			"./resources/themes/"+theme.ThemeName+"/static")
 	}
-	router.Static("/admin", "./resources/dist")
+	router.Static("/admin", "./resources/admin")
 	router.LoadHTMLGlob("./resources/themes/**/templates/**/*.tmpl")
 
 	// 加载路由
