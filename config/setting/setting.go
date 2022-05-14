@@ -8,10 +8,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/gin-gonic/gin"
-
 	"github.com/88250/lute"
 	"github.com/gin-contrib/cache/persistence"
+	"github.com/gin-gonic/gin"
 	"gopkg.in/yaml.v2"
 )
 
@@ -93,11 +92,11 @@ func (s *Setting) InitSetting() {
 	yamlPath := filepath.Join(rootPath, "config", "develop.yaml")
 
 	/* 生产环境 */
-	// homeDir, err := os.UserHomeDir()
-	// if err != nil {
-	// 	log.Panicln("获取用户主目录失败：", err.Error())
-	// }
-	// yamlPath := filepath.Join(homeDir, ".aries", "aries.yaml")
+	//homeDir, err := os.UserHomeDir()
+	//if err != nil {
+	//	log.Panicln("获取用户主目录失败：", err.Error())
+	//}
+	//yamlPath := filepath.Join(homeDir, ".aries", "aries.yaml")
 
 	log.Println("配置文件路径：", yamlPath)
 	// 读取配置文件
@@ -146,7 +145,7 @@ func (b *BlogVariable) InitBlogVars(siteSetting map[string]string, socialInfo ma
 		if Config.Server.Mode == gin.DebugMode {
 			b.StaticRootPath = b.ContextPath
 		} else {
-			b.StaticRootPath = "https://cdn.jsdelivr.net/gh/zhaoyangkun/aries"
+			b.StaticRootPath = "https://npm.elemecdn.com/aries-admin@latest/dist"
 		}
 	}
 	if siteName, ok := siteSetting["site_name"]; ok {

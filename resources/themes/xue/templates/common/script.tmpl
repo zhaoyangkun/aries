@@ -2,10 +2,9 @@
     <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://cdn.staticfile.org/marked/4.0.2/marked.min.js"></script>
     <script src="https://cdn.staticfile.org/viewerjs/1.5.0/viewer.min.js"></script>
-    <script src="https://cdn.staticfile.org/highlight.js/10.1.2/highlight.min.js"></script>
+    <script src="https://cdn.staticfile.org/highlight.js/11.5.1/highlight.min.js"></script>
     <script src="https://cdn.staticfile.org/highlightjs-line-numbers.js/2.8.0/highlightjs-line-numbers.min.js"></script>
-    {{/* <script src="{{ .blogVars.StaticRootPath }}/resources/themes/{{ .blogVars.Theme }}/static/js/linesNumber.js"></script> */}}
-    {{/* <script src="https://cdn.jsdelivr.net/gh/xzzai/static@master/js/highlight.lang.js"></script> */}}
+    <script src="https://npm.elemecdn.com/highlightjs-copy@1.0.3/dist/highlightjs-copy.min.js"></script>
     <script src="https://cdn.staticfile.org/tocbot/4.11.2/tocbot.min.js"></script>
     <script src="https://cdn.staticfile.org/jquery.isotope/3.0.6/isotope.pkgd.min.js"></script>
     <script src="{{ .blogVars.StaticRootPath }}/resources/themes/{{ .blogVars.Theme }}/static/js/moon.js"></script>
@@ -22,7 +21,7 @@
         // 是否开启代码高亮
         let enableCodeHighlight = true;
         // 是否开启行号
-        let enableLineNumber = true;
+        let enableLineNumber = false;
         let collpaseCode = false;
         // 黑夜模式
         let autoNightMode = true;
@@ -88,17 +87,6 @@
 
     <script type="text/javascript">
         const loading = "{{ .blogVars.StaticRootPath }}/resources/themes/{{ .blogVars.Theme }}/static/img/loading.svg";
-        /*        let photoList = "https://cdn.jsdelivr.net/gh/keepli/image@1.0/img/1.0/img-1.jpg;"
-                    + " https://cdn.jsdelivr.net/gh/keepli/image@1.0/img/1.0/img-2.jpg;"
-                    + " https://cdn.jsdelivr.net/gh/keepli/image@1.0/img/1.0/img-3.jpg;"
-                    + " https://cdn.jsdelivr.net/gh/keepli/image@1.0/img/1.0/img-4.jpg;"
-                let photos = []
-                if (photoList && photoList.trim() !== '') {
-                    if (photoList.endsWith(';')) {
-                        photoList = photoList.substring(0, photoList.length - 1);
-                    }
-                    photos = photoList.split(";");
-                }*/
     </script>
 
     {{/*    <script type="text/javascript">

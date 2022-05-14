@@ -831,7 +831,7 @@ function hljsCode() {
     //     hljs.highlightBlock(this);
     // });
     document.querySelectorAll('pre code').forEach((block) => {
-        hljs.highlightBlock(block);
+        hljs.highlightElement(block);
     })
 }
 
@@ -959,6 +959,9 @@ $(function () {
     // 格式化 markdown 文章
     // const format = formatContent();
 
+    // 加入复制按钮
+    hljs.addPlugin(new CopyButtonPlugin());
+
     hljsCode();
 
     loadCodeLineNumber();
@@ -979,7 +982,7 @@ $(function () {
     if ($('#container').find('.jqcloud').length > 0) {
         if (typeof $.fn.jQCloud !== 'function') {
             $.getScript(
-                '//cdn.jsdelivr.net/gh/xzzai/static@master/js/jqcloud-1.0.4.min.js',
+                'https://cdn.staticfile.org/jqcloud/1.0.4/jqcloud-1.0.4.min.js',
                 function () {
                     renderTagCloud();
                     renderCategoryCloud();
