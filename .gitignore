@@ -21,7 +21,7 @@
 *.log
 
 # go binary
-./aries
+#./aries
 
 .idea/
 .vscode/
