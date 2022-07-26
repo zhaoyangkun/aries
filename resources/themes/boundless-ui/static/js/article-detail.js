@@ -417,7 +417,7 @@ function upload_img(formData) {
         processData: false,
         cache: false,
         success: function (data) {
-            console.log(data);
+            admin.log(data);
             if (data.code === 1) { // 上传成功，将图片链接写入编辑器
                 $.each(data.images, function (i, val) {
                     vditor.focus();
@@ -430,7 +430,7 @@ function upload_img(formData) {
             }
         },
         error: function (data) {
-            console.log(data);
+            admin.log(data);
         }
     });
 }*/

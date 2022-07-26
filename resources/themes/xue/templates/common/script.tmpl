@@ -1,12 +1,12 @@
 {{ define "xue/script" }}
-    <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://cdn.staticfile.org/marked/4.0.2/marked.min.js"></script>
-    <script src="https://cdn.staticfile.org/viewerjs/1.5.0/viewer.min.js"></script>
-    <script src="https://npm.elemecdn.com/aries-admin@latest/dist/resources/themes/xue/static/js/highlight.min.js"></script>
-    <script src="https://cdn.staticfile.org/highlightjs-line-numbers.js/2.8.0/highlightjs-line-numbers.min.js"></script>
-    <script src="https://npm.elemecdn.com/highlightjs-copy@1.0.3/dist/highlightjs-copy.min.js"></script>
-    <script src="https://cdn.staticfile.org/tocbot/4.11.2/tocbot.min.js"></script>
-    <script src="https://cdn.staticfile.org/jquery.isotope/3.0.6/isotope.pkgd.min.js"></script>
+    <script src="https://npm.sourcegcdn.com/jquery@3.2.1/dist/jquery.min.js"></script>
+    <script src="https://npm.sourcegcdn.com/marked@4.0.3/marked.min.js"></script>
+    <script src="https://npm.sourcegcdn.com/viewerjs@1.5.0/dist/viewer.min.js"></script>
+    <script src="{{ .blogVars.StaticRootPath }}/resources/themes/{{ .blogVars.Theme }}/static/js/highlight.min.js"></script>
+    <script src="https://npm.sourcegcdn.com/highlightjs-line-numbers.js@2.8.0/dist/highlightjs-line-numbers.min.js"></script>
+    <script src="https://npm.sourcegcdn.com/highlightjs-copy@1.0.3/dist/highlightjs-copy.min.js"></script>
+    <script src="https://npm.sourcegcdn.com/tocbot@4.11.2/dist/tocbot.min.js"></script>
+    <script src="https://npm.sourcegcdn.com/isotope-layout@3.0.6/dist/isotope.pkgd.min.js"></script>
     <script src="{{ .blogVars.StaticRootPath }}/resources/themes/{{ .blogVars.Theme }}/static/js/moon.js"></script>
     <script src="{{ .blogVars.StaticRootPath }}/resources/themes/{{ .blogVars.Theme }}/static/js/simply-nav.js"></script>
     <script type="text/javascript">
@@ -72,12 +72,12 @@
 
     <script src="{{ .blogVars.StaticRootPath }}/resources/themes/{{ .blogVars.Theme }}/static/js/main.js"></script>
 
-    {{/* <script src="https://cdn.staticfile.org/aplayer/1.10.1/APlayer.min.js"></script>
-    <script src="https://unpkg.com/meting@2.0.1/dist/Meting.min.js"></script> */}}
+    {{/* <script src="https://npm.sourcegcdn.com/aplayer@1.10.1/dist/APlayer.min.js"></script>
+    <script src="https://npm.sourcegcdn.com/meting@2.0.1/dist/Meting.min.js"></script> */}}
 
-    <script defer src="https://cdn.staticfile.org/KaTeX/0.12.0/katex.min.js"
+    <script defer src="https://npm.sourcegcdn.com/katex@0.12.0/dist/katex.min.js"
             crossorigin="anonymous"></script>
-    <script defer src="https://cdn.staticfile.org/KaTeX/0.12.0/contrib/auto-render.min.js"
+    <script defer src="https://npm.sourcegcdn.com/katex@0.12.0/dist/contrib/auto-render.min.js"
             crossorigin="anonymous"></script>
 
     <script type="text/javascript">
@@ -113,8 +113,8 @@
         show_date_time();
     </script>*/}}
 
-    <script src="https://cdn.staticfile.org/jquery.pjax/2.0.1/jquery.pjax.min.js"></script>
-    <script src="https://cdn.staticfile.org/nprogress/0.2.0/nprogress.min.js"></script>
+    <script src="https://npm.sourcegcdn.com/jquery-pjax@2.0.1/jquery.pjax.min.js"></script>
+    <script src="https://npm.sourcegcdn.com/nprogress@0.2.0/nprogress.min.js"></script>
     <script type="text/javascript">
         $(document).pjax('a[href]:not([href^="#"]):not([data-not-pjax]):not([target^="_blank"]), form',
             '#container', {fragment: '#container', timeout: 8000});
@@ -162,7 +162,7 @@
             if ($('#container').find('.jqcloud').length > 0) {
                 if (typeof $.fn.jQCloud !== 'function') {
                     $.getScript(
-                        'https://cdn.staticfile.org/jqcloud/1.0.4/jqcloud.min.js',
+                        'https://lf9-cdn-tos.bytecdntp.com/cdn/expire-1-M/jqcloud/1.0.4/jqcloud.min.js',
                         function () {
                             renderTagCloud();
                             renderCategoryCloud();

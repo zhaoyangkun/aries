@@ -982,7 +982,7 @@ $(function () {
     if ($('#container').find('.jqcloud').length > 0) {
         if (typeof $.fn.jQCloud !== 'function') {
             $.getScript(
-                'https://cdn.staticfile.org/jqcloud/1.0.4/jqcloud-1.0.4.min.js',
+                'https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/jqcloud/1.0.4/jqcloud-1.0.4.min.js',
                 function () {
                     renderTagCloud();
                     renderCategoryCloud();
