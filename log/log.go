@@ -51,7 +51,7 @@ func getEncoder(format string) zapcore.Encoder {
 	switch format {
 	case "json":
 		return zapcore.NewJSONEncoder(encoderConfig)
-	case "console":
+	case "admin":
 		return zapcore.NewConsoleEncoder(encoderConfig)
 	default:
 		return zapcore.NewConsoleEncoder(encoderConfig)

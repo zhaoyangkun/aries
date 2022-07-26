@@ -257,7 +257,7 @@ window.VerJs = (function () {
     var sends = function () {
         var forms = form.getAttribute("data-form");
         var xhr = new XMLHttpRequest();
-        // console.log("正在执行的ajax请求路径:" + form.action);
+        // admin.log("正在执行的ajax请求路径:" + form.action);
         xhr.open("POST", form.action, true);
         xhr.setRequestHeader("x-requested-with", "XMLHttpRequest");
         var data = new FormData(form);

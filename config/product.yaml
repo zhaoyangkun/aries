@@ -23,7 +23,7 @@ logger:
   max_backups: 2 # 最大保存个数
   max_age: 1 # 最大保存时间（天）
   level: "error" # 日志级别（"debug", "info", "warn", "error","dpanic" ,"panic","fatal"）
-  format: "console" # 日志格式（"json", "console"）
+  format: "admin" # 日志格式（"json", "admin"）
 # smtp 配置（仅用于重置密码）
 smtp:
   address: "smtp.qq.com" # 协议地址

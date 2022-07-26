@@ -1,6 +1,6 @@
 {{ define "boundless-ui/comment" }}
     <link rel="stylesheet"
-          href="https://npm.elemecdn.com/aries-comment@1.0.0/dist/static/css/aries-comment.css">
+          href="{{ .blogVars.StaticRootPath }}/resources/themes/xue/static/css/aries-comment.css">
     <style>
         .vditor-ir pre.vditor-reset {
             background-color: var(--panel-background-color) !important;
@@ -49,8 +49,8 @@
         }
 
         loadScripts([
-            "https://cdn.staticfile.org/vue/2.6.12/vue.min.js",
-            "https://npm.elemecdn.com/aries-comment@1.0.0/dist/static/js/aries-comment.js",
+            "https://npm.sourcegcdn.com/vue@2.6.12/dist/vue.min.js",
+            "{{ .blogVars.StaticRootPath }}/resources/themes/xue/static/js/aries-comment.js",
         ]).then(renderComment);
     </script>
 {{ end }}
