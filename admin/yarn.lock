@@ -10561,10 +10561,10 @@
   "resolved" "https://registry.npmjs.org/vary/-/vary-1.1.2.tgz"
   "version" "1.1.2"
 
-"vditor@^3.4.6":
-  "integrity" "sha1-uaNvEATvY8rT/iroEdUlnh5sOHQ="
-  "resolved" "https://registry.npm.taobao.org/vditor/download/vditor-3.4.6.tgz"
-  "version" "3.4.6"
+"vditor@^3.8.15":
+  "integrity" "sha512-BYSBNUuhtvOfu1OU+NhS7R6TcrNP0UmQ8Vtbzq9BnLoG1uIHPZaTjtJIv00OPqHEcZa4KpR7mU+n9P+i+9SHuA=="
+  "resolved" "https://registry.npmmirror.com/vditor/-/vditor-3.8.15.tgz"
+  "version" "3.8.15"
   dependencies:
     "diff-match-patch" "^1.0.5"
 
