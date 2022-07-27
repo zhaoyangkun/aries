@@ -145,7 +145,7 @@ func (b *BlogVariable) InitBlogVars(siteSetting map[string]string, socialInfo ma
 		if Config.Server.Mode == gin.DebugMode {
 			b.StaticRootPath = b.ContextPath
 		} else {
-			b.StaticRootPath = "https://gh.sourcegcdn.com/zhaoyangkun/aries/v1.1.7"
+			b.StaticRootPath = "https://gh.sourcegcdn.com/zhaoyangkun/aries/v1.1.8"
 		}
 	}
 	if siteName, ok := siteSetting["site_name"]; ok {

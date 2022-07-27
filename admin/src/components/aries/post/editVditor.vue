@@ -6,7 +6,7 @@
 
 <script>
 import Vditor from 'vditor'
-import 'vditor/src/assets/scss/index.scss'
+import 'vditor/dist/index.css'
 import { uploadImgToAttachment } from '@/api/aries/picture'
 
 export default {
