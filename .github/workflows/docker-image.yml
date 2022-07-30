@@ -55,10 +55,16 @@ jobs:
         with:
           images: zhaoyangkun/aries
 
-      - name: Build and push Docker image
+      - name: Build and push Docker image to Dockerhub
         uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
         with:
           context: .
           push: true
           tags: zhaoyangkun/aries
           labels: "latest"
+
+      - name: Push Docker image to ACR
+        run: |
+          docker login --username=${{ secrets.ACR_USERNAME }} --password=${{ secrets.ACR_PASSWORD }} registry.cn-hangzhou.aliyuncs.com 
+          docker tag zhaoyangkun/aries:latest registry.cn-hangzhou.aliyuncs.com/zhaoyangkun/aries:latest
+          docker push registry.cn-hangzhou.aliyuncs.com/zhaoyangkun/aries:latest
