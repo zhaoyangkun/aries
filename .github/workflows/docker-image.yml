@@ -66,6 +66,8 @@ jobs:
 
       - name: Push Docker image to ACR
         run: |
+          pwd
+          ls
           docker login --username=${{ secrets.ACR_USERNAME }} --password=${{ secrets.ACR_PASSWORD }} registry.cn-hangzhou.aliyuncs.com 
           docker tag zhaoyangkun/aries:latest registry.cn-hangzhou.aliyuncs.com/zhaoyangkun/aries:latest
           docker push registry.cn-hangzhou.aliyuncs.com/zhaoyangkun/aries:latest
