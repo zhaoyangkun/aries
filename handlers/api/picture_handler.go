@@ -29,6 +29,7 @@ import (
 )
 
 const (
+	qubuUploadURL  = "https://7bu.top/api/v1/upload"
 	smmsUploadURL  = "https://sm.ms/api/v2/upload"
 	imgbbUploadURL = "https://api.imgbb.com/1/upload"
 )
@@ -157,6 +158,8 @@ func (p *PictureHandler) UploadImgToAttachment(ctx *gin.Context) {
 	imgUrl := ""
 	for _, file := range files {
 		switch picBedSetting["storage_type"] {
+		case "7bu":
+			imgUrl, err = uploadToQubu(file, imgSetting["token"])
 		case "sm.ms":
 			imgUrl, err = uploadToSmms(file, imgSetting["token"])
 		case "imgbb":
@@ -225,6 +228,71 @@ func (p *PictureHandler) MultiDelPictures(ctx *gin.Context) {
 		Msg:  "删除成功",
 		Data: nil,
 	})
+}
+
+// 上传图片到去不图床
+func uploadToQubu(file *multipart.FileHeader, token string) (string, error) {
+	// 读取文件
+	src, err := file.Open()
+	if err != nil {
+		log.Logger.Sugar().Error("打开文件失败: ", err.Error())
+		return "", err
+	}
+	defer src.Close()
+
+	// 封装请求体，发送 post 请求并解析响应
+	bodyBuf := &bytes.Buffer{}
+	bodyWriter := multipart.NewWriter(bodyBuf)
+	formFile, _ := bodyWriter.CreateFormFile("file", file.Filename)
+	_, _ = io.Copy(formFile, src)
+	_ = bodyWriter.Close() // 发送之前必须调用 Close() 以写入结尾行
+
+	req, err := http.NewRequest("POST", qubuUploadURL, bodyBuf)
+	if err != nil {
+		return "", err
+	}
+	req.Header.Set("Content-Type", bodyWriter.FormDataContentType())
+	req.Header.Set("Authorization", "Bearer "+token)
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return "", err
+	}
+	defer resp.Body.Close()
+
+	result, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return "", err
+	}
+	resultMap := map[string]interface{}{}
+	err = json.Unmarshal(result, &resultMap)
+	if err != nil {
+		return "", err
+	}
+
+	if !resultMap["status"].(bool) {
+		return "", errFileUpload
+	}
+
+	data := resultMap["data"].(map[string]interface{})
+	links := data["links"].(map[string]interface{})
+	sizeStr := data["size"].(string)
+	size, err := strconv.ParseFloat(sizeStr, 64)
+	if err != nil {
+		return "", err
+	}
+	picture := models.Picture{
+		StorageType: "7bu",
+		Hash:        data["key"].(string),
+		FileName:    data["name"].(string),
+		URL:         links["url"].(string),
+		Size:        uint(size),
+	}
+	if err = picture.Create(); err != nil {
+		return "", err
+	}
+
+	return picture.URL, nil
 }
 
 // 上传图片到 sm.ms

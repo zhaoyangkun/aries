@@ -10,6 +10,6 @@ docker build -t zhaoyangkun/aries:latest .
 docker tag zhaoyangkun/aries:latest registry.cn-hangzhou.aliyuncs.com/zhaoyangkun/aries:latest
 # 推送 docker 镜像
 echo "########## start push docker image ##########"
-#docker push zhaoyangkun/aries:latest
+docker push zhaoyangkun/aries:latest
 docker push registry.cn-hangzhou.aliyuncs.com/zhaoyangkun/aries:latest
 echo "########## all jobs are done ##########"
