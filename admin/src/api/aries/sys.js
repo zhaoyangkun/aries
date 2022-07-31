@@ -51,6 +51,15 @@ export function sendTestEmail (data) {
   })
 }
 
+// 保存去不图床配置
+export function saveQubuSetting (data) {
+  return request({
+    url: '/sys_setting/pic_bed/qubu',
+    method: 'post',
+    data: data
+  })
+}
+
 // 保存 sm.ms 配置
 export function saveSmmsSetting (data) {
   return request({

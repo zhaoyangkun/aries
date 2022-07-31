@@ -40,6 +40,13 @@ type PicBedSettingForm struct {
 	StorageType string `json:"storage_type"`
 }
 
+// QubuForm 去不图床表单
+type QubuForm struct {
+	SysId       string `json:"sys_id" label:"设置 ID"`
+	StorageType string `json:"storage_type" binding:"required,max=20" label:"设置类型名称"`
+	Token       string `json:"token" binding:"required,max=100"`
+}
+
 // SmmsForm sm.ms 表单
 type SmmsForm struct {
 	SysId       string `json:"sys_id" label:"设置 ID"`

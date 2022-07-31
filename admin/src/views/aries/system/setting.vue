@@ -118,6 +118,17 @@
           </el-form-item>
         </el-form>
 
+        <el-form :model="qubuForm" :rules="qubuFormRules" ref="qubuForm" label-width="130px"
+                 v-show="storageForm.storage_type==='7bu'">
+          <el-form-item label="Token" prop="token">
+            <el-input size="small" v-model="qubuForm.token" type="text" autocomplete="off"
+                      placeholder="Token"></el-input>
+          </el-form-item>
+          <el-form-item>
+            <el-button size="small" type="primary" :loading="btn.bedSaveLoading" @click="saveQubuForm">保存</el-button>
+          </el-form-item>
+        </el-form>
+
         <el-form :model="smmsForm" :rules="smmsFormRules" ref="smmsForm" label-width="130px"
                  v-show="storageForm.storage_type==='sm.ms'">
           <el-form-item label="Token" prop="token">
@@ -305,6 +316,7 @@ import {
   saveImgbbSetting,
   saveLocalCommentSetting,
   saveParamSetting,
+  saveQubuSetting,
   saveSiteSetting,
   saveSmmsSetting,
   saveSMTPSetting,
@@ -320,6 +332,7 @@ export default {
     return {
       tabPosition: 'top',
       storageTypes: [
+        { value: '7bu', name: '去不图床' },
         { value: 'sm.ms', name: 'sm.ms' },
         { value: 'imgbb', name: 'imgbb' },
         { value: 'cos', name: '腾讯云' }
@@ -370,6 +383,11 @@ export default {
       },
       storageForm: {
         storage_type: 'sm.ms'
+      },
+      qubuForm: {
+        sys_id: null,
+        storage_type: '7bu',
+        token: ''
       },
       smmsForm: {
         sys_id: null,
@@ -503,6 +521,12 @@ export default {
           { required: true, message: '请选择存储类型', trigger: 'blur' }
         ]
       },
+      qubuFormRules: {
+        token: [
+          { required: true, message: '请输入 Token', trigger: 'blur' },
+          { max: 100, message: 'Token 长度不能超过 100', trigger: 'blur' }
+        ]
+      },
       smmsFormRules: {
         token: [
           { required: true, message: '请输入 Token', trigger: 'blur' },
@@ -617,6 +641,9 @@ export default {
     // 图床类型切换
     async storageTypeSelectChange () {
       switch (this.storageForm.storage_type) {
+        case '7bu':
+          await this.getSysSetItem('7bu', 'qubuForm')
+          break
         case 'sm.ms':
           await this.getSysSetItem('sm.ms', 'smmsForm')
           break
@@ -687,6 +714,24 @@ export default {
               .catch(() => {
               })
             this.btn.emailSendLoading = false
+          }, 300)
+        }
+      })
+    },
+    // 保存去不图床设置
+    saveQubuForm () {
+      this.$refs.qubuForm.validate(valid => {
+        if (valid) {
+          this.btn.bedSaveLoading = true
+          setTimeout(() => {
+            saveQubuSetting(this.qubuForm)
+              .then(res => {
+                this.$message.success(res.msg)
+                this.getSysSetItem('7bu', 'qubuForm')
+              })
+              .catch(() => {
+              })
+            this.btn.bedSaveLoading = false
           }, 300)
         }
       })

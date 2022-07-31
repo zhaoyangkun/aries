@@ -82,7 +82,7 @@ func (s *SysSettingHandler) SaveSiteSetting(ctx *gin.Context) {
 	if sysId == 0 {
 		staticRootVal := settingForm.SiteUrl
 		if setting.Config.Server.Mode == gin.ReleaseMode {
-			staticRootVal = "https://gh.sourcegcdn.com/zhaoyangkun/aries/v1.2.0"
+			staticRootVal = "https://gh.sourcegcdn.com/zhaoyangkun/aries/v1.2.1"
 		}
 		staticRootItem := models.SysSettingItem{
 			SysId: sysSetting.ID,
@@ -186,6 +186,123 @@ func (s *SysSettingHandler) SaveSMTPSetting(ctx *gin.Context) {
 	}
 
 	err := models.SysSettingItem{}.MultiCreateOrUpdate(itemList)
+	if err != nil {
+		log.Logger.Sugar().Error("error: ", err.Error())
+		ctx.JSON(http.StatusOK, utils.Result{
+			Code: utils.ServerError,
+			Msg:  "服务器端错误",
+			Data: nil,
+		})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, utils.Result{
+		Code: utils.Success,
+		Msg:  "保存成功",
+		Data: nil,
+	})
+}
+
+// SaveQubuSetting
+// @Summary 保存去不图床表单配置信息
+// @Tags 系统设置
+// @version 1.0
+// @Accept application/json
+// @Param QubuForm body forms.QubuForm true "去不图床表单配置信息"
+// @Success 100 object utils.Result 成功
+// @Failure 103/104 object utils.Result 失败
+// @Router /api/v1/sys_setting/pic_bed/qubu [post]
+func (s *SysSettingHandler) SaveQubuSetting(ctx *gin.Context) {
+	qubuForm := forms.QubuForm{}
+	if err := ctx.ShouldBindJSON(&qubuForm); err != nil {
+		ctx.JSON(http.StatusOK, utils.Result{
+			Code: utils.RequestError,
+			Msg:  utils.GetFormError(err),
+			Data: nil,
+		})
+		return
+	}
+
+	sysId, _ := strconv.ParseUint(qubuForm.SysId, 10, 0)
+	qubuSetting := models.SysSetting{
+		Model: gorm.Model{ID: uint(sysId)},
+		Name:  qubuForm.StorageType,
+	}
+	picBedSetting := models.SysSetting{
+		Name: "图床设置",
+	}
+
+	picBedSettingItems, _ := models.SysSettingItem{}.GetBySysSettingName("图床设置")
+	if len(picBedSettingItems) == 0 {
+		if err := picBedSetting.Create(); err != nil {
+			log.Logger.Sugar().Error("error: ", err.Error())
+			ctx.JSON(http.StatusOK, utils.Result{
+				Code: utils.ServerError,
+				Msg:  "服务器端错误",
+				Data: nil,
+			})
+			return
+		}
+	} else {
+		sysId, _ := strconv.Atoi(picBedSettingItems["sys_id"])
+		picBedSetting.ID = uint(sysId)
+	}
+	log.Logger.Sugar().Info("picBedSetting: ", picBedSetting)
+
+	if sysId == 0 {
+		if err := qubuSetting.Create(); err != nil {
+			log.Logger.Sugar().Error("error: ", err.Error())
+			ctx.JSON(http.StatusOK, utils.Result{
+				Code: utils.ServerError,
+				Msg:  "服务器端错误",
+				Data: nil,
+			})
+			return
+		}
+	}
+
+	picBedForm := forms.PicBedSettingForm{
+		SysId:       strconv.Itoa(int(picBedSetting.ID)),
+		StorageType: "7bu",
+	}
+
+	t := reflect.TypeOf(picBedForm)
+	v := reflect.ValueOf(picBedForm)
+	var itemList []models.SysSettingItem
+	for i := 0; i < t.NumField(); i++ {
+		item := models.SysSettingItem{
+			SysId: picBedSetting.ID,
+			Key:   t.Field(i).Tag.Get("json"),
+			Val:   v.Field(i).Interface().(string),
+		}
+		itemList = append(itemList, item)
+	}
+
+	err := models.SysSettingItem{}.MultiCreateOrUpdate(itemList)
+	if err != nil {
+		log.Logger.Sugar().Error("error: ", err.Error())
+		ctx.JSON(http.StatusOK, utils.Result{
+			Code: utils.ServerError,
+			Msg:  "服务器端错误",
+			Data: nil,
+		})
+		return
+	}
+
+	qubuForm.SysId = strconv.Itoa(int(qubuSetting.ID))
+	t = reflect.TypeOf(qubuForm)
+	v = reflect.ValueOf(qubuForm)
+	itemList = []models.SysSettingItem{}
+	for i := 0; i < t.NumField(); i++ {
+		item := models.SysSettingItem{
+			SysId: qubuSetting.ID,
+			Key:   t.Field(i).Tag.Get("json"),
+			Val:   v.Field(i).Interface().(string),
+		}
+		itemList = append(itemList, item)
+	}
+
+	err = models.SysSettingItem{}.MultiCreateOrUpdate(itemList)
 	if err != nil {
 		log.Logger.Sugar().Error("error: ", err.Error())
 		ctx.JSON(http.StatusOK, utils.Result{
