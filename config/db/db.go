@@ -4,6 +4,7 @@ import (
 	"aries/config/setting"
 	"fmt"
 	"log"
+	"net/url"
 
 	"github.com/gin-gonic/gin"
 	_ "github.com/go-sql-driver/mysql" // mysql驱动
@@ -22,7 +23,7 @@ func getDataSource() string {
 		setting.Config.Database.Host,
 		setting.Config.Database.Port,
 		setting.Config.Database.Database,
-		setting.Config.Database.TimeZone,
+		url.QueryEscape(setting.Config.Database.TimeZone), // 对时区进行 Url 编码
 	)
 	return dataSource
 }
