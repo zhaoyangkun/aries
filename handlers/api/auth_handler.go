@@ -90,7 +90,7 @@ func (a *AuthHandler) Register(ctx *gin.Context) {
 	}
 	staticRootVal := regForm.SiteUrl
 	if setting.Config.Server.Mode == gin.ReleaseMode {
-		staticRootVal = "https://gh.sourcegcdn.com/zhaoyangkun/aries/v1.2.2"
+		staticRootVal = "https://gh.sourcegcdn.com/zhaoyangkun/aries/v1.2.3"
 	}
 	staticRootItem := models.SysSettingItem{
 		SysId: sysSetting.ID,
