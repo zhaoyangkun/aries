@@ -1,7 +1,6 @@
 package setting
 
 import (
-	"io/ioutil"
 	"log"
 	"os"
 	"path/filepath"
@@ -100,7 +99,7 @@ func (s *Setting) InitSetting() {
 
 	log.Println("配置文件路径：", yamlPath)
 	// 读取配置文件
-	yamlFile, err := ioutil.ReadFile(yamlPath)
+	yamlFile, err := os.ReadFile(yamlPath)
 	if err != nil {
 		log.Panicln("读取配置文件失败：", err.Error())
 	}
