@@ -1,6 +1,6 @@
 module aries
 
-go 1.18
+go 1.19
 
 require (
 	github.com/88250/lute v1.6.3
