@@ -1,7 +1,8 @@
 module.exports = [
   { name: 'vue', library: 'Vue', js: 'https://npm.sourcegcdn.com/vue@2.6.10/dist/vue.min.js', css: '' },
   { name: 'vue-i18n', library: 'VueI18n', js: 'https://npm.sourcegcdn.com/vue-i18n@8.15.1/dist/vue-i18n.min.js', css: '' },
-  { name: 'vue-router', library: 'VueRouter', js: 'https://npm.sourcegcdn.com/vue-router@3.1.2/dist/vue-router.min.js', css: '' },
+  // { name: 'vue-router', library: 'VueRouter', js: 'https://npm.sourcegcdn.com/vue-router@3.1.2/dist/vue-router.min.js', css: '' },
+  { name: 'vue-router', library: 'VueRouter', js: 'https://unpkg.zhimg.com/vue-router@3.1.2/dist/vue-router.min.js', css: '' },
   { name: 'vuex', library: 'Vuex', js: 'https://npm.sourcegcdn.com/vuex@3.1.2/dist/vuex.min.js', css: '' },
   { name: 'axios', library: 'axios', js: 'https://npm.sourcegcdn.com/axios@0.19.0/dist/axios.min.js', css: '' },
   { name: 'better-scroll', library: 'BScroll', js: 'https://npm.sourcegcdn.com/better-scroll@1.15.1/dist/bscroll.min.js', css: '' },
