@@ -12,7 +12,6 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"mime/multipart"
 	"net/http"
 	"net/url"
@@ -253,6 +252,7 @@ func uploadToQubu(file *multipart.FileHeader, token string) (string, error) {
 	}
 	req.Header.Set("Content-Type", bodyWriter.FormDataContentType())
 	req.Header.Set("Authorization", "Bearer "+token)
+	req.Header.Set("Accept", "application/json")
 
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
@@ -260,7 +260,7 @@ func uploadToQubu(file *multipart.FileHeader, token string) (string, error) {
 	}
 	defer resp.Body.Close()
 
-	result, err := ioutil.ReadAll(resp.Body)
+	result, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return "", err
 	}
@@ -325,7 +325,7 @@ func uploadToSmms(file *multipart.FileHeader, token string) (string, error) {
 	}
 	defer resp.Body.Close()
 
-	result, err := ioutil.ReadAll(resp.Body)
+	result, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return "", err
 	}
@@ -361,7 +361,7 @@ func uploadToImgbb(file *multipart.FileHeader, token string) (string, error) {
 		return "", err
 	}
 	defer src.Close()
-	fileBytes, err := ioutil.ReadAll(src)
+	fileBytes, err := io.ReadAll(src)
 	if err != nil {
 		return "", err
 	}
@@ -388,7 +388,7 @@ func uploadToImgbb(file *multipart.FileHeader, token string) (string, error) {
 	}
 	defer resp.Body.Close()
 
-	result, err := ioutil.ReadAll(resp.Body)
+	result, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return "", err
 	}

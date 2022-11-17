@@ -7,8 +7,7 @@ import (
 	"aries/models"
 	"aries/utils"
 	"github.com/gin-contrib/sessions"
-	"io/ioutil"
-
+	"io"
 	"net/http"
 	"path"
 
@@ -355,7 +354,7 @@ func (a *ArticleHandler) ImportArticlesFromFiles(ctx *gin.Context) {
 		_ = src.Close()
 
 		// 读取文件
-		bytes, err := ioutil.ReadAll(src)
+		bytes, err := io.ReadAll(src)
 		if err != nil {
 			log.Logger.Sugar().Error("error: ", err.Error())
 			ctx.JSON(http.StatusOK, utils.Result{
