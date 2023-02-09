@@ -9,12 +9,12 @@ require (
 	github.com/douyacun/gositemap v0.0.4
 	github.com/gin-contrib/cache v1.1.0
 	github.com/gin-contrib/sessions v0.0.3
-	github.com/gin-gonic/gin v1.6.3
+	github.com/gin-gonic/gin v1.7.7
 	github.com/go-gomail/gomail v0.0.0-20160411212932-81ebce5c23df
 	github.com/go-playground/assert/v2 v2.0.1
 	github.com/go-playground/locales v0.13.0
 	github.com/go-playground/universal-translator v0.17.0
-	github.com/go-playground/validator/v10 v10.3.0
+	github.com/go-playground/validator/v10 v10.4.1
 	github.com/go-sql-driver/mysql v1.5.0
 	github.com/jinzhu/gorm v1.9.16
 	github.com/juju/ratelimit v1.0.1
