@@ -7,21 +7,23 @@
         <meta name="description" content="{{ .blogVars.SiteDesc }}">
         <link rel="shortcut icon" href="{{ .blogVars.SiteLogo }}">
         <link rel="preconnect" href="https://gh.sourcegcdn.com">
-        <link rel="preconnect" href="https://npm.sourcegcdn.com">
+        <link rel="preconnect" href="https://npm.elemecdn.com">
         <title>{{ if .subTitle }}{{ .subTitle }} - {{ end }}{{ .blogVars.SiteName }}</title>
-        <link rel="stylesheet" href="https://npm.sourcegcdn.com/tailwindcss@1.4.6/dist/tailwind.min.css">
-        <link rel="stylesheet" href="https://npm.sourcegcdn.com/viewerjs@1.5.0/dist/viewer.min.css">
-        <link rel="stylesheet" href="https://npm.sourcegcdn.com/katex@0.12.0/dist/katex.min.css"
+        <link rel="stylesheet" href="https://npm.elemecdn.com/tailwindcss@1.4.6/dist/tailwind.min.css">
+        {{/*        <link rel="stylesheet" href="https://npm.elemecdn.com/viewerjs@1.5.0/dist/viewer.min.css">*/}}
+        <link rel="stylesheet" href="https://npm.elemecdn.com/viewerjs@1.6.0/dist/viewer.min.css">
+        <link rel="stylesheet" href="https://npm.elemecdn.com/katex@0.12.0/dist/katex.min.css"
               crossorigin="anonymous">
-        {{/*        <link rel="stylesheet" href="https://npm.sourcegcdn.com/aplayer@1.10.1/dist/APlayer.min.css">*/}}
-        <link rel="stylesheet" href="{{ .blogVars.StaticRootPath }}/resources/themes/{{ .blogVars.Theme }}/static/css/jqcloud.min.css">
-        <link rel="stylesheet" href="https://npm.sourcegcdn.com/@fortawesome/fontawesome-free@5.15.3/css/all.min.css"
+        {{/*        <link rel="stylesheet" href="https://npm.elemecdn.com/aplayer@1.10.1/dist/APlayer.min.css">*/}}
+        <link rel="stylesheet"
+              href="{{ .blogVars.StaticRootPath }}/resources/themes/{{ .blogVars.Theme }}/static/css/jqcloud.min.css">
+        <link rel="stylesheet" href="https://npm.elemecdn.com/@fortawesome/fontawesome-free@5.15.2/css/all.min.css"
               crossorigin="anonymous">
         <link rel="stylesheet"
-              href="https://npm.sourcegcdn.com/font-awesome-animation@0.3.0/dist/font-awesome-animation.min.css">
-        <link rel="stylesheet" href="https://npm.sourcegcdn.com/nprogress@0.2.0/nprogress.css">
-        <link rel="stylesheet" href="https://npm.sourcegcdn.com/highlight.js@11.6.0/styles/atom-one-dark.css">
-        <link rel="stylesheet" href="https://npm.sourcegcdn.com/highlightjs-copy@1.0.3/dist/highlightjs-copy.min.css">
+              href="https://npm.elemecdn.com/font-awesome-animation@0.3.0/dist/font-awesome-animation.min.css">
+        <link rel="stylesheet" href="https://npm.elemecdn.com/nprogress@0.2.0/nprogress.css">
+        <link rel="stylesheet" href="https://npm.elemecdn.com/highlight.js@11.6.0/styles/atom-one-dark.css">
+        <link rel="stylesheet" href="https://npm.elemecdn.com/highlightjs-copy@1.0.3/dist/highlightjs-copy.min.css">
         <link rel="stylesheet"
               href="{{ .blogVars.StaticRootPath }}/resources/themes/{{ .blogVars.Theme }}/static/css/style.min.css">
         <link rel="stylesheet"
