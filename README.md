@@ -2,9 +2,9 @@
 
 ## 注意
 
-部署了最新版本 `Aries` 的小伙伴请注意一下，需要进入后台管理的 `系统/设置/网站设置`，将**静态资源根路径**修改为最新版本：[https://gh.sourcegcdn.com/zhaoyangkun/aries/v1.2.3](https://gh.sourcegcdn.com/zhaoyangkun/aries/v1.2.3)
+部署了最新版本 `Aries` 的小伙伴请注意一下，需要进入后台管理的 `系统/设置/网站设置`，将**静态资源根路径**修改为最新版本：[https://gcore.jsdelivr.net/gh/zhaoyangkun/aries](https://gcore.jsdelivr.net/gh/zhaoyangkun/aries)
 
-> 最后的 `v1.2.3` 为 github release 对应的版本号，请保持最新，否则可能出现部分静态资源无法访问的情况。
+[//]: # (> 最后的 `v1.2.3` 为 github release 对应的版本号，请保持最新，否则可能出现部分静态资源无法访问的情况。)
 
 ## 项目介绍
 

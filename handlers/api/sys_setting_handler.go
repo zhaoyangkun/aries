@@ -82,7 +82,7 @@ func (s *SysSettingHandler) SaveSiteSetting(ctx *gin.Context) {
 	if sysId == 0 {
 		staticRootVal := settingForm.SiteUrl
 		if setting.Config.Server.Mode == gin.ReleaseMode {
-			staticRootVal = "https://gh.sourcegcdn.com/zhaoyangkun/aries/v1.2.3"
+			staticRootVal = "https://gcore.jsdelivr.net/gh/zhaoyangkun/aries"
 		}
 		staticRootItem := models.SysSettingItem{
 			SysId: sysSetting.ID,
