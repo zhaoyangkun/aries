@@ -38,8 +38,8 @@ func (a *ApiRouter) InitApiRouter(rootPath string, router *gin.Engine) {
 	userApiRouter := router.Group(rootPath)
 	{
 		userApiRouter.GET("/all_users", userHandler.GetAllUsers)
-		userApiRouter.PUT("/users", userHandler.UpdateUser)
-		userApiRouter.PUT("/users/pwd", userHandler.UpdateUserPwd)
+		userApiRouter.PUT("/users", middlewares.JWTAuth(), userHandler.UpdateUser)
+		userApiRouter.PUT("/users/pwd", middlewares.JWTAuth(), userHandler.UpdateUserPwd)
 	}
 
 	ArticleApiRouter := router.Group(rootPath)

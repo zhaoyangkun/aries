@@ -21,7 +21,8 @@ type User struct {
 // GetAll 获取所有用户
 func (user User) GetAll() ([]User, error) {
 	var users []User
-	err := db.Db.Find(&users).Error
+	err := db.Db.Select("username, email, nickname, user_img, signature").
+		Find(&users).Error
 	if gorm.IsRecordNotFoundError(err) {
 		err = nil
 	}
