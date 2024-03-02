@@ -48,7 +48,8 @@
 
     <el-row v-loading="loading">
       <el-col :span="24" v-if="data.length === 0" style="margin: 0 auto 15px auto;height: 50px;background-color: white">
-        <h4 style="width: 50%;line-height: 50px;margin: auto;color: #909399;text-align: center;font-weight: normal">暂无数据</h4>
+        <h4 style="width: 50%;line-height: 50px;margin: auto;color: #909399;text-align: center;font-weight: normal">
+          暂无数据</h4>
       </el-col>
       <el-col style="margin: 0 3.32% 2% 0;" :span="4" v-for="item in data" :key="item.ID">
         <div class="image-container" :class="imgIsChecked(item.checked)">
@@ -98,7 +99,8 @@
         :file-list="fileList"
         list-type="picture">
         <el-button size="small" type="primary">点击上传</el-button>
-        <div slot="tip" class="el-upload__tip">只能上传 jpeg/jpg/png/gif/bmp 文件，且不超过 5 MB，一次最多上传 10 个。</div>
+        <div slot="tip" class="el-upload__tip">只能上传 jpeg/jpg/png/gif/bmp 文件，且不超过 5 MB，一次最多上传 10 个。
+        </div>
       </el-upload>
     </el-dialog>
 
@@ -113,8 +115,9 @@
         <el-col :span="5"><h4 class="pre-tip">图床类型：</h4></el-col>
         <el-col :span="19">
           <h4 class="pre-tip" v-if="previewData.storage_type==='sm.ms'">sm.ms</h4>
-          <h4 class="pre-tip" v-if="previewData.storage_type==='imgbb'">imgbb</h4>
-          <h4 class="pre-tip" v-if="previewData.storage_type==='cos'">腾讯云 COS</h4>
+          <h4 class="pre-tip" v-else-if="previewData.storage_type==='imgbb'">imgbb</h4>
+          <h4 class="pre-tip" v-else-if="previewData.storage_type==='cos'">腾讯云 COS</h4>
+          <h4 class="pre-tip" v-else-if="previewData.storage_type==='7bu'">去不图床</h4>
         </el-col>
       </el-row>
       <el-row style="border-bottom: 1px solid #eaeefb">
@@ -177,7 +180,8 @@ export default {
       picBedTypes: [
         { value: 'sm.ms', name: 'sm.ms' },
         { value: 'imgbb', name: 'imgbb' },
-        { value: 'cos', name: '腾讯云' }
+        { value: 'cos', name: '腾讯云' },
+        { value: '7bu', name: '去不图床' }
       ],
       pagination: {
         page: 1,
