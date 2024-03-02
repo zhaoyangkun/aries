@@ -118,7 +118,7 @@ func (p *PictureHandler) UploadImgToAttachment(ctx *gin.Context) {
 	}
 
 	picBedSetting, err := models.SysSettingItem{}.GetBySysSettingName("图床设置")
-	if (err != nil && err == gorm.ErrRecordNotFound) || len(picBedSetting) == 0 {
+	if (err != nil && errors.Is(err, gorm.ErrRecordNotFound)) || len(picBedSetting) == 0 {
 		ctx.JSON(http.StatusOK, utils.Result{
 			Code: utils.ServerError,
 			Msg:  "请先配置图床",
@@ -136,7 +136,7 @@ func (p *PictureHandler) UploadImgToAttachment(ctx *gin.Context) {
 	}
 
 	imgSetting, err := models.SysSettingItem{}.GetBySysSettingName(picBedSetting["storage_type"])
-	if (err != nil && err == gorm.ErrRecordNotFound) || len(imgSetting) == 0 {
+	if (err != nil && errors.Is(err, gorm.ErrRecordNotFound)) || len(imgSetting) == 0 {
 		ctx.JSON(http.StatusOK, utils.Result{
 			Code: utils.ServerError,
 			Msg:  "请先配置图床",

@@ -53,7 +53,7 @@ func GetFileSuffix(filePath string) string {
 	return fileSuffix
 }
 
-// 返回主目录
+// Home 返回主目录
 func Home() (string, error) {
 	u, err := user.Current()
 	if err == nil {
@@ -90,11 +90,11 @@ func homeUnix() (string, error) {
 }
 
 func homeWindows() (string, error) {
-	drive := os.Getenv("HOMEDRIVE")
-	path := os.Getenv("HOMEPATH")
-	home := drive + path
+	homeDrive := os.Getenv("HOMEDRIVE")
+	homePath := os.Getenv("HOMEPATH")
+	home := homeDrive + homePath
 
-	if drive == "" || path == "" {
+	if homeDrive == "" || homePath == "" {
 		home = os.Getenv("USERPROFILE")
 	}
 
