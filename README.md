@@ -19,13 +19,6 @@ Aries 是基于 Gin + GORM + MySQL + Vue + H5 开发的现代化博客系统，�
 
 预览地址：[https://cangmang.xyz/](https://cangmang.xyz/)
 
-## 支持
-
-如果觉得这个项目对你有帮助，可以请我喝杯咖啡，让我有更多的动力去完善这个项目。
-
-![微信支付](https://bu.dusays.com/2024/03/03/65e4055f39ebf.png)
-![支付宝支付](https://bu.dusays.com/2024/03/03/65e405feec869.jpg)
-
 > 已实现**主题管理**基本功能，可进行主题切换，目前有两款主题 xue 和 boundless-ui，暂不支持主题设置和主题编辑功能！
 
 - xue 主题界面
@@ -261,3 +254,10 @@ Aries 是基于 Gin + GORM + MySQL + Vue + H5 开发的现代化博客系统，�
   }
   ```
 
+## 支持
+
+如果觉得这个项目对你有帮助，可以请我喝杯咖啡，让我有更多的动力去完善这个项目。
+<div style="text-align: left;">
+    <img width="210" height="285" src ="https://bu.dusays.com/2024/03/03/65e4055f39ebf.png" />
+    <img width="183" height="285" src ="https://bu.dusays.com/2024/03/03/65e405feec869.jpg" />
+</div>
