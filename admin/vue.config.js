@@ -51,6 +51,38 @@ module.exports = {
         pathRewrite: {
           '^/api': ''
         }
+      },
+      '/7bu': {
+        target: 'https://7bu.top/api/v1',
+        ws: true,
+        changeOrigin: true,
+        pathRewrite: {
+          '^/7bu': ''
+        }
+      },
+      '/picui': {
+        target: 'https://picui.cn/api/v1',
+        ws: true,
+        changeOrigin: true,
+        pathRewrite: {
+          '^/picui': ''
+        }
+      },
+      '/smms': {
+        target: 'https://sm.ms/api/v2',
+        ws: true,
+        changeOrigin: true,
+        pathRewrite: {
+          '^/smms': ''
+        }
+      },
+      '/imgbb': {
+        target: 'https://api.imgbb.com/1',
+        ws: true,
+        changeOrigin: true,
+        pathRewrite: {
+          '^/imgbb': ''
+        }
       }
     },
     publicPath, // 和 publicPath 保持一致

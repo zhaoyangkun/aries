@@ -168,7 +168,17 @@
 </template>
 
 <script>
-import { getImagesByPage, multiDelImages, uploadImgToAttachment } from '@api/aries/picture'
+import {
+  getImagesByPage,
+  multiDelImages,
+  saveImageInfo,
+  uploadImgTo7bu,
+  uploadImgToAttachment,
+  uploadImgToImgbb,
+  uploadImgToPicUI,
+  uploadImgToSmms
+} from '@api/aries/picture'
+import { getSysSettingItem } from '@/api/aries/sys'
 
 export default {
   name: 'attachment',
@@ -287,20 +297,150 @@ export default {
     },
     // 上传图片
     uploadImg (file) {
-      const formData = new FormData()
-      formData.append('file[]', file.file)
-      const config = {
-        onUploadProgress: progressEvent => {
-          const percent = progressEvent.loaded / progressEvent.total * 100 | 0
-          file.onProgress({ percent: percent })
+      // 获取图床设置
+      getSysSettingItem('图床设置').then(res => {
+        const picBedData = res.data
+        if (Object.keys(picBedData).length === 0) {
+          this.$message.error('请先配置图床')
+          return
         }
-      }
-      uploadImgToAttachment(formData, config)
-        .then(() => {
-          file.onSuccess()
+        // 根据图床类型获取相关配置
+        const storageType = picBedData.storage_type
+        getSysSettingItem(picBedData.storage_type).then(res => {
+          const storageData = res.data
+          if (Object.keys(storageData).length === 0) {
+            this.$message.error('请先配置图床')
+            return
+          }
+          const fileNameObj = { '7bu': 'file', picui: 'file', 'sm.ms': 'smfile', imgbb: 'image', cos: 'file[]' }
+          const formData = new FormData()
+          formData.append(fileNameObj[storageType], file.file)
+          const config = {
+            onUploadProgress: progressEvent => {
+              const percent = progressEvent.loaded / progressEvent.total * 100 | 0
+              file.onProgress({ percent: percent })
+            }
+          }
+          /*
+          7bu、picui、sm.ms、imgbb 图床通过前端直传图片，Go 服务器只保存图片信息，避免受服务器带宽限制，导致上传图片过慢
+          由于腾讯云 COS 收费，暂不进行前端直传测试，仍通过 Go 服务器上传图片
+          */
+          switch (storageType) {
+            case '7bu':
+              uploadImgTo7bu(formData, storageData.token, config)
+                .then(res => {
+                  if (!res.status) {
+                    this.$message.error('上传图片失败')
+                    return
+                  }
+                  const data = {
+                    storage_type: storageType,
+                    hash: res.data.key,
+                    file_name: res.data.name,
+                    url: res.data.links.url,
+                    size: parseInt(res.data.size)
+                  }
+                  saveImageInfo(data).then(res => {
+                    this.$message.success(res.msg)
+                    file.onSuccess()
+                  })
+                })
+                .catch(() => {
+                })
+              break
+            case 'picui':
+              uploadImgToPicUI(formData, storageData.token, config)
+                .then(res => {
+                  if (!res.status) {
+                    this.$message.error('上传图片失败')
+                    return
+                  }
+                  const data = {
+                    storage_type: storageType,
+                    hash: res.data.key,
+                    file_name: res.data.name,
+                    url: res.data.links.url,
+                    size: parseInt(res.data.size)
+                  }
+                  saveImageInfo(data).then(res => {
+                    this.$message.success(res.msg)
+                    file.onSuccess()
+                  })
+                })
+                .catch(() => {
+                })
+              break
+            case 'sm.ms':
+              uploadImgToSmms(formData, storageData.token, config)
+                .then(res => {
+                  if (!res.success) {
+                    this.$message.error('上传图片失败')
+                    return
+                  }
+                  const data = {
+                    storage_type: storageType,
+                    hash: res.data.hash,
+                    file_name: res.data.storename,
+                    url: res.data.url,
+                    size: parseInt(parseFloat(res.data.size) / 1024)
+                  }
+                  saveImageInfo(data).then(res => {
+                    this.$message.success(res.msg)
+                    file.onSuccess()
+                  })
+                })
+                .catch(() => {
+                })
+              break
+            case 'imgbb':
+              uploadImgToImgbb(formData, storageData.token, config)
+                .then(res => {
+                  if (!res.success) {
+                    this.$message.error('上传图片失败')
+                    return
+                  }
+                  const data = {
+                    storage_type: storageType,
+                    hash: res.data.title,
+                    file_name: res.data.image.filename,
+                    url: res.data.url,
+                    size: parseInt(parseFloat(res.data.size) / 1024)
+                  }
+                  saveImageInfo(data).then(res => {
+                    this.$message.success(res.msg)
+                    file.onSuccess()
+                  })
+                })
+                .catch(() => {
+                })
+              break
+            case 'cos':
+              uploadImgToAttachment(formData, config)
+                .then(() => {
+                  file.onSuccess()
+                })
+                .catch(() => {
+                })
+              break
+            default:
+              break
+          }
         })
-        .catch(() => {
-        })
+      })
+      // const formData = new FormData()
+      // formData.append('file[]', file.file)
+      // const config = {
+      //   onUploadProgress: progressEvent => {
+      //     const percent = progressEvent.loaded / progressEvent.total * 100 | 0
+      //     file.onProgress({ percent: percent })
+      //   }
+      // }
+      // uploadImgToAttachment(formData, config)
+      //   .then(() => {
+      //     file.onSuccess()
+      //   })
+      //   .catch(() => {
+      //   })
     },
     // 点击图片
     handleClickImg (item) {

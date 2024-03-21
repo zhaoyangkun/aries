@@ -28,8 +28,8 @@ function createService () {
       // 这个状态码是和后端约定的
       const code = dataAxios.code
       // 根据 code 进行判断
-      if (code === undefined) {
-        // 如果没有 code 代表这不是项目后端开发的接口 比如可能是 D2Admin 请求最新版本
+      if (code === undefined || !Number.isInteger(code)) {
+        // 如果没有 code 或 code 不为整型，代表这不是项目后端开发的接口，比如可能是 D2Admin 请求最新版本或第三方 API 接口
         return dataAxios
       } else {
         // 有 code 代表这是一个后端接口 可以进行进一步的判断
@@ -54,10 +54,16 @@ function createService () {
             }).then(r => {
             })
             break
-          // code === 103 或 104 代表有错误发生
-          default:
+          // code === 103 表示请求数据缺失或者有误
+          case 103:
             errorCreate(`${dataAxios.msg}`)
             break
+          // code === 104 表示服务器端错误
+          case 104:
+            errorCreate(`${dataAxios.msg}`)
+            break
+          default:
+            return dataAxios
         }
       }
     },
@@ -123,7 +129,7 @@ function createRequestFunction (service) {
         // 返回数据类型
         Accept: 'application/json'
       },
-      timeout: 50000,
+      timeout: 60000,
       baseURL: process.env.VUE_APP_API,
       data: {}
     }

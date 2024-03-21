@@ -437,6 +437,120 @@ func (s *SysSettingHandler) SaveSmmsSetting(ctx *gin.Context) {
 	})
 }
 
+// SavePicUISetting
+// @Summary 保存 picui 配置信息
+// @Tags 系统设置
+// @version 1.0
+// @Accept application/json
+// @Param imgbbForm body forms.PicUIForm true "PicUI 配置表单"
+// @Success 100 object utils.Result 成功
+// @Failure 103/104 object utils.Result 失败
+// @Router /api/v1/sys_setting/pic_bed/picui [post]
+func (s *SysSettingHandler) SavePicUISetting(ctx *gin.Context) {
+	picUIForm := forms.PicUIForm{}
+	if err := ctx.ShouldBindJSON(&picUIForm); err != nil {
+		ctx.JSON(http.StatusOK, utils.Result{
+			Code: utils.RequestError,
+			Msg:  utils.GetFormError(err),
+			Data: nil,
+		})
+		return
+	}
+
+	sysId, _ := strconv.ParseUint(picUIForm.SysId, 10, 0)
+	picUISetting := models.SysSetting{
+		Model: gorm.Model{ID: uint(sysId)},
+		Name:  picUIForm.StorageType,
+	}
+	picBedSetting := models.SysSetting{
+		Name: "图床设置",
+	}
+
+	picBedSettingItems, _ := models.SysSettingItem{}.GetBySysSettingName("图床设置")
+	if len(picBedSettingItems) == 0 {
+		if err := picBedSetting.Create(); err != nil {
+			log.Logger.Sugar().Error("error: ", err.Error())
+			ctx.JSON(http.StatusOK, utils.Result{
+				Code: utils.ServerError,
+				Msg:  "服务器端错误",
+				Data: nil,
+			})
+			return
+		}
+	} else {
+		sysId, _ := strconv.Atoi(picBedSettingItems["sys_id"])
+		picBedSetting.ID = uint(sysId)
+	}
+
+	if sysId == 0 {
+		if err := picUISetting.Create(); err != nil {
+			log.Logger.Sugar().Error("error: ", err.Error())
+			ctx.JSON(http.StatusOK, utils.Result{
+				Code: utils.ServerError,
+				Msg:  "服务器端错误",
+				Data: nil,
+			})
+			return
+		}
+	}
+	picBedForm := forms.PicBedSettingForm{
+		SysId:       strconv.Itoa(int(picBedSetting.ID)),
+		StorageType: "picui",
+	}
+	t := reflect.TypeOf(picBedForm)
+	v := reflect.ValueOf(picBedForm)
+	var itemList []models.SysSettingItem
+	for i := 0; i < t.NumField(); i++ {
+		item := models.SysSettingItem{
+			SysId: picBedSetting.ID,
+			Key:   t.Field(i).Tag.Get("json"),
+			Val:   v.Field(i).Interface().(string),
+		}
+		itemList = append(itemList, item)
+	}
+
+	err := models.SysSettingItem{}.MultiCreateOrUpdate(itemList)
+	if err != nil {
+		log.Logger.Sugar().Error("error: ", err.Error())
+		ctx.JSON(http.StatusOK, utils.Result{
+			Code: utils.ServerError,
+			Msg:  "服务器端错误",
+			Data: nil,
+		})
+		return
+	}
+
+	picUIForm.SysId = strconv.Itoa(int(picUISetting.ID))
+	t = reflect.TypeOf(picUIForm)
+	v = reflect.ValueOf(picUIForm)
+	itemList = []models.SysSettingItem{}
+	for i := 0; i < t.NumField(); i++ {
+		item := models.SysSettingItem{
+			SysId: picUISetting.ID,
+			Key:   t.Field(i).Tag.Get("json"),
+			Val:   v.Field(i).Interface().(string),
+		}
+		itemList = append(itemList, item)
+	}
+
+	err = models.SysSettingItem{}.MultiCreateOrUpdate(itemList)
+	if err != nil {
+		log.Logger.Sugar().Error("error: ", err.Error())
+		ctx.JSON(http.StatusOK, utils.Result{
+			Code: utils.ServerError,
+			Msg:  "服务器端错误",
+			Data: nil,
+		})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, utils.Result{
+		Code: utils.Success,
+		Msg:  "保存成功",
+		Data: nil,
+	})
+}
+
 // SaveImgbbSetting
 // @Summary 保存 imgbb 配置信息
 // @Tags 系统设置

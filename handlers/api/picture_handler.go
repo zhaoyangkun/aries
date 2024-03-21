@@ -194,6 +194,44 @@ func (p *PictureHandler) UploadImgToAttachment(ctx *gin.Context) {
 	})
 }
 
+// SavePictureInfo
+// @Summary 保存图片信息
+// @Tags 图床
+// @version 1.0
+// @Accept application/json
+// @Param addForm body forms.PictureAddForm true "添加文章表单"
+// @Success 100 object utils.Result 成功
+// @Failure 103/104 object utils.Result 失败
+// @Router /api/v1/images [post]
+func (p *PictureHandler) SavePictureInfo(ctx *gin.Context) {
+	addForm := forms.PictureAddForm{}
+	if err := ctx.ShouldBindJSON(&addForm); err != nil {
+		ctx.JSON(http.StatusOK, utils.Result{
+			Code: utils.RequestError,
+			Msg:  utils.GetFormError(err),
+			Data: nil,
+		})
+		return
+	}
+
+	picture := addForm.BindToModel()
+	if err := picture.Create(); err != nil {
+		log.Logger.Sugar().Error("error: ", err.Error())
+		ctx.JSON(http.StatusOK, utils.Result{
+			Code: utils.ServerError,
+			Msg:  "服务器端错误",
+			Data: nil,
+		})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, utils.Result{
+		Code: utils.Success,
+		Msg:  "保存图片成功",
+		Data: nil,
+	})
+}
+
 // MultiDelPictures
 // @Summary 批量删除图片
 // @Tags 图床

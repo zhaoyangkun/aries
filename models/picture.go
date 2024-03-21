@@ -47,7 +47,7 @@ func (Picture) GetByPage(page *utils.Pagination, key string, storageType string)
 }
 
 // Create 创建图片
-func (p *Picture) Create() error {
+func (p Picture) Create() error {
 	return db.Db.Create(&p).Error
 }
 

@@ -124,6 +124,7 @@ func (a *ApiRouter) InitApiRouter(rootPath string, router *gin.Engine) {
 		sysSettingApiRouter.POST("/sys_setting/smtp", sysSettingHandler.SaveSMTPSetting)
 		sysSettingApiRouter.POST("/sys_setting/email/test", sysSettingHandler.SendTestEmail)
 		sysSettingApiRouter.POST("/sys_setting/pic_bed/qubu", sysSettingHandler.SaveQubuSetting)
+		sysSettingApiRouter.POST("/sys_setting/pic_bed/picui", sysSettingHandler.SavePicUISetting)
 		sysSettingApiRouter.POST("/sys_setting/pic_bed/smms", sysSettingHandler.SaveSmmsSetting)
 		sysSettingApiRouter.POST("/sys_setting/pic_bed/imgbb", sysSettingHandler.SaveImgbbSetting)
 		sysSettingApiRouter.POST("/sys_setting/pic_bed/tencent_cos", sysSettingHandler.SaveTencentCosSetting)
@@ -136,6 +137,7 @@ func (a *ApiRouter) InitApiRouter(rootPath string, router *gin.Engine) {
 	imgApiRouter := router.Group(rootPath, middlewares.JWTAuth())
 	{
 		imgApiRouter.GET("/images", pictureHandler.GetPicturesByPage)
+		imgApiRouter.POST("/images", pictureHandler.SavePictureInfo)
 		imgApiRouter.POST("/images/attachment/upload", pictureHandler.UploadImgToAttachment)
 		imgApiRouter.DELETE("/images", pictureHandler.MultiDelPictures)
 	}

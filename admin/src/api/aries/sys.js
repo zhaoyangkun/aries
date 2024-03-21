@@ -60,6 +60,15 @@ export function saveQubuSetting (data) {
   })
 }
 
+// 保存 PicUI 配置
+export function savePicUISetting (data) {
+  return request({
+    url: '/sys_setting/pic_bed/picui',
+    method: 'post',
+    data: data
+  })
+}
+
 // 保存 sm.ms 配置
 export function saveSmmsSetting (data) {
   return request({

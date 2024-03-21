@@ -120,6 +120,12 @@
 
         <el-form :model="qubuForm" :rules="qubuFormRules" ref="qubuForm" label-width="130px"
                  v-show="storageForm.storage_type==='7bu'">
+          <el-form-item label="去不图床:">
+            <label style="color: gray">
+              <a style="color: dodgerblue" href="https://7bu.top"
+                 target="_blank">https://7bu.top</a>
+            </label>
+          </el-form-item>
           <el-form-item label="Token" prop="token">
             <el-input size="small" v-model="qubuForm.token" type="text" autocomplete="off"
                       placeholder="Token"></el-input>
@@ -129,8 +135,31 @@
           </el-form-item>
         </el-form>
 
+        <el-form :model="picuiForm" :rules="picuiFormRules" ref="picuiForm" label-width="130px"
+                 v-show="storageForm.storage_type==='picui'">
+          <el-form-item label="PicUI:">
+            <label style="color: gray">
+              <a style="color: dodgerblue" href="https://picui.cn"
+                 target="_blank">https://picui.cn</a>
+            </label>
+          </el-form-item>
+          <el-form-item label="Token" prop="token">
+            <el-input size="small" v-model="picuiForm.token" type="text" autocomplete="off"
+                      placeholder="Token"></el-input>
+          </el-form-item>
+          <el-form-item>
+            <el-button size="small" type="primary" :loading="btn.bedSaveLoading" @click="savePicuiForm">保存</el-button>
+          </el-form-item>
+        </el-form>
+
         <el-form :model="smmsForm" :rules="smmsFormRules" ref="smmsForm" label-width="130px"
                  v-show="storageForm.storage_type==='sm.ms'">
+          <el-form-item label="sm.ms:">
+            <label style="color: gray">
+              <a style="color: dodgerblue" href="https://sm.ms"
+                 target="_blank">https://sm.ms</a>
+            </label>
+          </el-form-item>
           <el-form-item label="Token" prop="token">
             <el-input size="small" v-model="smmsForm.token" type="text" autocomplete="off"
                       placeholder="Token"></el-input>
@@ -142,6 +171,12 @@
 
         <el-form :model="imgbbForm" :rules="imgbbFormRules" ref="imgbbForm" label-width="130px"
                  v-show="storageForm.storage_type==='imgbb'">
+          <el-form-item label="imgbb:">
+            <label style="color: gray">
+              <a style="color: dodgerblue" href="https://imgbb.com"
+                 target="_blank">https://imgbb.com</a>
+            </label>
+          </el-form-item>
           <el-form-item label="Token" prop="token">
             <el-input size="small" v-model="imgbbForm.token" type="text" autocomplete="off"
                       placeholder="Token"></el-input>
@@ -153,6 +188,12 @@
 
         <el-form :model="tencentCosForm" ref="tencentCosForm" :rules="tencentCosFormRules" label-width="130px"
                  v-show="storageForm.storage_type==='cos'">
+          <el-form-item label="腾讯云COS:">
+            <label style="color: gray">
+              <a style="color: dodgerblue" href="https://cloud.tencent.com/product/cos"
+                 target="_blank">https://cloud.tencent.com/product/cos</a>
+            </label>
+          </el-form-item>
           <el-form-item label="存储桶地址" prop="host">
             <el-input size="small" v-model="tencentCosForm.host" type="text" autocomplete="off"
                       placeholder="存储桶地址"></el-input>
@@ -315,7 +356,7 @@ import {
   getSysSettingItem,
   saveImgbbSetting,
   saveLocalCommentSetting,
-  saveParamSetting,
+  saveParamSetting, savePicUISetting,
   saveQubuSetting,
   saveSiteSetting,
   saveSmmsSetting,
@@ -332,10 +373,11 @@ export default {
     return {
       tabPosition: 'top',
       storageTypes: [
-        { value: '7bu', name: '去不图床' },
-        { value: 'sm.ms', name: 'sm.ms' },
-        { value: 'imgbb', name: 'imgbb' },
-        { value: 'cos', name: '腾讯云' }
+        { value: '7bu', name: '去不图床(付费)' },
+        { value: 'picui', name: 'picui(免费)' },
+        { value: 'sm.ms', name: 'sm.ms(免费)' },
+        { value: 'imgbb', name: 'imgbb(免费)' },
+        { value: 'cos', name: '腾讯云COS(付费)' }
       ],
       cosRegions: [
         { name: '北京一区', value: 'ap-beijing-1' },
@@ -387,6 +429,11 @@ export default {
       qubuForm: {
         sys_id: null,
         storage_type: '7bu',
+        token: ''
+      },
+      picuiForm: {
+        sys_id: null,
+        storage_type: 'picui',
         token: ''
       },
       smmsForm: {
@@ -527,6 +574,12 @@ export default {
           { max: 100, message: 'Token 长度不能超过 100', trigger: 'blur' }
         ]
       },
+      picuiFormRules: {
+        token: [
+          { required: true, message: '请输入 Token', trigger: 'blur' },
+          { max: 100, message: 'Token 长度不能超过 100', trigger: 'blur' }
+        ]
+      },
       smmsFormRules: {
         token: [
           { required: true, message: '请输入 Token', trigger: 'blur' },
@@ -644,6 +697,9 @@ export default {
         case '7bu':
           await this.getSysSetItem('7bu', 'qubuForm')
           break
+        case 'picui':
+          await this.getSysSetItem('picui', 'picuiForm')
+          break
         case 'sm.ms':
           await this.getSysSetItem('sm.ms', 'smmsForm')
           break
@@ -663,6 +719,7 @@ export default {
           break
         case 'twikoo-comment':
           await this.getSysSetItem('twikoo-comment', 'twikooForm')
+          break
       }
     },
     // 保存网站设置
@@ -728,6 +785,24 @@ export default {
               .then(res => {
                 this.$message.success(res.msg)
                 this.getSysSetItem('7bu', 'qubuForm')
+              })
+              .catch(() => {
+              })
+            this.btn.bedSaveLoading = false
+          }, 300)
+        }
+      })
+    },
+    // 保存 picui 设置
+    savePicuiForm () {
+      this.$refs.picuiForm.validate(valid => {
+        if (valid) {
+          this.btn.bedSaveLoading = true
+          setTimeout(() => {
+            savePicUISetting(this.picuiForm)
+              .then(res => {
+                this.$message.success(res.msg)
+                this.getSysSetItem('picui', 'picuiForm')
               })
               .catch(() => {
               })

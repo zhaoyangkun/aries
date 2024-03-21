@@ -54,6 +54,13 @@ type SmmsForm struct {
 	Token       string `json:"token" binding:"required,max=100"`
 }
 
+// PicUIForm PicUI 表单
+type PicUIForm struct {
+	SysId       string `json:"sys_id" label:"设置 ID"`
+	StorageType string `json:"storage_type" binding:"required,max=20" label:"设置类型名称"`
+	Token       string `json:"token" binding:"required,max=100"`
+}
+
 // ImgbbForm imgbb 表单
 type ImgbbForm struct {
 	SysId       string `json:"sys_id" label:"设置 ID"`
