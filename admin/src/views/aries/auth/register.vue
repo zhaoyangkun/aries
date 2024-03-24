@@ -32,7 +32,9 @@
                 label-position="top"
                 :rules="rules"
                 :model="regForm"
-                size="default">
+                size="default"
+                @keyup.enter.native="submit"
+              >
                 <el-form-item prop="username">
                   <el-input
                     type="text"

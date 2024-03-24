@@ -32,7 +32,9 @@
                 label-position="top"
                 :rules="rules"
                 :model="resetForm"
-                size="default">
+                size="default"
+                @keyup.enter.native="submit"
+              >
                 <el-form-item prop="email">
                   <el-input
                     type="email"

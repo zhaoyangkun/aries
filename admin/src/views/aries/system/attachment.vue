@@ -190,6 +190,7 @@ export default {
       picBedTypes: [
         { value: 'sm.ms', name: 'sm.ms' },
         { value: 'imgbb', name: 'imgbb' },
+        { value: 'picui', name: 'picui' },
         { value: 'cos', name: '腾讯云' },
         { value: '7bu', name: '去不图床' }
       ],
