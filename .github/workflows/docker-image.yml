@@ -11,10 +11,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out the repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up Go
-        uses: actions/setup-go@v3
+        uses: actions/setup-go@v4
         with:
           go-version-file: './go.mod'
 
@@ -25,7 +25,7 @@ jobs:
         run: CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o aries ./main.go
 
       - name: Upload binary file
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: aries-artifact
           path: ./aries
@@ -36,10 +36,10 @@ jobs:
     needs: build
     steps:
       - name: Check out the repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Download binary file
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: aries-artifact
           path: ./
