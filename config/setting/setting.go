@@ -4,6 +4,7 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"strings"
 	"time"
 
 	"github.com/88250/lute"
@@ -82,19 +83,19 @@ type smtp struct {
 // InitSetting 读取 yaml 配置文件
 func (s *Setting) InitSetting() {
 	/* 开发环境 */
-	//// 获取当前项目根目录
-	//rootPath, _ := os.Getwd()
-	//// 解决 GoLand 默认单元测试环境下，读取配置文件失败的问题
-	//rootPath = strings.Replace(rootPath, "test", "", -1)
-	//// 拼接配置文件访问路径
-	//yamlPath := filepath.Join(rootPath, "config", "develop.yaml")
+	// 获取当前项目根目录
+	rootPath, _ := os.Getwd()
+	// 解决 GoLand 默认单元测试环境下，读取配置文件失败的问题
+	rootPath = strings.Replace(rootPath, "test", "", -1)
+	// 拼接配置文件访问路径
+	yamlPath := filepath.Join(rootPath, "config", "develop.yaml")
 
 	/* 生产环境 */
-	homeDir, err := os.UserHomeDir()
-	if err != nil {
-		log.Panicln("获取用户主目录失败：", err.Error())
-	}
-	yamlPath := filepath.Join(homeDir, ".aries", "aries.yaml")
+	//homeDir, err := os.UserHomeDir()
+	//if err != nil {
+	//	log.Panicln("获取用户主目录失败：", err.Error())
+	//}
+	//yamlPath := filepath.Join(homeDir, ".aries", "aries.yaml")
 
 	log.Println("配置文件路径：", yamlPath)
 	// 读取配置文件
@@ -143,7 +144,7 @@ func (b *BlogVariable) InitBlogVars(siteSetting map[string]string, socialInfo ma
 		if Config.Server.Mode == gin.DebugMode {
 			b.StaticRootPath = b.ContextPath
 		} else {
-			b.StaticRootPath = "https://jsd.onmicrosoft.cn/gh/zhaoyangkun/aries@1.3.7"
+			b.StaticRootPath = "https://cdn.jsdelivr.us/gh/zhaoyangkun/aries@1.3.7"
 		}
 	}
 	if siteName, ok := siteSetting["site_name"]; ok {

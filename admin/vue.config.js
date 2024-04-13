@@ -13,7 +13,7 @@ process.env.VUE_APP_VERSION = require('./package.json').version
 process.env.VUE_APP_BUILD_TIME = require('dayjs')().format('YYYY-M-D HH:mm:ss')
 
 // 基础路径 注意发布之前要先修改这里
-const publicPath = process.env.NODE_ENV === 'development' ? process.env.VUE_APP_PUBLIC_PATH || '/' : 'https://jsd.onmicrosoft.cn/gh/zhaoyangkun/aries@1.3.7/resources/admin'
+const publicPath = process.env.NODE_ENV === 'development' ? process.env.VUE_APP_PUBLIC_PATH || '/' : 'https://cdn.jsdelivr.us/gh/zhaoyangkun/aries@1.3.7/resources/admin'
 // https://gh.sourcegcdn.com/zhaoyangkun/aries/v1.2.3/resources/admin
 // const publicPath = process.env.VUE_APP_PUBLIC_PATH || '/' // 开发环境
 // const publicPath = './' // 生产环境
