@@ -41,7 +41,7 @@ func GenerateCaptcha(captcha *CaptchaConfig) (string, error) {
 	/*	captcha.DriverDigit = base64Captcha.NewDriverDigit(80, 240, 4, 0.7, 80)
 		driver = captcha.DriverDigit*/
 	c := base64Captcha.NewCaptcha(driver, store)
-	id, b64s, err := c.Generate()
+	id, b64s, _, err := c.Generate()
 	captcha.Id = id
 
 	if err != nil {
