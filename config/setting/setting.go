@@ -115,6 +115,7 @@ func (s *Setting) InitSetting() {
 func (s *Setting) InitLute() {
 	LuteEngine = lute.New()
 	LuteEngine.SetCodeSyntaxHighlight(true)
+	LuteEngine.SetHeadingID(true)
 }
 
 // InitCache 初始化缓存
